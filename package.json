@@ -1,0 +1,50 @@
+{
+  "name": "web-next",
+  "version": "1.0.0",
+  "description": "EXLskills SPFJS POC",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "gql2ts": "^1.10.1",
+    "handlebars": "^4.0.12",
+    "handlebars-intl": "^1.1.2",
+    "showdown": "^1.8.6",
+    "typescript": "^2.9.2",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.9",
+    "@types/handlebars": "^4.0.39",
+    "@types/showdown": "^1.7.5",
+    "@types/cors": "^2.8.4",
+    "@types/dotenv": "^4.0.3",
+    "@types/express": "^4.11.1",
+    "@types/express-handlebars": "0.0.30"
+  },
+  "scripts": {
+    "start": "npm run build && npm run start:production",
+    "start:production": "node .",
+    "build": "npm run build:gql && npm run build:ts",
+    "build:ts": "tsc",
+    "build:gql": "gql2ts -o ./lib/gql.d.ts schema.graphql",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/exlskills/web-next.git"
+  },
+  "keywords": [
+    "AMP"
+  ],
+  "author": "EXL Inc.",
+  "bugs": {
+    "url": "https://github.com/exlskills/web-next/issues"
+  },
+  "homepage": "https://github.com/exlskills/web-next#readme"
+}
