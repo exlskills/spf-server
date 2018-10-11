@@ -6,6 +6,7 @@ dotenv.config();
 
 export default {
     port: process.env.WEB_PORT || 3000,
+    clientBaseURL: process.env.WEB_CLIENT_BASE_URL || 'https://exlskills.com',
     auth: {
         apiBaseURL: process.env.WEB_AUTH_API_BASE_URL || 'https://auth-api.exlskills.com',
         intercomSecret: process.env.WEB_AUTH_INTERCOM_SECRET || 'set_me'
@@ -37,6 +38,7 @@ export default {
     templateConstants: {
         logoutURL: process.env.WEB_TMPL_LOGOUT_URL || 'https://accounts.exlinc.com/auth/realms/exlinc/protocol/openid-connect/logout?redirect_uri=https%3A%2F%2Fexlskills.com',
         stripePubKey: process.env.WEB_TMPL_STRIPE_PUB_KEY || 'set_me',
+        authAPIBaseURL: process.env.WEB_TMPL_AUTH_API_BASE_URL || 'https://auth-api.exlskills.com',
         eraseDataFormURL: process.env.WEB_TMPL_ERASE_DATA_FORM_URL || 'https://exlinc.typeform.com/to/X0MWrR',
         intercomAppID: process.env.WEB_TMPL_IC_APP_ID || 'set_me',
         accountsURL: process.env.WEB_TMPL_ACCOUNTS_URL || 'https://accounts.exlinc.com/auth/realms/exlinc/account',

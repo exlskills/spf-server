@@ -495,23 +495,27 @@
 
             </div>
 
-            <!-- Dropdown -->
-            <div class="dropdown">
+            {{#if user.is_demo}}
+                <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}" class="btn btn-success">Login / Sign Up</a>
+            {{else}}
+                <!-- Dropdown -->
+                <div class="dropdown">
 
-                <!-- Toggle -->
-                <a href="#" class="avatar avatar-sm avatar-online dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="{{user.avatar_url}}" alt="..." class="avatar-img rounded-circle">
-                </a>
+                    <!-- Toggle -->
+                    <a href="#" class="avatar avatar-sm avatar-online dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="{{user.avatar_url}}" alt="..." class="avatar-img rounded-circle">
+                    </a>
 
-                <!-- Menu -->
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a href="profile-posts.html" class="dropdown-item">Profile</a>
-                    <a href="settings.html" class="dropdown-item">Settings</a>
-                    <hr class="dropdown-divider">
-                    <a href="sign-in.html" class="dropdown-item">Logout</a>
+                    <!-- Menu -->
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="profile-posts.html" class="dropdown-item">Profile</a>
+                        <a href="settings.html" class="dropdown-item">Settings</a>
+                        <hr class="dropdown-divider">
+                        <a href="#!" id="user-logout-btn" class="dropdown-item">Logout</a>
+                    </div>
+
                 </div>
-
-            </div>
+            {{/if}}
 
         </div>
 

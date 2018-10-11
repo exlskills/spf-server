@@ -44,6 +44,51 @@ export async function fetchDetailedCourseForView(client: GqlApi, courseGID: stri
         });
         return u.node;
     });
+    if (!withEMA) {
+        // No more calculations left unless we got the EMAs
+        return gqlResp;
+    }
+    let completedUnits = 0;
+    let markedSuggestedUnit = false;
+    for (let unit of gqlResp.units) {
+        const unitComplete = unit.unit_progress_state === 1;
+        if (unitComplete) {
+            completedUnits++;
+            unit.suggestedUnit = false;
+        } else if (!markedSuggestedUnit) {
+            markedSuggestedUnit = true;
+            unit.suggestedUnit = true;
+        } else {
+            unit.suggestedUnit = false;
+        }
+        let allSectionsProficient = true;
+        let markedCurrentSection = false;
+        for (let s = 0; s < unit.sections_list.length; s++) {
+            if (unit.sections_list[s].ema > 80) {
+                unit.sections_list[s].proficient = true;
+            } else {
+                unit.sections_list[s].proficient = false;
+                allSectionsProficient = false;
+            }
+            if (
+                unit.sections_list[s].ema > 0 &&
+                !unit.sections_list[s].proficient &&
+                !markedCurrentSection
+            ) {
+                unit.sections_list[s].current = true;
+                markedCurrentSection = true;
+            } else {
+                unit.sections_list[s].current = false;
+            }
+            if (s === unit.sections_list.length - 1) {
+                if (!allSectionsProficient && !markedCurrentSection) {
+                    unit.sections_list[0].current = true;
+                }
+            }
+        }
+        unit.examIsNextStep = allSectionsProficient && !unitComplete;
+    }
+    gqlResp.courseComplete = completedUnits === gqlResp.units.length;
     return gqlResp
 }
 

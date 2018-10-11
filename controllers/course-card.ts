@@ -1,6 +1,7 @@
 import GqlApi from "../lib/gql-api";
 import {ISPFRouteResponse} from "../lib/spf-route-response";
 import {IUserData} from "../lib/jwt";
+import { Request, Response } from 'express';
 import {getBadgeURLForTopic} from "../lib/course-badges";
 import {toUrlId} from "../utils/url-ids";
 import {skillLevelToText} from "../lib/skill-levels";
@@ -67,11 +68,64 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
     return {
         contentTmpl: 'course_card',
         meta: {
-            title: gqlResp.meta.title,
-            description: gqlResp.meta.description
+            title: `${gqlResp.meta.title} | ${gqlResp.card.title}`,
+            topbarTitle: `${gqlResp.meta.title}`
         },
         data: {
             course: gqlResp
         }
+    }
+}
+
+export async function redirectSectionURL(client: GqlApi, user: IUserData, locale: string, courseGID: string, unitGID: string, sectionGID: string): Promise<ISPFRouteResponse> {
+    let gqlResp = await fetchDetailedCourseForView(client, courseGID);
+    const unit = gqlResp.units.find(u => u.id === unitGID);
+    if (!unit) {
+        return Promise.reject('unit not found')
+    }
+    const section = unit.sections_list.find(s => s.id === sectionGID);
+    if (!section) {
+        return Promise.reject('section not found')
+    }
+    if (!section.cards_list || section.cards_list.length < 1) {
+        return Promise.reject('no valid card found')
+    }
+    return {
+        contentTmpl: 'redirect',
+        meta: {
+            title: `${gqlResp.meta.title}`,
+        },
+        redirect: {
+            permanent: false,
+            url: `/learn-${locale}/courses/${toUrlId(gqlResp.meta.title, courseGID)}/${unit.url_id}/${section.url_id}/${section.cards_list[0].url_id}`
+        },
+        data: null
+    }
+}
+
+export async function redirectOldCardURL(client: GqlApi, user: IUserData, locale: string, req: Request) {
+    if (!req.params.cardId) {
+        return {
+            contentTmpl: 'redirect',
+            meta: {
+                title: `Redirecting ...`,
+            },
+            redirect: {
+                permanent: true,
+                url: `/learn-${locale}/courses/${req.params.courseId}/${req.params.unitId}/${req.params.sectionId}`
+            },
+            data: null
+        }
+    }
+    return {
+        contentTmpl: 'redirect',
+        meta: {
+            title: `Redirecting ...`,
+        },
+        redirect: {
+            permanent: true,
+            url: `/learn-${locale}/courses/${req.params.courseId}/${req.params.unitId}/${req.params.sectionId}/${req.params.cardId}`
+        },
+        data: null
     }
 }

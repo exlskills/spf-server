@@ -38,7 +38,7 @@
     });
 
     function setupCodeHLJS() {
-        $("#card-body pre code").toggleClass("hljs");
+        $("#course-card-body pre code").toggleClass("hljs");
     }
 
     $(document).on("spfdone", function() {
@@ -48,4 +48,31 @@
     });
 
     setupCodeHLJS();
+</script>
+<script>
+    $.postJSON = function(url, data, success, dataType) {
+        if (typeof data !== 'string') {
+            data = JSON.stringify(data);
+        }
+        $.ajax({
+            url : url,
+            type: "post",
+            data: data,
+            dataType: dataType || "json",
+            contentType: "application/json",
+            success: success,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true
+        });
+    }
+</script>
+<script>
+    $('#user-logout-btn').click(function(e) {
+      e.preventDefault();
+      $.postJSON('{{config.authAPIBaseURL}}/me/logout', {}, function(resp) {
+        window.location.href = '{{{config.logoutURL}}}';
+      });
+    })
 </script>

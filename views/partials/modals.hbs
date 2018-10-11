@@ -1,15 +1,44 @@
-<!-- Modal: Members -->
-<div class="modal fade" id="modalMembers" tabindex="-1" role="dialog" aria-hidden="true">
+<style>
+    /**
+     * The CSS shown here will not be introduced in the Quickstart guide, but shows
+     * how you can use CSS to style your Element's container.
+     */
+    .StripeElement {
+        background-color: white;
+        height: 40px;
+        padding: 10px 12px;
+        border-radius: 4px;
+        border: 1px solid transparent;
+        box-shadow: 0 1px 3px 0 #e6ebf1;
+        -webkit-transition: box-shadow 150ms ease;
+        transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+        box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+        border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+        background-color: #fefde5 !important;
+    }
+</style>
+
+<!-- Modal: Billing -->
+<div class="modal fade" id="modalBilling" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-card card" data-toggle="lists" data-lists-values='["name"]'>
+            <div class="modal-card card">
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col">
 
                             <!-- Title -->
                             <h4 class="card-header-title" id="exampleModalCenterTitle">
-                                Add a member
+                                Billing
                             </h4>
 
                         </div>
@@ -23,643 +52,93 @@
                         </div>
                     </div> <!-- / .row -->
                 </div>
-                <div class="card-header">
 
-                    <!-- Form -->
-                    <form>
-                        <div class="input-group input-group-flush input-group-merge">
-                            <input type="search" class="form-control form-control-prepended search" placeholder="Search">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    <span class="fe fe-search"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
                 <div class="card-body">
-
-                    <!-- List group -->
-                    <ul class="list-group list-group-flush list my--3">
-                        <li class="list-group-item px-0">
-
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-
-                                    <!-- Avatar -->
-                                    <a href="profile-posts.html" class="avatar">
-                                        <img src="assets/img/avatars/profiles/avatar-5.jpg" alt="..." class="avatar-img rounded-circle">
-                                    </a>
-
-                                </div>
-                                <div class="col ml--2">
-
-                                    <!-- Title -->
-                                    <h4 class="mb-1 name">
-                                        <a href="profile-posts.html">Miyah Myles</a>
-                                    </h4>
-
-                                    <!-- Time -->
-                                    <p class="small mb-0">
-                                        <span class="text-success">●</span> Online
-                                    </p>
-
-                                </div>
-                                <div class="col-auto">
-
-                                    <!-- Button -->
-                                    <a href="#!" class="btn btn-sm btn-white">
-                                        Add
-                                    </a>
-
-                                </div>
-                            </div> <!-- / .row -->
-
-                        </li>
-                        <li class="list-group-item px-0">
-
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-
-                                    <!-- Avatar -->
-                                    <a href="profile-posts.html" class="avatar">
-                                        <img src="assets/img/avatars/profiles/avatar-6.jpg" alt="..." class="avatar-img rounded-circle">
-                                    </a>
-
-                                </div>
-                                <div class="col ml--2">
-
-                                    <!-- Title -->
-                                    <h4 class="mb-1 name">
-                                        <a href="profile-posts.html">Ryu Duke</a>
-                                    </h4>
-
-                                    <!-- Time -->
-                                    <p class="small mb-0">
-                                        <span class="text-success">●</span> Online
-                                    </p>
-
-                                </div>
-                                <div class="col-auto">
-
-                                    <!-- Button -->
-                                    <a href="#!" class="btn btn-sm btn-white">
-                                        Add
-                                    </a>
-
-                                </div>
-                            </div> <!-- / .row -->
-
-                        </li>
-                        <li class="list-group-item px-0">
-
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-
-                                    <!-- Avatar -->
-                                    <a href="profile-posts.html" class="avatar">
-                                        <img src="assets/img/avatars/profiles/avatar-7.jpg" alt="..." class="avatar-img rounded-circle">
-                                    </a>
-
-                                </div>
-                                <div class="col ml--2">
-
-                                    <!-- Title -->
-                                    <h4 class="mb-1 name">
-                                        <a href="profile-posts.html">Glen Rouse</a>
-                                    </h4>
-
-                                    <!-- Time -->
-                                    <p class="small mb-0">
-                                        <span class="text-warning">●</span> Busy
-                                    </p>
-
-                                </div>
-                                <div class="col-auto">
-
-                                    <!-- Button -->
-                                    <a href="#!" class="btn btn-sm btn-white">
-                                        Add
-                                    </a>
-
-                                </div>
-                            </div> <!-- / .row -->
-
-                        </li>
-                        <li class="list-group-item px-0">
-
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-
-                                    <!-- Avatar -->
-                                    <a href="profile-posts.html" class="avatar">
-                                        <img src="assets/img/avatars/profiles/avatar-8.jpg" alt="..." class="avatar-img rounded-circle">
-                                    </a>
-
-                                </div>
-                                <div class="col ml--2">
-
-                                    <!-- Title -->
-                                    <h4 class="mb-1 name">
-                                        <a href="profile-posts.html">Grace Gross</a>
-                                    </h4>
-
-                                    <!-- Time -->
-                                    <p class="small mb-0">
-                                        <span class="text-danger">●</span> Offline
-                                    </p>
-
-                                </div>
-                                <div class="col-auto">
-
-                                    <!-- Button -->
-                                    <a href="#!" class="btn btn-sm btn-white">
-                                        Add
-                                    </a>
-
-                                </div>
-                            </div> <!-- / .row -->
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal: Search -->
-<div class="modal fade" id="sidebarModalSearch" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-vertical" role="document">
-        <div class="modal-content">
-            <div class="modal-body" data-toggle="lists" data-lists-values='["name"]'>
-
-                <!-- Form -->
-                <form class="mb-4">
-                    <div class="input-group input-group-merge">
-                        <input type="search" class="form-control form-control-prepended search" placeholder="Search">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <span class="fe fe-search"></span>
+                    <form id="payment-form">
+                        <div class="">
+                            <label for="card-element">
+                                Credit or debit card
+                            </label>
+                            <div id="card-element">
+                                <!-- A Stripe Element will be inserted here. -->
                             </div>
+
+                            <!-- Used to display form errors. -->
+                            <div id="card-errors" role="alert"></div>
                         </div>
-                    </div>
-                </form>
 
-                <!-- List group -->
-                <div class="my--3">
-                    <div class="list-group list-group-flush list">
-                        <a href="team-overview.html" class="list-group-item px-0">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-
-                                    <!-- Avatar -->
-                                    <div class="avatar">
-                                        <img src="assets/img/avatars/teams/team-logo-1.jpg" alt="..." class="avatar-img rounded">
-                                    </div>
-
-                                </div>
-                                <div class="col ml--2">
-
-                                    <!-- Title -->
-                                    <h4 class="text-body mb-1 name">
-                                        Airbnb
-                                    </h4>
-
-                                    <!-- Time -->
-                                    <p class="small text-muted mb-0">
-                                        <span class="fe fe-clock"></span> <time datetime="2018-05-24">Updated 2hr ago</time>
-                                    </p>
-
-                                </div>
-                            </div> <!-- / .row -->
-                        </a>
-                        <a href="team-overview.html" class="list-group-item px-0">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-
-                                    <!-- Avatar -->
-                                    <div class="avatar">
-                                        <img src="assets/img/avatars/teams/team-logo-2.jpg" alt="..." class="avatar-img rounded">
-                                    </div>
-
-                                </div>
-                                <div class="col ml--2">
-
-                                    <!-- Title -->
-                                    <h4 class="text-body mb-1 name">
-                                        Medium Corporation
-                                    </h4>
-
-                                    <!-- Time -->
-                                    <p class="small text-muted mb-0">
-                                        <span class="fe fe-clock"></span> <time datetime="2018-05-24">Updated 2hr ago</time>
-                                    </p>
-
-                                </div>
-                            </div> <!-- / .row -->
-                        </a>
-                        <a href="project-overview.html" class="list-group-item px-0">
-
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-
-                                    <!-- Avatar -->
-                                    <div class="avatar avatar-4by3">
-                                        <img src="assets/img/avatars/projects/project-1.jpg" alt="..." class="avatar-img rounded">
-                                    </div>
-
-                                </div>
-                                <div class="col ml--2">
-
-                                    <!-- Title -->
-                                    <h4 class="text-body mb-1 name">
-                                        Homepage Redesign
-                                    </h4>
-
-                                    <!-- Time -->
-                                    <p class="small text-muted mb-0">
-                                        <span class="fe fe-clock"></span> <time datetime="2018-05-24">Updated 4hr ago</time>
-                                    </p>
-
-                                </div>
-                            </div> <!-- / .row -->
-
-                        </a>
-                        <a href="project-overview.html" class="list-group-item px-0">
-
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-
-                                    <!-- Avatar -->
-                                    <div class="avatar avatar-4by3">
-                                        <img src="assets/img/avatars/projects/project-2.jpg" alt="..." class="avatar-img rounded">
-                                    </div>
-
-                                </div>
-                                <div class="col ml--2">
-
-                                    <!-- Title -->
-                                    <h4 class="text-body mb-1 name">
-                                        Travels & Time
-                                    </h4>
-
-                                    <!-- Time -->
-                                    <p class="small text-muted mb-0">
-                                        <span class="fe fe-clock"></span> <time datetime="2018-05-24">Updated 4hr ago</time>
-                                    </p>
-
-                                </div>
-                            </div> <!-- / .row -->
-
-                        </a>
-                        <a href="project-overview.html" class="list-group-item px-0">
-
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-
-                                    <!-- Avatar -->
-                                    <div class="avatar avatar-4by3">
-                                        <img src="assets/img/avatars/projects/project-3.jpg" alt="..." class="avatar-img rounded">
-                                    </div>
-
-                                </div>
-                                <div class="col ml--2">
-
-                                    <!-- Title -->
-                                    <h4 class="text-body mb-1 name">
-                                        Safari Exploration
-                                    </h4>
-
-                                    <!-- Time -->
-                                    <p class="small text-muted mb-0">
-                                        <span class="fe fe-clock"></span> <time datetime="2018-05-24">Updated 4hr ago</time>
-                                    </p>
-
-                                </div>
-                            </div> <!-- / .row -->
-
-                        </a>
-                        <a href="profile-posts.html" class="list-group-item px-0">
-
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-
-                                    <!-- Avatar -->
-                                    <div class="avatar">
-                                        <img src="assets/img/avatars/profiles/avatar-1.jpg" alt="..." class="avatar-img rounded-circle">
-                                    </div>
-
-                                </div>
-                                <div class="col ml--2">
-
-                                    <!-- Title -->
-                                    <h4 class="text-body mb-1 name">
-                                        Dianna Smiley
-                                    </h4>
-
-                                    <!-- Status -->
-                                    <p class="text-body small mb-0">
-                                        <span class="text-success">●</span> Online
-                                    </p>
-
-                                </div>
-                            </div> <!-- / .row -->
-
-                        </a>
-                        <a href="profile-posts.html" class="list-group-item px-0">
-
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-
-                                    <!-- Avatar -->
-                                    <div class="avatar">
-                                        <img src="assets/img/avatars/profiles/avatar-2.jpg" alt="..." class="avatar-img rounded-circle">
-                                    </div>
-
-                                </div>
-                                <div class="col ml--2">
-
-                                    <!-- Title -->
-                                    <h4 class="text-body mb-1 name">
-                                        Ab Hadley
-                                    </h4>
-
-                                    <!-- Status -->
-                                    <p class="text-body small mb-0">
-                                        <span class="text-danger">●</span> Offline
-                                    </p>
-
-                                </div>
-                            </div> <!-- / .row -->
-
-                        </a>
-                    </div>
+                        <button class="btn btn-primary float-right mt-4">Submit Payment</button>
+                    </form>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal: Activity -->
-<div class="modal fade" id="sidebarModalActivity" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-vertical" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-
-                <!-- Title -->
-                <h4 class="modal-title">
-                    Notifications
-                </h4>
-
-                <!-- Close -->
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">
-            &times;
-          </span>
-                </button>
-
-            </div>
-            <div class="modal-body">
-
-                <!-- List group -->
-                <div class="list-group list-group-flush my--3">
-                    <a class="list-group-item px-0" href="#!">
-
-                        <div class="row">
-                            <div class="col-auto">
-
-                                <!-- Avatar -->
-                                <div class="avatar avatar-sm">
-                                    <img src="assets/img/avatars/profiles/avatar-1.jpg" alt="..." class="avatar-img rounded-circle">
-                                </div>
-
-                            </div>
-                            <div class="col ml--2">
-
-                                <!-- Content -->
-                                <div class="small text-muted">
-                                    <strong class="text-body">Dianna Smiley</strong> shared your post with <strong class="text-body">Ab Hadley</strong>, <strong class="text-body">Adolfo Hess</strong>, and <strong class="text-body">3 others</strong>.
-                                </div>
-
-                            </div>
-                            <div class="col-auto">
-
-                                <small class="text-muted">
-                                    2m
-                                </small>
-
-                            </div>
-                        </div> <!-- / .row -->
-
-                    </a>
-                    <a class="list-group-item px-0" href="#!">
-
-                        <div class="row">
-                            <div class="col-auto">
-
-                                <!-- Avatar -->
-                                <div class="avatar avatar-sm">
-                                    <img src="assets/img/avatars/profiles/avatar-2.jpg" alt="..." class="avatar-img rounded-circle">
-                                </div>
-
-                            </div>
-                            <div class="col ml--2">
-
-                                <!-- Content -->
-                                <div class="small text-muted">
-                                    <strong class="text-body">Ab Hadley</strong> reacted to your post with a 😍
-                                </div>
-
-                            </div>
-                            <div class="col-auto">
-
-                                <small class="text-muted">
-                                    2m
-                                </small>
-
-                            </div>
-                        </div> <!-- / .row -->
-
-                    </a>
-                    <a class="list-group-item px-0" href="#!">
-
-                        <div class="row">
-                            <div class="col-auto">
-
-                                <!-- Avatar -->
-                                <div class="avatar avatar-sm">
-                                    <img src="assets/img/avatars/profiles/avatar-3.jpg" alt="..." class="avatar-img rounded-circle">
-                                </div>
-
-                            </div>
-                            <div class="col ml--2">
-
-                                <!-- Content -->
-                                <div class="small text-muted">
-                                    <strong class="text-body">Adolfo Hess</strong> commented <blockquote class="text-body">“I don’t think this really makes sense to do without approval from Johnathan since he’s the one...” </blockquote>
-                                </div>
-
-                            </div>
-                            <div class="col-auto">
-
-                                <small class="text-muted">
-                                    2m
-                                </small>
-
-                            </div>
-                        </div> <!-- / .row -->
-
-                    </a>
-                    <a class="list-group-item px-0" href="#!">
-
-                        <div class="row">
-                            <div class="col-auto">
-
-                                <!-- Avatar -->
-                                <div class="avatar avatar-sm">
-                                    <img src="assets/img/avatars/profiles/avatar-4.jpg" alt="..." class="avatar-img rounded-circle">
-                                </div>
-
-                            </div>
-                            <div class="col ml--2">
-
-                                <!-- Content -->
-                                <div class="small text-muted">
-                                    <strong class="text-body">Daniela Dewitt</strong> subscribed to you.
-                                </div>
-
-                            </div>
-                            <div class="col-auto">
-
-                                <small class="text-muted">
-                                    2m
-                                </small>
-
-                            </div>
-                        </div> <!-- / .row -->
-
-                    </a>
-                    <a class="list-group-item px-0" href="#!">
-
-                        <div class="row">
-                            <div class="col-auto">
-
-                                <!-- Avatar -->
-                                <div class="avatar avatar-sm">
-                                    <img src="assets/img/avatars/profiles/avatar-5.jpg" alt="..." class="avatar-img rounded-circle">
-                                </div>
-
-                            </div>
-                            <div class="col ml--2">
-
-                                <!-- Content -->
-                                <div class="small text-muted">
-                                    <strong class="text-body">Miyah Myles</strong> shared your post with <strong class="text-body">Ryu Duke</strong>, <strong class="text-body">Glen Rouse</strong>, and <strong class="text-body">3 others</strong>.
-                                </div>
-
-                            </div>
-                            <div class="col-auto">
-
-                                <small class="text-muted">
-                                    2m
-                                </small>
-
-                            </div>
-                        </div> <!-- / .row -->
-
-                    </a>
-                    <a class="list-group-item px-0" href="#!">
-
-                        <div class="row">
-                            <div class="col-auto">
-
-                                <!-- Avatar -->
-                                <div class="avatar avatar-sm">
-                                    <img src="assets/img/avatars/profiles/avatar-6.jpg" alt="..." class="avatar-img rounded-circle">
-                                </div>
-
-                            </div>
-                            <div class="col ml--2">
-
-                                <!-- Content -->
-                                <div class="small text-muted">
-                                    <strong class="text-body">Ryu Duke</strong> reacted to your post with a 😍
-                                </div>
-
-                            </div>
-                            <div class="col-auto">
-
-                                <small class="text-muted">
-                                    2m
-                                </small>
-
-                            </div>
-                        </div> <!-- / .row -->
-
-                    </a>
-                    <a class="list-group-item px-0" href="#!">
-
-                        <div class="row">
-                            <div class="col-auto">
-
-                                <!-- Avatar -->
-                                <div class="avatar avatar-sm">
-                                    <img src="assets/img/avatars/profiles/avatar-7.jpg" alt="..." class="avatar-img rounded-circle">
-                                </div>
-
-                            </div>
-                            <div class="col ml--2">
-
-                                <!-- Content -->
-                                <div class="small text-muted">
-                                    <strong class="text-body">Glen Rouse</strong> commented <blockquote class="text-body">“I don’t think this really makes sense to do without approval from Johnathan since he’s the one...” </blockquote>
-                                </div>
-
-                            </div>
-                            <div class="col-auto">
-
-                                <small class="text-muted">
-                                    2m
-                                </small>
-
-                            </div>
-                        </div> <!-- / .row -->
-
-                    </a>
-                    <a class="list-group-item px-0" href="#!">
-
-                        <div class="row">
-                            <div class="col-auto">
-
-                                <!-- Avatar -->
-                                <div class="avatar avatar-sm">
-                                    <img src="assets/img/avatars/profiles/avatar-8.jpg" alt="..." class="avatar-img rounded-circle">
-                                </div>
-
-                            </div>
-                            <div class="col ml--2">
-
-                                <!-- Content -->
-                                <div class="small text-muted">
-                                    <strong class="text-body">Grace Gross</strong> subscribed to you.
-                                </div>
-
-                            </div>
-                            <div class="col-auto">
-
-                                <small class="text-muted">
-                                    2m
-                                </small>
-
-                            </div>
-                        </div> <!-- / .row -->
-
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
+<script>
+    // Create a Stripe client.
+    var stripe = Stripe('{{config.stripePubKey}}');
+
+    // Create an instance of Elements.
+    var elements = stripe.elements();
+
+    // Custom styling can be passed to options when creating an Element.
+    // (Note that this demo uses a wider set of styles than the guide below.)
+    var style = {
+        base: {
+            color: '#32325d',
+            lineHeight: '18px',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+                color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+        }
+    };
+
+    // Create an instance of the card Element.
+    var card = elements.create('card', {style: style});
+
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+
+    // Handle real-time validation errors from the card Element.
+    card.addEventListener('change', function(event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    });
+
+    function stripeTokenHandler(tkn) {
+        $.postJSON('{{config.authAPIBaseURL}}/me/credits/enroll', {
+          stripeToken: tkn
+        }, function(data) {
+          console.log('DONE, ', data)
+        });
+    }
+
+    // Handle form submission.
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+                // Inform the user if there was an error.
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                // Send the token to your server.
+                stripeTokenHandler(result.token);
+            }
+        });
+    });
+</script>

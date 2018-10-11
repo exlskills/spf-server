@@ -3,6 +3,7 @@ import {IUserData} from "./jwt";
 
 export interface ISPFRouteMeta {
     title: string
+    topbarTitle?: string
     fullTitle?: string
     description?: string
 }
@@ -12,6 +13,10 @@ export interface ISPFRouteResponse {
     contentTmpl: string
     meta: ISPFRouteMeta
     data: any
+    redirect?: {
+        permanent: boolean
+        url: string
+    }
     user?: IUserData
     config?: any
     intercomHash?: string
@@ -20,5 +25,6 @@ export interface ISPFRouteResponse {
         locale: string
         suffix: string
         params: any
+        url: string
     }
 }

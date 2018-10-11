@@ -18,7 +18,7 @@ import {viewCourseLive} from "../controllers/course-live";
 import {viewCourseContent} from "../controllers/course-content";
 import {viewCourseProgress} from "../controllers/course-progress";
 import {viewCourseCertificate} from "../controllers/course-certificate";
-import {viewCourseCard} from "../controllers/course-card";
+import {redirectOldCardURL, redirectSectionURL, viewCourseCard} from "../controllers/course-card";
 import {generateHash} from "../lib/intercom";
 
 // @ts-ignore
@@ -73,6 +73,10 @@ const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFun
                 domain: config.cookies.domain
             });
         }
+        if (result.redirect) {
+            res.redirect(result.redirect.permanent ? 301 : 302, result.redirect.url);
+            return
+        }
         // TODO dynamic locale
         result.data.intl = {
             "locales": "en-US"
@@ -83,7 +87,8 @@ const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFun
             path: req.path,
             locale: req.params.locale,
             suffix: req.path.substr(req.path.indexOf('/', 1)),
-            params: req.params
+            params: req.params,
+            url: config.clientBaseURL + req.path
         };
         // TODO internationalize full title prefix
         result.meta.fullTitle = `EXLskills - ${result.meta.title}`;
@@ -106,7 +111,7 @@ const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFun
                         body: {
                             sidebar: sidebarHTML,
                             content: contentHTML,
-                            'topbar-title': result.meta.title
+                            'topbar-title': result.meta.topbarTitle ? result.meta.topbarTitle : result.meta.title
                         }
                     }));
                 });
@@ -125,7 +130,6 @@ const gc = gqlBaseControllerHandler;
 router.get('/health-check', (req, res) => res.sendStatus(200));
 router.use('/learn-en/assets', express.static(path.join(__dirname, '../static/assets')));
 // TODO add redirects for bad locales and index
-// TODO register error pages
 router.get('/learn-:locale/dashboard', gc(viewDashboard, req => []));
 router.get('/learn-:locale/courses', gc(viewCourses, req => []));
 router.get('/learn-:locale/courses/:courseId', gc(viewCourseIndex, req => [fromUrlId('Course', req.params.courseId)]));
@@ -134,7 +138,20 @@ router.get('/learn-:locale/courses/:courseId/live', gc(viewCourseLive, req => [f
 router.get('/learn-:locale/courses/:courseId/progress', gc(viewCourseProgress, req => [fromUrlId('Course', req.params.courseId)]));
 router.get('/learn-:locale/courses/:courseId/certificate', gc(viewCourseCertificate, req => [fromUrlId('Course', req.params.courseId)]));
 router.get('/learn-:locale/courses/:courseId/card', gc(viewCourseCard, req => [fromUrlId('Course', req.params.courseId)]));
-// TODO setup permanent redirect from old course card route to new one
-// TODO setup redirect from /learn-:locale/courses/:courseId/:unitId/:sectionId to /learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId of the first card
+router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId/card/:cardId', gc(redirectOldCardURL, req => [req]));
+router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId', gc(redirectOldCardURL, req => [req]));
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(viewCourseCard, req => [fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));
+router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId', gc(redirectSectionURL, req => [fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId)]));
+
+// Production error handlers:
+if (process.env.NODE_ENV === 'production') {
+    router.use(function(req, res) {
+        res.status(404);
+        res.render('error', {layout: 'splash'});
+    });
+    router.use(function(error, req, res, next) {
+        res.status(500);
+        res.render('error', {layout: 'splash'});
+    });
+}
 export default router;
