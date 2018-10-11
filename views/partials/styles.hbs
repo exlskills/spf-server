@@ -1,0 +1,21 @@
+<link rel="" href="/learn-en/assets/css/theme-dark.min.css" data-toggle="theme" data-theme-mode="dark">
+<link rel="" href="/learn-en/assets/css/theme.min.css" data-toggle="theme" data-theme-mode="light">
+
+<style>
+    body { display: none; }
+</style>
+
+<script>
+    var themeMode = (localStorage.getItem('dashkitThemeMode')) ? localStorage.getItem('dashkitThemeMode') : 'light';
+    var themeFile = document.querySelector('[data-toggle="theme"][data-theme-mode="' + themeMode + '"]');
+
+    // Enable stylesheet
+    themeFile.rel = 'stylesheet';
+
+    // Enable body content
+    themeFile.addEventListener('load', function() {
+        document.body.style.display = 'block';
+    });
+</script>
+
+<link rel="stylesheet" href="/learn-en/assets/css/custom.css">

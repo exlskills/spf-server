@@ -4,6 +4,7 @@
   "description": "EXLskills SPFJS POC",
   "main": "index.js",
   "dependencies": {
+    "@types/jsonwebtoken": "^7.2.8",
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
     "cookie-parser": "^1.4.3",
@@ -13,7 +14,9 @@
     "express-handlebars": "^3.0.0",
     "gql2ts": "^1.10.1",
     "handlebars": "^4.0.12",
+    "handlebars-helpers": "^0.10.0",
     "handlebars-intl": "^1.1.2",
+    "jsonwebtoken": "^8.3.0",
     "showdown": "^1.8.6",
     "typescript": "^2.9.2",
     "winston": "^3.1.0"

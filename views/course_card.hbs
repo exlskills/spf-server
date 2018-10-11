@@ -1,0 +1,57 @@
+<style>
+    #course-card-body pre code {
+        border-radius: 5px;
+        padding: 1.5rem;
+    }
+    #course-card-body iframe {
+        border: none;
+        margin-top: 24px;
+        margin-bottom: 20px;
+        background: #000
+        url(https://s3-us-west-2.amazonaws.com/exlskills-misc-assets/iframe-loading.gif)
+        center center no-repeat;
+    }
+    #course-content-card-wrapper .card-bottom-nav {
+        margin: auto;
+        padding-bottom: 8px;
+    }
+    @media (max-width: 768px) {
+        /* Add margin when mobile to avoid conflict with the intercom overlay */
+        #course-content-card-wrapper .card-bottom-nav {
+            padding-bottom: 72px;
+        }
+    }
+</style>
+
+<br />
+
+<!-- CONTENT -->
+<div id="course-content-card-wrapper" class="container-fluid">
+    <div class="row align-items-center">
+        <!-- Title -->
+        <div class="col">
+            <h4 class="">
+                {{data.course.nav.currentSection.title}}
+            </h4>
+        </div>
+        <div class="col-auto">
+            {{> course-card-pagination}}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <!-- Title -->
+            <h2 class="card-header-title">
+                {{data.course.card.title}}
+            </h2>
+        </div>
+        <div id="course-card-body" class="card-body">
+            {{{markdown data.course.card.content.content}}}
+        </div>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-auto card-bottom-nav">
+            {{> course-card-pagination}}
+        </div>
+    </div>
+</div>

@@ -8,6 +8,7 @@ import * as cookieParser from 'cookie-parser';
 import * as exphbs from 'express-handlebars';
 import * as cors from 'cors';
 import * as HandlebarsIntl from 'handlebars-intl';
+import * as HandlebarsHelpers from 'handlebars-helpers';
 
 const app = express();
 const server = http.createServer(app);
@@ -18,6 +19,10 @@ const hbs = exphbs.create({
 });
 // @ts-ignore
 HandlebarsIntl.registerWith(hbs.handlebars);
+HandlebarsHelpers({
+    // @ts-ignore
+    handlebars: hbs.handlebars
+});
 
 app.use(cookieParser());
 app.use(

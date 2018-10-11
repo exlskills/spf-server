@@ -1,0 +1,19 @@
+.course-badge {
+  background-color: white;
+}
+
+@media (min-width: 768px) {
+  .navbar-vertical.navbar-expand-md .navbar-brand {
+    padding-top: 4px;
+  }
+}
+
+#content {
+  min-height: calc(100vh - 65.5px);
+}
+
+@media (max-width: 768px) {
+  #content {
+    min-height: calc(100vh - 65px);
+  }
+}

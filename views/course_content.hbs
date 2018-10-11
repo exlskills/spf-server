@@ -1,0 +1,220 @@
+{{> course-top}}
+
+<style>
+    #course-content-wrapper .unit-card-title {
+        margin-right: 4px;
+    }
+    #course-content-wrapper .collapse-toggle[data-toggle=collapse]:after {
+        font-family: Feather;
+        display: block;
+        margin-left: auto;
+        content: "\e92e";
+        transition: all .2s ease-in-out;
+        color: #95aac9;
+    }
+    #course-content-wrapper .collapse-toggle[data-toggle=collapse][aria-expanded=true]:after {
+        transform: rotate(-180deg);
+    }
+</style>
+
+<br/>
+<!-- CONTENT -->
+<div id="course-content-wrapper" class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                        Recommended
+                    </h4>
+                </div>
+                <div class="card-body">
+                    Next step
+                </div>
+            </div>
+
+            {{#each data.course.units}}
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col">
+                                    <!-- Title -->
+                                    <h4 class="card-header-title unit-card-title">
+                                        <a class="spf-link" href="/learn-{{../route.locale}}/courses/{{../data.course.meta.url_id}}/{{url_id}}/{{first_section_url_id}}/{{first_card_url_id}}">
+                                            {{number}} {{title}}
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div class="col">
+                                    <!-- Progress -->
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 12%" aria-valuenow="12" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="small ml-3">12%</div>
+                                </div>
+                            </div> <!-- / .row -->
+                        </div>
+                        <div class="col-auto">
+
+                        </div>
+                        <a class="collapse-toggle" href="#unit-container-{{url_id}}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="unit-container-{{url_id}}"></a>
+                    </div>
+                </div>
+                <div id="unit-container-{{url_id}}" class="collapse show">
+                    <div class="card-body">
+                        <ul class="list-group list-group-lg list-group-flush list my--4">
+                            {{#each sections_list}}
+                            <li class="list-group-item px-0">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        {{letter_index}}
+                                    </div>
+                                    <div class="col ml--2">
+
+                                        <!-- Title -->
+                                        <h4 class="card-title mb-1 name">
+                                            <a class="spf-link" href="/learn-{{../../route.locale}}/courses/{{../../data.course.meta.url_id}}/{{../url_id}}/{{url_id}}/{{first_card_url_id}}">{{title}}</a>
+                                        </h4>
+
+                                        <!-- Text -->
+                                        <p class="card-text small text-muted mb-1">
+                                            {{headline}}
+                                        </p>
+
+                                        <!-- Time -->
+                                        <p class="card-text small text-muted">
+                                            {{#each cards_list}}
+                                            <a class="spf-link" href="/learn-{{../../../route.locale}}/courses/{{../../../data.course.meta.url_id}}/{{../../url_id}}/{{../url_id}}/{{url_id}}">
+                                                <span class="fe fe-circle"></span>
+                                            </a>
+                                            {{/each}}
+                                        </p>
+
+                                    </div>
+                                    <div class="col-auto">
+
+                                        <!-- Button -->
+                                        <a href="#!" class="btn btn-sm btn-white d-none d-md-inline-block">
+                                            Download
+                                        </a>
+
+                                    </div>
+                                    <div class="col-auto">
+
+                                        <!-- Dropdown -->
+                                        <div class="dropdown">
+                                            <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe fe-more-vertical"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a href="#!" class="dropdown-item">
+                                                    Action
+                                                </a>
+                                                <a href="#!" class="dropdown-item">
+                                                    Another action
+                                                </a>
+                                                <a href="#!" class="dropdown-item">
+                                                    Something else here
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div> <!-- / .row -->
+                            </li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="col-12 col-lg-4">
+            <!-- Card -->
+            <div class="card">
+                <div class="card-header">
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                        Proficiency
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="chart">
+                        <canvas id="devicesChart" class="chart-canvas"></canvas>
+                    </div>
+
+                    <script>
+                        new Chart('devicesChart', {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Desktop', 'Tablet', 'Mobile'],
+                                datasets: [{
+                                    data: [60, 25, 15]
+                                }]
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="row justify-content-center">
+                        <div class="col-12 ">
+
+                            <!-- Image -->
+                            <img src="/learn-en/assets/img/illustrations/happiness.svg" alt="..." class="img-fluid mb-4" style="max-width: 272px;">
+
+                            <!-- Title -->
+                            <h2>
+                                We released 2008 new versions of our theme to make the world a better place.
+                            </h2>
+
+                            <!-- Content -->
+                            <p class="text-muted">
+                                This is a true story and totally not made up. This is going to be better in the long run but for now this is the way it is.
+                            </p>
+
+                            <!-- Button -->
+                            <a href="#!" class="btn btn-primary">
+                                Try it for free
+                            </a>
+
+                        </div>
+                    </div> <!-- / .row -->
+                </div>
+            </div>
+
+            <!-- Card -->
+            <div class="card">
+                <div class="card-header">
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                        Need help?
+                    </h4>
+                </div>
+                <div class="card-body">
+                    Put chart here
+                </div>
+            </div>
+
+            <!-- Card -->
+            <div class="card">
+                <div class="card-header">
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                        Get Certified
+                    </h4>
+                </div>
+                <div class="card-body">
+                    Put chart here
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

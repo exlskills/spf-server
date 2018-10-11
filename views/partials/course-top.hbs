@@ -1,0 +1,68 @@
+<style>
+    #course-top .hero-wrapper {
+        height: 200px;
+        width: 100%;
+    }
+    #course-top .hero {
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{data.course.meta.logo_url}}) no-repeat;
+        background-size: cover;
+        background-position-y: 25%;
+    }
+    #course-top .header-avatar-top img {
+        background-color: white;
+    }
+    #course-top .header-body {
+        border: none;
+    }
+    @media (max-width: 768px) {
+        #course-top .hero-wrapper {
+            margin-bottom: 30px;
+        }
+    }
+</style>
+<div id="course-top" class="header">
+
+    <div class="hero-wrapper">
+        <div class="hero">
+
+        </div>
+    </div>
+
+    <div class="container-fluid">
+
+        <!-- Body -->
+        <div class="header-body mt--5 mt-md--6">
+            <div class="row align-items-end">
+                <div class="col-auto">
+
+                    <!-- Avatar -->
+                    <div class="avatar avatar-xxl header-avatar-top">
+                        <img src="{{data.course.meta.badge_url}}" alt="..." class="avatar-img rounded-circle border border-4 border-body">
+                    </div>
+
+                </div>
+                <div class="col mb-3 ml--3 ml-md--2">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                        {{data.course.meta.primary_topic}}
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        {{data.course.meta.title}}
+                    </h1>
+
+                </div>
+                <div class="col-12 col-md-auto mt-2 mt-md-0 mb-md-3">
+
+                    <!-- TODO Enroll toggle -->
+
+                </div>
+            </div> <!-- / .row -->
+        </div> <!-- / .header-body -->
+
+    </div>
+</div>

@@ -1,12 +1,19 @@
+<!doctype html>
 <html>
 <head>
-
+{{> head}}
 </head>
 <body>
-{{meta.title}}
-{{formatNumber 2}}
-{{> topbar}}
-{{> sidebar}}
-{{{body}}}
+{{> modals}}
+<nav id="sidebar" class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light">
+    {{> sidebar}}
+</nav>
+<div class="main-content bg-fixed-bottom" style="background-image: url(/learn-en/assets/img/illustrations/sticky.svg);">
+    {{> topbar}}
+    <div id="content">
+        {{{body}}}
+    </div>
+</div>
+{{> scripts}}
 </body>
 </html>

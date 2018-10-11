@@ -5,6 +5,14 @@ import config from "../config"
 import IQuery = GQL.IQuery;
 import ICourse = GQL.ICourse;
 import IVersionedContentRecord = GQL.IVersionedContentRecord;
+import ICourseEdge = GQL.ICourseEdge;
+import ICourseUnitEdge = GQL.ICourseUnitEdge;
+
+export type CourseListType = 'mine' | 'relevant'
+export interface IDetailedCourse {
+    meta: ICourse
+    units: ICourseUnitEdge[]
+}
 
 export default class GqlApi {
     private readonly token: string;
@@ -81,13 +89,149 @@ export default class GqlApi {
                 courseById(course_id: "${courseId}") {
                     id
                     title
-                    headline
                     description
+                    headline
+                    enrolled_count
+                    view_count
                     logo_url
+                    skill_level
+                    est_minutes
+                    primary_topic
+                    delivery_methods
                 }
             }
         `;
         return (await this.request(q)).courseById!
+    }
+
+    public async getDetailedCourseByIDSansEMA(courseId: string): Promise<IDetailedCourse> {
+        const q = `
+            {
+                courseById(course_id: "${courseId}") {
+                    id
+                    title
+                    description
+                    headline
+                    enrolled_count
+                    view_count
+                    logo_url
+                    skill_level
+                    est_minutes
+                    primary_topic
+                    delivery_methods
+                }
+                unitPaging(first: 999, resolverArgs: [{param: "course_id", value: "${courseId}"}]) {
+                    edges {
+                        node {
+                            unit_progress_state
+                            id
+                            title
+                            headline
+                            attempts_left
+                            index
+                            grade
+                            is_continue_exam
+                            exam_attempt_id
+                            sections_list {
+                                id
+                                ema
+                                title
+                                headline
+                                hoverText: title
+                                cards_list {
+                                    id
+                                    title
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+        const resp = await this.request(q);
+        return {
+            meta: resp.courseById!,
+            units: resp.unitPaging.edges!
+        }
+    }
+
+    public async getDetailedCourseByIDWithEMA(courseId: string): Promise<IDetailedCourse> {
+        const q = `
+            {
+                courseById(course_id: "${courseId}") {
+                    id
+                    title
+                    description
+                    headline
+                    enrolled_count
+                    view_count
+                    logo_url
+                    skill_level
+                    est_minutes
+                    primary_topic
+                    delivery_methods
+                }
+                unitPaging(first: 999, resolverArgs: [{param: "course_id", value: "${courseId}"}]) {
+                    edges {
+                        node {
+                            unit_progress_state
+                            id
+                            title
+                            headline
+                            attempts_left
+                            index
+                            ema
+                            grade
+                            is_continue_exam
+                            exam_attempt_id
+                            sections_list {
+                                id
+                                ema
+                                title
+                                headline
+                                cards_list {
+                                    id
+                                    ema
+                                    title
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+        const resp = await this.request(q);
+        return {
+            meta: resp.courseById!,
+            units: resp.unitPaging.edges!
+        }
+    }
+
+    public async getAllCourses(listType: CourseListType): Promise<ICourseEdge[]> {
+        const q = `
+            {
+                coursePaging(first: 9999, resolverArgs: [{ param: "list", value: "${listType}" }], filterValues: null) {
+                    edges {
+                        node {
+                            id
+                            title
+                            headline
+                            enrolled_count
+                            view_count
+                            logo_url
+                            skill_level
+                            est_minutes
+                            primary_topic
+                            delivery_methods
+                        }
+                    }
+                }
+                topicFilter {
+                    value
+                }
+            }
+        `;
+        return (await this.request(q)).coursePaging.edges!
     }
 
 }

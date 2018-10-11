@@ -1,0 +1,51 @@
+<!-- Libs JS -->
+<script src="/learn-en/assets/libs/spfjs/spf.js"></script>
+<script>
+    spf.init();
+</script>
+<script src="/learn-en/assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="/learn-en/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/learn-en/assets/libs/chart.js/dist/Chart.min.js"></script>
+<script src="/learn-en/assets/libs/chart.js/Chart.extension.min.js"></script>
+<script src="/learn-en/assets/libs/highlight/highlight.pack.min.js"></script>
+<script src="/learn-en/assets/libs/flatpickr/dist/flatpickr.min.js"></script>
+<script src="/learn-en/assets/libs/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+<script src="/learn-en/assets/libs/list.js/dist/list.min.js"></script>
+<script src="/learn-en/assets/libs/quill/dist/quill.min.js"></script>
+<script src="/learn-en/assets/libs/dropzone/dist/min/dropzone.min.js"></script>
+<script src="/learn-en/assets/libs/select2/dist/js/select2.min.js"></script>
+<script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+
+<!-- Theme JS -->
+<script src="/learn-en/assets/js/theme.min.js"></script>
+
+<script>
+    NProgress.configure({ showSpinner: false });
+    NProgress.configure({ trickleSpeed: 75 });
+    $(document).on("spfclick", function() {
+        // Show progress bar
+        NProgress.start();
+    });
+
+    $(document).on("spfrequest", function() {
+        // Increment progress as request is made
+        NProgress.inc();
+    });
+
+    $(document).on("spfprocess", function() {
+        // Set progress bar width to 100%
+        NProgress.done();
+    });
+
+    function setupCodeHLJS() {
+        $("#card-body pre code").toggleClass("hljs");
+    }
+
+    $(document).on("spfdone", function() {
+        // Finish request and remove progress bar
+        NProgress.remove();
+        setupCodeHLJS();
+    });
+
+    setupCodeHLJS();
+</script>

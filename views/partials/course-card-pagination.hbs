@@ -1,0 +1,17 @@
+<nav aria-label="course-card-pagination">
+    <ul class="pagination pagination-sm">
+        {{#if data.course.nav.prevCard}}
+            <li class="page-item"><a class="spf-link page-link" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nav.prevUnit.url_id}}/{{data.course.nav.prevSection.url_id}}/{{data.course.nav.prevCard.url_id}}">Previous</a></li>
+        {{else}}
+            <li class="page-item"><a class="spf-link page-link" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content">Previous</a></li>
+        {{/if}}
+        {{#each data.course.nav.currentSection.cards_list}}
+            <li class="page-item {{#eq url_id ../data.course.card.url_id}}active{{/eq}}"><a class="spf-link page-link" href="{{url_id}}"><span class="">●</span></a></li>
+        {{/each}}
+        {{#if data.course.nav.nextCard}}
+            <li class="page-item"><a class="spf-link page-link" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nav.nextUnit.url_id}}/{{data.course.nav.nextSection.url_id}}/{{data.course.nav.nextCard.url_id}}">Next</a></li>
+        {{else}}
+            <li class="page-item"><a class="spf-link page-link" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content">Next</a></li>
+        {{/if}}
+    </ul>
+</nav>
