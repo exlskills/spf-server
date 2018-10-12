@@ -26,6 +26,10 @@ export default {
             path.join(__dirname, '../config/sample_keys/public_key.pem'),
         publicKeyBase64: process.env.WEB_JWT_PUB_KEY_B64 || ''
     },
+    botManagerAPI: {
+        key: process.env.WEB_BOT_MANAGER_API_KEY || 'set_me',
+        url: process.env.WEB_BOT_MANAGER_API_URL || 'http://localhost:2999'
+    },
     cookies: {
         domain: process.env.WEB_COOKIES_DOMAIN || 'localhost'
     },

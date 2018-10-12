@@ -97,6 +97,7 @@ export default class GqlApi {
                     skill_level
                     est_minutes
                     primary_topic
+                    verified_cert_cost
                     delivery_methods
                 }
             }
@@ -118,6 +119,7 @@ export default class GqlApi {
                     skill_level
                     est_minutes
                     primary_topic
+                    verified_cert_cost
                     delivery_methods
                 }
                 unitPaging(first: 999, resolverArgs: [{param: "course_id", value: "${courseId}"}]) {
@@ -169,6 +171,7 @@ export default class GqlApi {
                     skill_level
                     est_minutes
                     primary_topic
+                    verified_cert_cost
                     delivery_methods
                 }
                 unitPaging(first: 999, resolverArgs: [{param: "course_id", value: "${courseId}"}]) {
@@ -222,6 +225,7 @@ export default class GqlApi {
                             skill_level
                             est_minutes
                             primary_topic
+                            verified_cert_cost
                             delivery_methods
                         }
                     }

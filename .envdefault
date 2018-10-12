@@ -3,6 +3,8 @@ WEB_AUTH_API_BASE_URL=https://auth-api.exlskills.com
 WEB_GQL_ENDPOINT=https://gql-api.exlskills.com/graph
 WEB_INTERCOM_SECRET=set_me
 WEB_CLIENT_BASE_URL=https://exlskills.com
+WEB_BOT_MANAGER_API_KEY=set_me
+WEB_BOT_MANAGER_API_URL=http://localhost:2999
 
 # Template constants
 WEB_TMPL_LOGOUT_URL=https://accounts.exlinc.com/auth/realms/exlinc/protocol/openid-connect/logout?redirect_uri=https%3A%2F%2Fexlskills.com

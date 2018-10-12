@@ -117,26 +117,28 @@
                     <!-- Divider -->
                     <hr>
 
-                    <div class="row align-items-center">
-                        <div class="col">
+                    {{#if data.course.meta.verified_cert_cost}}
+                        <div class="row align-items-center">
+                            <div class="col">
 
-                            <!-- Title -->
-                            <h5 class="mb-0">
-                                Certificate
-                            </h5>
+                                <!-- Title -->
+                                <h5 class="mb-0">
+                                    Certificate
+                                </h5>
 
-                        </div>
-                        <div class="col-auto">
+                            </div>
+                            <div class="col-auto">
 
-                            <small class="text-muted">
-                                TODO
-                            </small>
+                                <small class="text-muted">
+                                    ${{data.course.meta.verified_cert_cost}} Coins
+                                </small>
 
-                        </div>
-                    </div> <!-- / .row -->
+                            </div>
+                        </div> <!-- / .row -->
 
-                    <!-- Divider -->
-                    <hr>
+                        <!-- Divider -->
+                        <hr>
+                    {{/if}}
 
                     <div class="row align-items-center">
                         <div class="col">

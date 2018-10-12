@@ -50,6 +50,7 @@ export interface IUserData {
     username?: string
     is_demo: boolean
     sub_level: number
+    coins?: number
 }
 
 export const verifyToken = (token: string) => {

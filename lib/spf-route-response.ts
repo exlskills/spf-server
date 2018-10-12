@@ -25,6 +25,8 @@ export interface ISPFRouteResponse {
         locale: string
         suffix: string
         params: any
+        referer: string
+        referrer: string
         url: string
     }
 }

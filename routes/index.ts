@@ -20,6 +20,7 @@ import {viewCourseProgress} from "../controllers/course-progress";
 import {viewCourseCertificate} from "../controllers/course-certificate";
 import {redirectOldCardURL, redirectSectionURL, viewCourseCard} from "../controllers/course-card";
 import {generateHash} from "../lib/intercom";
+import {getCoinsCount} from "../lib/botmanager-api";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -88,11 +89,18 @@ const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFun
             locale: req.params.locale,
             suffix: req.path.substr(req.path.indexOf('/', 1)),
             params: req.params,
+            referer: req.headers.referer,
+            referrer: req.headers.referer,
             url: config.clientBaseURL + req.path
         };
         // TODO internationalize full title prefix
         result.meta.fullTitle = `EXLskills - ${result.meta.title}`;
         result.user = userData;
+        if (!result.user.is_demo) {
+            result.user.coins = await getCoinsCount(result.user.id);
+        } else {
+            result.user.coins = 0;
+        }
         if (req.query['spf'] === 'navigate') {
             fs.readFile(path.join(config.viewsRoot, config.spfResponse.sidebar), {encoding: 'utf8'}, (err, data) => {
                 if (err) {

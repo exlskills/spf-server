@@ -3,7 +3,6 @@
 <script>
     spf.init();
 </script>
-<script src="/learn-en/assets/libs/jquery/dist/jquery.min.js"></script>
 <script src="/learn-en/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/learn-en/assets/libs/chart.js/dist/Chart.min.js"></script>
 <script src="/learn-en/assets/libs/chart.js/Chart.extension.min.js"></script>
@@ -50,7 +49,7 @@
     setupCodeHLJS();
 </script>
 <script>
-    $.postJSON = function(url, data, success, dataType) {
+    $.postJSON = function(url, data, success, error) {
         if (typeof data !== 'string') {
             data = JSON.stringify(data);
         }
@@ -58,9 +57,10 @@
             url : url,
             type: "post",
             data: data,
-            dataType: dataType || "json",
+            dataType: "json",
             contentType: "application/json",
             success: success,
+            error: error,
             xhrFields: {
                 withCredentials: true
             },
@@ -69,10 +69,48 @@
     }
 </script>
 <script>
-    $('#user-logout-btn').click(function(e) {
+    $('.user-logout-btn').click(function(e) {
       e.preventDefault();
       $.postJSON('{{config.authAPIBaseURL}}/me/logout', {}, function(resp) {
         window.location.href = '{{{config.logoutURL}}}';
       });
     })
+</script>
+<script>
+    function refreshJWT(callback, errorCallback) {
+        $.ajax({
+            url : '{{config.authAPIBaseURL}}/auth/jwt-refresh?'+(new Date()).getTime(),
+            type: "get",
+            success: callback,
+            error: errorCallback,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true
+        });
+    }
+</script>
+<script>
+    $(function() {
+        var modalIds = ['modalManageCoins', 'modalCheckout'];
+        modalIds.forEach(function(id) {
+            $('#'+id).on('hide.bs.modal', function() {
+                window.location.hash = '';
+            });
+        });
+        function showModalsWhenHashEq() {
+            modalIds.forEach(function(id) {
+                if (window.location.hash.indexOf('#!'+id) > -1) {
+                    $('#'+id).modal('show');
+                }
+            });
+        }
+        $(window).on('hashchange', function() {
+            showModalsWhenHashEq();
+        });
+        showModalsWhenHashEq();
+    });
+    $(function() {
+        $('[data-tooltip="true"]').tooltip();
+    });
 </script>
