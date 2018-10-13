@@ -8,6 +8,141 @@
 <!-- CONTENT -->
 <div id="course-content-wrapper" class="container-fluid">
     <div class="row">
-        <div>Fooboasekldfjklasdjfl;kasdf</div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Overview
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Chart -->
+                    <div class="chart">
+                        <canvas id="courseProgressChart" class="chart-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Grades
+                    </h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm table-nowrap card-table">
+                        <thead>
+                        <tr>
+                            <th>
+                                Unit
+                            </th>
+                            <th>
+                                Attempts
+                            </th>
+                            <th>
+                                Attempts Remaining Today
+                            </th>
+                            <th>
+                                Last Attempt
+                            </th>
+                            <th>
+                                Weight
+                            </th>
+                            <th>
+                                Passed
+                            </th>
+                            <th>
+                                Grade
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="list">
+                            {{#each data.course.units}}
+                            <tr>
+                                <td>
+                                    {{title}}
+                                </td>
+                                <td>
+                                    {{attempts}}
+                                </td>
+                                <td>
+                                    {{attempts_left}}
+                                </td>
+                                <td>
+                                    {{last_attempted_at}}
+                                </td>
+                                <td>
+                                    {{final_exam_weight_pct}}
+                                </td>
+                                <td>
+                                    {{#if passed}}
+                                        <span class="fe fe-check"></span>
+                                    {{else}}
+                                        <span class="fe fe-x"></span>
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    {{grade}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    $(function() {
+        var $courseProgressChart = $('#courseProgressChart');
+        
+        // Create chart
+        var courseProgressChart = new Chart($courseProgressChart, {
+            type: 'bar',
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            suggestedMax: 100,
+                            suggestedMin: 0,
+                            callback: function(value) {
+                                if ( !(value % 20) ) {
+                                    return value + '%'
+                                }
+                            }
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            autoSkip: false
+                        }
+                    }]
+                },
+                layout: {
+                    margin: {
+                        left: -20,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+                }
+            },
+            data: {
+                labels: {{{JSONstringify data.course.unitTitles}}},
+                datasets: [{
+                    label: 'Predicted',
+                    data: {{{JSONstringify data.course.unitEMAs}}},
+                    backgroundColor: '#d2ddec'
+                },{
+                    label: 'Exam',
+                    data: {{{JSONstringify data.course.unitGrades}}}
+                }]
+            }
+        });
+
+        // Save to jQuery object
+        $courseProgressChart.data('chart', courseProgressChart);
+    });
+</script>

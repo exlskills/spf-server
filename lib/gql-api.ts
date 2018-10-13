@@ -131,9 +131,7 @@ export default class GqlApi {
                             id
                             title
                             headline
-                            attempts_left
                             index
-                            grade
                             is_continue_exam
                             exam_attempt_id
                             sections_list {
@@ -141,7 +139,6 @@ export default class GqlApi {
                                 ema
                                 title
                                 headline
-                                hoverText: title
                                 cards_list {
                                     id
                                     title
@@ -184,6 +181,10 @@ export default class GqlApi {
                             title
                             headline
                             attempts_left
+                            attempts
+                            final_exam_weight_pct
+                            last_attempted_at
+                            passed
                             index
                             ema
                             grade
