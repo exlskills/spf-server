@@ -1,11 +1,8 @@
 import GqlApi from "../lib/gql-api";
 import {ISPFRouteResponse} from "../lib/spf-route-response";
 import {IUserData} from "../lib/jwt";
-import { Request, Response } from 'express';
-import {getBadgeURLForTopic} from "../lib/course-badges";
+import { Request } from 'express';
 import {toUrlId} from "../utils/url-ids";
-import {skillLevelToText} from "../lib/skill-levels";
-import {minutesToText} from "../lib/duration";
 import {fetchDetailedCourseForView} from "./course-index";
 
 export async function viewCourseCard(client: GqlApi, user: IUserData, locale: string, courseGID: string, unitGID: string, sectionGID: string, cardGID: string) : Promise<ISPFRouteResponse> {

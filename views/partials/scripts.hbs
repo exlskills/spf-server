@@ -13,6 +13,9 @@
 <script src="/learn-en/assets/libs/quill/dist/quill.min.js"></script>
 <script src="/learn-en/assets/libs/dropzone/dist/min/dropzone.min.js"></script>
 <script src="/learn-en/assets/libs/select2/dist/js/select2.min.js"></script>
+<script src="/learn-en/assets/libs/toastr/toastr.min.js"></script>
+<script src="/learn-en/assets/libs/moment/moment.min.js"></script>
+<script src="/learn-en/assets/libs/moment-timezone/moment-timezone-with-data-2012-2022.min.js"></script>
 <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
 
 <!-- Theme JS -->
@@ -113,4 +116,27 @@
     $(function() {
         $('[data-tooltip="true"]').tooltip();
     });
+</script>
+<script>
+    $(function() {
+        if (!window.localStorage.toastOnLoad || window.localStorage.toastOnLoad === "") {
+            return;
+        }
+        var t = JSON.parse(window.localStorage.toastOnLoad);
+        switch (t.intent) {
+            case 'error':
+                toastr.error(t.message, t.title);
+                break;
+            case 'warning':
+                toastr.warning(t.message, t.title);
+                break;
+            case 'success':
+                toastr.success(t.message, t.title);
+                break;
+            default:
+                toastr.info(t.message, t.title);
+                break;
+        }
+        window.localStorage.removeItem('toastOnLoad');
+    })
 </script>

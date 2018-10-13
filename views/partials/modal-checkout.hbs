@@ -4,6 +4,9 @@
             width: 100%;
         }
     }
+    #checkout-purchase-headline-wrapper {
+        margin-top: 2px;
+    }
 </style>
 
 <!-- Modal: Billing -->
@@ -19,6 +22,11 @@
                             <h4 class="card-header-title">
                                 Complete Checkout
                             </h4>
+                            <div id="checkout-purchase-headline-wrapper">
+                                <small id="checkout-purchase-headline" class="text-secondary">
+
+                                </small>
+                            </div>
 
                         </div>
                         <div class="col-auto">
@@ -33,70 +41,49 @@
                 </div>
 
                 <div class="card-body">
-                    <!-- Coins Balance -->
-                    <div>
-                        <div class="mb-3">
-                            You Have: <strong><span class="text-info" data-toggle="tooltip" data-placement="top"
-                                                    title=""
-                                                    data-original-title="Coins pay for certificates, live courses, and 1-on-1 training">{{user.coins}} EXLskills Coin{{#isnt user.coins 1}}s{{/isnt}} <span
-                                class="fe fe-help-circle mr-4"></span></span></strong>
-                        </div>
-
-                        <!--<div class="card bg-light border">-->
-                        <!--<div class="card-body">-->
-                        <!--Your balance: <strong>0 Coins</strong>-->
-                        <!--</div>-->
-                        <!--</div>-->
-
-                        <form id="complete-checkout-form">
-                            <div class="form-row">
-                                <div class="col-12 col-md-6 mb-3">
-                                    <input {{#lt user.sub_level 1000}}disabled{{/lt}} {{#if
-                                            user.is_demo}}disabled{{/if}} type="number" min="1" step="1"
-                                                                          oninput="validity.valid||(value='');"
-                                                                          class="form-control"
-                                                                          id="checkout-purch-amt"
-                                                                          placeholder="# of Coins" required="">
-                                </div>
-                                <div class="col-12 col-md-6 mb-3 coins-purchase-btn-col">
-                                    <div class="row">
-                                        <div class="col">
-                                            <button {{#lt user.sub_level 1000}}disabled{{/lt}} {{#if user.is_demo}}disabled{{/if}} type="submit" class="btn btn-success w-100 text-center form-btn-submit">Purchase</button>
-                                        </div>
-                                        {{#gt user.sub_level 1000}}
-                                            {{#if user.is_demo}}
-                                            {{else}}
-                                                <div class="col-auto p-0">
-                                                    <button type="button"
-                                                            class="btn btn-outline-secondary collapse-toggle"
-                                                            data-toggle="collapse" data-target="#forget-card-collapse">
-                                                        <span class="fe fe-more-horizontal"></span></button>
-                                                </div>
-                                            {{/if}}
-                                        {{/gt}}
-                                    </div>
-                                </div>
+                    <div class="col text-center">
+                        <h2 style="margin-bottom: 10px;">Be Amazing With EXLskills 🎓</h2>
+                    </div>
+                    {{#gt user.coins 0}}
+                        <!-- Coins Balance -->
+                        <div>
+                            <div class="mb-3 text-center">
+                                <strong><span class="text-info" data-toggle="tooltip" data-placement="top"
+                                                        title=""
+                                                        data-original-title="Coins pay for certificates, live courses, and 1-on-1 training"><span id="you-will-save-with-coins"></span><span class="fe fe-help-circle mr-4"></span></span></strong>
                             </div>
-                        </form>
+
+                            <!--<div class="card bg-light border">-->
+                            <!--<div class="card-body">-->
+                            <!--Your balance: <strong>0 Coins</strong>-->
+                            <!--</div>-->
+                            <!--</div>-->
+
+                        </div>
+                    {{/gt}}
+                    <div class="col text-center">
+                        <img src="/learn-en/assets/img/illustrations/happiness.svg" alt="..." class="img-fluid mb-4" style="max-width: 180px;">
                     </div>
                     {{#if user.is_demo}}
                         <div class="card bg-light border">
                             <div class="card-body text-center">
                                 <strong>
-                                    <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI
-                                        route.url}}{{encodeURI '#!modalCheckout=true'}}">Login to Make Purchases</a>
+                                    <a id="checkout-login-link" href="#">Sign Up or Login to Complete Checkout</a>
                                 </strong>
                             </div>
                         </div>
                     {{else}}
-                        {{#gt user.sub_level 1000}}
-                            <div>Card OK</div>
-                        {{else}}
-                            <form id="checkout-card-form">
+                        <div>
+                            <form style="display: none;" id="complete-checkout-form">
+                                <button type="submit" class="btn btn-primary w-100 text-center form-btn-submit"><span class="checkout-pay-msg"></span> </button>
+                            </form>
+                        </div>
+                        {{#lt user.sub_level 1000}}
+                            <form style="display: none;" id="checkout-card-form">
                                 <div class="">
                                     <label for="checkout-card-element">
                                         <span data-toggle="tooltip" data-placement="top" title=""
-                                              data-original-title="Your card will be charged only for purchases you make on EXLskills. You can remove it at any time.">Add Credit or Debit Card <span
+                                              data-original-title="Your card will be charged only for purchases you make on EXLskills. You can remove it at any time.">Credit or Debit Card <span
                                                 class="fe fe-help-circle mr-4"></span></span>
                                     </label>
                                     <div id="checkout-card-element">
@@ -108,10 +95,10 @@
                                 </div>
 
                                 <button type="submit"
-                                        class="btn btn-primary float-right mt-4 btn-sm-w-100 form-btn-submit">Add Card
+                                        class="btn btn-primary float-right mt-4 w-100 form-btn-submit">Add Card &amp; <span class="checkout-pay-msg"></span>
                                 </button>
                             </form>
-                        {{/gt}}
+                        {{/lt}}
                     {{/if}}
                 </div>
             </div>
@@ -119,6 +106,56 @@
     </div>
 </div>
 
+<script>
+    function getCheckoutItem() {
+        return JSON.parse(decodeURIComponent(window.location.hash.replace('#!modalCheckout=', '')));
+    }
+
+    $(function() {
+        $('#modalCheckout').on('show.bs.modal', function() {
+            $('#checkout-login-link').attr('href', '{{config.authAPIBaseURL}}/auth/keycloak?redirect='+encodeURIComponent(window.location.href));
+            var item = getCheckoutItem();
+            if (!{{user.is_demo}}) {
+                if ({{user.sub_level}} < 1000) {
+                    if (item.quantity*item.displayUnitCost <= {{user.coins}}) {
+                        $('#complete-checkout-form').show();
+                        $('#checkout-card-form').hide();
+                    } else {
+                        $('#checkout-card-form').show();
+                        $('#complete-checkout-form').hide();
+                    }
+                } else {
+                    $('#complete-checkout-form').show();
+                    $('#checkout-card-form').hide();
+                }
+            }
+            $('#checkout-purchase-headline').text(item.quantity + " x " + item.displayName);
+            var extraCost = (item.quantity * item.displayUnitCost) - {{user.coins}};
+            if (extraCost < 0) {
+                extraCost = 0;
+            }
+            $('#you-will-save-with-coins').text('🎉 You\'ll Save $' + ((item.quantity * item.displayUnitCost)-extraCost) + ' with your EXLskills Coins! ');
+            if (extraCost === 0) {
+                $('#modalCheckout .checkout-pay-msg').text("Purchase for FREE");
+            } else {
+                $('#modalCheckout .checkout-pay-msg').text("Pay $" + extraCost);
+            }
+        });
+    });
+</script>
+<script>
+    function completeCheckoutForModal(errCallback) {
+        $.postJSON('{{config.authAPIBaseURL}}/purchase', {item: getCheckoutItem()}, function (data) {
+            refreshJWT(function () {
+                window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: 'Thank you for your purchase! You will receive an email with your order confirmation and all further instructions as necessary.'}));
+                window.location.hash = '';
+                window.location.reload();
+            });
+        }, function (err) {
+            errCallback(err);
+        });
+    }
+</script>
 {{#gt user.sub_level 1000}}
     <script>
         $(function () {
@@ -127,11 +164,7 @@
                 $(".form-btn-submit", this).addClass('is-loading');
                 $(".form-btn-submit", this).attr('disabled', 'disabled');
                 var form = this;
-                $.postJSON('{{config.authAPIBaseURL}}/me/credits/purchase?purchaseN='+$("[type='number']", this).val(), {}, function (data) {
-                    refreshJWT(function () {
-                        window.location.reload();
-                    });
-                }, function (err) {
+                completeCheckoutForModal(function (err) {
                     $(".form-btn-submit", form).removeClass('is-loading');
                     $(".form-btn-submit", form).attr('disabled', false);
                 });
@@ -183,16 +216,6 @@
                 }
             });
 
-            function stripeTokenHandler(tkn) {
-                $.postJSON('{{config.authAPIBaseURL}}/me/credits/enroll', {
-                    stripeToken: {token: tkn}
-                }, function (data) {
-                    refreshJWT(function () {
-                        window.location.reload();
-                    });
-                });
-            }
-
             // Handle form submission.
             $('#checkout-card-form').submit(function (event) {
                 event.preventDefault();
@@ -208,7 +231,16 @@
                         errorElement.textContent = result.error.message;
                     } else {
                         // Send the token to your server.
-                        stripeTokenHandler(result.token);
+                        $.postJSON('{{config.authAPIBaseURL}}/me/credits/enroll', {
+                            stripeToken: {token: result.token}
+                        }, function (data) {
+                            refreshJWT(function () {
+                                completeCheckoutForModal(function (err) {
+                                    $(".form-btn-submit", form).removeClass('is-loading');
+                                    $(".form-btn-submit", form).attr('disabled', false);
+                                });
+                            });
+                        });
                     }
                 }, function (reject) {
                     $(".form-btn-submit", form).removeClass('is-loading');

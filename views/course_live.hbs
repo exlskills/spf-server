@@ -1,14 +1,256 @@
 {{> course-top}}
 
 <style>
-
+    #course-live-content .collapse-toggle[data-toggle=collapse]:after {
+        font-family: Feather;
+        display: block;
+        margin-left: auto;
+        content: "\e92e";
+        transition: all .2s ease-in-out;
+        color: #95aac9;
+    }
+    #course-live-content .collapse-toggle[data-toggle=collapse][aria-expanded=true]:after {
+        transform: rotate(-180deg);
+    }
+    #course-live-content .instructor-title {
+        font-weight: 500;
+        font-size: 20px;
+    }
 </style>
 
 <br/>
 <!-- CONTENT -->
-<div class="container-fluid">
-    Foobar!!!
-    {{data.course.meta.title}}
-    {{data.course.meta.headline}}
-    {{data.course.meta.description}}
+<div id="course-live-content" class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                        Learn it LIVE With EXLskills!
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {{#inArray data.sched.delivery_methods "live"}}
+                        {{{markdown data.sched.course_notes}}}
+                    {{else}}
+                        No live courses available right now.
+                    {{/inArray}}
+                </div>
+            </div>
+
+            {{#inArray data.sched.delivery_methods "live"}}
+                {{#each data.sched.scheduled_runs}}
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <!-- Title -->
+                                    <h4 class="card-header-title">
+                                        <span class="mtz-LL" data-time="{{run_start_date}}"></span>
+                                        <span class="text-secondary ml-1" style="font-weight: 100;">
+                                            {{length run_sessions}} SESSIONS
+                                        </span>
+                                    </h4>
+                                </div>
+                                <div class="col-auto">
+                                    {{#if seat_purchased}}
+                                        <div class="text-success">You're registered! See Email for Details</div>
+                                    {{else}}
+                                        <strong>Price: ${{offered_at_price.amount}}</strong>
+                                        <a href="#!modalCheckout={{{encodeURI purchase_item_json}}}" class="btn btn-sm btn-primary ml-1">Register</a>
+                                    {{/if}}
+                                </div>
+                            <a class="collapse-toggle" href="#live-run-container-{{_id}}" data-toggle="collapse" role="button" aria-expanded="{{#if soonest_run}}true{{else}}false{{/if}}" aria-controls="live-run-container-{{_id}}"></a>
+                            </div>
+                        </div>
+                        <div id="live-run-container-{{_id}}" class="collapse {{#if soonest_run}}show{{/if}}">
+                            <div class="card-body">
+                                <ul>
+                                    {{#each run_sessions}}
+                                        <li>Session {{session_seq}} - <span class="mtz-LLLL" data-time="{{session_start_date}}"></span> <span class="mtz-z"></span> <span class="text-secondary">{{session_duration_hrs}} Hour(s)</span></li>
+                                        <span class="text-secondary">{{session_notes}}</span>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
+
+                <div class="card">
+                    <div class="card-header">
+                        <!-- Title -->
+                        <h4 class="card-header-title">
+                            Instructors
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        {{#each data.sched.instructors}}
+                            <div class="mb-4">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+
+                                        <!-- Avatar -->
+                                        <div class="avatar avatar-xxl">
+                                            <img src="{{avatar_url}}" alt="..." class="avatar-img rounded-circle">
+                                        </div>
+
+                                    </div>
+                                    <div class="col ml--2">
+
+                                        <!-- Title -->
+                                        <h3 class="card-title mb-1">
+                                            {{full_name}}
+                                        </h3>
+
+                                        <!-- Text -->
+                                        <h5 class="card-text small text-muted mb-1">
+                                            {{headline}}
+                                        </h5>
+
+                                        <!-- Status -->
+                                        <p class="card-text small">
+                                            {{biography}}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            {{/inArray}}
+        </div>
+        <div class="col-12 col-lg-4">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Level
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+
+                            <small class="text-muted">
+                                {{data.course.meta.skill_level_text}}
+                            </small>
+
+                        </div>
+                    </div> <!-- / .row -->
+
+                    <!-- Divider -->
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Class Duration
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+
+                            <small class="text-muted">
+                                ~ {{data.sched.course_duration}}
+                            </small>
+
+                        </div>
+                    </div> <!-- / .row -->
+
+                    <!-- Divider -->
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Hours of Instruction
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+
+                            <small class="text-muted">
+                                ~ {{data.sched.total_hours}}
+                            </small>
+
+                        </div>
+                    </div> <!-- / .row -->
+
+                    <!-- Divider -->
+                    <hr>
+
+                    {{#if data.course.meta.verified_cert_cost}}
+                        <div class="row align-items-center">
+                            <div class="col">
+
+                                <!-- Title -->
+                                <h5 class="mb-0">
+                                    Location
+                                </h5>
+
+                            </div>
+                            <div class="col-auto">
+
+                                <small class="text-muted">
+                                    Online (Audio/Video)
+                                </small>
+
+                            </div>
+                        </div> <!-- / .row -->
+
+                        <!-- Divider -->
+                        <hr>
+                    {{/if}}
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Languages
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+
+                            <small class="text-muted">
+                                English
+                            </small>
+
+                        </div>
+                    </div> <!-- / .row -->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    $(function() {
+        $('#course-live-content .mtz-LL').each(function() {
+            $(this).text(moment(
+                    $(this).data('time'),
+                    "{{config.liveCourseScheduleMomentParseFmt}}"
+            ).format('LL'))
+        });
+        $('#course-live-content .mtz-LLLL').each(function() {
+            $(this).text(moment(
+                    $(this).data('time'),
+                    "{{config.liveCourseScheduleMomentParseFmt}}"
+            ).format('LLLL'));
+        });
+        $('#course-live-content .mtz-z').each(function() {
+            $(this).text(moment().tz(Intl.DateTimeFormat().resolvedOptions().timeZone).format('z'));
+        });
+    });
+</script>

@@ -6,6 +6,54 @@
             {{meta.title}}
         </div>
 
+        <style>
+            .topbar-coins-manager {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+                word-wrap: break-word;
+                border-radius: 15px;
+                background-clip: border-box;
+                margin-right: 24px;
+            }
+            .topbar-coins-manager input {
+                border: none;
+            }
+            .topbar-coins-manager input {
+                background-color: rgb(235, 240, 245) !important;
+                cursor: pointer;
+                margin-right: -20px;
+                width: 120px !important;
+                font-weight: 500 !important;
+            }
+            .topbar-coins-manager .input-group-text {
+                background-color: rgb(226, 15, 109) !important;
+                color: white;
+                cursor: pointer;
+                border-radius: 50% !important;
+                width: 40px;
+                z-index: 2;
+                padding-left: 12px !important;
+            }
+        </style>
+
+        <div href="#!modalManageCoins" class="topbar-coins-manager">
+            <div class="row text-center align-items-center">
+                <div class="input-group input-group-rounded input-group-merge">
+                    <!-- Input -->
+                    <input type="search" class="form-control form-control-appended search" value="${{user.coins}} Coins" aria-label="${{user.coins}} Coins">
+                    <div class="input-group-append">
+                        <div class="input-group-text align-items-center text-center align-items-baseline">
+                            <div>
+                                <span class="fe fe-box"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Form -->
         <form class="form-inline mr-4 d-none d-md-flex">
             <div class="input-group input-group-rounded input-group-merge" data-toggle="lists" data-lists-values='["name"]'>
@@ -520,3 +568,13 @@
 
     </div> <!-- / .container-fluid -->
 </nav>
+<script>
+    $(function() {
+        $('.topbar-coins-manager input').focus(function(e) {
+            $(this).blur();
+        });
+        $('.topbar-coins-manager').click(function(e) {
+          window.location.hash = '#!modalManageCoins=true';
+        })
+    });
+</script>

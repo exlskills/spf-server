@@ -42,12 +42,6 @@
                                 class="fe fe-help-circle mr-4"></span></span></strong>
                         </div>
 
-                        <!--<div class="card bg-light border">-->
-                        <!--<div class="card-body">-->
-                        <!--Your balance: <strong>0 Coins</strong>-->
-                        <!--</div>-->
-                        <!--</div>-->
-
                         <form id="purchase-coins-form">
                             <div class="form-row">
                                 <div class="col-12 col-md-6 mb-3">
@@ -61,7 +55,7 @@
                                 <div class="col-12 col-md-6 mb-3 coins-purchase-btn-col">
                                     <div class="row">
                                         <div class="col">
-                                            <button {{#lt user.sub_level 1000}}disabled{{/lt}} {{#if user.is_demo}}disabled{{/if}} type="submit" class="btn btn-success w-100 text-center form-btn-submit">Purchase</button>
+                                            <button disabled type="submit" id="manage-coins-purchase-btn" class="btn btn-success w-100 text-center form-btn-submit">Purchase ($0)</button>
                                         </div>
                                         {{#gt user.sub_level 1000}}
                                             {{#if user.is_demo}}
@@ -83,7 +77,7 @@
                         <div class="card bg-light border">
                             <div class="card-body text-center">
                                 <strong>
-                                    <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}{{encodeURI '#!modalManageCoins=true'}}">Login to Make Purchases</a>
+                                    <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}{{encodeURI '#!modalManageCoins=true'}}">Sign Up or Login to Purchase Coins</a>
                                 </strong>
                             </div>
                         </div>
@@ -106,7 +100,7 @@
                                 <div class="">
                                     <label for="coins-card-element">
                                         <span data-toggle="tooltip" data-placement="top" title=""
-                                              data-original-title="Your card will be charged only for purchases you make on EXLskills. You can remove it at any time.">Add Credit or Debit Card <span
+                                              data-original-title="Your card will be charged only for purchases you make on EXLskills. You can remove it at any time.">Credit or Debit Card <span
                                                 class="fe fe-help-circle mr-4"></span></span>
                                     </label>
                                     <div id="coins-card-element">
@@ -160,6 +154,17 @@
                     $(".form-btn-submit", form).removeClass('is-loading');
                     $(".form-btn-submit", form).attr('disabled', false);
                 });
+            });
+            $('#coins-purchase-amount').on('change', function(event) {
+                var val = $(this).val();
+                if (!val || val === '') {
+                    $('#manage-coins-purchase-btn').text('Purchase ($0)');
+                    $('#manage-coins-purchase-btn').attr("disabled", "disabled");
+                } else {
+                    val = parseInt(val);
+                    $('#manage-coins-purchase-btn').text('Purchase ($'+val+')');
+                    $('#manage-coins-purchase-btn').attr("disabled", false);
+                }
             });
         });
     </script>

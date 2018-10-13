@@ -7,6 +7,8 @@ import ICourse = GQL.ICourse;
 import IVersionedContentRecord = GQL.IVersionedContentRecord;
 import ICourseEdge = GQL.ICourseEdge;
 import ICourseUnitEdge = GQL.ICourseUnitEdge;
+import ICourseDeliverySchedule = GQL.ICourseDeliverySchedule;
+import * as moment from 'moment-timezone';
 
 export type CourseListType = 'mine' | 'relevant'
 export interface IDetailedCourse {
@@ -236,6 +238,61 @@ export default class GqlApi {
             }
         `;
         return (await this.request(q)).coursePaging.edges!
+    }
+
+    public async getCourseDeliverySchedule(courseId: string, dateOnOrAfter: Date): Promise<ICourseDeliverySchedule> {
+        const q = `
+                {
+                  courseDeliverySchedule(course_id: "${courseId}", date_on_or_after: "${moment(dateOnOrAfter).format(config.templateConstants.liveCourseScheduleMomentOutFmt)}") {
+                    _id
+                    delivery_structure
+                    delivery_methods
+                    course_notes
+                    course_duration {
+                      months
+                      weeks
+                      days
+                      hours
+                      minutes
+                    }
+                    session_info {
+                      session_seq
+                      headline
+                      desc
+                      session_notes
+                    }
+                    scheduled_runs {
+                      _id
+                      offered_at_price {
+                        amount
+                      }
+                      seat_purchased
+                      run_start_date
+                      run_sessions {
+                        _id
+                        session_seq
+                        session_duration {
+                          months
+                          weeks
+                          days
+                          hours
+                          minutes
+                        }
+                        session_start_date
+                        session_run_notes
+                        instructors {
+                          username
+                          full_name
+                          headline
+                          biography
+                          avatar_url
+                        }
+                      }
+                    }
+                  }
+                }
+        `;
+        return (await this.request(q)).courseDeliverySchedule!
     }
 
 }

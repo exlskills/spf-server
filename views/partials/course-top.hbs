@@ -50,12 +50,34 @@
 
                     <!-- Pretitle -->
                     <h6 class="header-pretitle">
-                        {{data.course.meta.primary_topic}}
+                        {{#eq contentTmpl "course_index"}}
+                            {{data.course.meta.primary_topic}}
+                        {{else}}
+                            {{#eq contentTmpl "course_index"}}
+                                {{data.course.meta.primary_topic}}
+                            {{else}}
+                                {{data.course.meta.title}}
+                            {{/eq}}
+                        {{/eq}}
                     </h6>
 
                     <!-- Title -->
                     <h1 class="header-title">
-                        {{data.course.meta.title}}
+                        {{#eq contentTmpl "course_index"}}
+                            {{data.course.meta.title}}
+                        {{/eq}}
+                        {{#eq contentTmpl "course_certificate"}}
+                            Verified Certificate
+                        {{/eq}}
+                        {{#eq contentTmpl "course_progress"}}
+                            Progress
+                        {{/eq}}
+                        {{#eq contentTmpl "course_live"}}
+                            Live Class
+                        {{/eq}}
+                        {{#eq contentTmpl "course_content"}}
+                            {{data.course.meta.title}}
+                        {{/eq}}
                     </h1>
 
                 </div>
