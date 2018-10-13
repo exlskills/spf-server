@@ -21,36 +21,8 @@
                     </p>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <!-- Title -->
-                    <h4 class="card-header-title">
-                        Syllabus
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 col-lg-6">
-                            <strong>
-                                <ol>
-                                    {{#each data.course.units}}
-                                        <a class="spf-link" href="/learn-{{../route.locale}}/courses/{{../data.course.meta.url_id}}/{{url_id}}/{{first_section_url_id}}/{{first_card_url_id}}">
-                                            <li>{{title}}</li>
-                                        </a>
-                                        <br />
-                                    {{/each}}
-                                </ol>
-                            </strong>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            {{data.course.meta.description}}
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="col-12 col-lg-4">
-            <!-- Card -->
             <div class="card">
                 <div class="card-body">
 
@@ -159,6 +131,39 @@
                     </div> <!-- / .row -->
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                        Syllabus
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <strong>
+                                <ol>
+                                    {{#each data.course.units}}
+                                        <a class="spf-link" href="/learn-{{../route.locale}}/courses/{{../data.course.meta.url_id}}/{{url_id}}/{{first_section_url_id}}/{{first_card_url_id}}">
+                                            <li>{{title}}</li>
+                                        </a>
+                                        <br />
+                                    {{/each}}
+                                </ol>
+                            </strong>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            {{data.course.meta.description}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-4">
             <!-- Weekly Hours -->
             <div class="card">
                 <div class="card-header">
