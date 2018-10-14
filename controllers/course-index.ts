@@ -50,7 +50,9 @@ export async function fetchDetailedCourseForView(client: GqlApi, courseGID: stri
     }
     let completedUnits = 0;
     let markedSuggestedUnit = false;
+    let unitEMAsSum = 0;
     for (let unit of gqlResp.units) {
+        unitEMAsSum += unit.ema;
         const unitComplete = unit.unit_progress_state === 1;
         if (unitComplete) {
             completedUnits++;
@@ -88,6 +90,7 @@ export async function fetchDetailedCourseForView(client: GqlApi, courseGID: stri
         }
         unit.examIsNextStep = allSectionsProficient && !unitComplete;
     }
+    gqlResp.proficiency = unitEMAsSum === 0 ? 0 : Math.round((unitEMAsSum / gqlResp.units.length)*100)/100;
     gqlResp.courseComplete = completedUnits === gqlResp.units.length;
     return gqlResp
 }

@@ -136,7 +136,6 @@ export default class GqlApi {
                             exam_attempt_id
                             sections_list {
                                 id
-                                ema
                                 title
                                 headline
                                 cards_list {

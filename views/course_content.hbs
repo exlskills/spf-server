@@ -120,29 +120,17 @@
         </div>
         <div class="col-12 col-lg-4">
             <!-- Card -->
-            <div class="card">
+            <div class="card" id="courseContentProgressChartCard">
                 <div class="card-header">
                     <!-- Title -->
                     <h4 class="card-header-title">
-                        Proficiency
+                        Progress
                     </h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body pt-0 pb-0">
                     <div class="chart">
-                        <canvas id="devicesChart" class="chart-canvas"></canvas>
+                        <canvas id="courseContentProgressChart" class="chart-canvas"></canvas>
                     </div>
-
-                    <script>
-                        new Chart('devicesChart', {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['Desktop', 'Tablet', 'Mobile'],
-                                datasets: [{
-                                    data: [60, 25, 15]
-                                }]
-                            }
-                        });
-                    </script>
                 </div>
             </div>
 
@@ -202,3 +190,56 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(function() {
+        if ({{data.course.proficiency}} === 0) {
+            $('#courseContentProgressChartCard').hide();
+            return;
+        }
+
+        var $progChart = $('#courseContentProgressChart');
+
+        var progChart = new Chart($progChart, {
+            type: 'doughnut',
+            options: {
+                tooltips: {
+                    callbacks: {
+                        title: function(item, data) {
+                            var title = data.labels[item[0].index];
+                            return title;
+                        },
+                        label: function(item, data) {
+                            var value = data.datasets[0].data[item.index];
+                            var content = '';
+
+                            content += '<span class="popover-body-value">' + value + '%</span>';
+                            return content;
+                        }
+                    }
+                },
+                elements: {
+                    center: {
+                        text: Math.round({{data.course.proficiency}})+'%',
+                        color: ThemeCharts.colors.primary[700], //Default black
+                        fontStyle: 'Helvetica', //Default Arial
+                        sidePadding: 50 //Default 20 (as a percentage)
+                    }
+                }
+            },
+            data: {
+                labels: ['Complete', 'Incomplete'],
+                datasets: [{
+                    data: [{{data.course.proficiency}}, 100-{{data.course.proficiency}}],
+                    backgroundColor: [
+                        ThemeCharts.colors.primary[700],
+                        ThemeCharts.colors.primary[100]
+                    ],
+                    hoverBorderColor: ( ThemeCharts.mode == 'dark' ) ? ThemeCharts.colors.gray[800] : ThemeCharts.colors.white
+                }]
+            }
+        });
+
+        $progChart.data('chart', progChart);
+    });
+</script>
