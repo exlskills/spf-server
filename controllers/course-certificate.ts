@@ -48,7 +48,6 @@ If you have any questions at all regarding EXLskills Certificates, please use th
 
 export async function viewCourseCertificate(client: GqlApi, user: IUserData, locale: string, courseGID: string) : Promise<ISPFRouteResponse> {
     let gqlResp = await fetchDetailedCourseForView(client, courseGID)
-    console.log(gqlResp)
     let checkoutItem = {
         category: 'course_cert',
         quantity: 1,

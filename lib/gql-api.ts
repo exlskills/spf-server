@@ -9,6 +9,7 @@ import ICourseEdge = GQL.ICourseEdge;
 import ICourseUnitEdge = GQL.ICourseUnitEdge;
 import ICourseDeliverySchedule = GQL.ICourseDeliverySchedule;
 import * as moment from 'moment-timezone';
+import IUserCourseRoleEdge = GQL.IUserCourseRoleEdge;
 
 export type CourseListType = 'mine' | 'relevant'
 export interface IDetailedCourse {
@@ -153,6 +154,30 @@ export default class GqlApi {
             meta: resp.courseById!,
             units: resp.unitPaging.edges!
         }
+    }
+
+    public async getUserCourseRoles(): Promise<IUserCourseRoleEdge[]> {
+        const q = `
+        {
+            userProfile {
+              course_roles(first: 999) {
+                edges {
+                  node {
+                    id
+                    course_id
+                    role
+                    last_accessed_at
+                  }
+                }
+              }
+            }
+        }
+        `;
+        const resp = await this.request(q);
+        if (!resp.userProfile.course_roles) {
+            return [];
+        }
+        return resp.userProfile.course_roles.edges;
     }
 
     public async getDetailedCourseByIDWithEMA(courseId: string): Promise<IDetailedCourse> {

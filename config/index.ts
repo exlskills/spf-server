@@ -43,6 +43,7 @@ export default {
         logoutURL: process.env.WEB_TMPL_LOGOUT_URL || 'https://accounts.exlinc.com/auth/realms/exlinc/protocol/openid-connect/logout?redirect_uri=https%3A%2F%2Fexlskills.com',
         stripePubKey: process.env.WEB_TMPL_STRIPE_PUB_KEY || 'set_me',
         wsUSIEndpoint: process.env.WEB_TMPL_WS_USI_ENDPOINT || 'wss://usi-api.exlskills.com/v0/wsusi',
+        gqlEndpoint: process.env.WEB_TMPL_GQL_ENDPOINT || 'https://gql-api.exlskills.com/graph',
         authAPIBaseURL: process.env.WEB_TMPL_AUTH_API_BASE_URL || 'https://auth-api.exlskills.com',
         eraseDataFormURL: process.env.WEB_TMPL_ERASE_DATA_FORM_URL || 'https://exlinc.typeform.com/to/X0MWrR',
         intercomAppID: process.env.WEB_TMPL_IC_APP_ID || 'set_me',

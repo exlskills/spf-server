@@ -18,3 +18,5 @@ WEB_TMPL_PRIVACY_POLICY_AND_TERMS_URL=https://exlinc.com/legal
 WEB_TMPL_SUBSCRIBERS_SITE_ID=set_me
 # Public URL for the auth API to be accessed client-side
 WEB_TMPL_AUTH_API_BASE_URL=https://auth-api.exlskills.com
+# Public URL for the gql API to be access client-side
+WEB_TMPL_GQL_ENDPOINT=https://gql-api.exlskills.com/graph

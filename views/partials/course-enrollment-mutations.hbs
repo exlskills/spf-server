@@ -1,0 +1,36 @@
+<script>
+    $(function() {
+        $('.course-enrollment-start-action-btn').click(function(e) {
+            e.preventDefault();
+            $(this).addClass('is-loading');
+            $(this).attr('disabled', 'disabled');
+            var inputData = {
+                clientMutationId: uuidv4(),
+                course_id: '{{{data.course.meta.id}}}',
+                cudContent: [
+                    {
+                        field: 'role',
+                        cudAction: 'CREATE',
+                        valueToAssign: 'learner'
+                    },
+                    {
+                        field: 'UserCourseRole',
+                        cudAction: 'CREATE'
+                    }
+                ],
+                user_id: '{{{user.gid}}}',
+            };
+            $.postJSON('{{config.gqlEndpoint}}', {
+                query: 'mutation UpdateUserCourseRoleMutation($input: UpdateUserCourseRoleInput!) {updateUserCourseRole(input: $input) {completionObj {code\nmsg\nprocessed\nmodified} clientMutationId}}',
+                variables: {
+                    input: inputData
+                }
+            }, function() {
+                spf.navigate('/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nextStep.learn.unit.url_id}}/{{data.course.nextStep.learn.section.url_id}}/{{data.course.nextStep.learn.card.url_id}}');
+            }, function() {
+                window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'error', message: 'An error occurred enrolling in this course. Please try again in a few moments.'}));
+                window.location.reload();
+            });
+        });
+    })
+</script>

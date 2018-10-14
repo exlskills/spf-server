@@ -35,6 +35,9 @@ const registerPartialHBS = (name: string) => {
 
 registerPartialHBS('course-top');
 registerPartialHBS('course-card-pagination');
+registerPartialHBS('course-enrollment-mutations');
+registerPartialHBS('course-action-button-left');
+registerPartialHBS('course-action-button-right');
 
 const router = express.Router();
 

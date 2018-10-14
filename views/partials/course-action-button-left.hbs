@@ -1,0 +1,43 @@
+{{#if data.course.isEnrolled}}
+    {{#if data.course.courseComplete}}
+        <div style="display: block;" class="card d-md-none">
+            <div class="card-body text-center">
+                <div class="row justify-content-center">
+                    <div class="col-12 ">
+
+                        <!-- Image -->
+                        <img src="/learn-en/assets/img/illustrations/happiness.svg" alt="..." class="img-fluid mb-4" style="max-width: 272px;">
+
+                        <!-- Title -->
+                        <h2>
+                            Congratulations! 🎓
+                        </h2>
+
+                        <!-- Content -->
+                        <p class="text-muted">
+                            You've successfully completed this course! Get your certificate today to show employers your skills!
+                        </p>
+
+                        <!-- Button -->
+                        <a href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/certificate" class="spf-link btn btn-primary">
+                            Get Certified
+                        </a>
+
+                    </div>
+                </div> <!-- / .row -->
+            </div>
+        </div>
+    {{else}}
+        {{#if data.course.nextStep.learn}}
+            <a style="display: block;" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nextStep.learn.unit.url_id}}/{{data.course.nextStep.learn.section.url_id}}/{{data.course.nextStep.learn.card.url_id}}" class="spf-link btn btn-primary w-100 mb-4 d-md-none">Resume Learning</a>
+        {{else}}
+            {{#if data.course.nextStep.exam}}
+                <!-- TODO take exam -->
+            {{else}}
+                <!-- this shouldn't happen -->
+            {{/if}}
+        {{/if}}
+    {{/if}}
+{{else}}
+    <button style="display: block;" class="course-enrollment-start-action-btn btn btn-primary w-100 mb-4 d-md-none">Start Learning For FREE!</button>
+{{/if}}

@@ -28,14 +28,9 @@
     <div class="row">
         <div class="col-12 col-lg-8">
             <div class="card">
-                <div class="card-header">
-                    <!-- Title -->
-                    <h4 class="card-header-title">
-                        Recommended
-                    </h4>
-                </div>
-                <div class="card-body">
-                    Next step
+                <div class="card-body mb--4">
+                    {{> course-action-button-left}}
+                    {{> course-action-button-right}}
                 </div>
             </div>
 
@@ -222,7 +217,7 @@
                     center: {
                         text: Math.round({{data.course.proficiency}})+'%',
                         color: ThemeCharts.colors.primary[700], //Default black
-                        fontStyle: 'Helvetica', //Default Arial
+                        fontStyle: 'Cerebri Sans, sans-serif', //Default Arial
                         sidePadding: 50 //Default 20 (as a percentage)
                     }
                 }

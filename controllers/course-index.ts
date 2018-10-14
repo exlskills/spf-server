@@ -6,6 +6,7 @@ import {toUrlId} from "../utils/url-ids";
 import {skillLevelToText} from "../lib/skill-levels";
 import {minutesToText} from "../lib/duration";
 import {indexToLetter} from "../lib/ordered-lists";
+import {fromGlobalId} from "../utils/gql-ids";
 
 export async function fetchDetailedCourseForView(client: GqlApi, courseGID: string, withEMA?: boolean) {
     let gqlResp: any;
@@ -92,12 +93,73 @@ export async function fetchDetailedCourseForView(client: GqlApi, courseGID: stri
     }
     gqlResp.proficiency = unitEMAsSum === 0 ? 0 : Math.round((unitEMAsSum / gqlResp.units.length)*100)/100;
     gqlResp.courseComplete = completedUnits === gqlResp.units.length;
+    gqlResp.nextStep = gqlResp.courseComplete ? null : extractNextStepFromUnits(gqlResp.units);
     return gqlResp
 }
 
+function extractNextStepFromUnits(units: any[]) {
+    let nextExam = null;
+    let nextLearn = null;
+    for (let i = 0; i < units.length; i++) {
+        if (nextExam && nextLearn) {
+            break;
+        }
+        if (units[i].examIsNextStep) {
+            if (!nextExam) {
+                nextExam = {
+                    unit: units[i]
+                }
+            }
+        }
+        if (
+            units[i].suggestedUnit ||
+            i == units.length - 1
+        ) {
+            if (units[i].unit_progress_state == -1) {
+                if (!nextLearn) {
+                    nextLearn = {
+                        unit: units[i],
+                        section: units[i].sections_list[0],
+                        card: units[i].sections_list[0].cards_list[0]
+                    }
+                }
+            }
+            for (let s = 0; s < units[i].sections_list.length; s++) {
+                let section = units[i].sections_list[s]
+                if (
+                    section.ema < 80 ||
+                    s == units[i].sections_list.length - 1
+                ) {
+                    for (let c = 0; c < section.cards_list.length; c++) {
+                        let card = section.cards_list[c]
+                        if (card.ema < 80 || c == section.cards_list.length - 1) {
+                            if (!nextLearn) {
+                                nextLearn = {
+                                    unit: units[i],
+                                    section,
+                                    card
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return {
+        exam: nextExam,
+        learn: nextLearn
+    }
+}
+
+export async function fetchUserCourseEnrollmentForView(client: GqlApi, courseGID: string) {
+    const enrollment = await client.getUserCourseRoles();
+    return enrollment.findIndex(item => item.node.course_id === fromGlobalId(courseGID).id) > -1;
+}
+
 export async function viewCourseIndex(client: GqlApi, user: IUserData, locale: string, courseGID: string) : Promise<ISPFRouteResponse> {
-    let gqlResp = await fetchDetailedCourseForView(client, courseGID)
-    console.log(gqlResp)
+    let gqlResp = await fetchDetailedCourseForView(client, courseGID, true);
+    gqlResp.isEnrolled = await fetchUserCourseEnrollmentForView(client, courseGID);
     return {
         contentTmpl: 'course_index',
         meta: {

@@ -8,7 +8,6 @@ export async function viewCourseProgress(client: GqlApi, user: IUserData, locale
     gqlResp.unitTitles = gqlResp.units.map(u => u.title);
     gqlResp.unitEMAs = gqlResp.units.map(u => Math.round(u.ema*100)/100);
     gqlResp.unitGrades = gqlResp.units.map(u => Math.round(u.grade*100)/100);
-    console.log(gqlResp);
     return {
         contentTmpl: 'course_progress',
         meta: {

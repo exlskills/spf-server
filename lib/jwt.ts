@@ -2,6 +2,7 @@ import config from '../config';
 import * as jwt from 'jsonwebtoken';
 import logger from '../utils/logger';
 import * as fs from 'fs';
+import {toGlobalId} from "../utils/gql-ids";
 
 let jwtPublicKey = '';
 
@@ -43,6 +44,7 @@ export interface IUserRawJWT {
 
 export interface IUserData {
     id: string
+    gid: string
     locale?: string
     email?: string
     avatar_url: string
@@ -71,6 +73,7 @@ export const verifiedUserData = (token: string) : IUserData => {
     }
     return {
         id: decodedData.user_id,
+        gid: toGlobalId('User', decodedData.user_id),
         locale: decodedData.locale,
         email: decodedData.email,
         avatar_url: decodedData.avatar_url,
