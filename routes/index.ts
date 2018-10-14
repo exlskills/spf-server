@@ -36,6 +36,7 @@ const registerPartialHBS = (name: string) => {
 registerPartialHBS('course-top');
 registerPartialHBS('course-card-pagination');
 registerPartialHBS('course-enrollment-mutations');
+registerPartialHBS('course-add-on-cards');
 registerPartialHBS('course-action-button-left');
 registerPartialHBS('course-action-button-right');
 

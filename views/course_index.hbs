@@ -2,11 +2,26 @@
 {{> course-enrollment-mutations}}
 
 <style>
-
+    #course-index-wrapper .collapse-toggle[data-toggle=collapse]:after {
+        font-family: Feather;
+        display: block;
+        margin-left: auto;
+        content: "\e92e";
+        transition: all .2s ease-in-out;
+        color: #95aac9;
+    }
+    #course-index-wrapper .collapse-toggle[data-toggle=collapse][aria-expanded=true]:after {
+        transform: rotate(-180deg);
+    }
+    #course-index-wrapper .card-indicator {
+        color: rgba(0,0,0,0);
+        border: 1px solid rgba(0, 0, 0, 0.3);;
+        border-radius: 1000px;
+    }
 </style>
 
 <!-- CONTENT -->
-<div class="container-fluid">
+<div id="course-index-wrapper" class="container-fluid">
     <div class="row">
         <div class="col-12 col-lg-8">
             {{> course-action-button-left}}
@@ -136,6 +151,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-12 col-lg-8">
             <div class="card">
@@ -147,7 +163,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-lg-6">
+                        <div class="col-12">
                             <strong>
                                 <ol>
                                     {{#each data.course.units}}
@@ -159,53 +175,40 @@
                                 </ol>
                             </strong>
                         </div>
-                        <div class="col-12 col-lg-6">
-                            <div class="card bg-light">
-                                <div class="card-body text-center">
-                                    <div class="row justify-content-center">
-                                        <div class="col-12 ">
-
-                                            <!-- Image -->
-                                            <img src="/learn-en/assets/img/illustrations/happiness.svg" alt="..." class="img-fluid mb-4" style="max-width: 272px;">
-
-                                            <!-- Title -->
-                                            <h2>
-                                                Get Certified, Get Employed
-                                            </h2>
-
-                                            <!-- Content -->
-                                            <p class="text-muted">
-                                                EXLskills trustworthy Verified Certificates show employers you're ready!
-                                            </p>
-
-                                            <!-- Button -->
-                                            <a href="{{data.course.meta.url_id}}/certificate" class="spf-link btn btn-primary">
-                                                Learn More
-                                            </a>
-
-                                        </div>
-                                    </div> <!-- / .row -->
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-12 col-lg-4">
+            {{> course-add-on-cards}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <!-- Title -->
-                    <h4 class="card-header-title">
-                        <span class="text-danger">●</span> Learn it LIVE!
-                    </h4>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <!-- Title -->
+                            <h4 class="card-header-title">
+                                More Info (From GitHub)
+                            </h4>
+                        </div>
+                        <div class="col-auto">
+
+                        </div>
+                        <a class="collapse-toggle" href="#course-index-info-md-wrapper" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="course-index-info-md-wrapper"></a>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p>
-                        {{data.course.meta.description}}
-                    </p>
+                <div id="course-index-info-md-wrapper" class="collapse">
+                    <div class="card-body">
+                        {{{markdown data.course.meta.info_md}}}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <br />
+    <br />
+    <br />
 </div>

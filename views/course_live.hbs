@@ -171,7 +171,7 @@
                                         <div class="text-success">You're registered! See Email for Details</div>
                                     {{else}}
                                         <strong>Price: ${{offered_at_price.amount}}</strong>
-                                        <a href="#!modalCheckout={{{encodeURI purchase_item_json}}}" class="btn btn-sm btn-primary ml-1">Register</a>
+                                        <a href="#!modalCheckout={{{encodeURI purchase_item_json}}}" class="btn btn-sm btn-danger ml-1">Register</a>
                                     {{/if}}
                                 </div>
                             <a class="collapse-toggle" href="#live-run-container-{{_id}}" data-toggle="collapse" role="button" aria-expanded="{{#if soonest_run}}true{{else}}false{{/if}}" aria-controls="live-run-container-{{_id}}"></a>
@@ -239,6 +239,9 @@
 
         </div>
     </div>
+    <br />
+    <br />
+    <br />
 </div>
 
 <script>

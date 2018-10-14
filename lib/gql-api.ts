@@ -100,6 +100,7 @@ export default class GqlApi {
                     skill_level
                     est_minutes
                     primary_topic
+                    info_md
                     verified_cert_cost
                     delivery_methods
                 }
@@ -122,6 +123,7 @@ export default class GqlApi {
                     skill_level
                     est_minutes
                     primary_topic
+                    info_md
                     verified_cert_cost
                     delivery_methods
                 }
@@ -194,6 +196,7 @@ export default class GqlApi {
                     skill_level
                     est_minutes
                     primary_topic
+                    info_md
                     verified_cert_cost
                     delivery_methods
                 }
