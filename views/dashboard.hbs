@@ -1,3 +1,73 @@
-<div>
-    {{formatNumber 1000}}
-</div>
+<style>
+
+</style>
+
+<!-- CONTENT -->
+<div class="container-fluid">
+    <!-- Body -->
+    <div class="header-body">
+        <div class="row align-items-end">
+            <div class="col">
+
+                <!-- Pretitle -->
+                <h6 class="header-pretitle text-secondary">
+                    EXLskills
+                </h6>
+
+                <!-- Title -->
+                <h1 class="header-title">
+                    My Courses
+                </h1>
+
+            </div>
+            <div class="col-auto">
+
+            </div>
+        </div> <!-- / .row -->
+    </div> <!-- / .header-body -->
+
+    <!-- Footer -->
+    <div class="header-footer">
+        {{#gt data.courses.mine.length 0}}
+            <div class="row">
+                {{#each data.courses.mine}}
+                    {{>course-card-lg-vertical course=this locale=../route.locale trailingPath="/content"}}
+                {{/each}}
+            </div>
+        {{else}}
+            <div class="col-12">
+
+                <!-- Card -->
+                <div class="card card-inactive">
+                    <div class="card-body text-center">
+
+                        <!-- Image -->
+                        <img src="/learn-en/assets/img/illustrations/scale.svg" alt="..." class="img-fluid" style="max-width: 182px;">
+
+                        <!-- Title -->
+                        <h1>
+                            No Courses?
+                        </h1>
+
+                        <!-- Subtitle -->
+                        <p class="text-muted">
+                            Start a course for FREE today with EXLskills! 🎓🎉
+                        </p>
+
+                        <!-- Button -->
+                        <a href="/learn-{{route.locale}}/courses" class="spf-link btn btn-primary">
+                            Get Started!
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+        {{/gt}}
+    </div>
+
+
+    <br />
+    <br />
+    <br />
+</div> <!-- / .container-fluid -->

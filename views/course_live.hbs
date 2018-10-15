@@ -23,21 +23,52 @@
 <div id="course-live-content" class="container-fluid">
     <div class="row">
         <div class="col-12 col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    <!-- Title -->
-                    <h4 class="card-header-title">
-                        Learn it LIVE With EXLskills!
-                    </h4>
-                </div>
-                <div class="card-body">
-                    {{#inArray data.sched.delivery_methods "live"}}
+            {{#gt data.sched.scheduled_runs.length 0}}
+                <div class="card">
+                    <div class="card-header">
+                        <!-- Title -->
+                        <h4 class="card-header-title">
+                            Learn it LIVE With EXLskills!
+                        </h4>
+                    </div>
+                    <div class="card-body">
                         {{{markdown data.sched.course_notes}}}
-                    {{else}}
-                        No live courses available right now.
-                    {{/inArray}}
+                    </div>
                 </div>
-            </div>
+            {{else}}
+                <div class="col-12">
+
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-body text-center">
+
+                            <!-- Image -->
+                            <img src="/learn-en/assets/img/illustrations/meditate.svg" alt="..." class="img-fluid mb-4" style="max-width: 212px;">
+
+                            <!-- Title -->
+                            <h1>
+                                Oops! All of our Live Classes are Full!
+                            </h1>
+
+                            <!-- Subtitle -->
+                            <p class="text-muted">
+                                Don't worry... In the meantime, you can start learning at your own pace for FREE! 🎓
+                            </p>
+
+                            <p class="text-muted mb-4">
+                                P.S. Remember to check back later as more courses become available :)
+                            </p>
+
+                            <!-- Button -->
+                            <a href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content" class="spf-link btn btn-primary">
+                                View FREE Course!
+                            </a>
+
+                        </div>
+                    </div>
+
+                </div>
+            {{/gt}}
         </div>
         <div class="col-12 col-lg-4">
             <div class="card">
@@ -85,6 +116,7 @@
                     <!-- Divider -->
                     <hr>
 
+                    {{#gt data.sched.scheduled_runs.length 0}}
                     <div class="row align-items-center">
                         <div class="col">
 
@@ -105,6 +137,7 @@
 
                     <!-- Divider -->
                     <hr>
+                    {{/gt}}
 
                     {{#if data.course.meta.verified_cert_cost}}
                         <div class="row align-items-center">
@@ -152,7 +185,7 @@
     </div>
     <div class="row">
         <div class="col-12 col-lg-8">
-            {{#inArray data.sched.delivery_methods "live"}}
+            {{#gt data.sched.scheduled_runs.length 0}}
                 {{#each data.sched.scheduled_runs}}
                     <div class="card">
                         <div class="card-header">
@@ -162,8 +195,8 @@
                                     <h4 class="card-header-title">
                                         <span class="mtz-LL" data-time="{{run_start_date}}"></span>
                                         <span class="text-secondary ml-1" style="font-weight: 100;">
-                                            {{length run_sessions}} SESSIONS
-                                        </span>
+                                        {{length run_sessions}} SESSIONS
+                                    </span>
                                     </h4>
                                 </div>
                                 <div class="col-auto">
@@ -174,7 +207,7 @@
                                         <a href="#!modalCheckout={{{encodeURI purchase_item_json}}}" class="btn btn-sm btn-danger ml-1">Register</a>
                                     {{/if}}
                                 </div>
-                            <a class="collapse-toggle" href="#live-run-container-{{_id}}" data-toggle="collapse" role="button" aria-expanded="{{#if soonest_run}}true{{else}}false{{/if}}" aria-controls="live-run-container-{{_id}}"></a>
+                                <a class="collapse-toggle" href="#live-run-container-{{_id}}" data-toggle="collapse" role="button" aria-expanded="{{#if soonest_run}}true{{else}}false{{/if}}" aria-controls="live-run-container-{{_id}}"></a>
                             </div>
                         </div>
                         <div id="live-run-container-{{_id}}" class="collapse {{#if soonest_run}}show{{/if}}">
@@ -189,7 +222,6 @@
                         </div>
                     </div>
                 {{/each}}
-
                 <div class="card">
                     <div class="card-header">
                         <!-- Title -->
@@ -233,7 +265,8 @@
                         {{/each}}
                     </div>
                 </div>
-            {{/inArray}}
+            {{/gt}}
+
         </div>
         <div class="col-12 col-lg-4">
 

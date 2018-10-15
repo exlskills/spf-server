@@ -20,3 +20,4 @@ WEB_TMPL_SUBSCRIBERS_SITE_ID=set_me
 WEB_TMPL_AUTH_API_BASE_URL=https://auth-api.exlskills.com
 # Public URL for the gql API to be access client-side
 WEB_TMPL_GQL_ENDPOINT=https://gql-api.exlskills.com/graph
+WEB_TMPL_GA_TRACKING_ID=UA-122120459-2

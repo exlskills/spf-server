@@ -50,6 +50,7 @@ export default {
         accountsURL: process.env.WEB_TMPL_ACCOUNTS_URL || 'https://accounts.exlinc.com/auth/realms/exlinc/account',
         helpBaseURL: process.env.WEB_TMPL_HELP_BASE_URL || 'https://help.exlskills.com',
         privacyPolicyAndTermsURL: process.env.WEB_TMPL_PRIVACY_POLICY_AND_TERMS_URL || 'https://exlskills.com/legal',
+        gaTrackingID: process.env.WEB_TMPL_GA_TRACKING_ID || 'UA-122120459-2',
         subscribersSiteID: process.env.WEB_TMPL_SUBSCRIBERS_SITE_ID || 'set_me',
         liveCourseScheduleMomentParseFmt: 'YYYY-MM-DD[T]HH:mm[:00.000]Z',
         liveCourseScheduleMomentOutFmt: 'YYYY-MM-DD[T]HH:mm[:00.000Z]'

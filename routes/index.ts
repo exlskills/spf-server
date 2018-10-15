@@ -21,6 +21,8 @@ import {viewCourseCertificate} from "../controllers/course-certificate";
 import {redirectOldCardURL, redirectSectionURL, viewCourseCard} from "../controllers/course-card";
 import {generateHash} from "../lib/intercom";
 import {getCoinsCount} from "../lib/botmanager-api";
+import {redirectMissingLocale} from "../controllers/redirect-locale";
+import {redirectDashboard} from "../controllers/redirect-dashboard";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -40,6 +42,7 @@ registerPartialHBS('course-enrollment-mutations');
 registerPartialHBS('course-add-on-cards');
 registerPartialHBS('course-action-button-left');
 registerPartialHBS('course-action-button-right');
+registerPartialHBS('course-card-lg-vertical');
 
 const router = express.Router();
 
@@ -142,7 +145,7 @@ const gc = gqlBaseControllerHandler;
 
 router.get('/health-check', (req, res) => res.sendStatus(200));
 router.use('/learn-en/assets', express.static(path.join(__dirname, '../static/assets')));
-// TODO add redirects for bad locales and index
+router.get('/learn-:locale', redirectDashboard);
 router.get('/learn-:locale/dashboard', gc(viewDashboard, req => []));
 router.get('/learn-:locale/courses', gc(viewCourses, req => []));
 router.get('/learn-:locale/courses/:courseId', gc(viewCourseIndex, req => [fromUrlId('Course', req.params.courseId)]));
@@ -155,6 +158,7 @@ router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId/c
 router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId', gc(redirectOldCardURL, req => [req]));
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(viewCourseCard, req => [fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId', gc(redirectSectionURL, req => [fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId)]));
+router.get('/learn/*', redirectMissingLocale);
 
 // Production error handlers:
 if (process.env.NODE_ENV === 'production') {

@@ -9,7 +9,6 @@ export interface ISPFRouteMeta {
 }
 
 export interface ISPFRouteResponse {
-    pageMenu?: IPageMenuList
     contentTmpl: string
     meta: ISPFRouteMeta
     data: any

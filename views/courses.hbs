@@ -7,62 +7,7 @@
 <div class="container-fluid">
     <div class="row">
         {{#each data.courses}}
-            <div class="col-12 col-md-6 col-xl-4">
-                <!-- Card -->
-                <div class="card" data-course-url-id="{{url_id}}">
-                    <a href="courses/{{url_id}}" class="spf-link">
-                        <img src="{{logo_url}}" alt="..." class="card-img-top course-card-bg">
-                    </a>
-
-                    <div class="card-body text-center">
-
-                        <a href="courses/{{url_id}}" class="spf-link avatar avatar-xl card-avatar card-avatar-top">
-                            <img src="{{badge_url}}" class="course-badge avatar-img rounded-circle border border-4 border-card"
-                                 alt="...">
-                        </a>
-
-                        <h2 class="card-title">
-                            <a href="courses/{{url_id}}" class="spf-link">{{title}}</a>
-                        </h2>
-
-                        <p class="card-text text-muted">
-                            <small>
-                                {{headline}}
-                            </small>
-                        </p>
-
-                        <hr>
-
-                        <div class="row align-items-center justify-content-between">
-                            <div class="col-auto">
-                                <small>
-                                    <span class="fe fe-clock"></span> {{est_minutes_text}}
-                                </small>
-                                <span class="badge badge-primary">
-                                    {{primary_topic}}
-                                </span>
-                                <span class="badge badge-secondary">
-                                    {{skill_level_text}}
-                                </span>
-                            </div>
-                            <div class="col-auto">
-                                {{#if has_live_mode}}
-                                    <a href="courses/{{url_id}}" class="btn btn-sm btn-warning spf-link">
-                                        <span class="fe fe-radio"></span> Live
-                                    </a>
-                                {{else}}
-                                    <a href="courses/{{url_id}}" class="btn btn-sm btn-primary spf-link">
-                                        <span class="fe fe-book-open"></span> Learn
-                                    </a>
-                                {{/if}}
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
+            {{>course-card-lg-vertical course=this locale=../route.locale}}
         {{/each}}
     </div>
     <br />
