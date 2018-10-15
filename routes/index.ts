@@ -23,6 +23,7 @@ import {generateHash} from "../lib/intercom";
 import {getCoinsCount} from "../lib/botmanager-api";
 import {redirectMissingLocale} from "../controllers/redirect-locale";
 import {redirectDashboard} from "../controllers/redirect-dashboard";
+import {ampViewCourseCard} from "../controllers/amp-course-card";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -109,7 +110,10 @@ const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFun
         } else {
             result.user.coins = 0;
         }
-        if (req.query['spf'] === 'navigate') {
+        if (result.amp) {
+            result.layout = 'amp';
+            return res.render(result.contentTmpl, result);
+        } else if (req.query['spf'] === 'navigate') {
             fs.readFile(path.join(config.viewsRoot, config.spfResponse.sidebar), {encoding: 'utf8'}, (err, data) => {
                 if (err) {
                     return res.status(500) && next(err);
@@ -143,8 +147,13 @@ const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFun
 // Convenient short-hand version
 const gc = gqlBaseControllerHandler;
 
+// Health check for ELB
 router.get('/health-check', (req, res) => res.sendStatus(200));
+
+// Static
 router.use('/learn-en/assets', express.static(path.join(__dirname, '../static/assets')));
+
+// SPF Routes
 router.get('/learn-:locale', redirectDashboard);
 router.get('/learn-:locale/dashboard', gc(viewDashboard, req => []));
 router.get('/learn-:locale/courses', gc(viewCourses, req => []));
@@ -156,10 +165,14 @@ router.get('/learn-:locale/courses/:courseId/certificate', gc(viewCourseCertific
 router.get('/learn-:locale/courses/:courseId/card', gc(viewCourseCard, req => [fromUrlId('Course', req.params.courseId)]));
 router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId/card/:cardId', gc(redirectOldCardURL, req => [req]));
 router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId', gc(redirectOldCardURL, req => [req]));
-router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(viewCourseCard, req => [fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));
+router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(viewCourseCard, req => [req, fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId', gc(redirectSectionURL, req => [fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId)]));
 router.get('/learn/*', redirectMissingLocale);
 router.get('/learn', redirectDashboard);
+
+// AMP Routes
+router.get('/amp/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(ampViewCourseCard, req => [req, fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));
+router.get('/amp/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId/card/:cardId', gc(redirectOldCardURL, req => [req, true]));
 
 // Production error handlers:
 if (process.env.NODE_ENV === 'production') {

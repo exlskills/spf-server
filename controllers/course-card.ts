@@ -5,7 +5,7 @@ import { Request } from 'express';
 import {toUrlId} from "../utils/url-ids";
 import {fetchDetailedCourseForView} from "./course-index";
 
-export async function viewCourseCard(client: GqlApi, user: IUserData, locale: string, courseGID: string, unitGID: string, sectionGID: string, cardGID: string) : Promise<ISPFRouteResponse> {
+export async function viewCourseCard(client: GqlApi, user: IUserData, locale: string, req: Request, courseGID: string, unitGID: string, sectionGID: string, cardGID: string) : Promise<ISPFRouteResponse> {
     let gqlResp = await fetchDetailedCourseForView(client, courseGID);
     gqlResp.nav = {};
     const curUnitIdx = gqlResp.units.findIndex(u => u.id === unitGID);
@@ -66,7 +66,8 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
         contentTmpl: 'course_card',
         meta: {
             title: `${gqlResp.meta.title} | ${gqlResp.card.title}`,
-            topbarTitle: `${gqlResp.meta.title}`
+            topbarTitle: `${gqlResp.meta.title}`,
+            amphtml: `/amp${req.path}`
         },
         data: {
             course: gqlResp
@@ -100,7 +101,7 @@ export async function redirectSectionURL(client: GqlApi, user: IUserData, locale
     }
 }
 
-export async function redirectOldCardURL(client: GqlApi, user: IUserData, locale: string, req: Request) {
+export async function redirectOldCardURL(client: GqlApi, user: IUserData, locale: string, req: Request, amp?: boolean) {
     if (!req.params.cardId) {
         return {
             contentTmpl: 'redirect',
@@ -109,7 +110,7 @@ export async function redirectOldCardURL(client: GqlApi, user: IUserData, locale
             },
             redirect: {
                 permanent: true,
-                url: `/learn-${locale}/courses/${req.params.courseId}/${req.params.unitId}/${req.params.sectionId}`
+                url: `${amp ? '/amp' : ''}/learn-${locale}/courses/${req.params.courseId}/${req.params.unitId}/${req.params.sectionId}`
             },
             data: null
         }
@@ -121,7 +122,7 @@ export async function redirectOldCardURL(client: GqlApi, user: IUserData, locale
         },
         redirect: {
             permanent: true,
-            url: `/learn-${locale}/courses/${req.params.courseId}/${req.params.unitId}/${req.params.sectionId}/${req.params.cardId}`
+            url: `${amp ? '/amp' : ''}/learn-${locale}/courses/${req.params.courseId}/${req.params.unitId}/${req.params.sectionId}/${req.params.cardId}`
         },
         data: null
     }

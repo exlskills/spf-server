@@ -6,6 +6,10 @@ export interface ISPFRouteMeta {
     topbarTitle?: string
     fullTitle?: string
     description?: string
+    amphtml?: string
+    amp?: {
+        canon_link: string
+    }
 }
 
 export interface ISPFRouteResponse {
@@ -16,9 +20,11 @@ export interface ISPFRouteResponse {
         permanent: boolean
         url: string
     }
+    amp?: boolean
     user?: IUserData
     config?: any
     intercomHash?: string
+    layout?: string
     route?: {
         path: string
         locale: string

@@ -1,5 +1,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>{{meta.fullTitle}}</title>
+<meta name="description" content="{{meta.description}}">
+{{#if meta.amphtml}}
+<link rel="amphtml" href="{{meta.amphtml}}">
+{{/if}}
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122120459-2"></script>
 <script>
@@ -32,5 +37,3 @@
 
 <!-- Theme CSS -->
 {{> styles}}
-
-<title>{{meta.fullTitle}}</title>
