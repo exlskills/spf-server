@@ -5,8 +5,8 @@
     {{#eq question_type "MCSA"}}
         {{#each data.options}}
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="q-{{../id}}-opt-grp" id="q-{{../id}}-opt-{{id}}" value="{{id}}">
-                <label class="form-check-label" for="q-{{../id}}-opt-{{id}}">
+                <input class="form-check-input" type="radio" name="q-{{{../id}}}-opt-grp" id="q-{{{../id}}}-opt-{{{id}}}" value="{{{id}}}">
+                <label class="form-check-label" for="q-{{{../id}}}-opt-{{{id}}}">
                     {{{markdown text}}}
                 </label>
             </div>
@@ -16,8 +16,8 @@
     {{#eq question_type "MCMA"}}
         {{#each data.options}}
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="q-{{../id}}-opt-grp" id="q-{{../id}}-opt-{{id}}" value="{{id}}">
-                <label class="form-check-label" for="q-{{../id}}-opt-{{id}}">
+                <input class="form-check-input" type="checkbox" name="q-{{{../id}}}-opt-grp" id="q-{{{../id}}}-opt-{{{id}}}" value="{{{id}}}">
+                <label class="form-check-label" for="q-{{{../id}}}-opt-{{{id}}}">
                     {{{markdown text}}}
                 </label>
             </div>
@@ -28,21 +28,21 @@
 
 <div>
     {{#if hint_exists}}
-        <div id="q-{{id}}-question-hint" class="text-secondary mb-2"></div>
+        <div id="q-{{{id}}}-question-hint" class="text-secondary mb-2"></div>
     {{/if}}
 </div>
 
-<button id="q-{{id}}-submit-btn" class="btn btn-primary">Submit</button>
-<button style="display: none;" id="q-{{id}}-expl-btn" class="btn btn-outline-primary ml-2">Show Explanation</button>
+<button id="q-{{{id}}}-submit-btn" class="btn btn-primary">Submit</button>
+<button style="display: none;" id="q-{{{id}}}-expl-btn" class="btn btn-outline-primary ml-2">Show Explanation</button>
 {{#if hint_exists}}
-    <button id="q-{{id}}-hint-btn" class="btn btn-outline-primary float-right" data-hint-visible="false">Show Hint</button>
+    <button id="q-{{{id}}}-hint-btn" class="btn btn-outline-primary float-right" data-hint-visible="false">Show Hint</button>
 {{/if}}
 
 <div class="mt-2">
-    <div id="q-{{id}}-answer-correctness" class="float-left"></div>
+    <div id="q-{{{id}}}-answer-correctness" class="float-left"></div>
 </div>
 
-<div id="q-{{id}}-expl-collapse" class="collapse">
+<div id="q-{{{id}}}-expl-collapse" class="collapse">
     <br/>
     <br/>
     <div></div>
@@ -80,14 +80,14 @@
             btn.attr('disabled', false);
         };
 
-        $("#q-{{id}}-hint-btn").click(function() {
+        $("#q-{{{id}}}-hint-btn").click(function() {
             var btn = $(this);
             if (btn.data('hint-visible') === 'true') {
-                $("#q-{{id}}-question-hint").hide();
+                $("#q-{{{id}}}-question-hint").hide();
                 btn.data('hint-visible', 'false');
             } else if (hintText) {
                 btn.data('hint-visible', 'true');
-                $("#q-{{id}}-question-hint").show();
+                $("#q-{{{id}}}-question-hint").show();
             } else {
                 btn.addClass('is-loading');
                 btn.attr('disabled', 'disabled');
@@ -97,7 +97,7 @@
                         return;
                     }
                     hintText = resp.data.questionHint.hint;
-                    $("#q-{{id}}-question-hint").text(hintText);
+                    $("#q-{{{id}}}-question-hint").text(hintText);
                     btn.removeClass('is-loading');
                     btn.attr('disabled', false);
                 }, function() {
@@ -153,7 +153,7 @@
             btn.attr('disabled', false);
         };
 
-        var elCorrectness = $("#q-{{id}}-answer-correctness");
+        var elCorrectness = $("#q-{{{id}}}-answer-correctness");
 
         var answeredCorrectly = function(btn, explainText) {
             answeredRenderExpl(btn, explainText);
@@ -179,18 +179,18 @@
                 return;
             }
             hasRenderedExpl = true;
-            $("#q-{{id}}-expl-collapse div").html((new showdown.Converter()).makeHtml(explainText));
-            $("#q-{{id}}-expl-btn").click(function() {
-                if ($("#q-{{id}}-expl-collapse").hasClass('show')) {
-                    $("#q-{{id}}-expl-collapse").removeClass('show');
-                    $("#q-{{id}}-expl-btn").text("Show Explanation");
+            $("#q-{{{id}}}-expl-collapse div").html((new showdown.Converter()).makeHtml(explainText));
+            $("#q-{{{id}}}-expl-btn").click(function() {
+                if ($("#q-{{{id}}}-expl-collapse").hasClass('show')) {
+                    $("#q-{{{id}}}-expl-collapse").removeClass('show');
+                    $("#q-{{{id}}}-expl-btn").text("Show Explanation");
                 } else {
                     btn.attr('disabled', 'disabled');
-                    $("#q-{{id}}-expl-collapse").addClass('show');
-                    $("#q-{{id}}-expl-btn").text("Hide Explanation");
+                    $("#q-{{{id}}}-expl-collapse").addClass('show');
+                    $("#q-{{{id}}}-expl-btn").text("Hide Explanation");
                 }
             });
-            $("#q-{{id}}-expl-btn").show();
+            $("#q-{{{id}}}-expl-btn").show();
             setupCodeHLJS();
         };
 
@@ -198,7 +198,7 @@
             btn.addClass('is-loading');
             btn.attr('disabled', 'disabled');
             var selectedIds = [];
-            $("[name='q-{{id}}-opt-grp']").each(function() {
+            $("[name='q-{{{id}}}-opt-grp']").each(function() {
                 if ($(this).is(':checked')) {
                     selectedIds.push($(this).val());
                 }
@@ -220,7 +220,7 @@
                 errLoadingQ(btn)
             });
         };
-        $("#q-{{id}}-submit-btn").click(function() {
+        $("#q-{{{id}}}-submit-btn").click(function() {
             submitAns($(this));
         });
 
