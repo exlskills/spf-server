@@ -1,0 +1,105 @@
+<div style="font-size: 22px;"><strong>{{question_text}}</strong></div>
+<br />
+
+{{#eq question_type "MCSA"}}
+    {{#each data.options}}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="q-{{../id}}-opt-grp" id="q-{{../id}}-opt-{{id}}" value="{{id}}">
+            <label class="form-check-label" for="q-{{../id}}-opt-{{id}}">
+                {{{markdown text}}}
+            </label>
+        </div>
+    {{/each}}
+{{/eq}}
+
+{{#eq question_type "MCMA"}}
+    {{#each data.options}}
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="q-{{../id}}-opt-grp" id="q-{{../id}}-opt-{{id}}" value="{{id}}">
+            <label class="form-check-label" for="q-{{../id}}-opt-{{id}}">
+                {{{markdown text}}}
+            </label>
+        </div>
+    {{/each}}
+{{/eq}}
+<!-- TODO: WSCQ -->
+
+<br />
+
+<div id="q-{{id}}-err-wrapper" style="display: none;">
+    <span class="text-danger">
+        <span class="fe fe-alert-circle"></span><span></span>
+    </span>
+</div>
+
+<button id="q-{{id}}-submit-btn" class="btn btn-primary">Submit</button>
+<button style="display: none;" id="q-{{id}}-hint-btn" class="btn btn-outline-primary ml-2">Show Explanation</button>
+{{#if hint_exists}}
+    <button id="q-{{id}}-hint-btn" class="btn btn-outline-primary float-right">Show Hint</button>
+    <div id="q-{{id}}-hint-text"></div>
+{{/if}}
+
+<script>
+    $(function() {
+        var submitAnsGQL = function(selectedIds, onSuccess, onError) {
+            var m = `mutation SubmitCardAnswerMutation(
+                    $input: SubmitAnswerInput!
+                ) {
+                submitAnswer(input: $input) {
+                    is_correct
+                    explain_text
+                    next_question {
+                        course_id
+                        section_id
+                        unit_id
+                    }
+                    completionObj {
+                        code
+                        msg
+                        processed
+                        modified
+                    }
+                }
+            }
+            `
+            var inputData = {
+                clientMutationId: uuidv4(),
+                checkAnswer: true,
+                exam_attempt_id: "",
+                is_last_question: false,
+                question_id: "{{{id}}}",
+                quiz: true,
+                response_data: JSON.stringify({selected_ids: selectedIds})
+            }
+            $.postJSON(gqlEndpoint, {
+                query: m,
+                variables: {
+                    input: inputData
+                }
+            }, onSuccess, onError);
+        }
+        var submitAns = function(btn) {
+            btn.addClass('is-loading');
+            btn.attr('disabled', 'disabled');
+            var selectedIds = [];
+            $("[name='q-{{id}}-opt-grp']").each(function() {
+                if ($(this).is(':checked')) {
+                    selectedIds.push($(this).val());
+                }
+            });
+            submitAnsGQL(selectedIds, function(data) {
+                console.log(data)
+                btn.removeClass('is-loading');
+                btn.attr('disabled', false);
+            }, function() {
+                toastr.error("An error occurred submitting your answer. Please try again in a moment.");
+                btn.removeClass('is-loading');
+                btn.attr('disabled', false);
+            });
+        };
+        $("#q-{{id}}-submit-btn").click(function() {
+            submitAns($(this));
+        });
+
+    })
+</script>
