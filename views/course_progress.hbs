@@ -69,20 +69,36 @@
                                     {{attempts_left}}
                                 </td>
                                 <td>
-                                    {{last_attempted_at}}
+                                    {{#if last_attempted_at}}
+                                        {{last_attempted_at}}
+                                    {{else}}
+                                        N/A
+                                    {{/if}}
                                 </td>
                                 <td>
-                                    {{final_exam_weight_pct}}
+                                    {{toPrecision final_exam_weight_pct 4}}%
                                 </td>
                                 <td>
                                     {{#if passed}}
                                         <span class="fe fe-check"></span>
                                     {{else}}
-                                        <span class="fe fe-x"></span>
+                                        {{#if last_attempted_at}}
+                                            <span class="fe fe-x"></span>
+                                        {{else}}
+                                            <!-- Not yet attempted, leave empty -->
+                                        {{/if}}
                                     {{/if}}
                                 </td>
                                 <td>
-                                    {{grade}}
+                                    {{#eq grade 0}}
+                                        {{#if last_attempted_at}}
+                                            0%
+                                        {{else}}
+                                            N/A
+                                        {{/if}}
+                                    {{else}}
+                                        {{toPrecision grade 4}}%
+                                    {{/eq}}
                                 </td>
                             </tr>
                             {{/each}}
