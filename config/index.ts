@@ -31,7 +31,7 @@ export default {
         url: process.env.WEB_BOT_MANAGER_API_URL || 'http://localhost:2999'
     },
     cookies: {
-        domain: process.env.WEB_COOKIES_DOMAIN || 'localhost'
+        domain: process.env.WEB_COOKIES_DOMAIN || '.exlskills.com'
     },
     logLevel: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
     viewsRoot: path.join(__dirname, "../views"),
