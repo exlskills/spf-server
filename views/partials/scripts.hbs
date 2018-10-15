@@ -41,7 +41,7 @@
     });
 
     function setupCodeHLJS() {
-        $("#course-card-body pre code").toggleClass("hljs");
+        $("#course-card-body pre code:not([class*='hljs'])").toggleClass("hljs");
     }
 
     $(document).on("spfdone", function() {
@@ -76,6 +76,11 @@
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
+    }
+</script>
+<script>
+    $.escapeLiteralSel = function(sel) {
+        return sel.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1')
     }
 </script>
 <script>

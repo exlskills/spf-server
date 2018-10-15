@@ -1,4 +1,4 @@
-<div style="font-size: 22px;"><strong>{{question_text}}</strong></div>
+<div style="font-size: 22px;"><strong>{{{markdown question_text}}}</strong></div>
 <br />
 
 <div class="mb-2">
@@ -50,6 +50,7 @@
 
 <script>
     $(function() {
+        var escId = $.escapeLiteralSel('{{{id}}}');
         {{#if hint_exists}}
         var hintText = null;
         var getHintGQL = function(onSuccess, onError) {
@@ -80,14 +81,14 @@
             btn.attr('disabled', false);
         };
 
-        $("#q-{{{id}}}-hint-btn").click(function() {
+        $("#q-" + escId + "-hint-btn").click(function() {
             var btn = $(this);
             if (btn.data('hint-visible') === 'true') {
-                $("#q-{{{id}}}-question-hint").hide();
+                $("#q-" + escId + "-question-hint").hide();
                 btn.data('hint-visible', 'false');
             } else if (hintText) {
                 btn.data('hint-visible', 'true');
-                $("#q-{{{id}}}-question-hint").show();
+                $("#q-" + escId + "-question-hint").show();
             } else {
                 btn.addClass('is-loading');
                 btn.attr('disabled', 'disabled');
@@ -97,7 +98,7 @@
                         return;
                     }
                     hintText = resp.data.questionHint.hint;
-                    $("#q-{{{id}}}-question-hint").text(hintText);
+                    $("#q-" + escId + "-question-hint").text(hintText);
                     btn.removeClass('is-loading');
                     btn.attr('disabled', false);
                 }, function() {
@@ -151,9 +152,10 @@
             toastr.error("An error occurred submitting your answer. Please try again in a moment.");
             btn.removeClass('is-loading');
             btn.attr('disabled', false);
+            setupCodeHLJS();
         };
 
-        var elCorrectness = $("#q-{{{id}}}-answer-correctness");
+        var elCorrectness = $("#q-" + escId + "-answer-correctness");
 
         var answeredCorrectly = function(btn, explainText) {
             answeredRenderExpl(btn, explainText);
@@ -162,6 +164,7 @@
             elCorrectness.removeClass('text-warning');
             elCorrectness.show();
             btn.attr('disabled', 'disabled');
+            setupCodeHLJS();
         };
 
         var answeredIncorrectly = function(btn, explainText) {
@@ -170,6 +173,7 @@
             elCorrectness.addClass('text-warning');
             elCorrectness.removeClass('text-success');
             elCorrectness.show();
+            setupCodeHLJS();
         };
 
         var hasRenderedExpl = false;
@@ -179,18 +183,18 @@
                 return;
             }
             hasRenderedExpl = true;
-            $("#q-{{{id}}}-expl-collapse div").html((new showdown.Converter()).makeHtml(explainText));
-            $("#q-{{{id}}}-expl-btn").click(function() {
-                if ($("#q-{{{id}}}-expl-collapse").hasClass('show')) {
-                    $("#q-{{{id}}}-expl-collapse").removeClass('show');
-                    $("#q-{{{id}}}-expl-btn").text("Show Explanation");
+            $("#q-" + escId + "-expl-collapse div").html((new showdown.Converter()).makeHtml(explainText));
+            $("#q-" + escId + "-expl-btn").click(function() {
+                if ($("#q-" + escId + "-expl-collapse").hasClass('show')) {
+                    $("#q-" + escId + "-expl-collapse").removeClass('show');
+                    $("#q-" + escId + "-expl-btn").text("Show Explanation");
                 } else {
                     btn.attr('disabled', 'disabled');
-                    $("#q-{{{id}}}-expl-collapse").addClass('show');
-                    $("#q-{{{id}}}-expl-btn").text("Hide Explanation");
+                    $("#q-" + escId + "-expl-collapse").addClass('show');
+                    $("#q-" + escId + "-expl-btn").text("Hide Explanation");
                 }
             });
-            $("#q-{{{id}}}-expl-btn").show();
+            $("#q-" + escId + "-expl-btn").show();
             setupCodeHLJS();
         };
 
@@ -198,7 +202,7 @@
             btn.addClass('is-loading');
             btn.attr('disabled', 'disabled');
             var selectedIds = [];
-            $("[name='q-{{{id}}}-opt-grp']").each(function() {
+            $("[name='q-" + escId + "-opt-grp']").each(function() {
                 if ($(this).is(':checked')) {
                     selectedIds.push($(this).val());
                 }
@@ -217,12 +221,14 @@
                 btn.removeClass('is-loading');
                 btn.attr('disabled', false);
             }, function() {
-                errLoadingQ(btn)
+                errLoadingQ(btn);
             });
         };
-        $("#q-{{{id}}}-submit-btn").click(function() {
+
+        $("#q-" + escId + "-submit-btn").click(function() {
             submitAns($(this));
         });
 
+        setupCodeHLJS();
     })
 </script>
