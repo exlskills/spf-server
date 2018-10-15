@@ -159,6 +159,7 @@ router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId',
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(viewCourseCard, req => [fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId', gc(redirectSectionURL, req => [fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId)]));
 router.get('/learn/*', redirectMissingLocale);
+router.get('/learn', redirectDashboard);
 
 // Production error handlers:
 if (process.env.NODE_ENV === 'production') {
