@@ -1,46 +1,114 @@
 <div style="font-size: 22px;"><strong>{{question_text}}</strong></div>
 <br />
 
-{{#eq question_type "MCSA"}}
-    {{#each data.options}}
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="q-{{../id}}-opt-grp" id="q-{{../id}}-opt-{{id}}" value="{{id}}">
-            <label class="form-check-label" for="q-{{../id}}-opt-{{id}}">
-                {{{markdown text}}}
-            </label>
-        </div>
-    {{/each}}
-{{/eq}}
+<div class="mb-2">
+    {{#eq question_type "MCSA"}}
+        {{#each data.options}}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="q-{{../id}}-opt-grp" id="q-{{../id}}-opt-{{id}}" value="{{id}}">
+                <label class="form-check-label" for="q-{{../id}}-opt-{{id}}">
+                    {{{markdown text}}}
+                </label>
+            </div>
+        {{/each}}
+    {{/eq}}
 
-{{#eq question_type "MCMA"}}
-    {{#each data.options}}
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="q-{{../id}}-opt-grp" id="q-{{../id}}-opt-{{id}}" value="{{id}}">
-            <label class="form-check-label" for="q-{{../id}}-opt-{{id}}">
-                {{{markdown text}}}
-            </label>
-        </div>
-    {{/each}}
-{{/eq}}
-<!-- TODO: WSCQ -->
+    {{#eq question_type "MCMA"}}
+        {{#each data.options}}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="q-{{../id}}-opt-grp" id="q-{{../id}}-opt-{{id}}" value="{{id}}">
+                <label class="form-check-label" for="q-{{../id}}-opt-{{id}}">
+                    {{{markdown text}}}
+                </label>
+            </div>
+        {{/each}}
+    {{/eq}}
+    <!-- TODO: WSCQ -->
+</div>
 
-<br />
-
-<div id="q-{{id}}-err-wrapper" style="display: none;">
-    <span class="text-danger">
-        <span class="fe fe-alert-circle"></span><span></span>
-    </span>
+<div>
+    {{#if hint_exists}}
+        <div id="q-{{id}}-question-hint" class="text-secondary mb-2"></div>
+    {{/if}}
 </div>
 
 <button id="q-{{id}}-submit-btn" class="btn btn-primary">Submit</button>
-<button style="display: none;" id="q-{{id}}-hint-btn" class="btn btn-outline-primary ml-2">Show Explanation</button>
+<button style="display: none;" id="q-{{id}}-expl-btn" class="btn btn-outline-primary ml-2">Show Explanation</button>
 {{#if hint_exists}}
-    <button id="q-{{id}}-hint-btn" class="btn btn-outline-primary float-right">Show Hint</button>
-    <div id="q-{{id}}-hint-text"></div>
+    <button id="q-{{id}}-hint-btn" class="btn btn-outline-primary float-right" data-hint-visible="false">Show Hint</button>
 {{/if}}
+
+<div class="mt-2">
+    <div id="q-{{id}}-answer-correctness" class="float-left"></div>
+</div>
+
+<div id="q-{{id}}-expl-collapse" class="collapse">
+    <br/>
+    <br/>
+    <div></div>
+</div>
 
 <script>
     $(function() {
+        {{#if hint_exists}}
+        var hintText = null;
+        var getHintGQL = function(onSuccess, onError) {
+            var q = `query CardQuestionHintQuery(
+                  $resolverArgs: [QueryResolverArgs]!
+                ) {
+                  questionHint(resolverArgs: $resolverArgs) {
+                    hint
+                    id
+                  }
+                }
+            `
+            var rArgs = [{
+                param: "question_id",
+                value: "{{{id}}}"
+            }];
+            $.postJSON(gqlEndpoint, {
+                query: q,
+                variables: {
+                    resolverArgs: rArgs
+                }
+            }, onSuccess, onError);
+        };
+
+        var errLoadingHint = function(btn) {
+            toastr.error("An error occurred getting the question hint. Please try again in a moment.");
+            btn.removeClass('is-loading');
+            btn.attr('disabled', false);
+        };
+
+        $("#q-{{id}}-hint-btn").click(function() {
+            var btn = $(this);
+            if (btn.data('hint-visible') === 'true') {
+                $("#q-{{id}}-question-hint").hide();
+                btn.data('hint-visible', 'false');
+            } else if (hintText) {
+                btn.data('hint-visible', 'true');
+                $("#q-{{id}}-question-hint").show();
+            } else {
+                btn.addClass('is-loading');
+                btn.attr('disabled', 'disabled');
+                getHintGQL(function(resp) {
+                    if (!resp.data.questionHint) {
+                        errLoadingHint(btn);
+                        return;
+                    }
+                    hintText = resp.data.questionHint.hint;
+                    $("#q-{{id}}-question-hint").text(hintText);
+                    btn.removeClass('is-loading');
+                    btn.attr('disabled', false);
+                }, function() {
+                    errLoadingHint(btn);
+                });
+                $(this).data('hint-visible', 'true');
+            }
+        });
+
+        {{/if}}
+
         var submitAnsGQL = function(selectedIds, onSuccess, onError) {
             var m = `mutation SubmitCardAnswerMutation(
                     $input: SubmitAnswerInput!
@@ -77,7 +145,55 @@
                     input: inputData
                 }
             }, onSuccess, onError);
-        }
+        };
+
+        var errLoadingQ = function(btn) {
+            toastr.error("An error occurred submitting your answer. Please try again in a moment.");
+            btn.removeClass('is-loading');
+            btn.attr('disabled', false);
+        };
+
+        var elCorrectness = $("#q-{{id}}-answer-correctness");
+
+        var answeredCorrectly = function(btn, explainText) {
+            answeredRenderExpl(btn, explainText);
+            elCorrectness.text("Awesome, you answered this question correctly! 🎉");
+            elCorrectness.addClass('text-success');
+            elCorrectness.removeClass('text-warning');
+            elCorrectness.show();
+            btn.attr('disabled', 'disabled');
+        };
+
+        var answeredIncorrectly = function(btn, explainText) {
+            answeredRenderExpl(btn, explainText);
+            elCorrectness.text("That answer's not quite right...");
+            elCorrectness.addClass('text-warning');
+            elCorrectness.removeClass('text-success');
+            elCorrectness.show();
+        };
+
+        var hasRenderedExpl = false;
+
+        var answeredRenderExpl = function(btn, explainText) {
+            if (hasRenderedExpl) {
+                return;
+            }
+            hasRenderedExpl = true;
+            $("#q-{{id}}-expl-collapse div").html((new showdown.Converter()).makeHtml(explainText));
+            $("#q-{{id}}-expl-btn").click(function() {
+                if ($("#q-{{id}}-expl-collapse").hasClass('show')) {
+                    $("#q-{{id}}-expl-collapse").removeClass('show');
+                    $("#q-{{id}}-expl-btn").text("Show Explanation");
+                } else {
+                    btn.attr('disabled', 'disabled');
+                    $("#q-{{id}}-expl-collapse").addClass('show');
+                    $("#q-{{id}}-expl-btn").text("Hide Explanation");
+                }
+            });
+            $("#q-{{id}}-expl-btn").show();
+            setupCodeHLJS();
+        };
+
         var submitAns = function(btn) {
             btn.addClass('is-loading');
             btn.attr('disabled', 'disabled');
@@ -87,14 +203,21 @@
                     selectedIds.push($(this).val());
                 }
             });
-            submitAnsGQL(selectedIds, function(data) {
-                console.log(data)
+            submitAnsGQL(selectedIds, function(resp) {
+                var data = resp.data;
+                if (!data.submitAnswer) {
+                    errLoadingQ(btn);
+                    return;
+                }
+                if (data.submitAnswer.is_correct) {
+                    answeredCorrectly(btn, data.submitAnswer.explain_text)
+                } else {
+                    answeredIncorrectly(btn, data.submitAnswer.explain_text)
+                }
                 btn.removeClass('is-loading');
                 btn.attr('disabled', false);
             }, function() {
-                toastr.error("An error occurred submitting your answer. Please try again in a moment.");
-                btn.removeClass('is-loading');
-                btn.attr('disabled', false);
+                errLoadingQ(btn)
             });
         };
         $("#q-{{id}}-submit-btn").click(function() {

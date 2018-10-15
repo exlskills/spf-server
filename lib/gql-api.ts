@@ -79,6 +79,22 @@ export default class GqlApi {
                     }
                     question {
                         id
+                        question_text
+                        question_type
+                        hint_exists
+                        data {
+                            id
+                            tmpl_files
+                            environment_key
+                            use_advanced_features
+                            explanation
+                            src_files
+                            options {
+                                id
+                                seq
+                                text
+                            }
+                        }
                     }
                 }
             }

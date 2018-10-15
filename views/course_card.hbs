@@ -49,6 +49,19 @@
             {{{markdown data.course.card.content.content}}}
         </div>
     </div>
+    {{#if data.course.card.question}}
+    <div class="card">
+        <div class="card-header">
+            <!-- Title -->
+            <h4 class="card-header-title">
+                Application Question
+            </h4>
+        </div>
+        <div id="course-card-body" class="card-body">
+            {{> quiz-question data.course.card.question}}
+        </div>
+    </div>
+    {{/if}}
     <div class="row align-items-center">
         <div class="col-auto card-bottom-nav">
             {{> course-card-pagination}}

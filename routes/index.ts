@@ -31,9 +31,10 @@ HandlebarsHelpers({
 
 const registerPartialHBS = (name: string) => {
     handlebars.registerPartial(name, fs.readFileSync(path.join(__dirname, `../views/partials/${name}.hbs`), {encoding: 'utf-8'}));
-}
+};
 
 registerPartialHBS('course-top');
+registerPartialHBS('quiz-question');
 registerPartialHBS('course-card-pagination');
 registerPartialHBS('course-enrollment-mutations');
 registerPartialHBS('course-add-on-cards');
