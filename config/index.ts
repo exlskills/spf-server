@@ -52,7 +52,7 @@ export default {
         privacyPolicyAndTermsURL: process.env.WEB_TMPL_PRIVACY_POLICY_AND_TERMS_URL || 'https://exlskills.com/legal',
         gaTrackingID: process.env.WEB_TMPL_GA_TRACKING_ID || 'UA-122120459-2',
         subscribersSiteID: process.env.WEB_TMPL_SUBSCRIBERS_SITE_ID || 'set_me',
-        codeQuestionEditorURL: process.env.WEB_TMPL_CODE_QUESTION_EDITOR_URL || '',
+        codeQuestionEditorURL: process.env.WEB_TMPL_CODE_QUESTION_EDITOR_URL || 'https://exlcode.com/repl',
         liveCourseScheduleMomentParseFmt: 'YYYY-MM-DD[T]HH:mm[:00.000]Z',
         liveCourseScheduleMomentOutFmt: 'YYYY-MM-DD[T]HH:mm[:00.000Z]'
     }
