@@ -38,7 +38,55 @@
                     </p>
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                        Syllabus
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <strong>
+                                <ol>
+                                    {{#each data.course.units}}
+                                        <a class="spf-link" href="/learn-{{../route.locale}}/courses/{{../data.course.meta.url_id}}/{{url_id}}/{{first_section_url_id}}/{{first_card_url_id}}">
+                                            <li>{{title}}</li>
+                                        </a>
+                                        <br />
+                                    {{/each}}
+                                </ol>
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <!-- Title -->
+                            <h4 class="card-header-title">
+                                More Info (From GitHub)
+                            </h4>
+                        </div>
+                        <div class="col-auto">
+
+                        </div>
+                        <a class="collapse-toggle" href="#course-index-info-md-wrapper" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="course-index-info-md-wrapper"></a>
+                    </div>
+                </div>
+                <div id="course-index-info-md-wrapper" class="collapse">
+                    <div class="card-body">
+                        {{{markdown data.course.meta.info_md}}}
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div class="col-12 col-lg-4">
             {{> course-action-button-right}}
             <div class="card">
@@ -149,63 +197,8 @@
                     </div> <!-- / .row -->
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12 col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    <!-- Title -->
-                    <h4 class="card-header-title">
-                        Syllabus
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <strong>
-                                <ol>
-                                    {{#each data.course.units}}
-                                        <a class="spf-link" href="/learn-{{../route.locale}}/courses/{{../data.course.meta.url_id}}/{{url_id}}/{{first_section_url_id}}/{{first_card_url_id}}">
-                                            <li>{{title}}</li>
-                                        </a>
-                                        <br />
-                                    {{/each}}
-                                </ol>
-                            </strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-4">
             {{> course-add-on-cards}}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <!-- Title -->
-                            <h4 class="card-header-title">
-                                More Info (From GitHub)
-                            </h4>
-                        </div>
-                        <div class="col-auto">
-
-                        </div>
-                        <a class="collapse-toggle" href="#course-index-info-md-wrapper" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="course-index-info-md-wrapper"></a>
-                    </div>
-                </div>
-                <div id="course-index-info-md-wrapper" class="collapse">
-                    <div class="card-body">
-                        {{{markdown data.course.meta.info_md}}}
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <br />
