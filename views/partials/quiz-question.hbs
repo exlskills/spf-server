@@ -39,7 +39,10 @@
     {{/if}}
 </div>
 
-<button id="q-{{{id}}}-submit-btn" class="btn btn-primary">Submit</button>
+<button id="q-{{{id}}}-submit-btn" class="btn btn-primary" style="min-width: 160px;">Check Answer</button>
+{{#if nav}}
+    <a style="min-width: 160px;display: none;" href="/learn-{{nav.locale}}/courses/{{nav.courseUrlId}}/{{nav.nextUnit.url_id}}/{{nav.nextSection.url_id}}/{{nav.nextCard.url_id}}" id="q-{{{id}}}-next-btn" class="spf-link btn btn-success">Next <span class="fe fe-chevron-right"></span></a>
+{{/if}}
 <button style="display: none;" id="q-{{{id}}}-expl-btn" class="btn btn-outline-primary ml-2">Show Explanation</button>
 {{#if hint_exists}}
     <button id="q-{{{id}}}-hint-btn" class="btn btn-outline-primary float-right" data-hint-visible="false">Show Hint</button>
@@ -166,6 +169,10 @@
 
         var answeredCorrectly = function(btn, explainText) {
             answeredRenderExpl(btn, explainText);
+            {{#if nav}}
+                btn.hide();
+                $("#q-" + escId + "-next-btn").show();
+            {{/if}}
             elCorrectness.text("Awesome, you answered this question correctly! 🎉");
             elCorrectness.addClass('text-success');
             elCorrectness.removeClass('text-warning');
@@ -176,6 +183,9 @@
 
         var answeredIncorrectly = function(btn, explainText) {
             answeredRenderExpl(btn, explainText);
+            btn.removeClass('btn-primary');
+            btn.addClass('btn-warning');
+            btn.html('Try Again <span class="fe fe-refresh-cw ml-3"><span>');
             elCorrectness.text("That answer's not quite right...");
             elCorrectness.addClass('text-warning');
             elCorrectness.removeClass('text-success');
@@ -184,6 +194,7 @@
         };
 
         var hasRenderedExpl = false;
+        var hasViewedExpl = false;
 
         var answeredRenderExpl = function(btn, explainText) {
             if (hasRenderedExpl) {
@@ -196,6 +207,14 @@
                     $("#q-" + escId + "-expl-collapse").removeClass('show');
                     $("#q-" + escId + "-expl-btn").text("Show Explanation");
                 } else {
+                    if (!hasViewedExpl) {
+                        hasViewedExpl = true;
+                        {{#if nav}}
+                            btn.hide();
+                            $("#q-" + escId + "-next-btn").show();
+                            elCorrectness.hide();
+                        {{/if}}
+                    }
                     btn.attr('disabled', 'disabled');
                     $("#q-" + escId + "-expl-collapse").addClass('show');
                     $("#q-" + escId + "-expl-btn").text("Hide Explanation");

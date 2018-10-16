@@ -25,7 +25,10 @@ export function setupQuizQuestionForView(question: IQuestion, nav: any) {
 
 export async function viewCourseCard(client: GqlApi, user: IUserData, locale: string, req: Request, courseGID: string, unitGID: string, sectionGID: string, cardGID: string) : Promise<ISPFRouteResponse> {
     let gqlResp = await fetchDetailedCourseForView(client, courseGID);
-    gqlResp.nav = {};
+    gqlResp.nav = {
+        locale,
+        courseUrlId: gqlResp.meta.url_id
+    };
     const curUnitIdx = gqlResp.units.findIndex(u => u.id === unitGID);
     gqlResp.nav.currentUnit = gqlResp.units[curUnitIdx];
     const curSectIdx = gqlResp.nav.currentUnit.sections_list.findIndex(s => s.id === sectionGID);
