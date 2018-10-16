@@ -4,6 +4,24 @@ import {IUserData} from "../lib/jwt";
 import { Request } from 'express';
 import {toUrlId} from "../utils/url-ids";
 import {fetchDetailedCourseForView} from "./course-index";
+import IQuestionData = GQL.IQuestionData;
+import IQuestion = GQL.IQuestion;
+import config from '../config';
+import {uuidv4} from "../utils/uuid";
+
+export function setupQuizQuestionForView(question: IQuestion, nav: any) {
+    (question as any).nav = nav;
+    if (question.question_type === 'WSCQ') {
+        (question.data as any).workspace_id = uuidv4();
+        let workspace = {
+            files: JSON.parse(question.data.tmpl_files),
+            name: 'EXLskills',
+            id: (question.data as any).workspace_id,
+            environmentKey: question.data.environment_key
+        };
+        (question.data as any).editor_iframe_url = `${config.templateConstants.codeQuestionEditorURL}/?embedded=true&workspace=${encodeURIComponent(JSON.stringify(workspace))}`;
+    }
+}
 
 export async function viewCourseCard(client: GqlApi, user: IUserData, locale: string, req: Request, courseGID: string, unitGID: string, sectionGID: string, cardGID: string) : Promise<ISPFRouteResponse> {
     let gqlResp = await fetchDetailedCourseForView(client, courseGID);
@@ -62,6 +80,7 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
     }
     gqlResp.card = await client.getSectionCard(courseGID, unitGID, sectionGID, cardGID);
     gqlResp.card['url_id'] = toUrlId(gqlResp.card.title, gqlResp.card.id);
+    setupQuizQuestionForView(gqlResp.card.question, gqlResp.nav);
     return {
         contentTmpl: 'course_card',
         meta: {

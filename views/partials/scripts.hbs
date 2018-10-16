@@ -268,3 +268,17 @@
         });
     });
 </script>
+<script>
+    var _WSCQ_quiz_currentUserWorkspace = null;
+    var _WSCQ_quiz_currentUserWorkspaceId = null;
+    window.addEventListener('message', function(evt) {
+        try {
+            var data = JSON.parse(evt.data)
+            if (data && data.event === 'workspace.changed' && data.workspaceId === _WSCQ_quiz_currentUserWorkspaceId) {
+                _WSCQ_quiz_currentUserWorkspace = JSON.stringify(data.payload);
+            }
+        } catch (error) {
+            console.log('invalid iframe msg: ', evt, ',ignoring error: ', error)
+        }
+    });
+</script>

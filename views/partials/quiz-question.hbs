@@ -23,7 +23,14 @@
             </div>
         {{/each}}
     {{/eq}}
-    <!-- TODO: WSCQ -->
+
+    {{#eq question_type "WSCQ"}}
+        <iframe src="{{{data.editor_iframe_url}}}"
+                frameBorder="0"
+                width="100%"
+                height="500px"
+                style="width: 100%;height: 500px;border: none;"></iframe>
+    {{/eq}}
 </div>
 
 <div>
@@ -110,7 +117,7 @@
 
         {{/if}}
 
-        var submitAnsGQL = function(selectedIds, onSuccess, onError) {
+        var submitAnsGQL = function(respData, onSuccess, onError) {
             var m = `mutation SubmitCardAnswerMutation(
                     $input: SubmitAnswerInput!
                 ) {
@@ -138,8 +145,8 @@
                 is_last_question: false,
                 question_id: "{{{id}}}",
                 quiz: true,
-                response_data: JSON.stringify({selected_ids: selectedIds})
-            }
+                response_data: respData
+            };
             $.postJSON(gqlEndpoint, {
                 query: m,
                 variables: {
@@ -198,32 +205,58 @@
             setupCodeHLJS();
         };
 
-        var submitAns = function(btn) {
-            btn.addClass('is-loading');
-            btn.attr('disabled', 'disabled');
-            var selectedIds = [];
-            $("[name='q-" + escId + "-opt-grp']").each(function() {
-                if ($(this).is(':checked')) {
-                    selectedIds.push($(this).val());
-                }
-            });
-            submitAnsGQL(selectedIds, function(resp) {
-                var data = resp.data;
-                if (!data.submitAnswer) {
+        {{#eq question_type "WSCQ"}}
+            _WSCQ_quiz_currentUserWorkspaceId = "{{{data.workspace_id}}}"
+            _WSCQ_quiz_currentUserWorkspace = JSON.stringify({{{data.tmpl_files}}});
+            var submitAns = function(btn) {
+                btn.addClass('is-loading');
+                btn.attr('disabled', 'disabled');
+                // TODO setup listeners to pull data from the editor IDE (perhaps at the window lvl)
+                submitAnsGQL(JSON.stringify({user_files: _WSCQ_quiz_currentUserWorkspace}), function(resp) {
+                    var data = resp.data;
+                    if (!data.submitAnswer) {
+                        errLoadingQ(btn);
+                        return;
+                    }
+                    if (data.submitAnswer.is_correct) {
+                        answeredCorrectly(btn, data.submitAnswer.explain_text)
+                    } else {
+                        answeredIncorrectly(btn, data.submitAnswer.explain_text)
+                    }
+                    btn.removeClass('is-loading');
+                    btn.attr('disabled', false);
+                }, function() {
                     errLoadingQ(btn);
-                    return;
-                }
-                if (data.submitAnswer.is_correct) {
-                    answeredCorrectly(btn, data.submitAnswer.explain_text)
-                } else {
-                    answeredIncorrectly(btn, data.submitAnswer.explain_text)
-                }
-                btn.removeClass('is-loading');
-                btn.attr('disabled', false);
-            }, function() {
-                errLoadingQ(btn);
-            });
-        };
+                });
+            };
+        {{else}}
+            var submitAns = function(btn) {
+                btn.addClass('is-loading');
+                btn.attr('disabled', 'disabled');
+                var selectedIds = [];
+                $("[name='q-" + escId + "-opt-grp']").each(function() {
+                    if ($(this).is(':checked')) {
+                        selectedIds.push($(this).val());
+                    }
+                });
+                submitAnsGQL(JSON.stringify({selected_ids: selectedIds}), function(resp) {
+                    var data = resp.data;
+                    if (!data.submitAnswer) {
+                        errLoadingQ(btn);
+                        return;
+                    }
+                    if (data.submitAnswer.is_correct) {
+                        answeredCorrectly(btn, data.submitAnswer.explain_text)
+                    } else {
+                        answeredIncorrectly(btn, data.submitAnswer.explain_text)
+                    }
+                    btn.removeClass('is-loading');
+                    btn.attr('disabled', false);
+                }, function() {
+                    errLoadingQ(btn);
+                });
+            };
+        {{/eq}}
 
         $("#q-" + escId + "-submit-btn").click(function() {
             submitAns($(this));
