@@ -57,11 +57,14 @@ type ControllerFunction = (client: GqlApi, user: IUserData, locale: string, ...a
  * @param params (req) => [params, ...].
  */
 const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFunction) => async (req: Request, res?: Response, next?: NextFunction) => {
+    let startReqTs = (new Date()).getTime();
     let gqlToken = req.cookies['token'];
     let setUpdatedToken = false;
     if (!gqlToken) {
         setUpdatedToken = true;
+        let startTknReq = (new Date()).getTime();
         gqlToken = await getGQLToken();
+        console.log(`Get Token Req Duration: ${(new Date()).getTime() - startTknReq}ms`);
     }
     const gqlClient = new GqlApi(gqlToken);
     let userData: IUserData;
@@ -106,10 +109,13 @@ const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFun
         result.meta.fullTitle = `EXLskills - ${result.meta.title}`;
         result.user = userData;
         if (!result.user.is_demo) {
+            let startCoinsReq = (new Date()).getTime();
             result.user.coins = await getCoinsCount(result.user.id);
+            console.log(`Get Coins Req Duration: ${(new Date()).getTime() - startCoinsReq}ms`);
         } else {
             result.user.coins = 0;
         }
+        console.log(`Req Data Load Duration: ${(new Date()).getTime() - startReqTs}ms`);
         if (result.amp) {
             result.layout = 'amp';
             return res.render(result.contentTmpl, result);

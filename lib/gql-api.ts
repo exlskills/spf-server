@@ -10,6 +10,7 @@ import ICourseUnitEdge = GQL.ICourseUnitEdge;
 import ICourseDeliverySchedule = GQL.ICourseDeliverySchedule;
 import * as moment from 'moment-timezone';
 import IUserCourseRoleEdge = GQL.IUserCourseRoleEdge;
+import {getGQLToken} from "./anon";
 
 export type CourseListType = 'mine' | 'relevant'
 export interface IDetailedCourse {
@@ -45,11 +46,13 @@ export default class GqlApi {
     private async request(query: string): Promise<IQuery> {
         logger.debug('[GQL] Request: ' + query);
         try {
+            let startReqTs = (new Date()).getTime();
             const resp = await this.client.post(config.gql.endpoint, {
                 query: query,
                 operationName: null,
                 variables: null
             });
+            console.log(`GQL Req Time: ${(new Date()).getTime() - startReqTs}ms`);
             if (resp.data.errors) {
                 logger.error('[GQL] ' + JSON.stringify(resp.data.errors));
                 return Promise.reject('GQL Error')
