@@ -10,8 +10,8 @@ COPY . /app/
 RUN npm install
 RUN npm run build
 # Setup NGINX
-RUN mkdir /usr/share/nginx/html/learn-en
-RUN cp -a /app/static /usr/share/nginx/html/learn-en
+RUN mkdir -p /usr/share/nginx/html/learn-en/assets
+RUN cp -a /app/static/assets/ /usr/share/nginx/html/learn-en/
 COPY prod-nginx.conf /etc/nginx/nginx.conf
 COPY prod-nginx-site.conf /etc/nginx/conf.d/default.conf
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
