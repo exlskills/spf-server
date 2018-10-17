@@ -24,6 +24,7 @@ import {getCoinsCount} from "../lib/botmanager-api";
 import {redirectMissingLocale} from "../controllers/redirect-locale";
 import {redirectDashboard} from "../controllers/redirect-dashboard";
 import {ampViewCourseCard} from "../controllers/amp-course-card";
+import logger from "../utils/logger";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -109,9 +110,17 @@ const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFun
         result.meta.fullTitle = `EXLskills - ${result.meta.title}`;
         result.user = userData;
         if (!result.user.is_demo) {
-            let startCoinsReq = (new Date()).getTime();
-            result.user.coins = await getCoinsCount(result.user.id);
-            console.log(`Get Coins Req Duration: ${(new Date()).getTime() - startCoinsReq}ms`);
+            try {
+                let startCoinsReq = (new Date()).getTime();
+                result.user.coins = await getCoinsCount(result.user.id);
+                console.log(`Get Coins Req Duration: ${(new Date()).getTime() - startCoinsReq}ms`);
+            } catch(err){
+                if (process.env.NODE_ENV === 'production') {
+                    throw new Error(err);
+                }
+                logger.debug(`getCoinsCount failed ` +  err + ` setting user coins to zero`);
+                result.user.coins = 0;
+            }
         } else {
             result.user.coins = 0;
         }
@@ -146,7 +155,7 @@ const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFun
             return res.render(result.contentTmpl, result);
         }
     } catch (error) {
-        return res.status(500) && next(error);
+        return res.status(500) && next(error.message ? error.message : error);
     }
 };
 
