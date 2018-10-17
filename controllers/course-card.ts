@@ -4,12 +4,14 @@ import {IUserData} from "../lib/jwt";
 import { Request } from 'express';
 import {toUrlId} from "../utils/url-ids";
 import {fetchDetailedCourseForView} from "./course-index";
-import IQuestionData = GQL.IQuestionData;
 import IQuestion = GQL.IQuestion;
 import config from '../config';
 import {uuidv4} from "../utils/uuid";
 
 export function setupQuizQuestionForView(question: IQuestion, nav: any) {
+    if (!question) {
+        return;
+    }
     (question as any).nav = nav;
     if (question.question_type === 'WSCQ') {
         (question.data as any).workspace_id = uuidv4();
