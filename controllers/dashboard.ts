@@ -4,7 +4,6 @@ import {IUserData} from "../lib/jwt";
 import {fetchCourseListForView} from "./courses";
 
 export async function viewDashboard(client: GqlApi, user: IUserData, locale: string) : Promise<ISPFRouteResponse> {
-    const relevant = await fetchCourseListForView(client, 'relevant');
     const mine = await fetchCourseListForView(client, 'mine');
     return {
         contentTmpl: 'dashboard',
@@ -14,7 +13,6 @@ export async function viewDashboard(client: GqlApi, user: IUserData, locale: str
         },
         data: {
             courses: {
-                relevant,
                 mine
             }
         }
