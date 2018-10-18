@@ -7,6 +7,11 @@ import {fetchDetailedCourseForView} from "./course-index";
 import IQuestion = GQL.IQuestion;
 import config from '../config';
 import {uuidv4} from "../utils/uuid";
+import * as showdown from 'showdown';
+import * as cheerio from 'cheerio';
+
+const mdToHTML = new showdown.Converter();
+mdToHTML.setFlavor('github');
 
 export function setupQuizQuestionForView(question: IQuestion, nav: any) {
     if (!question) {
@@ -23,6 +28,30 @@ export function setupQuizQuestionForView(question: IQuestion, nav: any) {
         };
         (question.data as any).editor_iframe_url = `${config.templateConstants.codeQuestionEditorURL}/?embedded=true&workspace=${encodeURIComponent(JSON.stringify(workspace))}`;
     }
+}
+
+export function renderFullCardContentHTML(content: string) {
+    const $ = cheerio.load(mdToHTML.makeHtml(content));
+    let hasPythonCode = false;
+    $('pre code.python').each(function() {
+        hasPythonCode = true;
+        let self = $(this);
+        self.replaceWith(`
+            <div data-datacamp-exercise data-lang="python">
+                <code data-type="sample-code">
+                    ${self.html()}
+                </code>
+            </div>
+        `);
+    });
+    let html = $.html();
+    if (hasPythonCode) {
+        html += `
+            <script type="text/javascript" src="//cdn.datacamp.com/dcl-react.js.gz"></script>
+            <script>$(function() { initAddedDCLightExercises(); })</script>
+        `;
+    }
+    return html;
 }
 
 export async function viewCourseCard(client: GqlApi, user: IUserData, locale: string, req: Request, courseGID: string, unitGID: string, sectionGID: string, cardGID: string) : Promise<ISPFRouteResponse> {
@@ -84,6 +113,7 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
         }
     }
     gqlResp.card = await client.getSectionCard(courseGID, unitGID, sectionGID, cardGID);
+    gqlResp.card.content.content = renderFullCardContentHTML(gqlResp.card.content.content);
     gqlResp.card['url_id'] = toUrlId(gqlResp.card.title, gqlResp.card.id);
     setupQuizQuestionForView(gqlResp.card.question, gqlResp.nav);
     return {
