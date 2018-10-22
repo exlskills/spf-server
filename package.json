@@ -1,7 +1,7 @@
 {
   "name": "web-next",
   "version": "1.0.0",
-  "description": "EXLskills SPFJS POC",
+  "description": "EXLskills SPFJS Web Front-end",
   "main": "index.js",
   "dependencies": {
     "axios": "^0.18.0",

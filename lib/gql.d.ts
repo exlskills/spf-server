@@ -32,19 +32,19 @@ userActivity: Array<IUserActivity | null> | null;
 userProfile: IUser | null;
 examToTake: IExam | null;
 examAttempt: Array<IExamAttempt | null> | null;
-oneVersionedContent: IVersionedContentRecord | null;
 activityPaging: IActivityPaging | null;
-coursePaging: ICourseConnection | null;
-unitPaging: ICourseUnitConnection | null;
-userCourseUnitExamStatusPaging: ICourseUnitConnection | null;
-sectionPaging: IUnitSectionConnection | null;
 cardPaging: ISectionCardConnection | null;
+coursePaging: ICourseConnection | null;
+langType: Array<ILang | null> | null;
+listInstructors: IUserConnection | null;
 notificationPaging: INotificationPaging | null;
 questionHint: IQuestion | null;
-langType: Array<ILang | null> | null;
 questionPaging: IQuestionConnection | null;
 questionPagingExam: IQuestionConnection | null;
+sectionPaging: IUnitSectionConnection | null;
 topicFilter: Array<IListDef | null> | null;
+unitPaging: ICourseUnitConnection | null;
+userCourseUnitExamStatusPaging: ICourseUnitConnection | null;
 }
 
 interface INodeOnQueryArguments {
@@ -95,9 +95,14 @@ interface IExamAttemptOnQueryArguments {
 unit_id?: string | null;
 }
 
-interface IOneVersionedContentOnQueryArguments {
-content_id: string;
-version?: string | null;
+interface ICardPagingOnQueryArguments {
+orderBy?: Array<IOrderBy | null> | null;
+filterValues?: IFilterValues | null;
+resolverArgs?: Array<IQueryResolverArgs | null> | null;
+after?: string | null;
+first?: number | null;
+before?: string | null;
+last?: number | null;
 }
 
 interface ICoursePagingOnQueryArguments {
@@ -110,40 +115,11 @@ before?: string | null;
 last?: number | null;
 }
 
-interface IUnitPagingOnQueryArguments {
+interface IListInstructorsOnQueryArguments {
 orderBy?: Array<IOrderBy | null> | null;
 filterValues?: IFilterValues | null;
 resolverArgs?: Array<IQueryResolverArgs | null> | null;
-after?: string | null;
-first?: number | null;
-before?: string | null;
-last?: number | null;
-}
-
-interface IUserCourseUnitExamStatusPagingOnQueryArguments {
-orderBy?: Array<IOrderBy | null> | null;
-filterValues?: IFilterValues | null;
-resolverArgs?: Array<IQueryResolverArgs | null> | null;
-after?: string | null;
-first?: number | null;
-before?: string | null;
-last?: number | null;
-}
-
-interface ISectionPagingOnQueryArguments {
-orderBy?: Array<IOrderBy | null> | null;
-filterValues?: IFilterValues | null;
-resolverArgs?: Array<IQueryResolverArgs | null> | null;
-after?: string | null;
-first?: number | null;
-before?: string | null;
-last?: number | null;
-}
-
-interface ICardPagingOnQueryArguments {
-orderBy?: Array<IOrderBy | null> | null;
-filterValues?: IFilterValues | null;
-resolverArgs?: Array<IQueryResolverArgs | null> | null;
+instructorTopics?: Array<string | null> | null;
 after?: string | null;
 first?: number | null;
 before?: string | null;
@@ -180,7 +156,37 @@ before?: string | null;
 last?: number | null;
 }
 
-type Node = ICourse | ICourseUnit | IUnitSection | ISectionCard | IEmbeddedDocRefRecord | IVersionedContentRecord | IQuestion | IQuestionData | IQuestionMultipleData | ICourseDeliverySchedule | IScheduledRunSessionInfoType | IScheduledRunType | IScheduledRunSessionType | ISessionInstructorType | IUser | IUserSubscription | IAuthStrategy | IUserOrganizationRole | IUserCourseRole | IExam | IExamAttempt | IActivity | IUserNotification | ILang | IListDef;
+interface ISectionPagingOnQueryArguments {
+orderBy?: Array<IOrderBy | null> | null;
+filterValues?: IFilterValues | null;
+resolverArgs?: Array<IQueryResolverArgs | null> | null;
+after?: string | null;
+first?: number | null;
+before?: string | null;
+last?: number | null;
+}
+
+interface IUnitPagingOnQueryArguments {
+orderBy?: Array<IOrderBy | null> | null;
+filterValues?: IFilterValues | null;
+resolverArgs?: Array<IQueryResolverArgs | null> | null;
+after?: string | null;
+first?: number | null;
+before?: string | null;
+last?: number | null;
+}
+
+interface IUserCourseUnitExamStatusPagingOnQueryArguments {
+orderBy?: Array<IOrderBy | null> | null;
+filterValues?: IFilterValues | null;
+resolverArgs?: Array<IQueryResolverArgs | null> | null;
+after?: string | null;
+first?: number | null;
+before?: string | null;
+last?: number | null;
+}
+
+type Node = ICourse | ICourseUnit | IUnitSection | ISectionCard | IEmbeddedDocRefRecord | IVersionedContentRecord | IQuestion | IQuestionData | IQuestionMultipleData | ICourseDeliverySchedule | IScheduledRunSessionInfoType | IScheduledRunType | IScheduledRunSessionType | ISessionInstructorType | IUser | IUserSubscription | IAuthStrategy | IUserOrganizationRole | IUserCourseRole | IExam | IExamAttempt | IActivity | ILang | IUserNotification | IListDef;
 
 interface INode {
 __typename: "Node";
@@ -513,8 +519,11 @@ pwd: string | null;
 secondary_emails: Array<string | null> | null;
 biography: string | null;
 is_demo: boolean | null;
+is_instructor: boolean | null;
 headline: string | null;
 has_completed_first_tutorial: boolean | null;
+instructor_topics_en: Array<string | null> | null;
+instructor_topics_locale: Array<string | null> | null;
 locales: Array<string | null> | null;
 primary_locale: string;
 subscription: IUserSubscriptionConnection | null;
@@ -702,6 +711,25 @@ node: ICourse | null;
 cursor: string;
 }
 
+interface ILang {
+__typename: "Lang";
+id: string;
+label: string | null;
+value: string | null;
+}
+
+interface IUserConnection {
+__typename: "UserConnection";
+pageInfo: IPageInfo;
+edges: Array<IUserEdge | null> | null;
+}
+
+interface IUserEdge {
+__typename: "UserEdge";
+node: IUser | null;
+cursor: string;
+}
+
 interface INotificationPaging {
 __typename: "notificationPaging";
 notifications: IUserNotificationConnection | null;
@@ -739,13 +767,6 @@ is_read: boolean;
 created_at: string;
 updated_at: string;
 content: string | null;
-}
-
-interface ILang {
-__typename: "Lang";
-id: string;
-label: string | null;
-value: string | null;
 }
 
 interface IQuestionConnection {
