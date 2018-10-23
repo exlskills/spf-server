@@ -102,7 +102,24 @@
             <script>
                 window.timekitBookingConfig = {
                     app_key: '{{{config.timekitPublicKey}}}',
-                    project_id: '8cf3f192-806d-4280-9993-0eae71203a43' // Change this!
+                    project_id: '8cf3f192-806d-4280-9993-0eae71203a43', // Change this!
+                    customer_fields: {
+                        name: {
+                            title: 'Full name',
+                            prefilled: '{{user.full_name}}',
+                            readonly: false
+                        },
+                        email: {
+                            title: 'Email',
+                            prefilled: '{{user.primary_email}}',
+                            readonly: false
+                        },
+                        price: {
+                            title: 'Price',
+                            prefilled: 'US$40/hour (Payment due within 7-days of lesson)',
+                            readonly: true
+                        }
+                    }
                 }
             </script>
         </div>
@@ -123,9 +140,30 @@
                         </div>
                         <div class="col-auto">
 
-                            {{#each data.instructor.}}
-
+                            {{#each data.instructor.instructor_topics_locale}}
+                                <span class="badge badge-primary">
+                                    {{this}}
+                                </span>
                             {{/each}}
+
+                        </div>
+                    </div> <!-- / .row -->
+
+                    <!-- Divider -->
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Verified Lessons
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+
+                            <span class="text-success">500+ 🔥</span>
 
                         </div>
                     </div> <!-- / .row -->
@@ -144,8 +182,8 @@
                         </div>
                         <div class="col-auto">
 
-                            <time class="small text-muted" datetime="2018-10-28">
-                                10/24/18
+                            <time class="small text-muted" datetime="2017">
+                                2017
                             </time>
 
                         </div>
@@ -166,29 +204,8 @@
                         <div class="col-auto">
 
                             <small class="text-muted">
-                                Los Angeles, CA
+                                {{data.instructor.location_name}}
                             </small>
-
-                        </div>
-                    </div> <!-- / .row -->
-
-                    <!-- Divider -->
-                    <hr>
-
-                    <div class="row align-items-center">
-                        <div class="col">
-
-                            <!-- Title -->
-                            <h5 class="mb-0">
-                                Website
-                            </h5>
-
-                        </div>
-                        <div class="col-auto">
-
-                            <a href="#!" class="small">
-                                themes.getbootstrap.com
-                            </a>
 
                         </div>
                     </div> <!-- / .row -->

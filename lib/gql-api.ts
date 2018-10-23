@@ -318,6 +318,16 @@ export default class GqlApi {
                 headline
                 biography
                 avatar_url
+                instructor_topics_locale
+                instructor_timekit {
+                    intervals {
+                        credits
+                        duration_seconds
+                        project_id
+                    }
+                }
+                location_name
+                linkedin_username
                 twitter_username
               }
             }

@@ -529,9 +529,12 @@ primary_locale: string;
 subscription: IUserSubscriptionConnection | null;
 avatar_url: string | null;
 twitter_username: string | null;
+linkedin_username: string | null;
+location_name: string | null;
 is_verified: boolean | null;
 auth_strategies: IAuthStrategyConnection | null;
 organization_roles: IUserOrganizationRoleConnection | null;
+instructor_timekit: IInstructorTimekit | null;
 course_roles: IUserCourseRoleConnection | null;
 }
 
@@ -612,6 +615,18 @@ __typename: "UserOrganizationRole";
 id: string;
 organization_id: string;
 role: string;
+}
+
+interface IInstructorTimekit {
+__typename: "InstructorTimekit";
+intervals: ITimekitInterval;
+}
+
+interface ITimekitInterval {
+__typename: "TimekitInterval";
+credits: number | null;
+duration_seconds: number | null;
+project_id: string | null;
 }
 
 interface IUserCourseRoleConnection {
