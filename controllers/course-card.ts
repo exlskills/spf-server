@@ -44,7 +44,7 @@ export function renderFullCardContentHTML(content: string) {
             </div>
         `);
     });
-    if (!hasPythonCode && $('div.data-datacamp-exercise').length) {
+    if (!hasPythonCode && $('div[data-datacamp-exercise]').length) {
         hasPythonCode = true;
     }
     let html = $.html();
