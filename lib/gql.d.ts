@@ -528,6 +528,7 @@ locales: Array<string | null> | null;
 primary_locale: string;
 subscription: IUserSubscriptionConnection | null;
 avatar_url: string | null;
+twitter_username: string | null;
 is_verified: boolean | null;
 auth_strategies: IAuthStrategyConnection | null;
 organization_roles: IUserOrganizationRoleConnection | null;

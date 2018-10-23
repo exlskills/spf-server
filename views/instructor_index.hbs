@@ -1,8 +1,219 @@
-<div id="bookingjs"></div>
-<script src="https://cdn.timekit.io/booking-js/v2/booking.min.js" defer></script>
-<script>
-    window.timekitBookingConfig = {
-        app_key: '{{{config.timekitPublicKey}}}',
-        project_id: '8cf3f192-806d-4280-9993-0eae71203a43' // Change this!
+<style>
+    #instructor-profile-header {
+        margin-bottom: 0;
     }
-</script>
+    #instructor-profile-header .hero-wrapper {
+        height: 200px;
+        width: 100%;
+    }
+    #instructor-profile-header .hero {
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/learn-en/assets/img/covers/profile-cover-1.jpg') no-repeat;
+        background-size: cover;
+        background-position-y: 25%;
+    }
+    #instructor-profile-header .header-avatar-top img {
+        background-color: white;
+    }
+    #instructor-profile-header .header-body {
+        border: none;
+    }
+    #instructor-profile-header .row.align-items-end {
+        margin-top: 8px;
+    }
+    @media (min-width: 768px) {
+        #instructor-profile-header .row.align-items-end {
+            margin-top: 14px;
+        }
+    }
+</style>
+
+<!-- HEADER -->
+<div id="instructor-profile-header" class="header">
+
+    <div class="hero-wrapper">
+        <div class="hero">
+
+        </div>
+    </div>
+
+    <div class="container-fluid">
+
+        <!-- Body -->
+        <div class="header-body mt--5 mt-md--6">
+            <div class="row align-items-end">
+                <div class="col-auto">
+
+                    <!-- Avatar -->
+                    <div class="avatar avatar-xxl header-avatar-top">
+                        <img src="{{data.instructor.avatar_url}}" alt="..." class="avatar-img rounded-circle border border-4 border-body">
+                    </div>
+
+                </div>
+                <div class="col mb-3 ml--3 ml-md--2">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle mt-4">
+                        Instructor
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        {{data.instructor.full_name}}
+                    </h1>
+
+                    <small class="text-secondary">{{data.instructor.headline}}</small>
+
+                </div>
+                <div class="col-12 col-md-auto mt-2 mt-md-0 mb-md-3">
+
+                    <!--&lt;!&ndash; Button &ndash;&gt;-->
+                    <!--<a href="#!" class="btn btn-primary d-block d-md-inline-block">-->
+                        <!--Book Now!-->
+                    <!--</a>-->
+
+                </div>
+            </div> <!-- / .row -->
+        </div> <!-- / .header-body -->
+
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            {{#if data.instructor.biography}}
+                <div class="card">
+                    <div class="card-header">
+                        <!-- Title -->
+                        <h4 class="card-header-title">
+                            About Me
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        {{{markdown data.instructor.biography}}}
+                    </div>
+                </div>
+            {{/if}}
+            <div id="bookingjs"></div>
+            <script src="https://cdn.timekit.io/booking-js/v2/booking.min.js" defer></script>
+            <script>
+                window.timekitBookingConfig = {
+                    app_key: '{{{config.timekitPublicKey}}}',
+                    project_id: '8cf3f192-806d-4280-9993-0eae71203a43' // Change this!
+                }
+            </script>
+        </div>
+        <div class="col-12 col-xl-4">
+
+            <!-- Card -->
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Topics
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+
+                            {{#each data.instructor.}}
+
+                            {{/each}}
+
+                        </div>
+                    </div> <!-- / .row -->
+
+                    <!-- Divider -->
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Joined
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+
+                            <time class="small text-muted" datetime="2018-10-28">
+                                10/24/18
+                            </time>
+
+                        </div>
+                    </div> <!-- / .row -->
+
+                    <!-- Divider -->
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Location
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+
+                            <small class="text-muted">
+                                Los Angeles, CA
+                            </small>
+
+                        </div>
+                    </div> <!-- / .row -->
+
+                    <!-- Divider -->
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Website
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+
+                            <a href="#!" class="small">
+                                themes.getbootstrap.com
+                            </a>
+
+                        </div>
+                    </div> <!-- / .row -->
+
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- / .row -->
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            {{#if data.instructor.twitter_username}}
+                <div class="card">
+                    <div class="card-header">
+                        <!-- Title -->
+                        <h4 class="card-header-title">
+                            Updates
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <a class="twitter-timeline" href="https://twitter.com/{{data.instructor.twitter_username}}?ref_src=twsrc%5Etfw">Loading updates ...</a>
+                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</div> <!-- / .container-fluid -->

@@ -318,6 +318,7 @@ export default class GqlApi {
                 headline
                 biography
                 avatar_url
+                twitter_username
               }
             }
         `;
