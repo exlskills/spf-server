@@ -97,31 +97,66 @@
                     </div>
                 </div>
             {{/if}}
-            <div id="bookingjs"></div>
-            <script src="https://cdn.timekit.io/booking-js/v2/booking.min.js" defer></script>
-            <script>
-                window.timekitBookingConfig = {
-                    app_key: '{{{config.timekitPublicKey}}}',
-                    project_id: '8cf3f192-806d-4280-9993-0eae71203a43', // Change this!
-                    customer_fields: {
-                        name: {
-                            title: 'Full name',
-                            prefilled: '{{user.full_name}}',
-                            readonly: false
+            {{#each data.instructor.instructor_timekit.intervals}}
+                <div id="bookingjs"></div>
+                <script>
+                    TimekitBooking().init({
+                        app_key: '{{{../config.timekitPublicKey}}}',
+                        project_id: '{{{project_id}}}', // Change this!
+                        customer_fields: {
+                            name: {
+                                title: 'Full Name',
+                                prefilled: '{{../user.full_name}}',
+                                readonly: false
+                            },
+                            email: {
+                                title: 'Email',
+                                prefilled: '{{../user.email}}',
+                                readonly: false
+                            },
+                            location: {
+                                title: 'Location',
+                                prefilled: 'Online (Remote Audio/Video)',
+                                readonly: true
+                            },
+                            deposit: {
+                                title: 'Deposit (Required to secure booking)',
+                                prefilled: 'US$5 Deposit (Refunded after session)',
+                                readonly: true
+                            },
+                            rate: {
+                                title: 'Hourly Rate (Billed in 15-minute intervals)',
+                                prefilled: 'US$40/hour (Payment due within 7 days of session)',
+                                readonly: true
+                            }
                         },
-                        email: {
-                            title: 'Email',
-                            prefilled: '{{user.primary_email}}',
-                            readonly: false
+                        ui: {
+                            display_name: 'Book a Session With {{../data.instructor.full_name}}',
+                            localization: {
+                                submit_button: 'Pay Deposit ($5)',
+                                success_message: 'Your booking is now awaiting deposit $5 and will be released in 5-minutes in the event of non-payment.'
+                            }
                         },
-                        price: {
-                            title: 'Price',
-                            prefilled: 'US$40/hour (Payment due within 7-days of lesson)',
-                            readonly: true
+                        callbacks: {
+                            createBookingSuccessful: function (resp) {
+                                var bookingCheckoutItem = {
+                                    category: 'instructor_booking_deposit',
+                                    quantity: 1,
+                                    options: {
+
+                                    },
+                                    refs: {
+                                        booking_id: resp.data.id
+                                    },
+                                    displayUnitCost: 5,
+                                    displayName: 'Deposit for Session with {{{../data.instructor.full_name}}}'
+                                };
+                                window.location.hash = '#!modalCheckout='+encodeURIComponent(JSON.stringify(bookingCheckoutItem));
+                            }
                         }
-                    }
-                }
-            </script>
+                    });
+                </script>
+            {{/each}}
         </div>
         <div class="col-12 col-xl-4">
 
@@ -147,6 +182,23 @@
                             {{/each}}
 
                         </div>
+                </div> <!-- / .row -->
+
+                    <!-- Divider -->
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Rating (5/5)
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+                            <span class="text-success">⭐⭐⭐⭐⭐</span>
+                        </div>
                     </div> <!-- / .row -->
 
                     <!-- Divider -->
@@ -163,7 +215,28 @@
                         </div>
                         <div class="col-auto">
 
-                            <span class="text-success">500+ 🔥</span>
+                            <span class="text-success">500+ ✅</span>
+
+                        </div>
+                    </div> <!-- / .row -->
+
+                    <!-- Divider -->
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Price
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+
+                            <time class="small text-muted">
+                                US$40/Hour
+                            </time>
 
                         </div>
                     </div> <!-- / .row -->
@@ -189,6 +262,7 @@
                         </div>
                     </div> <!-- / .row -->
 
+                    {{#if data.instructor.location_name}}
                     <!-- Divider -->
                     <hr>
 
@@ -209,6 +283,7 @@
 
                         </div>
                     </div> <!-- / .row -->
+                    {{/if}}
 
                 </div>
             </div>

@@ -3,26 +3,12 @@
     <!-- Card -->
     <div class="card">
 
-        <div class="dropdown card-dropdown">
-            <a href="#!" class="dropdown-ellipses dropdown-toggle text-white" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fe fe-more-vertical"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a href="#!" class="dropdown-item">
-                    Book Now!
-                </a>
-                <a href="#!" class="dropdown-item">
-                    View Profile
-                </a>
-            </div>
-        </div>
-
-        <a href="/learn-{{locale}}/instructors/{{instructor.url_id}}">
+        <a class="spf-link" href="/learn-{{locale}}/instructors/{{instructor.url_id}}">
             <img src="/learn-en/assets/img/covers/profile-cover-6.jpg" alt="..." class="card-img-top">
         </a>
 
         <div class="card-body text-center">
-            <a href="/learn-{{locale}}/instructors/{{instructor.url_id}}" class="avatar avatar-xl card-avatar card-avatar-top">
+            <a href="/learn-{{locale}}/instructors/{{instructor.url_id}}" class="spf-link avatar avatar-xl card-avatar card-avatar-top">
                 <img src="{{instructor.avatar_url}}" class="avatar-img rounded-circle border border-4 border-card" alt="...">
             </a>
 
@@ -53,7 +39,7 @@
                     </small>
                 </div>
                 <div class="col-auto">
-                    <a href="#!" class="btn btn-sm btn-danger">
+                    <a href="/learn-{{locale}}/instructors/{{instructor.url_id}}" class="spf-link btn btn-sm btn-danger">
                         <span class="fe fe-clock"></span> Book Now!
                     </a>
                 </div>

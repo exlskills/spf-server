@@ -122,6 +122,13 @@ export default class GqlApi {
                     info_md
                     verified_cert_cost
                     delivery_methods
+                    instructor_timekit {
+                        intervals {
+                            credits
+                            project_id
+                            duration_seconds
+                        }
+                    }
                 }
             }
         `;
@@ -145,6 +152,13 @@ export default class GqlApi {
                     info_md
                     verified_cert_cost
                     delivery_methods
+                    instructor_timekit {
+                        intervals {
+                            credits
+                            project_id
+                            duration_seconds
+                        }
+                    }
                 }
                 unitPaging(first: 999, resolverArgs: [{param: "course_id", value: "${courseId}"}]) {
                     edges {
@@ -218,6 +232,13 @@ export default class GqlApi {
                     info_md
                     verified_cert_cost
                     delivery_methods
+                    instructor_timekit {
+                        intervals {
+                            credits
+                            project_id
+                            duration_seconds
+                        }
+                    }
                 }
                 unitPaging(first: 999, resolverArgs: [{param: "course_id", value: "${courseId}"}]) {
                     edges {
@@ -320,11 +341,11 @@ export default class GqlApi {
                 avatar_url
                 instructor_topics_locale
                 instructor_timekit {
-                    intervals {
-                        credits
-                        duration_seconds
-                        project_id
-                    }
+                  intervals {
+                    credits
+                    project_id
+                    duration_seconds
+                  }
                 }
                 location_name
                 linkedin_username

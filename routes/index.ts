@@ -26,6 +26,7 @@ import {redirectDashboard} from "../controllers/redirect-dashboard";
 import {ampViewCourseCard} from "../controllers/amp-course-card";
 import logger from "../utils/logger";
 import {viewInstructor, viewInstructors} from "../controllers/instructors";
+import {viewCourseHelp} from "../controllers/course-help";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -43,6 +44,7 @@ registerPartialHBS('quiz-question');
 registerPartialHBS('course-card-pagination');
 registerPartialHBS('course-enrollment-mutations');
 registerPartialHBS('course-add-on-cards');
+registerPartialHBS('course-booking');
 registerPartialHBS('course-action-button-left');
 registerPartialHBS('course-action-button-right');
 registerPartialHBS('course-card-lg-vertical');
@@ -176,6 +178,7 @@ router.get('/learn-:locale/dashboard', gc(viewDashboard, req => []));
 router.get('/learn-:locale/courses', gc(viewCourses, req => []));
 router.get('/learn-:locale/courses/:courseId', gc(viewCourseIndex, req => [fromUrlId('Course', req.params.courseId)]));
 router.get('/learn-:locale/courses/:courseId/content', gc(viewCourseContent, req => [fromUrlId('Course', req.params.courseId)]));
+router.get('/learn-:locale/courses/:courseId/help', gc(viewCourseHelp, req => [fromUrlId('Course', req.params.courseId)]));
 router.get('/learn-:locale/courses/:courseId/live', gc(viewCourseLive, req => [fromUrlId('Course', req.params.courseId)]));
 router.get('/learn-:locale/courses/:courseId/progress', gc(viewCourseProgress, req => [fromUrlId('Course', req.params.courseId)]));
 router.get('/learn-:locale/courses/:courseId/certificate', gc(viewCourseCertificate, req => [fromUrlId('Course', req.params.courseId)]));

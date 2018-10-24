@@ -3,6 +3,7 @@ import {ISPFRouteResponse} from "../lib/spf-route-response";
 import {IUserData} from "../lib/jwt";
 import {toUrlId} from "../utils/url-ids";
 import IUser = GQL.IUser;
+import {fromGlobalId} from "../utils/gql-ids";
 
 export async function fetchInstructorListForView(client: GqlApi) {
     let gqlEdges = await client.getAllInstructors();
@@ -17,7 +18,6 @@ export async function fetchInstructorListForView(client: GqlApi) {
 
 export async function fetchInstructorForView(client: GqlApi, instructorGId: string) {
     let instructor = await client.getInstructor(instructorGId) as IUser & { url_id: string };
-    console.log(instructor);
     instructor.url_id = toUrlId(instructor.full_name, instructor.id);
     return instructor;
 }

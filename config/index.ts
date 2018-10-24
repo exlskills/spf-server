@@ -59,6 +59,7 @@ export default {
         codeQuestionEditorURL: process.env.WEB_TMPL_CODE_QUESTION_EDITOR_URL || 'https://exlcode.com/repl',
         liveCourseScheduleMomentParseFmt: 'YYYY-MM-DD[T]HH:mm[:00.000]Z',
         liveCourseScheduleMomentOutFmt: 'YYYY-MM-DD[T]HH:mm[:00.000Z]',
-        timekitPublicKey: process.env.WEB_TIMEKIT_PK || "set_me"
+        timekitPublicKey: process.env.WEB_TIMEKIT_PK || "set_me",
+        becomeAnInstructorForm: process.env.WEB_BECOME_INSTRUCTOR_FORM || 'https://exlinc.typeform.com/to/ybIw4k'
     }
 }

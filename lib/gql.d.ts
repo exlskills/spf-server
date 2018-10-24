@@ -221,6 +221,7 @@ last_accessed_unit: string | null;
 last_accessed_section: string | null;
 last_accessed_card: string | null;
 delivery_methods: Array<string | null> | null;
+instructor_timekit: IInstructorTimekit | null;
 }
 
 interface IUnitsOnCourseArguments {
@@ -435,6 +436,18 @@ node: ISectionCard | null;
 cursor: string;
 }
 
+interface IInstructorTimekit {
+__typename: "InstructorTimekit";
+intervals: Array<ITimekitInterval | null> | null;
+}
+
+interface ITimekitInterval {
+__typename: "TimekitInterval";
+credits: number | null;
+duration_seconds: number | null;
+project_id: string | null;
+}
+
 interface ICourseDeliverySchedule {
 __typename: "CourseDeliverySchedule";
 id: string;
@@ -615,18 +628,6 @@ __typename: "UserOrganizationRole";
 id: string;
 organization_id: string;
 role: string;
-}
-
-interface IInstructorTimekit {
-__typename: "InstructorTimekit";
-intervals: ITimekitInterval;
-}
-
-interface ITimekitInterval {
-__typename: "TimekitInterval";
-credits: number | null;
-duration_seconds: number | null;
-project_id: string | null;
 }
 
 interface IUserCourseRoleConnection {

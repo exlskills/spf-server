@@ -1,0 +1,60 @@
+{{#each course.meta.instructor_timekit.intervals}}
+    <div id="bookingjs"></div>
+    <script>
+        TimekitBooking().init({
+            app_key: '{{{../config.timekitPublicKey}}}',
+            project_id: '{{{project_id}}}', // Change this!
+            customer_fields: {
+                name: {
+                    title: 'Full Name',
+                    prefilled: '{{../user.full_name}}',
+                    readonly: false
+                },
+                email: {
+                    title: 'Email',
+                    prefilled: '{{../user.email}}',
+                    readonly: false
+                },
+                location: {
+                    title: 'Location',
+                    prefilled: 'Online (Remote Audio/Video)',
+                    readonly: true
+                },
+                deposit: {
+                    title: 'Deposit (Required to secure booking)',
+                    prefilled: 'US$5 Deposit (Refunded after session)',
+                    readonly: true
+                },
+                rate: {
+                    title: 'Hourly Rate (Billed in 15-minute intervals)',
+                    prefilled: 'US$40/hour (Payment due within 7 days of session)',
+                    readonly: true
+                }
+            },
+            ui: {
+                display_name: 'Book a Private Session For {{../course.meta.title}}',
+                localization: {
+                    submit_button: 'Pay Deposit ($5)',
+                    success_message: 'Your booking is now awaiting deposit $5 and will be released in 5-minutes in the event of non-payment.'
+                }
+            },
+            callbacks: {
+                createBookingSuccessful: function (resp) {
+                    var bookingCheckoutItem = {
+                        category: 'instructor_booking_deposit',
+                        quantity: 1,
+                        options: {
+
+                        },
+                        refs: {
+                            booking_id: resp.data.id
+                        },
+                        displayUnitCost: 5,
+                        displayName: 'Deposit for a Private Session for {{{../course.meta.title}}}'
+                    };
+                    window.location.hash = '#!modalCheckout='+encodeURIComponent(JSON.stringify(bookingCheckoutItem));
+                }
+            }
+        });
+    </script>
+{{/each}}

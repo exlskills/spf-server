@@ -62,7 +62,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link spf-link {{#eq contentTmpl "instructors"}}active{{/eq}}" href="/learn-{{route.locale}}/instructors">
-                    <i class="fe fe-zap"></i> Instructors
+                    <i class="fe fe-users"></i> Instructors
                 </a>
             </li>
             <li class="nav-item">
@@ -94,6 +94,13 @@
                         <i class="fe fe-clipboard"></i> Overview
                     </a>
                 </li>
+                {{#if data.course.meta.instructor_timekit.intervals}}
+                    <li class="nav-item">
+                        <a class="text-primary nav-link spf-link {{#eq contentTmpl "course_help"}}active{{/eq}}" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/help">
+                            <i class="fe fe-help-circle"></i> Get Help! ✋
+                        </a>
+                    </li>
+                {{/if}}
                 {{#eq contentTmpl "course_card"}}
                     <li class="nav-item">
                         <a class="nav-link spf-link active" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content">
