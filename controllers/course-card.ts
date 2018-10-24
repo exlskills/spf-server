@@ -12,6 +12,9 @@ import * as cheerio from 'cheerio';
 
 const mdToHTML = new showdown.Converter();
 mdToHTML.setFlavor('github');
+mdToHTML.setOption('tables', true);
+mdToHTML.setOption('tasklists', true);
+mdToHTML.setOption('ghCompatibleHeaderId', true);
 
 export function setupQuizQuestionForView(question: IQuestion, nav: any) {
     if (!question) {
@@ -47,6 +50,8 @@ export function renderFullCardContentHTML(content: string) {
     if (!hasPythonCode && $('div[data-datacamp-exercise]').length) {
         hasPythonCode = true;
     }
+    $('table').addClass('table');
+    $('table thead tr th').addClass('col');
     let html = $.html();
     if (hasPythonCode) {
         html += `
