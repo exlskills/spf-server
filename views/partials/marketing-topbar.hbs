@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light d-none d-md-flex" style="border-bottom: 0; background-color: #F9FBFD">
+<nav class="navbar navbar-expand-md navbar-light d-none d-md-flex" style="border-bottom: 0; background-color: transparent">
     <div class="container-fluid">
 
         <!-- Brand -->
@@ -17,15 +17,18 @@
 
         #marketing-nav {
           font-size: 1.2em;
+          font-weight: bold;
         }
 
         #btn-start {
           font-size: 1em;
+          font-weight: bold;
         }
 
         </style>
         <!-- Links -->
           <div id="marketing-nav" class="navbar-nav">
+            
             <div class="nav-item">
             <a class="nav-link spf-link {{#eq contentTmpl "home"}}active{{/eq}}" href="/home">
                 Home
@@ -54,13 +57,3 @@
         </div> <!-- / .navbar-nav -->
     </div> <!-- / .container-fluid -->
 </nav>
-<script>
-    $(function() {
-        $('.topbar-coins-manager input').focus(function(e) {
-            $(this).blur();
-        });
-        $('.topbar-coins-manager').click(function(e) {
-          window.location.hash = '#!modalManageCoins=true';
-        })
-    });
-</script>

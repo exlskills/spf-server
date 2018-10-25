@@ -9,7 +9,7 @@ export async function viewMarketing(client: GqlApi, user: IUserData, locale: str
         contentTmpl: 'marketing-index',
         layout: 'marketing',
         meta: {
-            title: 'test',
+            title: 'Home',
             description: 'Your EXLskills Dashboard'
         },
         data: {
