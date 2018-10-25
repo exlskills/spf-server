@@ -58,10 +58,10 @@ type ControllerFunction = (client: GqlApi, user: IUserData, locale: string, ...a
 /**
  * Handles controller execution and responds to user.
  * This way controllers are not attached to the API.
- * @param promise Controller Promise.
+ * @param controllerFunction Controller Promise.
  * @param params (req) => [params, ...].
  */
-const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFunction) => async (req: Request, res?: Response, next?: NextFunction) => {
+const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params: ParamsFunction) => async (req: Request, res?: Response, next?: NextFunction) => {
     let startReqTs = (new Date()).getTime();
     let gqlToken = req.cookies['token'];
     let setUpdatedToken = false;
@@ -83,7 +83,7 @@ const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFun
     }
     const initialParams = params ? params(req, res, next) : [req, res, next];
     try {
-        const result = await promise(gqlClient, userData, req.params.locale, ...initialParams);
+        const result = await controllerFunction(gqlClient, userData, req.params.locale, ...initialParams);
         if (setUpdatedToken) {
             res.cookie(config.jwt.cookieName, gqlToken, {
                 expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),

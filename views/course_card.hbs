@@ -73,11 +73,11 @@
     $(function() {
         wsusi.sendNotification('card.action', {
             action: "view",
-            card_id: "{{data.course.card.id}}",
-            course_id: "{{data.course.meta.id}}",
-            section_id: "{{data.course.nav.currentSection.id}}",
-            unit_id: "{{data.course.nav.currentUnit.id}}",
-            user_id: "{{user.id}}"
+            card_id: "{{{data.course.card.id}}}",
+            course_id: "{{{data.course.meta.id}}}",
+            section_id: "{{{data.course.nav.currentSection.id}}}",
+            unit_id: "{{{data.course.nav.currentUnit.id}}}",
+            user_id: "{{{user.id}}}"
         });
     });
 </script>
