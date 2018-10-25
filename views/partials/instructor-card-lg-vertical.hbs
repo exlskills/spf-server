@@ -1,0 +1,49 @@
+<div class="col-12 col-md-6 col-xl-4">
+
+    <!-- Card -->
+    <div class="card">
+
+        <a class="spf-link" href="/learn-{{locale}}/instructors/{{instructor.url_id}}">
+            <img src="/learn-en/assets/img/covers/profile-cover-6.jpg" alt="..." class="card-img-top">
+        </a>
+
+        <div class="card-body text-center">
+            <a href="/learn-{{locale}}/instructors/{{instructor.url_id}}" class="spf-link avatar avatar-xl card-avatar card-avatar-top">
+                <img src="{{instructor.avatar_url}}" class="avatar-img rounded-circle border border-4 border-card" alt="...">
+            </a>
+
+            <h2 class="card-title">
+                <a class="spf-link" href="/learn-{{locale}}/instructors/{{instructor.url_id}}">{{instructor.full_name}}</a>
+            </h2>
+
+            <p class="card-text text-muted">
+                <small>
+                    {{instructor.headline}}
+                </small>
+            </p>
+
+            <p class="card-text">
+                {{#each instructor.instructor_topics_locale}}
+                    <span class="badge badge-primary">
+                        {{this}}
+                    </span>
+                {{/each}}
+            </p>
+
+            <hr>
+
+            <div class="row align-items-center justify-content-between">
+                <div class="col-auto">
+                    <small>
+                        <span class="text-success fe fe-check-circle"></span> <span class="text-secondary">VERIFIED</span>
+                    </small>
+                </div>
+                <div class="col-auto">
+                    <a href="/learn-{{locale}}/instructors/{{instructor.url_id}}" class="spf-link btn btn-sm btn-danger">
+                        <span class="fe fe-clock"></span> Book Now!
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

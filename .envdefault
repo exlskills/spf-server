@@ -7,6 +7,7 @@ WEB_BOT_MANAGER_API_KEY=set_me
 WEB_BOT_MANAGER_API_URL=http://localhost:2999
 WEB_TMPL_WS_USI_ENDPOINT=wss://usi-api.exlskills.com/v0/wsusi
 WEB_COOKIES_DOMAIN=.exlskills.com
+WEB_TIMEKIT_SK=set_me
 
 # Template constants
 WEB_TMPL_LOGOUT_URL=https://accounts.exlinc.com/auth/realms/exlinc/protocol/openid-connect/logout?redirect_uri=https%3A%2F%2Fexlskills.com
@@ -23,3 +24,4 @@ WEB_TMPL_AUTH_API_BASE_URL=https://auth-api.exlskills.com
 WEB_TMPL_GQL_ENDPOINT=https://gql-api.exlskills.com/graph
 WEB_TMPL_GA_TRACKING_ID=UA-122120459-2
 WEB_TMPL_CODE_QUESTION_EDITOR_URL=https://exlcode.com/repl
+WEB_TIMEKIT_PK=set_me

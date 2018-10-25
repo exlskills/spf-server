@@ -39,6 +39,10 @@ export default {
         topbar: 'partials/topbar.hbs',
         sidebar: 'partials/sidebar.hbs'
     },
+    timekit: {
+        secretKey: process.env.WEB_TIMEKIT_SK || "set_me",
+        publicKey: process.env.WEB_TIMEKIT_PK || "set_me"
+    },
     templateConstants: {
         logoutURL: process.env.WEB_TMPL_LOGOUT_URL || 'https://accounts.exlinc.com/auth/realms/exlinc/protocol/openid-connect/logout?redirect_uri=https%3A%2F%2Fexlskills.com',
         stripePubKey: process.env.WEB_TMPL_STRIPE_PUB_KEY || 'set_me',
@@ -54,6 +58,8 @@ export default {
         subscribersSiteID: process.env.WEB_TMPL_SUBSCRIBERS_SITE_ID || 'set_me',
         codeQuestionEditorURL: process.env.WEB_TMPL_CODE_QUESTION_EDITOR_URL || 'https://exlcode.com/repl',
         liveCourseScheduleMomentParseFmt: 'YYYY-MM-DD[T]HH:mm[:00.000]Z',
-        liveCourseScheduleMomentOutFmt: 'YYYY-MM-DD[T]HH:mm[:00.000Z]'
+        liveCourseScheduleMomentOutFmt: 'YYYY-MM-DD[T]HH:mm[:00.000Z]',
+        timekitPublicKey: process.env.WEB_TIMEKIT_PK || "set_me",
+        becomeAnInstructorForm: process.env.WEB_BECOME_INSTRUCTOR_FORM || 'https://exlinc.typeform.com/to/ybIw4k'
     }
 }

@@ -33,11 +33,13 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <p>
-                        {{{markdown data.course.meta.description}}}
-                    </p>
+                    {{{markdown data.course.meta.description}}}
+
+                    {{> course-action-button-right}}
                 </div>
             </div>
+
+            {{> course-booking course=data.course config=config user=user}}
 
             <div class="card">
                 <div class="card-header">
@@ -88,7 +90,6 @@
         </div>
 
         <div class="col-12 col-lg-4">
-            {{> course-action-button-right}}
             <div class="card">
                 <div class="card-body">
 
@@ -107,6 +108,40 @@
                                 FREE!
                             </small>
 
+                        </div>
+                    </div> <!-- / .row -->
+
+                    <!-- Divider -->
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Rating (5/5)
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+                            <span class="text-success">⭐⭐⭐⭐⭐</span>
+                        </div>
+                    </div> <!-- / .row -->
+
+                    <!-- Divider -->
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h5 class="mb-0">
+                                Verified Students
+                            </h5>
+
+                        </div>
+                        <div class="col-auto">
+                            <span class="text-success">5000+ ✅</span>
                         </div>
                     </div> <!-- / .row -->
 

@@ -221,6 +221,7 @@ last_accessed_unit: string | null;
 last_accessed_section: string | null;
 last_accessed_card: string | null;
 delivery_methods: Array<string | null> | null;
+instructor_timekit: IInstructorTimekit | null;
 }
 
 interface IUnitsOnCourseArguments {
@@ -435,6 +436,18 @@ node: ISectionCard | null;
 cursor: string;
 }
 
+interface IInstructorTimekit {
+__typename: "InstructorTimekit";
+intervals: Array<ITimekitInterval | null> | null;
+}
+
+interface ITimekitInterval {
+__typename: "TimekitInterval";
+credits: number | null;
+duration_seconds: number | null;
+project_id: string | null;
+}
+
 interface ICourseDeliverySchedule {
 __typename: "CourseDeliverySchedule";
 id: string;
@@ -528,9 +541,13 @@ locales: Array<string | null> | null;
 primary_locale: string;
 subscription: IUserSubscriptionConnection | null;
 avatar_url: string | null;
+twitter_username: string | null;
+linkedin_username: string | null;
+location_name: string | null;
 is_verified: boolean | null;
 auth_strategies: IAuthStrategyConnection | null;
 organization_roles: IUserOrganizationRoleConnection | null;
+instructor_timekit: IInstructorTimekit | null;
 course_roles: IUserCourseRoleConnection | null;
 }
 

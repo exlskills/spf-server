@@ -6,7 +6,7 @@
                     <div class="col-12 ">
 
                         <!-- Image -->
-                        <img src="/learn-en/assets/img/illustrations/happiness.svg" alt="..." class="img-fluid mb-4" style="max-width: 272px;">
+                        <img src="/learn-en/assets/img/illustrations/happiness.svg" alt="..." class="img-fluid mt-4" style="max-width: 272px;">
 
                         <!-- Title -->
                         <h2>
@@ -29,7 +29,7 @@
         </div>
     {{else}}
         {{#if data.course.nextStep.learn}}
-            <a style="display: none;" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nextStep.learn.unit.url_id}}/{{data.course.nextStep.learn.section.url_id}}/{{data.course.nextStep.learn.card.url_id}}" class="spf-link btn btn-primary w-100 mb-4 d-md-block">Resume Learning</a>
+            <a style="display: none;" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nextStep.learn.unit.url_id}}/{{data.course.nextStep.learn.section.url_id}}/{{data.course.nextStep.learn.card.url_id}}" class="spf-link btn btn-primary w-100 mt-4 d-md-block">Resume Learning</a>
         {{else}}
             {{#if data.course.nextStep.exam}}
                 <!-- TODO take exam -->
@@ -39,5 +39,5 @@
         {{/if}}
     {{/if}}
 {{else}}
-    <button style="display: none;" class="course-enrollment-start-action-btn btn btn-primary w-100 mb-4 d-md-block">Start Learning For FREE!</button>
+    <button style="display: none;" class="course-enrollment-start-action-btn btn btn-primary w-100 mt-4 d-md-block">Start Learning For FREE!</button>
 {{/if}}

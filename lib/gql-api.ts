@@ -4,13 +4,13 @@ import logger from "../utils/logger";
 import config from "../config"
 import IQuery = GQL.IQuery;
 import ICourse = GQL.ICourse;
-import IVersionedContentRecord = GQL.IVersionedContentRecord;
 import ICourseEdge = GQL.ICourseEdge;
 import ICourseUnitEdge = GQL.ICourseUnitEdge;
 import ICourseDeliverySchedule = GQL.ICourseDeliverySchedule;
 import * as moment from 'moment-timezone';
 import IUserCourseRoleEdge = GQL.IUserCourseRoleEdge;
-import {getGQLToken} from "./anon";
+import IUserEdge = GQL.IUserEdge;
+import IUser = GQL.IUser;
 
 export type CourseListType = 'mine' | 'relevant'
 export interface IDetailedCourse {
@@ -122,6 +122,13 @@ export default class GqlApi {
                     info_md
                     verified_cert_cost
                     delivery_methods
+                    instructor_timekit {
+                        intervals {
+                            credits
+                            project_id
+                            duration_seconds
+                        }
+                    }
                 }
             }
         `;
@@ -145,6 +152,13 @@ export default class GqlApi {
                     info_md
                     verified_cert_cost
                     delivery_methods
+                    instructor_timekit {
+                        intervals {
+                            credits
+                            project_id
+                            duration_seconds
+                        }
+                    }
                 }
                 unitPaging(first: 999, resolverArgs: [{param: "course_id", value: "${courseId}"}]) {
                     edges {
@@ -218,6 +232,13 @@ export default class GqlApi {
                     info_md
                     verified_cert_cost
                     delivery_methods
+                    instructor_timekit {
+                        intervals {
+                            credits
+                            project_id
+                            duration_seconds
+                        }
+                    }
                 }
                 unitPaging(first: 999, resolverArgs: [{param: "course_id", value: "${courseId}"}]) {
                     edges {
@@ -285,6 +306,54 @@ export default class GqlApi {
             }
         `;
         return (await this.request(q)).coursePaging.edges!
+    }
+
+    public async getAllInstructors(): Promise<IUserEdge[]> {
+        const q = `
+            {
+              listInstructors(first: 9999, resolverArgs: [], filterValues: null) {
+                edges {
+                  node {
+                    id
+                    username
+                    full_name
+                    headline
+                    biography
+                    avatar_url
+                    instructor_topics_locale
+                  }
+                }
+              }
+            }
+        `;
+        return (await this.request(q)).listInstructors.edges!
+    }
+
+    public async getInstructor(userId: string): Promise<IUser> {
+        const q = `
+            {
+              userProfile(user_id: "${userId}") {
+                id
+                username
+                full_name
+                headline
+                biography
+                avatar_url
+                instructor_topics_locale
+                instructor_timekit {
+                  intervals {
+                    credits
+                    project_id
+                    duration_seconds
+                  }
+                }
+                location_name
+                linkedin_username
+                twitter_username
+              }
+            }
+        `;
+        return (await this.request(q)).userProfile!
     }
 
     public async getCourseDeliverySchedule(courseId: string, dateOnOrAfter: Date): Promise<ICourseDeliverySchedule> {
