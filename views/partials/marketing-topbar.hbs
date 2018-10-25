@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand-md navbar-light d-none d-md-flex" style="border-bottom: 0; background-color: #F9FBFD">
+    <div class="container-fluid">
+
+        <!-- Brand -->
+        <div>
+          <a class="navbar-brand" href="/home">
+            <img src="/learn-en/assets/img/logo-exlskills.svg" class="navbar-brand-img
+            mx-auto" alt="...">
+          </a>
+        </div>
+
+        <style>
+
+        .navbar-brand-img {
+          height: 100%;
+        }
+
+        #marketing-nav {
+          font-size: 1.2em;
+        }
+
+        #btn-start {
+          font-size: 1em;
+        }
+
+        </style>
+        <!-- Links -->
+          <div id="marketing-nav" class="navbar-nav">
+            <div class="nav-item">
+            <a class="nav-link spf-link {{#eq contentTmpl "home"}}active{{/eq}}" href="/home">
+                Home
+            </a>
+          </div>
+
+          <div class="nav-item">
+            <a class="nav-link spf-link {{#eq contentTmpl "premium"}}active{{/eq}}" href="/premium">
+                Premium
+            </a>
+          </div>
+
+            <div class="nav-item">
+              <a class="nav-link spf-link {{#eq contentTmpl "instructor"}}active{{/eq}}" href="/instructor">
+                  Instructor
+              </a>
+            </div>
+
+
+          <!-- Button -->
+          <div class="navbar-user">
+            <a id="btn-start" href="learn-en/dashboard" class="btn btn-outline-primary">
+              Get Started
+            </a>
+          </div>
+        </div> <!-- / .navbar-nav -->
+    </div> <!-- / .container-fluid -->
+</nav>
+<script>
+    $(function() {
+        $('.topbar-coins-manager input').focus(function(e) {
+            $(this).blur();
+        });
+        $('.topbar-coins-manager').click(function(e) {
+          window.location.hash = '#!modalManageCoins=true';
+        })
+    });
+</script>
