@@ -53,6 +53,7 @@ registerPartialHBS('instructor-card-lg-vertical');
 
 registerPartialHBS('marketing-topbar');
 registerPartialHBS('marketing-card');
+registerPartialHBS('marketing-instructor-card');
 registerPartialHBS('marketing-cards');
 registerPartialHBS('course-carousel')
 

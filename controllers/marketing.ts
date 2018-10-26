@@ -4,17 +4,16 @@ import {IUserData} from "../lib/jwt";
 import {fetchCourseListForView} from "./courses";
 
 export async function viewMarketing(client: GqlApi, user: IUserData, locale: string) : Promise<ISPFRouteResponse> {
-    const mine = await fetchCourseListForView(client, 'mine');
+    const relevant = await fetchCourseListForView(client, 'relevant');
     return {
         contentTmpl: 'marketing-index',
         layout: 'marketing',
         meta: {
-            title: 'Home',
-            description: 'Your EXLskills Dashboard'
+            title: 'Home'
         },
         data: {
             courses: {
-                mine
+                relevant
             }
         }
     }
