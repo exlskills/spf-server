@@ -1,0 +1,41 @@
+<style >
+  .carousel {
+    display: flex;
+    background-color: grey;
+    height: 60vh;
+    justify-content: center;
+    align-items: center;
+  }
+  .carousel-inner {
+    margin: auto;
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+  }
+  .carousel-item {
+    justify-content: center;
+    align-items: center;
+  }
+</style>
+
+<div id="carouselExampleControls" class="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      {{>marketing-cards}}
+    </div>
+    <div class="carousel-item">
+      {{>course-card-lg-vertical}}
+    </div>
+    <div class="carousel-item">
+      {{>marketing-cards}}
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
