@@ -296,6 +296,9 @@ _id: string | null;
 title: string | null;
 headline: string | null;
 cost: number | null;
+is_hidden: boolean | null;
+closes_at: string | null;
+opens_at: string | null;
 }
 
 interface ICourse {

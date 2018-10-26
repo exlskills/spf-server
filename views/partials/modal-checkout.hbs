@@ -73,6 +73,33 @@
                             </div>
                         </div>
                     {{else}}
+                        <form id="checkout-shipping-form" style="display: none;">
+                            <h4>Shipping Information</h4>
+
+                            <label for="checkout-shipping-form-full-name">Full Name</label>
+                            <input id="checkout-shipping-form-full-name" type="text" required>
+
+                            <label for="checkout-shipping-form-addr-1">Address Line 1</label>
+                            <input id="checkout-shipping-form-addr-1" type="text" required>
+
+                            <label for="checkout-shipping-form-addr-2">Address Line 2 (Optional)</label>
+                            <input id="checkout-shipping-form-addr-2" type="text">
+
+                            <label for="checkout-shipping-form-country">Country</label>
+                            <select id="checkout-shipping-form-country" class="form-control" data-toggle="select">
+                                <option>United States of America</option>
+                                <option>Canada</option>
+                            </select>
+
+                            <label for="checkout-shipping-form-city">City</label>
+                            <input id="checkout-shipping-form-city" type="text" required>
+
+                            <label for="checkout-shipping-form-state">State/Province</label>
+                            <input id="checkout-shipping-form-state" type="text" required>
+
+                            <label for="checkout-shipping-form-zip-code">Zip/Postal Code</label>
+                            <input id="checkout-shipping-form-zip-code" type="text" minlength="5" required>
+                        </form>
                         <div>
                             <form style="display: none;" id="complete-checkout-form">
                                 <button type="submit" class="btn btn-primary w-100 text-center form-btn-submit"><span class="checkout-pay-msg"></span> </button>
@@ -111,6 +138,35 @@
         return JSON.parse(decodeURIComponent(window.location.hash.replace('#!modalCheckout=', '')));
     }
 
+    function renderShippingInfoForm(item) {
+      var $shippingForm = $('#checkout-shipping-form');
+      if (!item.requireShippingInfo) {
+        $shippingForm.hide();
+        return;
+      }
+      $shippingForm.show();
+    }
+
+    function getShippingInfoFromForm() {
+      var $shippingForm = $('#checkout-shipping-form');
+      var shipping_info = {
+          country: $('#checkout-shipping-form-country').val(),
+          full_name: '',
+          addr_1: '',
+          addr_2: '',
+          city: '',
+          state: '',
+          zip_code: '',
+          valid: true
+      };
+      if (shipping_info || !shipping_info.full_name || !shipping_info.addr_1 || !shipping_info.city || !shipping_info.state || !shipping_info.country || !shipping_info.zip_code) {
+        shipping_info.valid = false;
+      }
+      console.log("Shipping info", shipping_info);
+      return shipping_info
+    }
+</script>
+<script>
     $(function() {
         $('#modalCheckout').on('show.bs.modal', function() {
             $('#checkout-login-link').attr('href', '{{config.authAPIBaseURL}}/auth/keycloak?redirect='+encodeURIComponent(window.location.href));
@@ -140,12 +196,25 @@
             } else {
                 $('#modalCheckout .checkout-pay-msg').text("Pay $" + extraCost);
             }
+
+            renderShippingInfoForm(item);
         });
     });
 </script>
 <script>
     function completeCheckoutForModal(errCallback) {
-        $.postJSON('{{config.authAPIBaseURL}}/purchase', {item: getCheckoutItem()}, function (data) {
+        // TODO check if we need shipping details, if so get them. Check that shipping_info.valid and then delete that extra field.
+        var item = getCheckoutItem();
+        if (item.requireShippingInfo) {
+            item.options.shipping_info = getShippingInfoFromForm();
+            if (item.options.shipping_info.valid) {
+                // TODO Show the user an error toast and fail out
+                console.error("Shipping info is NOT valid");
+                return;
+            }
+            delete item.options.shipping_info.valid;
+        }
+        $.postJSON('{{config.authAPIBaseURL}}/purchase', {item: item}, function (data) {
             refreshJWT(function () {
                 window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: 'Thank you for your purchase! You will receive an email with your order confirmation and all further instructions as necessary.'}));
                 window.location.hash = '';

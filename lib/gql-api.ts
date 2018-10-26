@@ -372,6 +372,9 @@ export default class GqlApi {
                         title
                         headline
                         cost
+                        is_hidden
+                        opens_at
+                        closes_at
                     }
                     instructor_timekit {
                       intervals {
