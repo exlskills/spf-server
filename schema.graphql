@@ -3,7 +3,6 @@ type Activity implements Node {
   id: ID!
   user_id: ID!
   date: String!
-  def_id: String!
   activity_link: String!
   type: String!
   type_desc: String
@@ -26,10 +25,6 @@ type ActivityEdge {
 
   # A cursor for use in pagination
   cursor: String!
-}
-
-type activityPaging {
-  activities(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): ActivityConnection
 }
 
 # Authentication strategy object, provides a flexible structure for various auth methods
@@ -64,6 +59,7 @@ type AuthStrategyEdge {
 type CompletionObj {
   code: String
   msg: String
+  msg_id: String
   processed: Int
   modified: Int
 }
@@ -141,20 +137,20 @@ type CourseUnit implements Node {
   title: String
   headline: String
 
-  # Course units
+  # Units sections
   sections(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): UnitSectionConnection
   sections_list: [UnitSection]
-  final_exams: [String]
-  pre_exams: [String]
+  has_exam: Boolean
   final_exam_weight_pct: Float
   attempts_left: Int
   unit_progress_state: Int
   ema: Float
   grade: Float
   is_continue_exam: Boolean
+  exam_attempt_id: String
 
   # The ID of an object
-  exam_attempt_id: ID!
+  exam_session_id: ID!
   last_attempted_at: String
   attempts: Int
   passed: Boolean
@@ -184,10 +180,61 @@ enum CudAction {
   DELETE
 }
 
+input DateRange {
+  date_from: DateTime
+  date_to: DateTime
+}
+
 # A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 # `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
 # 8601 standard for representation of dates and times using the Gregorian calendar.
 scalar DateTime
+
+# EXLskills Digital Diploma Program
+type DigitalDiploma implements Node {
+  # The ID of an object
+  id: ID!
+  title: String!
+  headline: String!
+  description: String!
+  organization_ids: [ID]
+  primary_locale: String
+  logo_url: String!
+  cover_url: String!
+  is_published: Boolean!
+  topics: [String]
+  info_md: String!
+  skill_level: Int
+  est_minutes: Int
+  primary_topic: String
+  instructor_timekit: InstructorTimekit
+  plans: [DigitalDiplomaPlan]
+}
+
+# A connection to a list of items.
+type DigitalDiplomaConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [DigitalDiplomaEdge]
+}
+
+# An edge in a connection.
+type DigitalDiplomaEdge {
+  # The item at the end of the edge
+  node: DigitalDiploma
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type DigitalDiplomaPlan {
+  _id: String
+  title: String
+  headline: String
+  cost: Float
+}
 
 type EmbeddedDocRef {
   embedded_doc_refs: EmbeddedDocRefRecordConnection!
@@ -240,8 +287,8 @@ type Exam implements Node {
   est_time: Int
 }
 
-# ExamAttempt
-type ExamAttempt implements Node {
+# ExamSession
+type ExamSession implements Node {
   # The ID of an object
   id: ID!
   exam_id: ID!
@@ -266,13 +313,26 @@ input FilterValues {
   filterValuesString: String
 }
 
+input GetCurrentExamQuestionAnswerInput {
+  exam_session_id: ID!
+  question_id: ID!
+  clientMutationId: String
+}
+
+type GetCurrentExamQuestionAnswerPayload {
+  submitted_at: DateTime
+  response_data: String
+  completionObj: CompletionObj
+  clientMutationId: String
+}
+
 type InstructorTimekit {
   intervals: [TimekitInterval]
 }
 
 # Item Price
 type ItemPriceType {
-  amount: Int
+  amount: Float
 }
 
 # Application Lang
@@ -281,16 +341,6 @@ type Lang implements Node {
   id: ID!
   label: String
   value: String
-}
-
-input LeaveExamInput {
-  exam_attempt_id: ID!
-  clientMutationId: String
-}
-
-type LeaveExamPayload {
-  completionObj: CompletionObj
-  clientMutationId: String
 }
 
 type ListDef implements Node {
@@ -302,13 +352,15 @@ type ListDef implements Node {
 
 type Mutation {
   readNotification(input: ReadNotificationInput!): ReadNotificationPayload
+  startExam(input: StartExamInput!): StartExamPayload
+  submitExam(input: SubmitExamInput!): SubmitExamPayload
   submitAnswer(input: SubmitAnswerInput!): SubmitAnswerPayload
-  takeExam(input: TakeExamInput!): TakeExamPayload
-  leaveExam(input: LeaveExamInput!): LeaveExamPayload
+  getCurrentExamQuestionAnswer(input: GetCurrentExamQuestionAnswerInput!): GetCurrentExamQuestionAnswerPayload
+  setCardQuestionAnswer(input: SubmitAnswerInput!): SubmitAnswerPayload
+  setExamQuestionAnswer(input: SetExamQuestionAnswerInput!): SetExamQuestionAnswerPayload
   updateUserProfile(input: UpdateUserProfileInput!): UpdateUserProfilePayload
   updateUserUnitStatus(input: UpdateUserUnitStatusInput!): UpdateUserUnitStatusPayload
   updateUserCourseRole(input: UpdateUserCourseRoleInput!): UpdateUserCourseRolePayload
-  takeQuiz(input: TakeQuizInput!): TakeQuizPayload
 }
 
 # NextQuestion
@@ -359,30 +411,41 @@ type Query {
     # The ID of an object
     id: ID!
   ): Node
+  getDigitalDiplomaById(digital_diploma_id: String): DigitalDiploma
+  getCourseById(course_id: String): Course
   courseById(course_id: String): Course
 
   # Course Unit
   courseUnit(course_id: String, unit_id: String): CourseUnit
+  getCourseDeliverySchedule(course_id: String, delivery_method: String, date_on_or_after: DateTime): CourseDeliverySchedule
   courseDeliverySchedule(course_id: String, delivery_method: String, date_on_or_after: DateTime): CourseDeliverySchedule
 
   # SectionCard Entry
   cardEntry(course_id: ID!, unit_id: ID!, section_id: ID!, card_id: ID!): SectionCard
 
+  # SectionCard Entry
+  getCard(course_id: ID!, unit_id: ID!, section_id: ID!, card_id: ID!): SectionCard
+
   # Card Entry by question ID
-  cardByQuestion(question_id: String!): SectionCard
-  userActivity(start_date: String, end_date: String): [UserActivity]
+  getCardByQuestion(question_id: String!): SectionCard
+  topicFilter: [ListDef]
+  getUserActivityCountByDate(dateRange: DateRange, activityTypes: [String]): [UserActivity]
+  getUserProfile(user_id: String): User
   userProfile(user_id: String): User
   examToTake(unit_id: String, course_id: String): Exam
-  examAttempt(unit_id: String): [ExamAttempt]
+  examSession(unit_id: String): [ExamSession]
 
   # Activities
-  activityPaging: activityPaging
+  listActivities(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], activityTypes: [String], dateRange: DateRange, listDefVersion: Int, after: String, first: Int, before: String, last: Int): ActivityConnection
 
   # all Cards in the Section
-  cardPaging(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): SectionCardConnection
+  listCards(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): SectionCardConnection
 
   # all Courses in the database
   coursePaging(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): CourseConnection
+
+  # all Courses in the database
+  listCourses(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): CourseConnection
   langType: [Lang]
 
   # Instructors
@@ -392,20 +455,22 @@ type Query {
   notificationPaging: notificationPaging
 
   # Question Entry
+  getQuestionHint(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): Question
+
+  # Question Entry
   questionHint(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): Question
 
-  # get Question by Unit
-  questionPaging(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): QuestionConnection
-
-  # get Questions For Exam
-  questionPagingExam(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): QuestionConnection
-
   # all Sections in the Unit
-  sectionPaging(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): UnitSectionConnection
-  topicFilter: [ListDef]
+  listSections(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): UnitSectionConnection
 
   # all Units in the course
   unitPaging(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): CourseUnitConnection
+
+  # all Units in the course
+  listUnits(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): CourseUnitConnection
+
+  # all DigitalDiplomas in the database
+  listDigitalDiplomas(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): DigitalDiplomaConnection
 
   # User exam status for Course
   userCourseUnitExamStatusPaging(orderBy: [OrderBy], filterValues: FilterValues, resolverArgs: [QueryResolverArgs], after: String, first: Int, before: String, last: Int): CourseUnitConnection
@@ -434,15 +499,6 @@ type Question implements Node {
   card_id: ID!
 }
 
-# A connection to a list of items.
-type QuestionConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [QuestionEdge]
-}
-
 # Question data for several question types
 type QuestionData implements Node {
   # The ID of an object
@@ -453,15 +509,6 @@ type QuestionData implements Node {
   explanation: String
   src_files: String
   options: [QuestionMultipleData]
-}
-
-# An edge in a connection.
-type QuestionEdge {
-  # The item at the end of the edge
-  node: Question
-
-  # A cursor for use in pagination
-  cursor: String!
 }
 
 # Question data for the `multiple_choice_single` and `multiple_choice_many` question types
@@ -573,8 +620,34 @@ type SessionInstructorType implements Node {
   biography: String
 }
 
+input SetExamQuestionAnswerInput {
+  exam_session_id: ID!
+  question_id: ID!
+  response_data: String
+  clientMutationId: String
+}
+
+type SetExamQuestionAnswerPayload {
+  completionObj: CompletionObj
+  clientMutationId: String
+}
+
+input StartExamInput {
+  courseId: ID!
+  unitId: ID!
+  clientMutationId: String
+}
+
+type StartExamPayload {
+  exam_session_id: String
+  exam_time_limit: Float
+  exam_id: String
+  completionObj: CompletionObj
+  clientMutationId: String
+}
+
 input SubmitAnswerInput {
-  exam_attempt_id: ID!
+  exam_attempt_id: ID
   question_id: ID!
   response_data: String
   checkAnswer: Boolean
@@ -593,35 +666,20 @@ type SubmitAnswerPayload {
   clientMutationId: String
 }
 
-input TakeExamInput {
-  courseId: ID!
-  unitId: ID!
+input SubmitExamInput {
+  exam_session_id: ID!
   clientMutationId: String
 }
 
-type TakeExamPayload {
-  exam_attempt_id: String
-  exam_time_limit: Float
-  exam_id: String
+type SubmitExamPayload {
+  final_grade_pct: Float
+  pass_mark_pct: Int
   completionObj: CompletionObj
   clientMutationId: String
 }
 
-input TakeQuizInput {
-  card: Boolean
-  courseId: ID!
-  unitId: ID!
-  sectionId: ID
-  clientMutationId: String
-}
-
-type TakeQuizPayload {
-  quiz_id: String
-  clientMutationId: String
-}
-
 type TimekitInterval {
-  credits: Int
+  credits: Float
   duration_seconds: Int
   project_id: String
 }

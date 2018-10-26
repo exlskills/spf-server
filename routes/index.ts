@@ -27,6 +27,7 @@ import {ampViewCourseCard} from "../controllers/amp-course-card";
 import logger from "../utils/logger";
 import {viewInstructor, viewInstructors} from "../controllers/instructors";
 import {viewCourseHelp} from "../controllers/course-help";
+import {viewDigitalDiplomas} from "../controllers/digital-diplomas";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -187,6 +188,8 @@ router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId/c
 router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId', gc(redirectOldCardURL, req => [req]));
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(viewCourseCard, req => [req, fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId', gc(redirectSectionURL, req => [fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId)]));
+
+router.get('/learn-:locale/digital-diplomas', gc(viewDigitalDiplomas, req => []));
 
 router.get('/learn-:locale/instructors', gc(viewInstructors, req => []));
 router.get('/learn-:locale/instructors/:instructorId', gc(viewInstructor, req => [fromUrlId('User', req.params.instructorId)]));

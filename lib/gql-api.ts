@@ -11,6 +11,7 @@ import * as moment from 'moment-timezone';
 import IUserCourseRoleEdge = GQL.IUserCourseRoleEdge;
 import IUserEdge = GQL.IUserEdge;
 import IUser = GQL.IUser;
+import IDigitalDiplomaEdge = GQL.IDigitalDiplomaEdge;
 
 export type CourseListType = 'mine' | 'relevant'
 export interface IDetailedCourse {
@@ -327,6 +328,27 @@ export default class GqlApi {
             }
         `;
         return (await this.request(q)).listInstructors.edges!
+    }
+
+    public async getAllDigitalDiplomas(): Promise<IDigitalDiplomaEdge[]> {
+        const q = `
+            {
+              listDigitalDiplomas(first: 9999, resolverArgs: [], filterValues: null) {
+                edges {
+                  node {
+                    id
+                    title
+                    headline
+                    logo_url
+                    skill_level
+                    est_minutes
+                    primary_topic
+                  }
+                }
+              }
+            }
+        `;
+        return (await this.request(q)).listDigitalDiplomas.edges!
     }
 
     public async getInstructor(userId: string): Promise<IUser> {
