@@ -7,6 +7,10 @@
     #checkout-purchase-headline-wrapper {
         margin-top: 2px;
     }
+
+    #checkout-shipping-form label {
+        margin-top: 6px;
+    }
 </style>
 
 <!-- Modal: Billing -->
@@ -77,13 +81,13 @@
                             <h4>Shipping Information</h4>
 
                             <label for="checkout-shipping-form-full-name">Full Name</label>
-                            <input id="checkout-shipping-form-full-name" type="text" required>
+                            <input class="form-control" id="checkout-shipping-form-full-name" type="text" required>
 
                             <label for="checkout-shipping-form-addr-1">Address Line 1</label>
-                            <input id="checkout-shipping-form-addr-1" type="text" required>
+                            <input class="form-control" id="checkout-shipping-form-addr-1" type="text" required>
 
                             <label for="checkout-shipping-form-addr-2">Address Line 2 (Optional)</label>
-                            <input id="checkout-shipping-form-addr-2" type="text">
+                            <input class="form-control" id="checkout-shipping-form-addr-2" type="text">
 
                             <label for="checkout-shipping-form-country">Country</label>
                             <select id="checkout-shipping-form-country" class="form-control" data-toggle="select">
@@ -92,13 +96,14 @@
                             </select>
 
                             <label for="checkout-shipping-form-city">City</label>
-                            <input id="checkout-shipping-form-city" type="text" required>
+                            <input class="form-control" id="checkout-shipping-form-city" type="text" required>
 
                             <label for="checkout-shipping-form-state">State/Province</label>
-                            <input id="checkout-shipping-form-state" type="text" required>
+                            <input class="form-control" id="checkout-shipping-form-state" type="text" required>
 
                             <label for="checkout-shipping-form-zip-code">Zip/Postal Code</label>
-                            <input id="checkout-shipping-form-zip-code" type="text" minlength="5" required>
+                            <input class="form-control" id="checkout-shipping-form-zip-code" type="text" minlength="5" required>
+                            <br />
                         </form>
                         <div>
                             <form style="display: none;" id="complete-checkout-form">
@@ -149,19 +154,19 @@
 
     function getShippingInfoFromForm() {
       var $shippingForm = $('#checkout-shipping-form');
+      if (!document.getElementById('checkout-shipping-form').reportValidity()) {
+        return {valid: false}
+      }
       var shipping_info = {
           country: $('#checkout-shipping-form-country').val(),
-          full_name: '',
-          addr_1: '',
-          addr_2: '',
-          city: '',
-          state: '',
-          zip_code: '',
+          full_name: $('#checkout-shipping-form-full-name').val(),
+          addr_1: $('#checkout-shipping-form-addr-1').val(),
+          addr_2: $('#checkout-shipping-form-addr-2').val(),
+          city: $('#checkout-shipping-form-city').val(),
+          state: $('#checkout-shipping-form-state').val(),
+          zip_code: $('#checkout-shipping-form-zip-code').val(),
           valid: true
       };
-      if (shipping_info || !shipping_info.full_name || !shipping_info.addr_1 || !shipping_info.city || !shipping_info.state || !shipping_info.country || !shipping_info.zip_code) {
-        shipping_info.valid = false;
-      }
       console.log("Shipping info", shipping_info);
       return shipping_info
     }
@@ -207,7 +212,7 @@
         var item = getCheckoutItem();
         if (item.requireShippingInfo) {
             item.options.shipping_info = getShippingInfoFromForm();
-            if (item.options.shipping_info.valid) {
+            if (!item.options.shipping_info.valid) {
                 // TODO Show the user an error toast and fail out
                 console.error("Shipping info is NOT valid");
                 return;
