@@ -153,11 +153,10 @@
     }
 
     function getShippingInfoFromForm() {
-      var $shippingForm = $('#checkout-shipping-form');
       if (!document.getElementById('checkout-shipping-form').reportValidity()) {
         return {valid: false}
       }
-      var shipping_info = {
+      return {
           country: $('#checkout-shipping-form-country').val(),
           full_name: $('#checkout-shipping-form-full-name').val(),
           addr_1: $('#checkout-shipping-form-addr-1').val(),
@@ -167,8 +166,6 @@
           zip_code: $('#checkout-shipping-form-zip-code').val(),
           valid: true
       };
-      console.log("Shipping info", shipping_info);
-      return shipping_info
     }
 </script>
 <script>

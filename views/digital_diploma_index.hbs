@@ -30,7 +30,6 @@
                     </div>
                     <div class="card-body">
                         {{{markdown headline}}}
-                        <br />
                         <a href="#!modalCheckout={{{encodeURI checkoutItemJSON}}}" class="btn btn-primary">Get it Now! </a>
                     </div>
                 </div>
@@ -42,7 +41,7 @@
                         <div class="col">
                             <!-- Title -->
                             <h4 class="card-header-title">
-                                More Info
+                                Have questions?
                             </h4>
                         </div>
                         <div class="col-auto">
@@ -51,7 +50,14 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    {{{markdown data.digitalDiploma.info_md}}}
+                    Feel free to reach out to us via <a id="dd-live-chat-help" href="#!">live chat here!</a>
+                    <script>
+                        $(function() {
+                          $('#dd-live-chat-help').click(function() {
+                            Intercom('show');
+                          });
+                        });
+                    </script>
                 </div>
             </div>
         </div>
