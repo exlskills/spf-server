@@ -1,8 +1,8 @@
 <style >
   .carousel {
     display: flex;
+    flex-direction: column;
     background-color: grey;
-    height: 60vh;
     justify-content: center;
     align-items: center;
   }
@@ -11,17 +11,44 @@
     width: 70%;
     display: flex;
     flex-direction: row;
+    height: 100%;
   }
   .carousel-item {
     justify-content: center;
     align-items: center;
   }
+  .btn-course {
+    color: #FFF;
+    border-color: #FFF;
+  }
+  .btn-course:hover {
+    color: grey;
+    border-color: #FFF;
+    background-color: #FFF;
+  }
 </style>
 
-<div id="carouselExampleControls" class="carousel">
+<div id="carouselExampleControls" class="carousel pt-5 pb-5">
+  <div class="row">
+    <h1>Free Courses</h1>
+  </div>
+  <div class="row mb-4">
+    <h4>Browse our FREE open source catalogue</h4>
+  </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      {{>marketing-cards}}
+      <div class="row">
+       <!-- only one course returns from relevant at the moment -->
+      {{#each data.courses.relevant}}
+          {{>course-card-lg-horizontal course=this locale=../route.locale}}
+      {{/each}}
+      {{#each data.courses.relevant}}
+          {{>course-card-lg-horizontal course=this locale=../route.locale}}
+      {{/each}}
+      {{#each data.courses.relevant}}
+          {{>course-card-lg-horizontal course=this locale=../route.locale}}
+      {{/each}}
+        </div>
     </div>
     <div class="carousel-item">
       {{>course-card-lg-vertical}}
@@ -38,4 +65,5 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
   </a>
+  <a class="btn btn-outline-primary btn-lg btn-course" href='/learn{{route.locale}}/courses'>View All Courses ></a>
 </div>

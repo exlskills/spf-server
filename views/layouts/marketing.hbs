@@ -1,19 +1,32 @@
 <!doctype html>
+<style media="screen">
+  .gradient {
+    background: linear-gradient(#000, transparent);
+  }
+</style>
 <html>
 <head>
 {{> head}}
 </head>
 <body>
 {{> modals}}
-<div class="main-content bg-fixed-bottom" style="background-image: url(/learn-en/assets/img/illustrations/sticky.svg);">
+
+
+
+<div class="main-content bg-fixed-bottom" style="background-image: url(https://images.pexels.com/photos/877695/pexels-photo-877695.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);">
+  <div class="gradient">
     {{> marketing-topbar}}
     <div>
       {{{body}}}
     </div>
+    </div>
 </div>
+
 {{> marketing-cards}}
 {{> course-carousel}}
+{{> live-courses}}
 {{> marketing-instructor-card}}
+{{> marketing-get-verified}}
 {{> scripts}}
 {{> ws-usi}}
 </body>

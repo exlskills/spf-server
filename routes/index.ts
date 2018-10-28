@@ -56,6 +56,9 @@ registerPartialHBS('marketing-card');
 registerPartialHBS('marketing-instructor-card');
 registerPartialHBS('marketing-cards');
 registerPartialHBS('course-carousel')
+registerPartialHBS('course-card-lg-horizontal')
+registerPartialHBS('live-courses')
+registerPartialHBS('marketing-get-verified')
 
 const router = express.Router();
 
