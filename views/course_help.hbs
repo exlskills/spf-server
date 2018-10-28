@@ -133,6 +133,32 @@
                     {{{markdown data.helpFaqMD}}}
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <!-- Title -->
+                            <h4 class="card-header-title">
+                                Have questions?
+                            </h4>
+                        </div>
+                        <div class="col-auto">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    Feel free to reach out to us via <a id="ch-live-chat-help" href="#!">live chat here!</a>
+                    <script>
+                        $(function() {
+                            $('#ch-live-chat-help').click(function() {
+                                Intercom('show');
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
         </div>
 
         <div class="col-12 col-lg-4">
