@@ -7,6 +7,7 @@ import {skillLevelToText} from "../lib/skill-levels";
 import {minutesToText} from "../lib/duration";
 import {indexToLetter} from "../lib/ordered-lists";
 import {fromGlobalId} from "../utils/gql-ids";
+import {generateCourse, PlatformOrganization} from "../lib/jsonld";
 
 export async function fetchDetailedCourseForView(client: GqlApi, courseGID: string, withEMA?: boolean) {
     let gqlResp: any;
@@ -164,7 +165,8 @@ export async function viewCourseIndex(client: GqlApi, user: IUserData, locale: s
         contentTmpl: 'course_index',
         meta: {
             title: gqlResp.meta.title,
-            description: gqlResp.meta.description
+            description: gqlResp.meta.description,
+            jsonld: generateCourse(gqlResp.meta.title, gqlResp.meta.description, PlatformOrganization)
         },
         data: {
             course: gqlResp

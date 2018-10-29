@@ -14,8 +14,11 @@
 
     gtag('config', '{{{config.gaTrackingID}}}');
 </script>
-
-
+{{#each meta.jsonld}}
+    <script type="application/ld+json">
+        {{{JSONstringify this}}}
+    </script>
+{{/each}}
 <!-- Libs CSS -->
 <link rel="stylesheet" href="/learn-en/assets/fonts/feather/feather.min.css">
 <link rel="stylesheet" href="/learn-en/assets/libs/highlight/styles/vs2015.min.css">

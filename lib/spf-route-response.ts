@@ -1,5 +1,6 @@
 import {IPageMenuList} from "./page-menu";
 import {IUserData} from "./jwt";
+import {IJSONLD} from "./jsonld";
 
 export interface ISPFRouteMeta {
     title: string
@@ -10,6 +11,7 @@ export interface ISPFRouteMeta {
     amp?: {
         canon_link: string
     }
+    jsonld?: IJSONLD | IJSONLD[]
 }
 
 export interface ISPFRouteResponse {

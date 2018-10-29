@@ -29,6 +29,7 @@ import {viewInstructor, viewInstructors} from "../controllers/instructors";
 import {viewCourseHelp} from "../controllers/course-help";
 import {viewDigitalDiplomas} from "../controllers/digital-diplomas";
 import {viewDigitalDiplomaIndex} from "../controllers/digital-diploma-index";
+import {PlatformOrganization} from "../lib/jsonld";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -114,6 +115,12 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             referrer: req.headers.referer,
             url: config.clientBaseURL + req.path
         };
+        if (!result.meta.jsonld) {
+            result.meta.jsonld = [];
+        } else if (!(result.meta.jsonld instanceof Array)) {
+            result.meta.jsonld = [result.meta.jsonld]
+        }
+        result.meta.jsonld.push(PlatformOrganization);
         // TODO internationalize full title prefix
         result.meta.fullTitle = `EXLskills - ${result.meta.title}`;
         result.user = userData;

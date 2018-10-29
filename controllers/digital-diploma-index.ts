@@ -8,6 +8,7 @@ import {minutesToText} from "../lib/duration";
 import IDigitalDiploma = GQL.IDigitalDiploma;
 import IDigitalDiplomaPlan = GQL.IDigitalDiplomaPlan;
 import {fromGlobalId} from "../utils/gql-ids";
+import {generateCourse, PlatformOrganization} from "../lib/jsonld";
 
 export async function fetchDigitalDiplomaForView(client: GqlApi, digitalDiplomaGID: string) {
     let digitalDiploma = await client.getDigitalDiploma(digitalDiplomaGID) as IDigitalDiploma & {plans: IDigitalDiplomaPlan & {checkoutItem: any, checkoutItemJSON: string}[], url_id: string, badge_url: string, skill_level_text: string, est_minutes_text: string};
@@ -35,12 +36,13 @@ export async function fetchDigitalDiplomaForView(client: GqlApi, digitalDiplomaG
 
 export async function viewDigitalDiplomaIndex(client: GqlApi, user: IUserData, locale: string, digitalDiplomaGID: string) : Promise<ISPFRouteResponse> {
     const digitalDiploma = await fetchDigitalDiplomaForView(client, digitalDiplomaGID);
-    console.log(digitalDiploma)
+    let metaDesc =`${digitalDiploma.headline} Kickstart Your Career in Tech Today!`;
     return {
         contentTmpl: 'digital_diploma_index',
         meta: {
-            title: `${digitalDiploma.title}`,
-            description: `${digitalDiploma.headline} Kickstart Your Career in Tech Today!`
+            title: digitalDiploma.title,
+            description: metaDesc,
+            jsonld: generateCourse(digitalDiploma.title, metaDesc, PlatformOrganization)
         },
         data: {
             digitalDiploma
