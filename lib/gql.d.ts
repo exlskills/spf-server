@@ -23,32 +23,47 @@ column: number;
 interface IQuery {
 __typename: "Query";
 node: Node | null;
+getDigitalDiplomaById: IDigitalDiploma | null;
+getCourseById: ICourse | null;
 courseById: ICourse | null;
 courseUnit: ICourseUnit | null;
+getCourseDeliverySchedule: ICourseDeliverySchedule | null;
 courseDeliverySchedule: ICourseDeliverySchedule | null;
 cardEntry: ISectionCard | null;
-cardByQuestion: ISectionCard | null;
-userActivity: Array<IUserActivity | null> | null;
+getCard: ISectionCard | null;
+getCardByQuestion: ISectionCard | null;
+topicFilter: Array<IListDef | null> | null;
+getUserActivityCountByDate: Array<IUserActivity | null> | null;
+getUserProfile: IUser | null;
 userProfile: IUser | null;
 examToTake: IExam | null;
-examAttempt: Array<IExamAttempt | null> | null;
-activityPaging: IActivityPaging | null;
-cardPaging: ISectionCardConnection | null;
+examSession: Array<IExamSession | null> | null;
+listActivities: IActivityConnection | null;
+listCards: ISectionCardConnection | null;
 coursePaging: ICourseConnection | null;
+listCourses: ICourseConnection | null;
 langType: Array<ILang | null> | null;
 listInstructors: IUserConnection | null;
 notificationPaging: INotificationPaging | null;
+getQuestionHint: IQuestion | null;
 questionHint: IQuestion | null;
-questionPaging: IQuestionConnection | null;
-questionPagingExam: IQuestionConnection | null;
-sectionPaging: IUnitSectionConnection | null;
-topicFilter: Array<IListDef | null> | null;
+listSections: IUnitSectionConnection | null;
 unitPaging: ICourseUnitConnection | null;
+listUnits: ICourseUnitConnection | null;
+listDigitalDiplomas: IDigitalDiplomaConnection | null;
 userCourseUnitExamStatusPaging: ICourseUnitConnection | null;
 }
 
 interface INodeOnQueryArguments {
 id: string;
+}
+
+interface IGetDigitalDiplomaByIdOnQueryArguments {
+digital_diploma_id?: string | null;
+}
+
+interface IGetCourseByIdOnQueryArguments {
+course_id?: string | null;
 }
 
 interface ICourseByIdOnQueryArguments {
@@ -58,6 +73,12 @@ course_id?: string | null;
 interface ICourseUnitOnQueryArguments {
 course_id?: string | null;
 unit_id?: string | null;
+}
+
+interface IGetCourseDeliveryScheduleOnQueryArguments {
+course_id?: string | null;
+delivery_method?: string | null;
+date_on_or_after?: any | null;
 }
 
 interface ICourseDeliveryScheduleOnQueryArguments {
@@ -73,13 +94,24 @@ section_id: string;
 card_id: string;
 }
 
-interface ICardByQuestionOnQueryArguments {
+interface IGetCardOnQueryArguments {
+course_id: string;
+unit_id: string;
+section_id: string;
+card_id: string;
+}
+
+interface IGetCardByQuestionOnQueryArguments {
 question_id: string;
 }
 
-interface IUserActivityOnQueryArguments {
-start_date?: string | null;
-end_date?: string | null;
+interface IGetUserActivityCountByDateOnQueryArguments {
+dateRange?: IDateRange | null;
+activityTypes?: Array<string | null> | null;
+}
+
+interface IGetUserProfileOnQueryArguments {
+user_id?: string | null;
 }
 
 interface IUserProfileOnQueryArguments {
@@ -91,11 +123,24 @@ unit_id?: string | null;
 course_id?: string | null;
 }
 
-interface IExamAttemptOnQueryArguments {
+interface IExamSessionOnQueryArguments {
 unit_id?: string | null;
 }
 
-interface ICardPagingOnQueryArguments {
+interface IListActivitiesOnQueryArguments {
+orderBy?: Array<IOrderBy | null> | null;
+filterValues?: IFilterValues | null;
+resolverArgs?: Array<IQueryResolverArgs | null> | null;
+activityTypes?: Array<string | null> | null;
+dateRange?: IDateRange | null;
+listDefVersion?: number | null;
+after?: string | null;
+first?: number | null;
+before?: string | null;
+last?: number | null;
+}
+
+interface IListCardsOnQueryArguments {
 orderBy?: Array<IOrderBy | null> | null;
 filterValues?: IFilterValues | null;
 resolverArgs?: Array<IQueryResolverArgs | null> | null;
@@ -106,6 +151,16 @@ last?: number | null;
 }
 
 interface ICoursePagingOnQueryArguments {
+orderBy?: Array<IOrderBy | null> | null;
+filterValues?: IFilterValues | null;
+resolverArgs?: Array<IQueryResolverArgs | null> | null;
+after?: string | null;
+first?: number | null;
+before?: string | null;
+last?: number | null;
+}
+
+interface IListCoursesOnQueryArguments {
 orderBy?: Array<IOrderBy | null> | null;
 filterValues?: IFilterValues | null;
 resolverArgs?: Array<IQueryResolverArgs | null> | null;
@@ -126,6 +181,16 @@ before?: string | null;
 last?: number | null;
 }
 
+interface IGetQuestionHintOnQueryArguments {
+orderBy?: Array<IOrderBy | null> | null;
+filterValues?: IFilterValues | null;
+resolverArgs?: Array<IQueryResolverArgs | null> | null;
+after?: string | null;
+first?: number | null;
+before?: string | null;
+last?: number | null;
+}
+
 interface IQuestionHintOnQueryArguments {
 orderBy?: Array<IOrderBy | null> | null;
 filterValues?: IFilterValues | null;
@@ -136,27 +201,7 @@ before?: string | null;
 last?: number | null;
 }
 
-interface IQuestionPagingOnQueryArguments {
-orderBy?: Array<IOrderBy | null> | null;
-filterValues?: IFilterValues | null;
-resolverArgs?: Array<IQueryResolverArgs | null> | null;
-after?: string | null;
-first?: number | null;
-before?: string | null;
-last?: number | null;
-}
-
-interface IQuestionPagingExamOnQueryArguments {
-orderBy?: Array<IOrderBy | null> | null;
-filterValues?: IFilterValues | null;
-resolverArgs?: Array<IQueryResolverArgs | null> | null;
-after?: string | null;
-first?: number | null;
-before?: string | null;
-last?: number | null;
-}
-
-interface ISectionPagingOnQueryArguments {
+interface IListSectionsOnQueryArguments {
 orderBy?: Array<IOrderBy | null> | null;
 filterValues?: IFilterValues | null;
 resolverArgs?: Array<IQueryResolverArgs | null> | null;
@@ -176,6 +221,26 @@ before?: string | null;
 last?: number | null;
 }
 
+interface IListUnitsOnQueryArguments {
+orderBy?: Array<IOrderBy | null> | null;
+filterValues?: IFilterValues | null;
+resolverArgs?: Array<IQueryResolverArgs | null> | null;
+after?: string | null;
+first?: number | null;
+before?: string | null;
+last?: number | null;
+}
+
+interface IListDigitalDiplomasOnQueryArguments {
+orderBy?: Array<IOrderBy | null> | null;
+filterValues?: IFilterValues | null;
+resolverArgs?: Array<IQueryResolverArgs | null> | null;
+after?: string | null;
+first?: number | null;
+before?: string | null;
+last?: number | null;
+}
+
 interface IUserCourseUnitExamStatusPagingOnQueryArguments {
 orderBy?: Array<IOrderBy | null> | null;
 filterValues?: IFilterValues | null;
@@ -186,11 +251,54 @@ before?: string | null;
 last?: number | null;
 }
 
-type Node = ICourse | ICourseUnit | IUnitSection | ISectionCard | IEmbeddedDocRefRecord | IVersionedContentRecord | IQuestion | IQuestionData | IQuestionMultipleData | ICourseDeliverySchedule | IScheduledRunSessionInfoType | IScheduledRunType | IScheduledRunSessionType | ISessionInstructorType | IUser | IUserSubscription | IAuthStrategy | IUserOrganizationRole | IUserCourseRole | IExam | IExamAttempt | IActivity | ILang | IUserNotification | IListDef;
+type Node = IDigitalDiploma | ICourse | ICourseUnit | IUnitSection | ISectionCard | IEmbeddedDocRefRecord | IVersionedContentRecord | IQuestion | IQuestionData | IQuestionMultipleData | ICourseDeliverySchedule | IScheduledRunSessionInfoType | IScheduledRunType | IScheduledRunSessionType | ISessionInstructorType | IListDef | IUser | IUserSubscription | IAuthStrategy | IUserOrganizationRole | IUserCourseRole | IExam | IExamSession | IActivity | ILang | IUserNotification;
 
 interface INode {
 __typename: "Node";
 id: string;
+}
+
+interface IDigitalDiploma {
+__typename: "DigitalDiploma";
+id: string;
+title: string;
+headline: string;
+description: string;
+organization_ids: Array<string | null> | null;
+primary_locale: string | null;
+logo_url: string;
+cover_url: string;
+is_published: boolean;
+topics: Array<string | null> | null;
+info_md: string;
+skill_level: number | null;
+est_minutes: number | null;
+primary_topic: string | null;
+instructor_timekit: IInstructorTimekit | null;
+plans: Array<IDigitalDiplomaPlan | null> | null;
+}
+
+interface IInstructorTimekit {
+__typename: "InstructorTimekit";
+intervals: Array<ITimekitInterval | null> | null;
+}
+
+interface ITimekitInterval {
+__typename: "TimekitInterval";
+credits: number | null;
+duration_seconds: number | null;
+project_id: string | null;
+}
+
+interface IDigitalDiplomaPlan {
+__typename: "DigitalDiplomaPlan";
+_id: string | null;
+title: string | null;
+headline: string | null;
+cost: number | null;
+is_hidden: boolean | null;
+closes_at: string | null;
+opens_at: string | null;
 }
 
 interface ICourse {
@@ -281,15 +389,15 @@ title: string | null;
 headline: string | null;
 sections: IUnitSectionConnection | null;
 sections_list: Array<IUnitSection | null> | null;
-final_exams: Array<string | null> | null;
-pre_exams: Array<string | null> | null;
+has_exam: boolean | null;
 final_exam_weight_pct: number | null;
 attempts_left: number | null;
 unit_progress_state: number | null;
 ema: number | null;
 grade: number | null;
 is_continue_exam: boolean | null;
-exam_attempt_id: string;
+exam_attempt_id: string | null;
+exam_session_id: string;
 last_attempted_at: string | null;
 attempts: number | null;
 passed: boolean | null;
@@ -436,18 +544,6 @@ node: ISectionCard | null;
 cursor: string;
 }
 
-interface IInstructorTimekit {
-__typename: "InstructorTimekit";
-intervals: Array<ITimekitInterval | null> | null;
-}
-
-interface ITimekitInterval {
-__typename: "TimekitInterval";
-credits: number | null;
-duration_seconds: number | null;
-project_id: string | null;
-}
-
 interface ICourseDeliverySchedule {
 __typename: "CourseDeliverySchedule";
 id: string;
@@ -513,6 +609,18 @@ username: string | null;
 avatar_url: string | null;
 headline: string | null;
 biography: string | null;
+}
+
+interface IListDef {
+__typename: "ListDef";
+id: string;
+type: string;
+value: string;
+}
+
+interface IDateRange {
+date_from?: any | null;
+date_to?: any | null;
 }
 
 interface IUserActivity {
@@ -663,8 +771,8 @@ use_ide_test_mode: boolean;
 est_time: number | null;
 }
 
-interface IExamAttempt {
-__typename: "ExamAttempt";
+interface IExamSession {
+__typename: "ExamSession";
 id: string;
 exam_id: string;
 user_id: string;
@@ -675,21 +783,6 @@ started_at: string | null;
 is_active: boolean | null;
 submitted_at: string | null;
 time_limit_exceeded: boolean | null;
-}
-
-interface IActivityPaging {
-__typename: "activityPaging";
-activities: IActivityConnection | null;
-}
-
-interface IActivitiesOnActivityPagingArguments {
-orderBy?: Array<IOrderBy | null> | null;
-filterValues?: IFilterValues | null;
-resolverArgs?: Array<IQueryResolverArgs | null> | null;
-after?: string | null;
-first?: number | null;
-before?: string | null;
-last?: number | null;
 }
 
 interface IActivityConnection {
@@ -709,7 +802,6 @@ __typename: "Activity";
 id: string;
 user_id: string;
 date: string;
-def_id: string;
 activity_link: string;
 type: string;
 type_desc: string | null;
@@ -786,51 +878,58 @@ updated_at: string;
 content: string | null;
 }
 
-interface IQuestionConnection {
-__typename: "QuestionConnection";
+interface IDigitalDiplomaConnection {
+__typename: "DigitalDiplomaConnection";
 pageInfo: IPageInfo;
-edges: Array<IQuestionEdge | null> | null;
+edges: Array<IDigitalDiplomaEdge | null> | null;
 }
 
-interface IQuestionEdge {
-__typename: "QuestionEdge";
-node: IQuestion | null;
+interface IDigitalDiplomaEdge {
+__typename: "DigitalDiplomaEdge";
+node: IDigitalDiploma | null;
 cursor: string;
-}
-
-interface IListDef {
-__typename: "ListDef";
-id: string;
-type: string;
-value: string;
 }
 
 interface IMutation {
 __typename: "Mutation";
 readNotification: IReadNotificationPayload | null;
+startExam: IStartExamPayload | null;
+submitExam: ISubmitExamPayload | null;
 submitAnswer: ISubmitAnswerPayload | null;
-takeExam: ITakeExamPayload | null;
-leaveExam: ILeaveExamPayload | null;
+getCurrentExamQuestionAnswer: IGetCurrentExamQuestionAnswerPayload | null;
+setCardQuestionAnswer: ISubmitAnswerPayload | null;
+setExamQuestionAnswer: ISetExamQuestionAnswerPayload | null;
 updateUserProfile: IUpdateUserProfilePayload | null;
 updateUserUnitStatus: IUpdateUserUnitStatusPayload | null;
 updateUserCourseRole: IUpdateUserCourseRolePayload | null;
-takeQuiz: ITakeQuizPayload | null;
 }
 
 interface IReadNotificationOnMutationArguments {
 input: IReadNotificationInput;
 }
 
+interface IStartExamOnMutationArguments {
+input: IStartExamInput;
+}
+
+interface ISubmitExamOnMutationArguments {
+input: ISubmitExamInput;
+}
+
 interface ISubmitAnswerOnMutationArguments {
 input: ISubmitAnswerInput;
 }
 
-interface ITakeExamOnMutationArguments {
-input: ITakeExamInput;
+interface IGetCurrentExamQuestionAnswerOnMutationArguments {
+input: IGetCurrentExamQuestionAnswerInput;
 }
 
-interface ILeaveExamOnMutationArguments {
-input: ILeaveExamInput;
+interface ISetCardQuestionAnswerOnMutationArguments {
+input: ISubmitAnswerInput;
+}
+
+interface ISetExamQuestionAnswerOnMutationArguments {
+input: ISetExamQuestionAnswerInput;
 }
 
 interface IUpdateUserProfileOnMutationArguments {
@@ -843,10 +942,6 @@ input: IUpdateUserUnitStatusInput;
 
 interface IUpdateUserCourseRoleOnMutationArguments {
 input: IUpdateUserCourseRoleInput;
-}
-
-interface ITakeQuizOnMutationArguments {
-input: ITakeQuizInput;
 }
 
 interface IReadNotificationInput {
@@ -864,12 +959,41 @@ interface ICompletionObj {
 __typename: "CompletionObj";
 code: string | null;
 msg: string | null;
+msg_id: string | null;
 processed: number | null;
 modified: number | null;
 }
 
+interface IStartExamInput {
+courseId: string;
+unitId: string;
+clientMutationId?: string | null;
+}
+
+interface IStartExamPayload {
+__typename: "StartExamPayload";
+exam_session_id: string | null;
+exam_time_limit: number | null;
+exam_id: string | null;
+completionObj: ICompletionObj | null;
+clientMutationId: string | null;
+}
+
+interface ISubmitExamInput {
+exam_session_id: string;
+clientMutationId?: string | null;
+}
+
+interface ISubmitExamPayload {
+__typename: "SubmitExamPayload";
+final_grade_pct: number | null;
+pass_mark_pct: number | null;
+completionObj: ICompletionObj | null;
+clientMutationId: string | null;
+}
+
 interface ISubmitAnswerInput {
-exam_attempt_id: string;
+exam_attempt_id?: string | null;
 question_id: string;
 response_data?: string | null;
 checkAnswer?: boolean | null;
@@ -896,28 +1020,29 @@ section_id: string | null;
 unit_id: string | null;
 }
 
-interface ITakeExamInput {
-courseId: string;
-unitId: string;
+interface IGetCurrentExamQuestionAnswerInput {
+exam_session_id: string;
+question_id: string;
 clientMutationId?: string | null;
 }
 
-interface ITakeExamPayload {
-__typename: "TakeExamPayload";
-exam_attempt_id: string | null;
-exam_time_limit: number | null;
-exam_id: string | null;
+interface IGetCurrentExamQuestionAnswerPayload {
+__typename: "GetCurrentExamQuestionAnswerPayload";
+submitted_at: any | null;
+response_data: string | null;
 completionObj: ICompletionObj | null;
 clientMutationId: string | null;
 }
 
-interface ILeaveExamInput {
-exam_attempt_id: string;
+interface ISetExamQuestionAnswerInput {
+exam_session_id: string;
+question_id: string;
+response_data?: string | null;
 clientMutationId?: string | null;
 }
 
-interface ILeaveExamPayload {
-__typename: "LeaveExamPayload";
+interface ISetExamQuestionAnswerPayload {
+__typename: "SetExamQuestionAnswerPayload";
 completionObj: ICompletionObj | null;
 clientMutationId: string | null;
 }
@@ -981,20 +1106,6 @@ DELETE = 'DELETE'
 interface IUpdateUserCourseRolePayload {
 __typename: "UpdateUserCourseRolePayload";
 completionObj: ICompletionObj | null;
-clientMutationId: string | null;
-}
-
-interface ITakeQuizInput {
-card?: boolean | null;
-courseId: string;
-unitId: string;
-sectionId?: string | null;
-clientMutationId?: string | null;
-}
-
-interface ITakeQuizPayload {
-__typename: "TakeQuizPayload";
-quiz_id: string | null;
 clientMutationId: string | null;
 }
 }

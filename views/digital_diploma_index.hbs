@@ -1,0 +1,89 @@
+{{> digital-diploma-top}}
+
+<style>
+
+</style>
+
+<!-- CONTENT -->
+<div id="digital-diploma-index-wrapper" class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                        Digital Diploma Overview
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {{{markdown data.digitalDiploma.description}}}
+                </div>
+            </div>
+
+            {{#each data.digitalDiploma.plans}}
+                <div class="card">
+                    <div class="card-header">
+                        <!-- Title -->
+                        <h4 class="card-header-title">
+                            {{title}}
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        {{{markdown headline}}}
+                        <a href="#!modalCheckout={{{encodeURI checkoutItemJSON}}}" class="btn btn-primary">Buy it Now! (Only ${{cost}})</a>
+                        <br>
+                        <small>NOTE: Sales End December 1st, Less Than 5 Spots Remaining!</small>
+                    </div>
+                </div>
+            {{/each}}
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <!-- Title -->
+                            <h4 class="card-header-title">
+                                More Info
+                            </h4>
+                        </div>
+                        <div class="col-auto">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {{{markdown data.digitalDiploma.info_md}}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <!-- Title -->
+                            <h4 class="card-header-title">
+                                Have questions?
+                            </h4>
+                        </div>
+                        <div class="col-auto">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    Feel free to reach out to us via <a id="dd-live-chat-help" href="#!">live chat here!</a>
+                    <script>
+                        $(function() {
+                          $('#dd-live-chat-help').click(function() {
+                            Intercom('show');
+                          });
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+</div>

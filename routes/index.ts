@@ -27,6 +27,8 @@ import {ampViewCourseCard} from "../controllers/amp-course-card";
 import logger from "../utils/logger";
 import {viewInstructor, viewInstructors} from "../controllers/instructors";
 import {viewCourseHelp} from "../controllers/course-help";
+import {viewDigitalDiplomas} from "../controllers/digital-diplomas";
+import {viewDigitalDiplomaIndex} from "../controllers/digital-diploma-index";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -40,6 +42,7 @@ const registerPartialHBS = (name: string) => {
 };
 
 registerPartialHBS('course-top');
+registerPartialHBS('digital-diploma-top');
 registerPartialHBS('quiz-question');
 registerPartialHBS('course-card-pagination');
 registerPartialHBS('course-enrollment-mutations');
@@ -49,6 +52,7 @@ registerPartialHBS('course-action-button-left');
 registerPartialHBS('course-action-button-right');
 registerPartialHBS('course-card-lg-vertical');
 registerPartialHBS('instructor-card-lg-vertical');
+registerPartialHBS('digital-diploma-card-lg-vertical');
 
 const router = express.Router();
 
@@ -187,6 +191,9 @@ router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId/c
 router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId', gc(redirectOldCardURL, req => [req]));
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(viewCourseCard, req => [req, fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId', gc(redirectSectionURL, req => [fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId)]));
+
+router.get('/learn-:locale/digital-diplomas', gc(viewDigitalDiplomas, req => []));
+router.get('/learn-:locale/digital-diplomas/:digitalDiplomaId', gc(viewDigitalDiplomaIndex, req => [fromUrlId('DigitalDiploma', req.params.digitalDiplomaId)]));
 
 router.get('/learn-:locale/instructors', gc(viewInstructors, req => []));
 router.get('/learn-:locale/instructors/:instructorId', gc(viewInstructor, req => [fromUrlId('User', req.params.instructorId)]));
