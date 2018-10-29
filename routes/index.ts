@@ -60,6 +60,7 @@ registerPartialHBS('course-card-lg-horizontal')
 registerPartialHBS('live-courses')
 registerPartialHBS('marketing-get-verified')
 registerPartialHBS('top-companies')
+registerPartialHBS('marketing-github')
 
 const router = express.Router();
 
