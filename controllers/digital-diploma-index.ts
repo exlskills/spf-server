@@ -40,7 +40,7 @@ export async function viewDigitalDiplomaIndex(client: GqlApi, user: IUserData, l
         contentTmpl: 'digital_diploma_index',
         meta: {
             title: `${digitalDiploma.title}`,
-            description: `${digitalDiploma.headline}. Kickstart Your Career in Tech Today!`
+            description: `${digitalDiploma.headline} Kickstart Your Career in Tech Today!`
         },
         data: {
             digitalDiploma
