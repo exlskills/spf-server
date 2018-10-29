@@ -21,8 +21,12 @@
         d.parentNode.insertBefore(c,d)
     })(window,document,"script","//cdn.app.exitmonitor.com/em.js","em");
 
-    em('set', 'campaign', '5bd750c23064330014020000');
-
+    // Mobile/desktop are separate campaigns
+    if (typeof window.orientation !== 'undefined') {
+        em('set', 'campaign', '5bd75fe03064330014050000');
+    } else {
+        em('set', 'campaign', '5bd750c23064330014020000');
+    }
 </script>
 {{> scripts}}
 {{> ws-usi}}
