@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="70px" height="59px" viewBox="0 0 70 59" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 8</title>
+    <desc>Created with Sketch.</desc>
+    <g id="🏠--Public-Web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Index" transform="translate(-1097.000000, -1068.000000)">
+            <g id="3-blocks" transform="translate(168.000000, 955.000000)">
+                <g id="Group-4" transform="translate(781.000000, 105.000000)">
+                    <g id="Group-8" transform="translate(146.000000, 0.000000)">
+                        <polygon id="Stroke-1" stroke-opacity="0.0117647061" stroke="#000000" stroke-width="1.33333336e-11" points="0 0 73.9999969 0 73.9999969 73.9999969 0 73.9999969"></polygon>
+                        <path d="M18.0833333,47.25 C22.8605957,47.25 40.1237793,47.25 44.0833333,47.25 C46.723036,47.25 50.0563694,49.6836751 54.0833333,54.5510254 L54.0833333,66.25 L8.08333333,66.25 L8.08333333,54.5854492 C11.5651584,49.6951497 14.8984918,47.25 18.0833333,47.25 Z" id="Rectangle" fill="#00CD78" fill-rule="nonzero"></path>
+                        <circle id="Oval" fill="#00CD78" fill-rule="nonzero" cx="31" cy="21" r="12"></circle>
+                        <g id="Group-7" transform="translate(3.083333, 9.250000)" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <path d="M46.249997,55.4999961 L46.249997,49.3333298 C46.249997,41.1111101 42.1388872,36.9999972 33.9166644,36.9999972 L12.3333324,36.9999972 C8.92757696,37.0000003 6.02058241,38.2041156 3.61234937,40.6123489 C1.20411624,43.0205783 -1.85000317e-07,45.9275725 -1.85000317e-07,49.3333298 L-1.85000317e-07,55.4999961" id="Stroke-3"></path>
+                            <path d="M35.458331,12.333332 C35.458331,20.5555548 31.3472212,24.6666646 23.1249984,24.6666646 C14.9027757,24.6666646 10.7916658,20.5555548 10.7916658,12.333332 C10.7916658,4.11110928 14.9027757,-5.54999986e-07 23.1249984,-5.54999986e-07 C31.3472212,-5.54999986e-07 35.458331,4.11110928 35.458331,12.333332 Z" id="Stroke-5"></path>
+                            <polyline id="Stroke-6" points="49.3333302 24.6666646 55.4999965 30.8333309 67.8333291 18.4999983"></polyline>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
