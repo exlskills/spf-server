@@ -201,11 +201,7 @@
         var toggle = document.querySelector('#theme-mode-toggle');
 
         function updateToggleState() {
-            if (themeMode === 'dark') {
-                document.querySelector('#theme-mode-toggle').checked = true;
-            } else {
-                document.querySelector('#theme-mode-toggle').checked = false;
-            }
+            document.querySelector('#theme-mode-toggle').checked = themeMode === 'dark';
         }
 
         function toggleThemeMode() {
