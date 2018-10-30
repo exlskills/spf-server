@@ -1,35 +1,29 @@
 <!doctype html>
-<style media="screen">
-  /* .gradient {
-    background: linear-gradient(#000, transparent);
-  } */
+<style>
+
 </style>
+
 <html>
 <head>
 {{> head}}
 </head>
 <body>
 {{> modals}}
-
-
-
-<div class="main-content bg-fixed-bottom" style="background-image: url(learn-en/assets/img/marketing/_index/home-top-banner.jpg);">
-  <div class="gradient">
-    {{> marketing-topbar}}
-    <div>
-      {{{body}}}
-    </div>
-    </div>
-</div>
-{{> top-companies}}
-{{> marketing-cards}}
-{{> course-carousel}}
-{{> marketing-get-verified}}
-{{> marketing-instructor-card}}
-{{> marketing-github}}
-{{> marketing-newsletter}}
-{{> marketing-footer}}
-{{> scripts}}
-{{> ws-usi}}
+  <div class="main-content bg-fixed-bottom" style="background-image: url(https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/site-assets/_index/home-top-banner.jpg);">
+      {{> marketing-topbar}}
+      <div>
+        {{{body}}}
+      </div>
+  </div>
+  {{> top-companies}}
+  {{> marketing-cards}}
+  {{> course-carousel}}
+  {{> marketing-get-verified}}
+  {{> marketing-instructor-card}}
+  {{> marketing-github}}
+  {{> marketing-newsletter}}
+  {{> marketing-footer}}
+  {{> scripts}}
+  {{> ws-usi}}
 </body>
 </html>
