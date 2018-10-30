@@ -1,14 +1,12 @@
 <style >
   .carousel {
-    display: flex;
-    flex-direction: column;
     background-color: grey;
     justify-content: center;
     align-items: center;
   }
   .carousel-inner {
     margin: auto;
-    width: 70%;
+    width: 80%;
     display: flex;
     flex-direction: row;
     height: 100%;
@@ -28,7 +26,7 @@
   }
 </style>
 
-<div id="carouselExampleControls" class="carousel pt-5 pb-5">
+<div id="carouselExampleControls" class="carousel pt-5 pb-5 d-flex flex-column">
   <div class="row">
     <h1 class="text-white">Free Courses</h1>
   </div>
@@ -36,22 +34,26 @@
     <h4>Browse our FREE open source catalogue</h4>
   </div>
   <div class="carousel-inner">
-    <div class="carousel-item active">
-      <div class="row">
-       <!-- only one course returns from relevant at the moment -->
-      {{#each data.courses.relevant}}
-          {{>course-card-lg-horizontal course=this locale=../route.locale}}
-      {{/each}}
-      {{#each data.courses.relevant}}
-          {{>course-card-lg-horizontal course=this locale=../route.locale}}
-      {{/each}}
-      {{#each data.courses.relevant}}
-          {{>course-card-lg-horizontal course=this locale=../route.locale}}
-      {{/each}}
-        </div>
+    <div class="carousel-item active row d-flex flex-row">
+         <!-- only one course returns from relevant at the moment -->
+      <div class="d-sm-block">
+        {{#each data.courses.relevant}}
+            {{>course-card-lg-horizontal course=this locale=../route.locale}}
+        {{/each}}
+      </div>
+      <div style="display: none" class="d-lg-block">
+        {{#each data.courses.relevant}}
+            {{>course-card-lg-horizontal course=this locale=../route.locale}}
+        {{/each}}
+      </div>
+      <div style="display: none" class="d-xl-block">
+        {{#each data.courses.relevant}}
+            {{>course-card-lg-horizontal course=this locale=../route.locale}}
+        {{/each}}
+      </div>
     </div>
     <div class="carousel-item">
-      {{>course-card-lg-vertical}}
+      {{>course-card-lg-horizontal}}
     </div>
     <div class="carousel-item">
       {{>marketing-cards}}
