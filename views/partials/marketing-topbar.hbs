@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light d-none d-md-flex" style="border-bottom: 0; background-color: transparent">
+<nav class="navbar navbar-expand-md navbar-light" style="border-bottom: 0; background-color: transparent">
     <div class="container-fluid">
 
         <!-- Brand -->
@@ -27,28 +27,28 @@
 
         </style>
         <!-- Links -->
-          <div id="marketing-nav" class="navbar-nav">
+          <div style="display: none" id="marketing-nav" class="navbar-nav d-md-flex flex-row">
 
             <div class="nav-item">
-            <a class="nav-link spf-link {{#eq contentTmpl "home"}}active{{/eq}}" href="/home">
+            <a style="color: #F2F2F3;" class="nav-link spf-link {{#eq contentTmpl "home"}}active{{/eq}}" href="/home">
                 Home
             </a>
           </div>
 
           <div class="nav-item">
-            <a class="nav-link spf-link {{#eq contentTmpl "courses"}}active{{/eq}}" href="/learn">
+            <a style="color: #F2F2F3;" class="nav-link spf-link {{#eq contentTmpl "courses"}}active{{/eq}}" href="/learn">
                 Courses
             </a>
           </div>
 
           <div class="nav-item">
-            <a class="nav-link spf-link {{#eq contentTmpl "pricing"}}active{{/eq}}" href="/learn">
+            <a style="color: #F2F2F3;" class="nav-link spf-link {{#eq contentTmpl "pricing"}}active{{/eq}}" href="/learn">
                 Pricing
             </a>
           </div>
 
             <div class="nav-item">
-              <a class="nav-link spf-link {{#eq contentTmpl "instructor"}}active{{/eq}}" href="/instructor">
+              <a style="color: #F2F2F3;" class="nav-link spf-link {{#eq contentTmpl "instructor"}}active{{/eq}}" href="/instructor">
                   Instructor
               </a>
             </div>
@@ -56,10 +56,29 @@
 
           <!-- Button -->
           <div class="navbar-user">
-            <a id="btn-start" href="learn-en/dashboard" class="btn btn-outline-primary pt-2 pb-2 pl-4 pr-4 btn-course">
+            <a id="btn-start" href="learn-en/dashboard" class="btn btn-outline-primary pt-2 pb-2 pl-4 pr-4 btn-course ml-4">
               Enter
             </a>
           </div>
         </div> <!-- / .navbar-nav -->
+        <div style="display: flex" class="navbar-nav d-md-none mr-4">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Menu
+            </button>
+            <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenu2">
+              <a class="nav-link spf-link {{#eq contentTmpl "home"}}active{{/eq}}" href="/home">
+                  Home
+              </a>
+              <a class="nav-link spf-link {{#eq contentTmpl "courses"}}active{{/eq}}" href="/learn">
+                  Courses
+              </a>
+              <a class="nav-link spf-link {{#eq contentTmpl "pricing"}}active{{/eq}}" href="/learn">
+                  Pricing
+              </a>
+              <a class="nav-link spf-link {{#eq contentTmpl "instructor"}}active{{/eq}}" href="/instructor">
+                  Instructor
+              </a>
+            </div>
+        </div>
     </div> <!-- / .container-fluid -->
 </nav>
