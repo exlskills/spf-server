@@ -27,6 +27,7 @@ import {ampViewCourseCard} from "../controllers/amp-course-card";
 import logger from "../utils/logger";
 import {viewInstructor, viewInstructors} from "../controllers/instructors";
 import {viewCourseHelp} from "../controllers/course-help";
+import {viewMarketing} from '../controllers/marketing'
 import {viewDigitalDiplomas} from "../controllers/digital-diplomas";
 import {viewDigitalDiplomaIndex} from "../controllers/digital-diploma-index";
 import {PlatformOrganization} from "../lib/jsonld";
