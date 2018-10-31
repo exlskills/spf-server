@@ -221,7 +221,7 @@ router.get('/learn-:locale/instructors/:instructorId', gc(viewInstructor, req =>
 router.get('/learn/*', redirectMissingLocale);
 router.get('/learn', redirectDashboard);
 
-router.get('/home', gc(viewMarketing, req => []));
+router.get('/learn-:locale', gc(viewMarketing, req => []));
 
 // AMP Routes
 router.get('/amp/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(ampViewCourseCard, req => [req, fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));
