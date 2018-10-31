@@ -18,6 +18,38 @@
         border: 1px solid rgba(0, 0, 0, 0.3);;
         border-radius: 1000px;
     }
+    .user-logos-container {
+        text-align: center;
+        padding: 0 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .user-logos-container h3 {
+        margin-top: 30px;
+    }
+
+    .user-logos-container img {
+        width: 100%;
+    }
+
+    #user-logos-mobile {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    @media (max-width:679px) {
+        #user-logos-desktop {
+            display: none;
+        }
+    }
+
+    @media (min-width:680px) {
+        #user-logos-mobile {
+            display: none;
+        }
+    }
+
 </style>
 
 <!-- CONTENT -->
@@ -33,6 +65,13 @@
                     </h4>
                 </div>
                 <div class="card-body">
+                    <div class="user-logos-container">
+                        <h2>Engineers From These Top Companies and Universities Trust EXLskills</h2>
+                        <h3>1M+&nbsp;Professionals | 100+&nbsp;Institutions</h3>
+                        <img id="user-logos-desktop" src="https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/exlskills-user-logos-desktop.png">
+                        <img id="user-logos-mobile" src="https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/exlskills-user-logos-mobile.png">
+                        <br />
+                    </div>
                     {{{markdown data.course.meta.description}}}
 
                     {{> course-action-button-right}}
@@ -40,6 +79,32 @@
             </div>
 
             {{> course-booking course=data.course config=config user=user}}
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <!-- Title -->
+                            <h4 class="card-header-title">
+                                Have questions?
+                            </h4>
+                        </div>
+                        <div class="col-auto">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    Feel free to reach out to us via <a id="ci-live-chat-help" href="#!">live chat here!</a>
+                    <script>
+                        $(function() {
+                            $('#ci-live-chat-help').click(function() {
+                                Intercom('show');
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
 
             <div class="card">
                 <div class="card-header">
