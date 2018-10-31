@@ -96,6 +96,7 @@ type Course implements Node {
   last_accessed_card: String
   delivery_methods: [String]
   instructor_timekit: InstructorTimekit
+  weight: Float
 }
 
 # A connection to a list of items.
@@ -206,6 +207,7 @@ type DigitalDiploma implements Node {
   info_md: String!
   skill_level: Int
   est_minutes: Int
+  is_project: Boolean
   primary_topic: String
   instructor_timekit: InstructorTimekit
   plans: [DigitalDiplomaPlan]
@@ -237,35 +239,6 @@ type DigitalDiplomaPlan {
   is_hidden: Boolean
   closes_at: String
   opens_at: String
-}
-
-type EmbeddedDocRef {
-  embedded_doc_refs: EmbeddedDocRefRecordConnection!
-}
-
-type EmbeddedDocRefRecord implements Node {
-  # The ID of an object
-  id: ID!
-  level: Int!
-  doc_id: String!
-}
-
-# A connection to a list of items.
-type EmbeddedDocRefRecordConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [EmbeddedDocRefRecordEdge]
-}
-
-# An edge in a connection.
-type EmbeddedDocRefRecordEdge {
-  # The item at the end of the edge
-  node: EmbeddedDocRefRecord
-
-  # A cursor for use in pagination
-  cursor: String!
 }
 
 # Event Duration
@@ -578,7 +551,6 @@ type SectionCard implements Node {
   tags: [String]
   question_ids: [ID]
   ema: Float
-  card_ref: EmbeddedDocRef
   content: VersionedContentRecord
   question: Question
   questions: [Question]

@@ -344,6 +344,7 @@ export default class GqlApi {
                     skill_level
                     est_minutes
                     primary_topic
+                    is_project
                     topics
                   }
                 }
@@ -366,6 +367,7 @@ export default class GqlApi {
                     est_minutes
                     primary_topic
                     info_md
+                    is_project
                     topics
                     plans {
                         _id

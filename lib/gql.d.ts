@@ -251,7 +251,7 @@ before?: string | null;
 last?: number | null;
 }
 
-type Node = IDigitalDiploma | ICourse | ICourseUnit | IUnitSection | ISectionCard | IEmbeddedDocRefRecord | IVersionedContentRecord | IQuestion | IQuestionData | IQuestionMultipleData | ICourseDeliverySchedule | IScheduledRunSessionInfoType | IScheduledRunType | IScheduledRunSessionType | ISessionInstructorType | IListDef | IUser | IUserSubscription | IAuthStrategy | IUserOrganizationRole | IUserCourseRole | IExam | IExamSession | IActivity | ILang | IUserNotification;
+type Node = IDigitalDiploma | ICourse | ICourseUnit | IUnitSection | ISectionCard | IVersionedContentRecord | IQuestion | IQuestionData | IQuestionMultipleData | ICourseDeliverySchedule | IScheduledRunSessionInfoType | IScheduledRunType | IScheduledRunSessionType | ISessionInstructorType | IListDef | IUser | IUserSubscription | IAuthStrategy | IUserOrganizationRole | IUserCourseRole | IExam | IExamSession | IActivity | ILang | IUserNotification;
 
 interface INode {
 __typename: "Node";
@@ -273,6 +273,7 @@ topics: Array<string | null> | null;
 info_md: string;
 skill_level: number | null;
 est_minutes: number | null;
+is_project: boolean | null;
 primary_topic: string | null;
 instructor_timekit: IInstructorTimekit | null;
 plans: Array<IDigitalDiplomaPlan | null> | null;
@@ -330,6 +331,7 @@ last_accessed_section: string | null;
 last_accessed_card: string | null;
 delivery_methods: Array<string | null> | null;
 instructor_timekit: IInstructorTimekit | null;
+weight: number | null;
 }
 
 interface IUnitsOnCourseArguments {
@@ -456,37 +458,12 @@ content_id: string | null;
 tags: Array<string | null> | null;
 question_ids: Array<string | null> | null;
 ema: number | null;
-card_ref: IEmbeddedDocRef | null;
 content: IVersionedContentRecord | null;
 question: IQuestion | null;
 questions: Array<IQuestion | null> | null;
 currentCourseId: string;
 currentUnitId: string;
 currentSectionId: string;
-}
-
-interface IEmbeddedDocRef {
-__typename: "EmbeddedDocRef";
-embedded_doc_refs: IEmbeddedDocRefRecordConnection;
-}
-
-interface IEmbeddedDocRefRecordConnection {
-__typename: "EmbeddedDocRefRecordConnection";
-pageInfo: IPageInfo;
-edges: Array<IEmbeddedDocRefRecordEdge | null> | null;
-}
-
-interface IEmbeddedDocRefRecordEdge {
-__typename: "EmbeddedDocRefRecordEdge";
-node: IEmbeddedDocRefRecord | null;
-cursor: string;
-}
-
-interface IEmbeddedDocRefRecord {
-__typename: "EmbeddedDocRefRecord";
-id: string;
-level: number;
-doc_id: string;
 }
 
 interface IVersionedContentRecord {
