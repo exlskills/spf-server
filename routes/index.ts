@@ -28,6 +28,9 @@ import logger from "../utils/logger";
 import {viewInstructor, viewInstructors} from "../controllers/instructors";
 import {viewCourseHelp} from "../controllers/course-help";
 import {viewMarketing} from "../controllers/marketing";
+import {viewDigitalDiplomas} from "../controllers/digital-diplomas";
+import {viewDigitalDiplomaIndex} from "../controllers/digital-diploma-index";
+import {PlatformOrganization} from "../lib/jsonld";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -41,6 +44,7 @@ const registerPartialHBS = (name: string) => {
 };
 
 registerPartialHBS('course-top');
+registerPartialHBS('digital-diploma-top');
 registerPartialHBS('quiz-question');
 registerPartialHBS('course-card-pagination');
 registerPartialHBS('course-enrollment-mutations');
@@ -50,6 +54,7 @@ registerPartialHBS('course-action-button-left');
 registerPartialHBS('course-action-button-right');
 registerPartialHBS('course-card-lg-vertical');
 registerPartialHBS('instructor-card-lg-vertical');
+registerPartialHBS('digital-diploma-card-lg-vertical');
 
 registerPartialHBS('marketing-topbar');
 registerPartialHBS('marketing-card');
@@ -72,10 +77,10 @@ type ControllerFunction = (client: GqlApi, user: IUserData, locale: string, ...a
 /**
  * Handles controller execution and responds to user.
  * This way controllers are not attached to the API.
- * @param promise Controller Promise.
+ * @param controllerFunction Controller Promise.
  * @param params (req) => [params, ...].
  */
-const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFunction) => async (req: Request, res?: Response, next?: NextFunction) => {
+const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params: ParamsFunction) => async (req: Request, res?: Response, next?: NextFunction) => {
     let startReqTs = (new Date()).getTime();
     let gqlToken = req.cookies['token'];
     let setUpdatedToken = false;
@@ -97,7 +102,7 @@ const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFun
     }
     const initialParams = params ? params(req, res, next) : [req, res, next];
     try {
-        const result = await promise(gqlClient, userData, req.params.locale, ...initialParams);
+        const result = await controllerFunction(gqlClient, userData, req.params.locale, ...initialParams);
         if (setUpdatedToken) {
             res.cookie(config.jwt.cookieName, gqlToken, {
                 expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
@@ -124,6 +129,12 @@ const gqlBaseControllerHandler = (promise: ControllerFunction, params: ParamsFun
             referrer: req.headers.referer,
             url: config.clientBaseURL + req.path
         };
+        if (!result.meta.jsonld) {
+            result.meta.jsonld = [];
+        } else if (!(result.meta.jsonld instanceof Array)) {
+            result.meta.jsonld = [result.meta.jsonld]
+        }
+        result.meta.jsonld.push(PlatformOrganization);
         // TODO internationalize full title prefix
         result.meta.fullTitle = `EXLskills - ${result.meta.title}`;
         result.user = userData;
@@ -201,6 +212,9 @@ router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId/c
 router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId', gc(redirectOldCardURL, req => [req]));
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(viewCourseCard, req => [req, fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId', gc(redirectSectionURL, req => [fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId)]));
+
+router.get('/learn-:locale/digital-diplomas', gc(viewDigitalDiplomas, req => []));
+router.get('/learn-:locale/digital-diplomas/:digitalDiplomaId', gc(viewDigitalDiplomaIndex, req => [fromUrlId('DigitalDiploma', req.params.digitalDiplomaId)]));
 
 router.get('/learn-:locale/instructors', gc(viewInstructors, req => []));
 router.get('/learn-:locale/instructors/:instructorId', gc(viewInstructor, req => [fromUrlId('User', req.params.instructorId)]));

@@ -1,0 +1,96 @@
+<style>
+    #digital-diploma-top {
+        margin-bottom: 0;
+    }
+    #digital-diploma-top .hero-wrapper {
+        height: 200px;
+        width: 100%;
+    }
+    #digital-diploma-top .hero {
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{data.digitalDiploma.logo_url}}) no-repeat;
+        background-size: cover;
+        background-position-y: 25%;
+    }
+    #digital-diploma-top .header-avatar-top img {
+        background-color: white;
+    }
+    #digital-diploma-top .header-body {
+        border: none;
+    }
+    @media (max-width: 768px) {
+        #digital-diploma-top .hero-wrapper {
+            margin-bottom: 30px;
+        }
+    }
+</style>
+<div id="digital-diploma-top" class="header">
+
+    <div class="hero-wrapper">
+        <div class="hero">
+
+        </div>
+    </div>
+
+    <div class="container-fluid">
+
+        <!-- Body -->
+        <div class="header-body mt--5 mt-md--6">
+            <div class="row align-items-end">
+                <div class="col-auto">
+
+                    <!-- Avatar -->
+                    <div class="avatar avatar-xxl header-avatar-top">
+                        <img src="{{data.digitalDiploma.badge_url}}" alt="..." class="avatar-img rounded-circle border border-4 border-body">
+                    </div>
+
+                </div>
+                <div class="col mb-3 ml--3 ml-md--2">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                        {{#eq contentTmpl "digital_diploma_index"}}
+                            {{data.digitalDiploma.primary_topic}}
+                        {{else}}
+                            {{#eq contentTmpl "digital_diploma_index"}}
+                                {{data.digitalDiploma.primary_topic}}
+                            {{else}}
+                                {{data.digitalDiploma.title}}
+                            {{/eq}}
+                        {{/eq}}
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        {{#eq contentTmpl "digital_diploma_index"}}
+                            {{data.digitalDiploma.title}}
+                        {{/eq}}
+                        {{#eq contentTmpl "digital_diploma_certificate"}}
+                            Verified Certificate
+                        {{/eq}}
+                        {{#eq contentTmpl "digital_diploma_progress"}}
+                            Progress
+                        {{/eq}}
+                        {{#eq contentTmpl "digital_diploma_live"}}
+                            Live Class
+                        {{/eq}}
+                        {{#eq contentTmpl "digital_diploma_help"}}
+                            Get Help!
+                        {{/eq}}
+                        {{#eq contentTmpl "digital_diploma_content"}}
+                            {{data.digitalDiploma.title}}
+                        {{/eq}}
+                    </h1>
+
+                </div>
+                <div class="col-12 col-md-auto mt-2 mt-md-0 mb-md-3">
+
+                    <!-- TODO Enroll toggle -->
+
+                </div>
+            </div> <!-- / .row -->
+        </div> <!-- / .header-body -->
+
+    </div>
+</div>

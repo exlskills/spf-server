@@ -11,6 +11,8 @@ import * as moment from 'moment-timezone';
 import IUserCourseRoleEdge = GQL.IUserCourseRoleEdge;
 import IUserEdge = GQL.IUserEdge;
 import IUser = GQL.IUser;
+import IDigitalDiplomaEdge = GQL.IDigitalDiplomaEdge;
+import IDigitalDiploma = GQL.IDigitalDiploma;
 
 export type CourseListType = 'mine' | 'relevant'
 export interface IDetailedCourse {
@@ -327,6 +329,64 @@ export default class GqlApi {
             }
         `;
         return (await this.request(q)).listInstructors.edges!
+    }
+
+    public async getAllDigitalDiplomas(): Promise<IDigitalDiplomaEdge[]> {
+        const q = `
+            {
+              listDigitalDiplomas(first: 9999, resolverArgs: [], filterValues: null) {
+                edges {
+                  node {
+                    id
+                    title
+                    headline
+                    logo_url
+                    skill_level
+                    est_minutes
+                    primary_topic
+                    topics
+                  }
+                }
+              }
+            }
+        `;
+        return (await this.request(q)).listDigitalDiplomas.edges!
+    }
+
+    public async getDigitalDiploma(digitalDiplomaId: string): Promise<IDigitalDiploma> {
+        const q = `
+            {
+                getDigitalDiplomaById(digital_diploma_id: "${digitalDiplomaId}") {
+                    id
+                    title
+                    headline
+                    description
+                    logo_url
+                    skill_level
+                    est_minutes
+                    primary_topic
+                    info_md
+                    topics
+                    plans {
+                        _id
+                        title
+                        headline
+                        cost
+                        is_hidden
+                        opens_at
+                        closes_at
+                    }
+                    instructor_timekit {
+                      intervals {
+                        credits
+                        project_id
+                        duration_seconds
+                      }
+                    }
+                }
+            }
+        `;
+        return (await this.request(q)).getDigitalDiplomaById!
     }
 
     public async getInstructor(userId: string): Promise<IUser> {

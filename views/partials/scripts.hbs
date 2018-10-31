@@ -13,7 +13,7 @@
 <!--<script src="/learn-en/assets/libs/list.js/dist/list.min.js"></script>-->
 <!--<script src="/learn-en/assets/libs/quill/dist/quill.min.js"></script>-->
 <!--<script src="/learn-en/assets/libs/dropzone/dist/min/dropzone.min.js"></script>-->
-<!--<script src="/learn-en/assets/libs/select2/dist/js/select2.min.js"></script>-->
+<script src="/learn-en/assets/libs/select2/dist/js/select2.min.js"></script>
 <script src="/learn-en/assets/libs/toastr/toastr.min.js"></script>
 <script src="/learn-en/assets/libs/moment/moment.min.js"></script>
 <script src="/learn-en/assets/libs/moment-timezone/moment-timezone-with-data-2012-2022.min.js"></script>
@@ -117,6 +117,9 @@
         function showModalsWhenHashEq() {
             modalIds.forEach(function(id) {
                 if (window.location.hash.indexOf('#!'+id) > -1) {
+                    if (window.location.hash === '#!modalManageCoins=min_ic') {
+                        Intercom('hide');
+                    }
                     $('#'+id).modal('show');
                 }
             });
@@ -201,11 +204,7 @@
         var toggle = document.querySelector('#theme-mode-toggle');
 
         function updateToggleState() {
-            if (themeMode === 'dark') {
-                document.querySelector('#theme-mode-toggle').checked = true;
-            } else {
-                document.querySelector('#theme-mode-toggle').checked = false;
-            }
+            document.querySelector('#theme-mode-toggle').checked = themeMode === 'dark';
         }
 
         function toggleThemeMode() {
@@ -282,4 +281,20 @@
             console.log('invalid iframe msg: ', evt, ',ignoring error: ', error)
         }
     });
+</script>
+<script>
+    console.log(`
+    _____            __                  ________  __    __  __                  __        __  __  __
+   /     |          /  |                /        |/  |  /  |/  |                /  |      /  |/  |/  |
+   $$$$$ |  ______  $$/  _______        $$$$$$$$/ $$ |  $$ |$$ |        _______ $$ |   __ $$/ $$ |$$ |  _______
+      $$ | /      \\ /  |/       \\       $$ |__    $$  \\/$$/ $$ |       /       |$$ |  /  |/  |$$ |$$ | /       |
+ __   $$ |/$$$$$$  |$$ |$$$$$$$  |      $$    |    $$  $$<  $$ |      /$$$$$$$/ $$ |_/$$/ $$ |$$ |$$ |/$$$$$$$/
+/  |  $$ |$$ |  $$ |$$ |$$ |  $$ |      $$$$$/      $$$$  \\ $$ |      $$      \\ $$   $$<  $$ |$$ |$$ |$$      \\
+$$ \\__$$ |$$ \\__$$ |$$ |$$ |  $$ |      $$ |_____  $$ /$$  |$$ |_____  $$$$$$  |$$$$$$  \\ $$ |$$ |$$ | $$$$$$  |
+$$    $$/ $$    $$/ $$ |$$ |  $$ |      $$       |$$ |  $$ |$$       |/     $$/ $$ | $$  |$$ |$$ |$$ |/     $$/
+ $$$$$$/   $$$$$$/  $$/ $$/   $$/       $$$$$$$$/ $$/   $$/ $$$$$$$$/ $$$$$$$/  $$/   $$/ $$/ $$/ $$/ $$$$$$$/
+
+Email jobs@exlskills.com and check out our open work at https://github.com/exlskills to join us today!
+
+    `)
 </script>
