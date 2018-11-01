@@ -96,6 +96,7 @@ type Course implements Node {
   last_accessed_card: String
   delivery_methods: [String]
   instructor_timekit: InstructorTimekit
+  weight: Float
 }
 
 # A connection to a list of items.
@@ -239,35 +240,6 @@ type DigitalDiplomaPlan {
   opens_at: String
 }
 
-type EmbeddedDocRef {
-  embedded_doc_refs: EmbeddedDocRefRecordConnection!
-}
-
-type EmbeddedDocRefRecord implements Node {
-  # The ID of an object
-  id: ID!
-  level: Int!
-  doc_id: String!
-}
-
-# A connection to a list of items.
-type EmbeddedDocRefRecordConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [EmbeddedDocRefRecordEdge]
-}
-
-# An edge in a connection.
-type EmbeddedDocRefRecordEdge {
-  # The item at the end of the edge
-  node: EmbeddedDocRefRecord
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
 # Event Duration
 type EventDuration {
   months: Int
@@ -364,6 +336,7 @@ type Mutation {
   updateUserProfile(input: UpdateUserProfileInput!): UpdateUserProfilePayload
   updateUserUnitStatus(input: UpdateUserUnitStatusInput!): UpdateUserUnitStatusPayload
   updateUserCourseRole(input: UpdateUserCourseRoleInput!): UpdateUserCourseRolePayload
+  setCardInteraction(input: SetCardInteractionInput!): SetCardInteractionPayload
 }
 
 # NextQuestion
@@ -578,7 +551,6 @@ type SectionCard implements Node {
   tags: [String]
   question_ids: [ID]
   ema: Float
-  card_ref: EmbeddedDocRef
   content: VersionedContentRecord
   question: Question
   questions: [Question]
@@ -621,6 +593,20 @@ type SessionInstructorType implements Node {
   avatar_url: String
   headline: String
   biography: String
+}
+
+input SetCardInteractionInput {
+  course_id: ID!
+  unit_id: ID!
+  section_id: ID
+  card_id: ID!
+  interaction: String
+  clientMutationId: String
+}
+
+type SetCardInteractionPayload {
+  completionObj: CompletionObj
+  clientMutationId: String
 }
 
 input SetExamQuestionAnswerInput {
