@@ -37,20 +37,20 @@
             </div>
 
             <div class="nav-item">
-              <a style="color: #F2F2F3;" class="nav-link spf-link {{#eq contentTmpl "courses"}}active{{/eq}}" href="/learn">
+              <a style="color: #F2F2F3;" class="nav-link spf-link" href="/learn-{{route.locale}}/courses">
                   Courses
               </a>
             </div>
 
             <div class="nav-item">
-              <a style="color: #F2F2F3;" class="nav-link spf-link {{#eq contentTmpl "help"}}active{{/eq}}" href="{{config.helpBaseURL}}" target="_blank" rel="noopener">
+              <a style="color: #F2F2F3;" class="nav-link spf-link" href="{{config.helpBaseURL}}" target="_blank" rel="noopener">
                   Help
               </a>
             </div>
 
             <div class="nav-item">
-              <a style="color: #F2F2F3;" class="nav-link spf-link" href="{{config.becomeAnInstructorForm}}" target="_blank" rel="noopener"  >
-                  Instructor
+              <a style="color: #F2F2F3;" class="nav-link spf-link" href="/learn-{{route.locale}}/instructors" target="_blank" rel="noopener"  >
+                  Instructors
               </a>
             </div>
 

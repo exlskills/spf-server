@@ -199,7 +199,6 @@ router.get('/health-check', (req, res) => res.sendStatus(200));
 router.use('/learn-en/assets', express.static(path.join(__dirname, '../static/assets')));
 
 // SPF Routes
-router.get('/learn-:locale', redirectDashboard);
 router.get('/learn-:locale/dashboard', gc(viewDashboard, req => []));
 router.get('/learn-:locale/courses', gc(viewCourses, req => []));
 router.get('/learn-:locale/courses/:courseId', gc(viewCourseIndex, req => [fromUrlId('Course', req.params.courseId)]));
@@ -223,7 +222,7 @@ router.get('/learn-:locale/instructors/:instructorId', gc(viewInstructor, req =>
 router.get('/learn/*', redirectMissingLocale);
 router.get('/learn', redirectDashboard);
 
-router.get('/learn-:locale/home', gc(viewMarketing, req => []));
+router.get('/learn-:locale', gc(viewMarketing, req => []));
 router.get('/', redirectMarketing);
 
 // AMP Routes
