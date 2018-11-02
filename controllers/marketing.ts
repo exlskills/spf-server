@@ -10,7 +10,8 @@ export async function viewMarketing(client: GqlApi, user: IUserData, locale: str
         contentTmpl: 'marketing-index',
         layout: 'marketing',
         meta: {
-            title: 'Home'
+            title: 'EXLskills',
+            description: 'Learn high-paying tech skills for free'
         },
         data: {
             courses: {
