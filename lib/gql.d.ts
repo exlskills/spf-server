@@ -300,6 +300,7 @@ cost: number | null;
 is_hidden: boolean | null;
 closes_at: string | null;
 opens_at: string | null;
+is_shipping_required: boolean | null;
 }
 
 interface ICourse {
