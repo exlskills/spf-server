@@ -24,32 +24,37 @@
           font-size: 1em;
           font-weight: bold;
         }
-
+        .nav-link {
+          color: #F2F2F3 !important;
+        }
+        .menu-link {
+          color: #000 !important;
+        }
 
         </style>
         <!-- NavBar Links wide format -->
           <div style="display: none" id="marketing-nav" class="navbar-nav d-md-flex flex-row">
 
             <div class="nav-item">
-              <a style="color: #F2F2F3;" class="nav-link spf-link {{#eq contentTmpl "home"}}active{{/eq}}" href="/learn-{{route.locale}}/home">
+              <a class="nav-link {{#eq contentTmpl "marketing"}}active{{/eq}}" href="/learn-{{route.locale}}">
                   Home
               </a>
             </div>
 
             <div class="nav-item">
-              <a style="color: #F2F2F3;" class="nav-link spf-link" href="/learn-{{route.locale}}/courses">
+              <a class="nav-link" href="/learn-{{route.locale}}/courses" target="_blank" rel="noopener">
                   Courses
               </a>
             </div>
 
             <div class="nav-item">
-              <a style="color: #F2F2F3;" class="nav-link spf-link" href="{{config.helpBaseURL}}" target="_blank" rel="noopener">
+              <a class="nav-link" href="{{config.helpBaseURL}}" target="_blank" rel="noopener">
                   Help
               </a>
             </div>
 
             <div class="nav-item">
-              <a style="color: #F2F2F3;" class="nav-link spf-link" href="/learn-{{route.locale}}/instructors" target="_blank" rel="noopener"  >
+              <a class="nav-link" href="/learn-{{route.locale}}/instructors" target="_blank" rel="noopener"  >
                   Instructors
               </a>
             </div>
@@ -67,26 +72,26 @@
         <!--Navbar links mobile format menu hamburger-->
         <div style="display: flex" class="navbar-nav d-md-none mr-4">
 
-            <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="hamburger-icon" data-toggle="dropdown">
               <img class="img-fluid" src="https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/site-assets/menu-hamburguer.svg" />
             </a>
 
-            <div class="dropdown-menu dropdown-menu-right" style="z-index: 1000; position: absolute;" aria-labelledby="dropdownMenu2">
+            <div class="hamburger dropdown-menu dropdown-menu-right" style="z-index: 1000; position: absolute;">
 
-              <a class="nav-link spf-link {{#eq contentTmpl "home"}}active{{/eq}}" href="/learn-{{route.locale}}/home">
+              <a class="nav-link menu-link" href="/learn-{{route.locale}}">
                   Home
               </a>
 
-              <a class="nav-link spf-link {{#eq contentTmpl "courses"}}active{{/eq}}" href="/learn">
+              <a class="nav-link menu-link" href="/learn-{{route.locale}}/courses" target="_blank" rel="noopener">
                   Courses
               </a>
 
-              <a class="nav-link spf-link {{#eq contentTmpl "help"}}active{{/eq}}" href="{{config.helpBaseURL}}" target="_blank" rel="noopener">
+              <a class="nav-link menu-link" href="{{config.helpBaseURL}}" target="_blank" rel="noopener">
                   Help
               </a>
 
-              <a class="nav-link spf-link {{#eq contentTmpl "instructor"}}active{{/eq}}" href="{{config.becomeAnInstructorForm}}" target="_blank" rel="noopener">
-                  Instructor
+              <a class="nav-link menu-link" href="/learn-{{route.locale}}/instructors" target="_blank" rel="noopener"  >
+                  Instructors
               </a>
 
             </div>
