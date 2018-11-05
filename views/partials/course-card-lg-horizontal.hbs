@@ -1,11 +1,11 @@
 
     <!-- Card -->
-    <div class="card" style="border: 0">
+    <div style="border: 0; height: calc(100% - 20px)" class="card" >
         <a href="/learn-{{locale}}/courses/{{course.url_id}}{{trailingPath}}" class="spf-link">
             <img src="{{course.logo_url}}" alt="..." class="card-img-top course-card-bg">
         </a>
 
-        <div class="card-body text-center">
+        <div class="card-body text-center d-flex flex-column justify-content-between">
 
             <a href="/learn-{{locale}}/courses/{{course.url_id}}{{trailingPath}}" class="spf-link avatar avatar-xl card-avatar card-avatar-top">
                 <img src="{{course.badge_url}}" class="course-badge avatar-img rounded-circle border border-4 border-card"
@@ -22,7 +22,7 @@
                 </small>
             </p>
 
-            <hr>
+            <hr class="row">
 
             <div class="row align-items-center justify-content-between">
                 <div class="col-auto">
