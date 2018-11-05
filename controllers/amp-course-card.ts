@@ -3,7 +3,7 @@ import * as showdown from 'showdown';
 import * as cheerio from 'cheerio';
 import {toUrlId} from "../utils/url-ids";
 import {IUserData} from "../lib/jwt";
-import {fetchDetailedCourseForView} from "./course-index";
+import {fetchDetailedCourseForView} from "./course-overview";
 import {ISPFRouteResponse} from "../lib/spf-route-response";
 import {Request} from 'express';
 

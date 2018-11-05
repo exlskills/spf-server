@@ -1,7 +1,7 @@
 import GqlApi from "../lib/gql-api";
 import {IUserData} from "../lib/jwt";
 import {ISPFRouteResponse} from "../lib/spf-route-response";
-import {fetchDetailedCourseForView} from "./course-index";
+import {fetchDetailedCourseForView, fetchDetailedCourseWithEnrollmentForView} from "./course-overview";
 import config from '../config';
 
 const helpFaqMD = `
@@ -29,15 +29,15 @@ If you have any questions at all regarding EXLskills Instructors, please use the
 `;
 
 export async function viewCourseHelp(client: GqlApi, user: IUserData, locale: string, courseGID: string) : Promise<ISPFRouteResponse> {
-    const c = await fetchDetailedCourseForView(client, courseGID);
+    let gqlResp = await fetchDetailedCourseWithEnrollmentForView(client, courseGID);
     return {
         contentTmpl: 'course_help',
         meta: {
-            title: c.meta.title,
-            description: `Get live personalized help studying for the ${c.meta.title} course`
+            title: gqlResp.meta.title,
+            description: `Get live personalized help studying for the ${gqlResp.meta.title} course`
         },
         data: {
-            course: c,
+            course: gqlResp,
             helpFaqMD
         }
     }

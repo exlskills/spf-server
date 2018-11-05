@@ -1,3 +1,8 @@
+<style>
+    .cc-nav-item {
+
+    }
+</style>
 <div class="container-fluid">
 
     <!-- Toggler -->
@@ -94,11 +99,6 @@
 
             <!-- Navigation -->
             <ul class="navbar-nav mb-md-3">
-                <li class="nav-item">
-                    <a class="nav-link spf-link {{#eq contentTmpl "course_index"}}active{{/eq}}" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}">
-                        <i class="fe fe-clipboard"></i> Overview
-                    </a>
-                </li>
                 {{#if data.course.meta.instructor_timekit.intervals}}
                     <li class="nav-item">
                         <a class="text-primary nav-link spf-link {{#eq contentTmpl "course_help"}}active{{/eq}}" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/help">
@@ -106,39 +106,43 @@
                         </a>
                     </li>
                 {{/if}}
-                {{#eq contentTmpl "course_card"}}
-                    <li class="nav-item">
-                        <a class="nav-link spf-link active" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content">
-                            <i class="fe fe-book"></i> Course
-                        </a>
-                        <ul class="nav nav-sm flex-column">
-                            {{#each data.course.units}}
-                                <li class="nav-item">
-                                    <a href="#sb-course-unit-{{url_id}}" class="nav-link" data-toggle="collapse" role="button" aria-expanded="{{#eq url_id ../route.params.unitId}}true{{/eq}}" aria-controls="sb-course-unit-{{url_id}}">
-                                        {{title}}
-                                    </a>
-                                    <div class="collapse {{#eq url_id ../route.params.unitId}}show{{/eq}}" id="sb-course-unit-{{url_id}}">
-                                        <ul class="nav nav-sm flex-column">
-                                            {{#each sections_list}}
-                                                <li class="nav-item">
-                                                    <a href="/learn-{{../../route.locale}}/courses/{{../../data.course.meta.url_id}}/{{../url_id}}/{{url_id}}/{{first_card_url_id}} " class="spf-link nav-link {{#eq url_id ../../route.params.sectionId}}active{{/eq}}">
-                                                        {{title}}
+                <li class="cc-nav-item nav-item">
+                    <a class="nav-link spf-link {{#eq contentTmpl "course_content"}}active{{/eq}}" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content">
+                        <i class="fe fe-book"></i> Course
+                    </a>
+                    <ul class="nav nav-sm flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link spf-link {{#eq contentTmpl "course_index"}}active{{/eq}}" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}">
+                                Overview <span style="font-size: 12px;" class="ml-2 fe {{#if data.course.isEnrolled}}fe-check text-success{{/if}}"></span>
+                            </a>
+                        </li>
+                        {{#each data.course.units}}
+                            <li class="nav-item">
+                                <a href="#sb-course-unit-{{url_id}}" class="nav-link" data-toggle="collapse" role="button" aria-expanded="{{#eq url_id ../route.params.unitId}}true{{/eq}}" aria-controls="sb-course-unit-{{url_id}}">
+                                    {{title}} <span style="font-size: 12px;" class="ml-2 fe {{#gt ema 80}}fe-check text-success{{else}}{{#gt ema 0}}fe-refresh-ccw text-warning{{/gt}}{{/gt}}"></span>
+                                </a>
+                                <div class="collapse {{#eq url_id ../route.params.unitId}}show{{/eq}}" id="sb-course-unit-{{url_id}}">
+                                    <ul class="nav nav-sm flex-column">
+                                        {{#each sections_list}}
+                                            <li class="nav-item">
+                                                <h6 class="nav-link navbar-heading text-muted m-0">
+                                                    <a href="/learn-{{../../route.locale}}/courses/{{../../data.course.meta.url_id}}/{{../url_id}}/{{url_id}}/{{first_card_url_id}} " class="spf-link">
+                                                    {{title}}
                                                     </a>
-                                                </li>
-                                            {{/each}}
-                                        </ul>
-                                    </div>
-                                </li>
-                            {{/each}}
-                        </ul>
-                    </li>
-                {{else}}
-                    <li class="nav-item">
-                        <a class="nav-link spf-link {{#eq contentTmpl "course_content"}}active{{/eq}}" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content">
-                            <i class="fe fe-book"></i> Course
-                        </a>
-                    </li>
-                {{/eq}}
+                                                </h6>
+                                                {{#each cards_list}}
+                                                    <a href="/learn-{{../../../route.locale}}/courses/{{../../../data.course.meta.url_id}}/{{../../url_id}}/{{../url_id}}/{{url_id}} " class="spf-link nav-link {{#eq url_id ../../../route.params.cardId}}active{{/eq}}">
+                                                        <span class="{{#gt ema 80}}text-success{{else}}{{#gt ema 0}}text-warning{{/gt}}{{/gt}}">●</span> <div class="ml-2">{{title}}</div>
+                                                    </a>
+                                                {{/each}}
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </li>
                 <!-- Course Progress Removed until/if exams are implemented, otherwise useless
                 <li class="nav-item">
                     <a class="nav-link spf-link {{#eq contentTmpl "course_progress"}}active{{/eq}}" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/progress">

@@ -3,7 +3,7 @@ import {ISPFRouteResponse} from "../lib/spf-route-response";
 import {IUserData} from "../lib/jwt";
 import { Request } from 'express';
 import {toUrlId} from "../utils/url-ids";
-import {fetchDetailedCourseForView} from "./course-index";
+import {fetchDetailedCourseForView, fetchDetailedCourseWithEnrollmentForView} from "./course-overview";
 import IQuestion = GQL.IQuestion;
 import config from '../config';
 import {uuidv4} from "../utils/uuid";
@@ -63,7 +63,7 @@ export function renderFullCardContentHTML(content: string) {
 }
 
 export async function viewCourseCard(client: GqlApi, user: IUserData, locale: string, req: Request, courseGID: string, unitGID: string, sectionGID: string, cardGID: string) : Promise<ISPFRouteResponse> {
-    let gqlResp = await fetchDetailedCourseForView(client, courseGID);
+    let gqlResp = await fetchDetailedCourseWithEnrollmentForView(client, courseGID);
     gqlResp.nav = {
         locale,
         courseUrlId: gqlResp.meta.url_id

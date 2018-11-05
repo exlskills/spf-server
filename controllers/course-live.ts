@@ -1,7 +1,7 @@
 import GqlApi from "../lib/gql-api";
 import {ISPFRouteResponse} from "../lib/spf-route-response";
 import {IUserData} from "../lib/jwt";
-import {fetchDetailedCourseForView} from "./course-index";
+import {fetchDetailedCourseForView, fetchDetailedCourseWithEnrollmentForView} from "./course-overview";
 import * as moment from 'moment-timezone';
 
 export async function fetchCourseDeliverySchedule(client: GqlApi, courseGID: string, courseTitle: string) {
@@ -55,7 +55,7 @@ export async function fetchCourseDeliverySchedule(client: GqlApi, courseGID: str
 }
 
 export async function viewCourseLive(client: GqlApi, user: IUserData, locale: string, courseGID: string) : Promise<ISPFRouteResponse> {
-    const c = await fetchDetailedCourseForView(client, courseGID);
+    let c = await fetchDetailedCourseWithEnrollmentForView(client, courseGID);
     const s = await fetchCourseDeliverySchedule(client, courseGID, c.meta.title);
     return {
         contentTmpl: 'course_live',

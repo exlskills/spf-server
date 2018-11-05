@@ -9,6 +9,13 @@ import {indexToLetter} from "../lib/ordered-lists";
 import {fromGlobalId} from "../utils/gql-ids";
 import {generateCourse, PlatformOrganization} from "../lib/jsonld";
 
+const courseOverviewFaqMDGen = (course: any) => `
+### Is this course FREE?
+
+Yes, this a 100% free course that you can contribute to on GitHub [here](${course.meta.repo_url})!
+
+`;
+
 export async function fetchDetailedCourseForView(client: GqlApi, courseGID: string, withEMA?: boolean) {
     let gqlResp: any;
     if (withEMA) {
@@ -158,18 +165,24 @@ export async function fetchUserCourseEnrollmentForView(client: GqlApi, courseGID
     return enrollment.findIndex(item => item.node.course_id === fromGlobalId(courseGID).id) > -1;
 }
 
-export async function viewCourseIndex(client: GqlApi, user: IUserData, locale: string, courseGID: string) : Promise<ISPFRouteResponse> {
+export async function fetchDetailedCourseWithEnrollmentForView(client: GqlApi, courseGID: string) {
     let gqlResp = await fetchDetailedCourseForView(client, courseGID, true);
     gqlResp.isEnrolled = await fetchUserCourseEnrollmentForView(client, courseGID);
+    return gqlResp;
+}
+
+export async function viewCourseOverview(client: GqlApi, user: IUserData, locale: string, courseGID: string) : Promise<ISPFRouteResponse> {
+    let gqlResp = await fetchDetailedCourseWithEnrollmentForView(client, courseGID);
     return {
-        contentTmpl: 'course_index',
+        contentTmpl: 'course_overview',
         meta: {
             title: gqlResp.meta.title,
             description: gqlResp.meta.description,
             jsonld: generateCourse(gqlResp.meta.title, gqlResp.meta.description, PlatformOrganization)
         },
         data: {
-            course: gqlResp
+            course: gqlResp,
+            courseOverviewFaqMD: courseOverviewFaqMDGen(gqlResp)
         }
     }
 }
