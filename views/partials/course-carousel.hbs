@@ -1,79 +1,165 @@
-<style >
-  .carousel {
-    background-color: grey;
-    justify-content: center;
-    align-items: center;
+<style>
+
+.bg-grey {
+  background-color: #3F4450;
+}
+
+.btn-course {
+   color: #FFF;
+   border-color: #FFF;
+}
+
+ .btn-course:hover {
+   color: grey;
+   border-color: #FFF;
+   background-color: #FFF;
+}
+
+.carousel-item {
+  position: relative;
+  display: none;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+  transition: -webkit-transform 0.6s ease;
+  transition: transform 0.6s ease;
+  transition: transform 0.6s ease;
+  -webkit-transform 0.6s ease;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+}
+
+@media (min-width: 768px) {
+  /* show 3 items */
+  .carousel-inner .active,
+  .carousel-inner .active + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item {
+    display: block;
   }
-  .carousel-inner {
-    margin: auto;
-    width: 80%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    height: 100%;
+
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left),
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item {
+    transition: none;
   }
-  .carousel-item {
-    justify-content: center;
-    align-items: center;
+
+  .carousel-inner .carousel-item-next,
+  .carousel-inner .carousel-item-prev {
+    position: relative;
+    transform: translate3d(0, 0, 0);
   }
-  .btn-course {
-    color: #FFF;
-    border-color: #FFF;
+
+  .carousel-inner .active.carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    position: absolute;
+    top: 0;
+    right: -33.3333%;
+    z-index: -1;
+    display: block;
+    visibility: visible;
   }
-  .btn-course:hover {
-    color: grey;
-    border-color: #FFF;
-    background-color: #FFF;
+
+  /* left or forward direction */
+  .active.carousel-item-left + .carousel-item-next.carousel-item-left,
+  .carousel-item-next.carousel-item-left + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item {
+    position: relative;
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
   }
-  .carousel-title {
-    font-size: 2em;
-    font-weight: bold;
+
+  /* farthest right hidden item must be abso position for animations */
+  .carousel-inner .carousel-item-prev.carousel-item-right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    display: block;
+    visibility: visible;
   }
-  .carousel-subtitle {
-    font-size: 1.2em;
+
+  /* right or prev direction */
+  .active.carousel-item-right + .carousel-item-prev.carousel-item-right,
+  .carousel-item-prev.carousel-item-right + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item {
+    position: relative;
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+    display: block;
+    visibility: visible;
   }
+}
+
+
 </style>
 
-<div class="carousel pt-5 pb-5 d-flex flex-column">
-  <div class="row">
-    <span class="text-white carousel-title">Free Courses</span>
-  </div>
-  <div class="row mb-4 text-white carousel-subtitle">
-    Browse our FREE open source catalogue
-  </div>
-  <div class="carousel-inner">
-    <div class="carousel-item active row d-flex flex-row">
-         <!-- only one course returns from relevant at the moment -->
-      <div class="d-sm-block">
-        {{#each data.courses.relevant}}
-            {{>course-card-lg-horizontal course=this locale=../route.locale}}
-        {{/each}}
-      </div>
-      <div style="display: none" class="d-lg-block">
-        {{#each data.courses.relevant}}
-            {{>course-card-lg-horizontal course=this locale=../route.locale}}
-        {{/each}}
-      </div>
-      <div style="display: none" class="d-xl-block">
-        {{#each data.courses.relevant}}
-            {{>course-card-lg-horizontal course=this locale=../route.locale}}
-        {{/each}}
-      </div>
-    </div>
-    <!-- <div class="carousel-item">
+<div class="container-fluid bg-grey pt-5 pb-5">
 
-    </div>
-    <div class="carousel-item">
+    <h1 class="text-white text-center">
+      Free Courses
+    </h1>
 
-    </div> -->
+    <h4 class="text-white text-center mb-5">
+      Browse our FREE open source catalogue
+    </h4>
+
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner row w-100 mx-auto justify-content-center">
+      {{#each data.courses.relevant}}
+      <div class="carousel-item col-md-3">
+        {{>course-card-lg-horizontal course=this locale=../route.locale}}
+      </div>
+      {{/each}}
+    </div>
+
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+
+    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    <div class="text-center w-100 mt-2 mb-2">
+      <a class="btn btn-outline-primary btn-lg btn-course" href='/learn{{route.locale}}/courses'>View All Courses >
+      </a>
+    </div>
   </div>
-  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-  <a class="btn btn-outline-primary btn-lg btn-course" href='/learn-{{route.locale}}/courses'>View All Courses ></a>
 </div>
+<script>
+$(document).ready(function() {
+  var cardActive = $(".carousel-item")[0]
+    $(cardActive).addClass("active")
+})
+$(document).ready(function() {
+$("#myCarousel").on("slide.bs.carousel", function(e) {
+  var $e = $(e.relatedTarget);
+  var idx = $e.index();
+  var itemsPerSlide = 4;
+  var totalItems = $(".carousel-item").length;
+
+  if (idx >= totalItems - (itemsPerSlide - 1)) {
+    var it = itemsPerSlide - (totalItems - idx);
+    for (var i = 0; i < it; i++) {
+      // append slides to end
+      if (e.direction == "left") {
+        $(".carousel-item")
+          .eq(i)
+          .appendTo(".carousel-inner");
+      } else {
+        $(".carousel-item")
+          .eq(0)
+          .appendTo($(this).find(".carousel-inner"));
+      }
+    }
+  }
+});
+});
+
+
+</script>
