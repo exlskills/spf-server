@@ -107,37 +107,42 @@
       Browse our FREE open source catalogue
     </h4>
 
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <div id="courseCarousel" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner row w-100 mx-auto justify-content-center">
       {{#each data.courses.relevant}}
-      <div class="carousel-item col-md-3">
+      <div class="carousel-item col-md-4 col-lg-3">
         {{>course-card-lg-horizontal course=this locale=../route.locale}}
       </div>
       {{/each}}
     </div>
 
-    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <a class="carousel-control-prev" href="#courseCarousel" role="button" data-slide="prev">
+      <!-- <span class="carousel-control-prev-icon" aria-hidden="true"></span> -->
+      <img src="https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/site-assets/_index/arrow-circle-left.svg" />
       <span class="sr-only">Previous</span>
     </a>
 
-    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <a class="carousel-control-next" href="#courseCarousel" role="button" data-slide="next">
+      <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+      <img src="https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/site-assets/_index/arrow-circle-right.svg" />
       <span class="sr-only">Next</span>
     </a>
+
     <div class="text-center w-100 mt-2 mb-2">
-      <a class="btn btn-outline-primary btn-lg btn-course" href='/learn{{route.locale}}/courses'>View All Courses >
+      <a class="btn btn-outline-primary btn-lg btn-course" href='/learn-{{route.locale}}/courses'>View All Courses >
       </a>
     </div>
+
   </div>
 </div>
+
 <script>
 $(document).ready(function() {
   var cardActive = $(".carousel-item")[0]
     $(cardActive).addClass("active")
 })
 $(document).ready(function() {
-$("#myCarousel").on("slide.bs.carousel", function(e) {
+$("#courseCarousel").on("slide.bs.carousel", function(e) {
   var $e = $(e.relatedTarget);
   var idx = $e.index();
   var itemsPerSlide = 4;
@@ -160,6 +165,4 @@ $("#myCarousel").on("slide.bs.carousel", function(e) {
   }
 });
 });
-
-
 </script>
