@@ -1,24 +1,24 @@
 <div class="col-12 col-md-6 col-xl-4">
     <!-- Card -->
-    <div class="card">
+    <div class="card" style="height: calc(100% - 20px);">
         <a href="/learn-{{locale}}/digital-diplomas/{{diploma.url_id}}{{trailingPath}}" class="spf-link">
             <img src="{{diploma.logo_url}}" alt="..." class="card-img-top course-card-bg">
         </a>
-        <div class="card-body text-center">
+        <div class="card-body text-center d-flex flex-column justify-content-between">
             <a href="/learn-{{locale}}/digital-diplomas/{{diploma.url_id}}{{trailingPath}}" class="spf-link avatar avatar-xl card-avatar card-avatar-top">
                 <img src="{{diploma.badge_url}}" class="course-badge avatar-img rounded-circle border border-4 border-card"
                      alt="...">
             </a>
-            <h2 class="card-title">
+            <h2 class="card-title text-center">
                 <a href="/learn-{{locale}}/digital-diplomas/{{diploma.url_id}}{{trailingPath}}" class="spf-link">{{diploma.title}}</a>
             </h2>
-            <p class="card-text text-muted">
+            <p class="card-text text-center text-muted">
                 <small>
                     {{diploma.headline}}
                 </small>
             </p>
             <hr>
-            <div class="row align-items-center justify-content-between">
+            <div class="row">
                 <div class="col-auto">
                     <small>
                         <span class="fe fe-clock"></span> {{diploma.est_minutes_text}}

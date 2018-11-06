@@ -1,10 +1,10 @@
 <div class="col-12 col-md-6 col-xl-4">
     <!-- Card -->
-    <div class="card">
+    <div class="card" style="height: calc(100% - 20px);">
         <a href="/learn-{{locale}}/projects/{{project.url_id}}{{trailingPath}}" class="spf-link">
             <img src="{{project.logo_url}}" alt="..." class="card-img-top course-card-bg">
         </a>
-        <div class="card-body text-center">
+        <div class="card-body text-center d-flex flex-column justify-content-between">
             <a href="/learn-{{locale}}/projects/{{project.url_id}}{{trailingPath}}" class="spf-link avatar avatar-xl card-avatar card-avatar-top">
                 <img src="{{project.badge_url}}" class="course-badge avatar-img rounded-circle border border-4 border-card"
                      alt="...">
@@ -12,13 +12,13 @@
             <h2 class="card-title">
                 <a href="/learn-{{locale}}/projects/{{project.url_id}}{{trailingPath}}" class="spf-link">{{project.title}}</a>
             </h2>
-            <p class="card-text text-muted">
+            <p class="card-text text-muted text-center">
                 <small>
                     {{project.headline}}
                 </small>
             </p>
             <hr>
-            <div class="row align-items-center justify-content-between">
+            <div class="row">
                 <div class="col-auto">
                     <small>
                         <span class="fe fe-clock"></span> {{project.est_minutes_text}}
