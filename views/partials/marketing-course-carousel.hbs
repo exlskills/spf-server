@@ -11,7 +11,7 @@
   <div id="course-carousel" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner row w-100 mx-auto justify-content-center">
       {{#each data.courses.relevant}}
-      <div class="carousel-item col-md-4 col-lg-3">
+      <div class="carousel-item col-md-4 h-100 col-lg-3">
         {{>marketing-course-card-lg-horizontal course=this locale=../route.locale}}
       </div>
       {{/each}}
