@@ -65,14 +65,15 @@
   font-size: 1.5em;
   margin: 0 0 2em 0;
   color: white;
+  width: 40%;
 }
 
 
-#marketing-index-splash .blue-title {
+#marketing-index-splash .white-title {
   color: white;
 }
 
-#marketing-index-splash .pink-title {
+#marketing-index-splash .blue-title {
   color: #129EC1;
 }
 
@@ -87,17 +88,9 @@
 
 #marketing-index-splash .no-login {
   margin-top: 1em;
+  margin-left: .5em;
   color: lightgrey;
   width: 150px;
-}
-
-@media (max-width: 768px) {
-  #marketing-index-splash .title {
-      font-size: 2.6em;
-  }
-  #marketing-index-splash .subtitle {
-      font-size: 1.2em;
-  }
 }
 
 /* Top Companies partial */
@@ -108,11 +101,6 @@
 #top-companies .prof-inst-bubble {
   background-color: #E7E7E7;
   border-radius: 3em;
-}
-@media (max-width: 768px) {
-  #top-companies .companies-title {
-    font-size: 1.3em;
-  }
 }
 
 /* Get Verified partial */
@@ -167,6 +155,10 @@
    background-color: #FFF;
 }
 
+/* .carousel-inner {
+  min-height: 550px;
+} */
+
 .carousel-item {
   position: relative;
   display: none;
@@ -184,11 +176,20 @@
   perspective: 1000px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   /* show 3 items */
   .carousel-inner .active,
   .carousel-inner .active + .carousel-item,
-  .carousel-inner .active + .carousel-item + .carousel-item {
+  .carousel-inner .active + .carousel-item + .carousel-item  {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+
+  /* show 2 items */
+  .carousel-inner .active,
+  .carousel-inner .active + .carousel-item  {
     display: block;
   }
 
@@ -246,6 +247,46 @@
   }
 }
 
+@media (max-width: 992px) {
+  #marketing-index-splash {
+    height: 100vh;
+  }
+
+  #marketing-index-splash .title {
+      font-size: 2.6em;
+  }
+  #marketing-index-splash .subtitle {
+      font-size: 1.2em;
+      width: 60%;
+  }
+
+  #top-companies .companies-title {
+    font-size: 1.3em;
+  }
+}
+
+
+@media (max-width: 420px) {
+  #top-companies .prof-inst-bubble {
+    font-size: .9em;
+  }
+
+  #marketing-index-splash .container {
+      width: 100%;
+      padding-right: 2em;
+      margin-top: 1em;
+  }
+
+  #marketing-index-splash .title {
+      font-size: 2.2em;
+      width: 80%
+  }
+  #marketing-index-splash .subtitle {
+      font-size: 1em;
+      width: 80%;
+  }
+
+}
 
 </style>
 
