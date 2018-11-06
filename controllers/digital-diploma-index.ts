@@ -19,7 +19,7 @@ export async function fetchDigitalDiplomaForView(client: GqlApi, digitalDiplomaG
     for (let plan of digitalDiploma.plans) {
         plan.checkoutItem = {
             category: 'digital_diploma_plan',
-            requireShippingInfo: true,
+            requireShippingInfo: plan.is_shipping_required,
             quantity: 1,
             options: {},
             refs: {

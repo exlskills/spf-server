@@ -24,7 +24,7 @@ export const toUrlId = (text: string, id: string): string => {
     return `${string_to_slug(text)}-${fromGlobalId(id).id}`
 };
 
-export function fromUrlId(type: string, urlId: string): string {
+export const fromUrlId = (type: string, urlId: string): string => {
     const lastIndexOfDash = urlId.lastIndexOf('-')
     return toGlobalId(type, urlId.substr(lastIndexOfDash + 1))
 };
@@ -33,7 +33,7 @@ export const toUrlPlainId = (text: string, id: string): string => {
     return `${string_to_slug(text)}-${fromGlobalId(id).id}`
 };
 
-export function fromUrlPlainId(type: string, urlId: string): string {
+export const fromUrlPlainId = (type: string, urlId: string): string =>  {
     const lastIndexOfDash = urlId.lastIndexOf('-')
     return toGlobalId(type, urlId.substr(lastIndexOfDash + 1))
 };

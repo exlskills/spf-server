@@ -377,6 +377,7 @@ export default class GqlApi {
                         is_hidden
                         opens_at
                         closes_at
+                        is_shipping_required
                     }
                     instructor_timekit {
                       intervals {
