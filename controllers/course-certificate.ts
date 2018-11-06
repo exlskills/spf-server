@@ -1,7 +1,7 @@
 import GqlApi from "../lib/gql-api";
 import {ISPFRouteResponse} from "../lib/spf-route-response";
 import {IUserData} from "../lib/jwt";
-import {fetchDetailedCourseForView} from "./course-index";
+import {fetchDetailedCourseForView, fetchDetailedCourseWithEnrollmentForView} from "./course-overview";
 import config from '../config';
 import {fromGlobalId} from "../utils/gql-ids";
 
@@ -43,11 +43,11 @@ In order to get an EXLskills verified certificate, you'll first need to purchase
 
 If you have any questions at all regarding EXLskills Certificates, please use the chat icon in the bottom right of the screen to contact our support team. You may also check out our help center [here](${config.templateConstants.helpBaseURL}) to see if your question has already been answered.
 
-`
+`;
 
 
 export async function viewCourseCertificate(client: GqlApi, user: IUserData, locale: string, courseGID: string) : Promise<ISPFRouteResponse> {
-    let gqlResp = await fetchDetailedCourseForView(client, courseGID)
+    let gqlResp = await fetchDetailedCourseWithEnrollmentForView(client, courseGID);
     let checkoutItem = {
         category: 'course_cert',
         quantity: 1,

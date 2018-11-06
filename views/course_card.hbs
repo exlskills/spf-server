@@ -1,15 +1,18 @@
 <style>
-    #course-card-body pre code {
+    .course-card-body pre code {
         border-radius: 5px;
         padding: 1.5rem;
     }
-    #course-card-body iframe {
+    .course-card-body iframe {
         border: none;
         margin-top: 24px;
         margin-bottom: 20px;
         background: #000
         url(https://s3-us-west-2.amazonaws.com/exlskills-misc-assets/iframe-loading.gif)
         center center no-repeat;
+    }
+    .course-card-body label {
+        width: 100%;
     }
     #course-content-card-wrapper .card-bottom-nav {
         margin: auto;
@@ -45,7 +48,7 @@
                 {{data.course.card.title}}
             </h1>
         </div>
-        <div id="course-card-body" class="card-body">
+        <div class="card-body course-card-body">
             {{{data.course.card.content.content}}}
         </div>
     </div>
@@ -57,7 +60,7 @@
                 Application Question
             </h4>
         </div>
-        <div id="course-card-body" class="card-body">
+        <div class="card-body course-card-body">
             {{> quiz-question data.course.card.question}}
         </div>
     </div>
@@ -102,10 +105,8 @@
             }, onSuccess, onError);
         };
 
-        setCardInteractionGQL("view", function(resp) {
-                    // Ignoring
-                }, function() {
-                    // Ignoring
-                });
+        setCardInteractionGQL("view", null, function() {
+            console.log("Error posting card interaction")
+        });
     });
 </script>

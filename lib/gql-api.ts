@@ -123,6 +123,7 @@ export default class GqlApi {
                     primary_topic
                     info_md
                     verified_cert_cost
+                    repo_url
                     delivery_methods
                     instructor_timekit {
                         intervals {
@@ -232,6 +233,7 @@ export default class GqlApi {
                     est_minutes
                     primary_topic
                     info_md
+                    repo_url
                     verified_cert_cost
                     delivery_methods
                     instructor_timekit {
