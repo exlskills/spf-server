@@ -65,6 +65,11 @@
                     <i class="fe fe-home"></i> Dashboard
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link spf-link {{#eq contentTmpl "courses"}}active{{/eq}}" href="/learn-{{route.locale}}/courses">
+                    <i class="fe fe-zap"></i> Open Courses
+                </a>
+            </li>
             <!--<li class="nav-item">-->
                 <!--<a class="nav-link spf-link {{#eq contentTmpl "digital_diplomas"}}active{{/eq}}" href="/learn-{{route.locale}}/digital-diplomas">-->
                     <!--<i class="fe fe-star"></i> Digital Diplomas-->
@@ -80,11 +85,6 @@
                     <!--<i class="fe fe-users"></i> Live Instructors-->
                 <!--</a>-->
             <!--</li>-->
-            <li class="nav-item">
-                <a class="nav-link spf-link {{#eq contentTmpl "courses"}}active{{/eq}}" href="/learn-{{route.locale}}/courses">
-                    <i class="fe fe-zap"></i> Open Courses
-                </a>
-            </li>
             <li class="nav-item d-md-none">
                 <a class="nav-link" href="#!modalManageCoins">
                     <span class="fe fe-box"></span> ${{user.coins}} Coins
