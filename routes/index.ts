@@ -61,14 +61,14 @@ registerPartialHBS('marketing-topbar');
 registerPartialHBS('marketing-card');
 registerPartialHBS('marketing-instructor-card');
 registerPartialHBS('marketing-cards');
-registerPartialHBS('course-carousel')
-registerPartialHBS('course-card-lg-horizontal')
-registerPartialHBS('live-courses')
-registerPartialHBS('marketing-get-verified')
-registerPartialHBS('top-companies')
-registerPartialHBS('marketing-github')
-registerPartialHBS('marketing-footer')
-registerPartialHBS('marketing-newsletter')
+registerPartialHBS('marketing-course-carousel');
+registerPartialHBS('marketing-course-card-lg-horizontal');
+registerPartialHBS('marketing-live-courses');
+registerPartialHBS('marketing-get-verified');
+registerPartialHBS('marketing-top-companies');
+registerPartialHBS('marketing-github');
+registerPartialHBS('marketing-footer');
+registerPartialHBS('marketing-newsletter');
 
 const router = express.Router();
 

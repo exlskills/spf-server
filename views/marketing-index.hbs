@@ -1,71 +1,7 @@
-<style>
-#content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-wrap: nowrap;
-  align-items: center;
-}
-
-#marketing-content-splash {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 70%;
-  text-align: left;
-  margin: 0em 0em .2em 0em;
-}
-
-#marketing-content-splash .title {
-  font-size: 3.6em;
-  width: 100%;
-  margin: 0em 0em .2em 0em;
-}
-
-#marketing-content-splash .subtitle {
-  font-size: 1.5em;
-  margin: 0 0 2em 0;
-  color: white;
-}
-
-
-#marketing-content-splash .blue-title {
-  color: white;
-}
-
-#marketing-content-splash .pink-title {
-  color: #129EC1;
-}
-
-#btn-wrapper {
-  width: 10vw;
-}
-
-#try-it {
-  background-color: #00BDE6;
-  border-color: #00BDE6;"
-}
-
-#marketing-content-splash .no-login {
-  margin-top: 1em;
-  color: lightgrey;
-  width: 150px;
-}
-
-@media (max-width: 768px) {
-    #marketing-content-splash .title {
-        font-size: 2.6em;
-    }
-    #marketing-content-splash .subtitle {
-        font-size: 1.2em;
-    }
-}
-</style>
-
 <body>
 {{> modals}}
-    <div id="content">
-      <div id="marketing-content-splash">
+    <div id="marketing-index-splash">
+      <div class="container">
 
         <div class="title">
           <span class="blue-title">
@@ -91,8 +27,8 @@
           </div>
         </div>
 
-        <div id="btn-wrapper">
-          <a id="try-it" class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5" href="/learn-{{route.locale}}/dashboard">
+        <div class="btn-wrapper">
+          <a class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5 btn-try-it" href="/learn-{{route.locale}}/dashboard">
             Get started for FREE >
           </a>
           <div class="no-login">

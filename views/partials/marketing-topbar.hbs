@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light" style="border-bottom: 0; background-color: transparent">
+<nav id="marketing-topbar" class="navbar navbar-expand-md navbar-light" style="border-bottom: 0; background-color: transparent">
     <div class="container-fluid">
 
         <!-- Brand -->
@@ -9,31 +9,8 @@
           </a>
         </div>
 
-        <style>
-
-        .navbar-brand-img {
-          height: 100%;
-        }
-
-        #marketing-nav {
-          font-size: 1.2em;
-          font-weight: bold;
-        }
-
-        #btn-start {
-          font-size: 1em;
-          font-weight: bold;
-        }
-        .nav-link {
-          color: #F2F2F3 !important;
-        }
-        .menu-link {
-          color: #000 !important;
-        }
-
-        </style>
         <!-- NavBar Links wide format -->
-          <div style="display: none" id="marketing-nav" class="navbar-nav d-md-flex flex-row">
+          <div style="display: none" id="marketing-nav-links" class="navbar-nav d-md-flex flex-row">
 
             <div class="nav-item">
               <a class="nav-link {{#eq contentTmpl "marketing"}}active{{/eq}}" href="/learn-{{route.locale}}">
@@ -62,7 +39,7 @@
 
           <!-- Button -->
           <div class="navbar-user">
-            <a id="btn-start" href="learn-en/dashboard" class="btn btn-outline-primary pt-2 pb-2 pl-4 pr-4 btn-course ml-4">
+            <a href="learn-{{route.locale}}/dashboard" class="btn btn-outline-primary pt-2 pb-2 pl-4 pr-4 btn-enter ml-4">
               Enter
             </a>
           </div>
@@ -76,21 +53,21 @@
               <img class="img-fluid" src="https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/site-assets/menu-hamburguer.svg" />
             </a>
 
-            <div class="hamburger dropdown-menu dropdown-menu-right" style="z-index: 1000; position: absolute;">
+            <div class="hamburger-menu dropdown-menu dropdown-menu-right">
 
-              <a class="nav-link menu-link" href="/learn-{{route.locale}}">
+              <a class="nav-link hamburger-menu-link" href="/learn-{{route.locale}}">
                   Home
               </a>
 
-              <a class="nav-link menu-link" href="/learn-{{route.locale}}/courses">
+              <a class="nav-link hamburger-menu-link" href="/learn-{{route.locale}}/courses">
                   Courses
               </a>
 
-              <a class="nav-link menu-link" href="{{config.helpBaseURL}}">
+              <a class="nav-link hamburger-menu-link" href="{{config.helpBaseURL}}">
                   Help
               </a>
 
-              <a class="nav-link menu-link" href="/learn-{{route.locale}}/instructors">
+              <a class="nav-link hamburger-menu-link" href="/learn-{{route.locale}}/instructors">
                   Instructors
               </a>
 
