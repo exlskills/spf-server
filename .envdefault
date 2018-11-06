@@ -5,7 +5,6 @@ WEB_INTERCOM_SECRET=set_me
 WEB_CLIENT_BASE_URL=https://exlskills.com
 WEB_BOT_MANAGER_API_KEY=set_me
 WEB_BOT_MANAGER_API_URL=http://localhost:2999
-WEB_TMPL_WS_USI_ENDPOINT=wss://usi-api.exlskills.com/v0/wsusi
 WEB_COOKIES_DOMAIN=.exlskills.com
 WEB_TIMEKIT_SK=set_me
 

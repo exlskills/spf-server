@@ -880,6 +880,7 @@ setExamQuestionAnswer: ISetExamQuestionAnswerPayload | null;
 updateUserProfile: IUpdateUserProfilePayload | null;
 updateUserUnitStatus: IUpdateUserUnitStatusPayload | null;
 updateUserCourseRole: IUpdateUserCourseRolePayload | null;
+setCardInteraction: ISetCardInteractionPayload | null;
 }
 
 interface IReadNotificationOnMutationArguments {
@@ -920,6 +921,10 @@ input: IUpdateUserUnitStatusInput;
 
 interface IUpdateUserCourseRoleOnMutationArguments {
 input: IUpdateUserCourseRoleInput;
+}
+
+interface ISetCardInteractionOnMutationArguments {
+input: ISetCardInteractionInput;
 }
 
 interface IReadNotificationInput {
@@ -1083,6 +1088,21 @@ DELETE = 'DELETE'
 
 interface IUpdateUserCourseRolePayload {
 __typename: "UpdateUserCourseRolePayload";
+completionObj: ICompletionObj | null;
+clientMutationId: string | null;
+}
+
+interface ISetCardInteractionInput {
+course_id: string;
+unit_id: string;
+section_id?: string | null;
+card_id: string;
+interaction?: string | null;
+clientMutationId?: string | null;
+}
+
+interface ISetCardInteractionPayload {
+__typename: "SetCardInteractionPayload";
 completionObj: ICompletionObj | null;
 clientMutationId: string | null;
 }
