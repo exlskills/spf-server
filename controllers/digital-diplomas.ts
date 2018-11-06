@@ -21,12 +21,13 @@ export async function fetchDigitalDiplomaListForView(client: GqlApi) {
 }
 
 export async function viewDigitalDiplomas(client: GqlApi, user: IUserData, locale: string) : Promise<ISPFRouteResponse> {
-    const digitalDiplomas = await fetchDigitalDiplomaListForView(client);
+    let digitalDiplomas = await fetchDigitalDiplomaListForView(client);
+    digitalDiplomas = digitalDiplomas.filter(dd => !!dd.is_project);
     return {
         contentTmpl: 'digital_diplomas',
         meta: {
             title: 'Digital Diplomas',
-            description: 'EXLskills Revolutionary Digital Diplomas to Kickstart Your Career in Tech'
+            description: 'EXLskills\' Revolutionary Digital Diplomas help Kickstart Your Career in Tech'
         },
         data: {
             digitalDiplomas

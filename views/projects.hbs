@@ -1,0 +1,16 @@
+<style>
+
+</style>
+
+<br/>
+<!-- CONTENT -->
+<div class="container-fluid">
+    <div class="row">
+        {{#each data.projects}}
+            {{>project-card-lg-vertical project=this locale=../route.locale}}
+        {{/each}}
+    </div>
+    <br />
+    <br />
+    <br />
+</div> <!-- / .container-fluid -->

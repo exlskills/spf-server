@@ -1,0 +1,36 @@
+<div class="col-12 col-md-6 col-xl-4">
+    <!-- Card -->
+    <div class="card">
+        <a href="/learn-{{locale}}/projects/{{project.url_id}}{{trailingPath}}" class="spf-link">
+            <img src="{{project.logo_url}}" alt="..." class="card-img-top course-card-bg">
+        </a>
+        <div class="card-body text-center">
+            <a href="/learn-{{locale}}/projects/{{project.url_id}}{{trailingPath}}" class="spf-link avatar avatar-xl card-avatar card-avatar-top">
+                <img src="{{project.badge_url}}" class="course-badge avatar-img rounded-circle border border-4 border-card"
+                     alt="...">
+            </a>
+            <h2 class="card-title">
+                <a href="/learn-{{locale}}/projects/{{project.url_id}}{{trailingPath}}" class="spf-link">{{project.title}}</a>
+            </h2>
+            <p class="card-text text-muted">
+                <small>
+                    {{project.headline}}
+                </small>
+            </p>
+            <hr>
+            <div class="row align-items-center justify-content-between">
+                <div class="col-auto">
+                    <small>
+                        <span class="fe fe-clock"></span> {{project.est_minutes_text}}
+                    </small>
+                    <span class="badge badge-primary">
+                        {{project.primary_topic}}
+                    </span>
+                    <span class="badge badge-secondary">
+                        {{project.skill_level_text}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -30,6 +30,8 @@ import {viewCourseHelp} from "../controllers/course-help";
 import {viewDigitalDiplomas} from "../controllers/digital-diplomas";
 import {viewDigitalDiplomaIndex} from "../controllers/digital-diploma-index";
 import {PlatformOrganization} from "../lib/jsonld";
+import {viewProjectIndex} from "../controllers/project-index";
+import {viewProjects} from "../controllers/projects";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -53,6 +55,7 @@ registerPartialHBS('course-action-button-left');
 registerPartialHBS('course-action-button-right');
 registerPartialHBS('course-card-lg-vertical');
 registerPartialHBS('instructor-card-lg-vertical');
+registerPartialHBS('project-card-lg-vertical');
 registerPartialHBS('digital-diploma-card-lg-vertical');
 
 const router = express.Router();
@@ -201,6 +204,9 @@ router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId', gc(redirectSec
 
 router.get('/learn-:locale/digital-diplomas', gc(viewDigitalDiplomas, req => []));
 router.get('/learn-:locale/digital-diplomas/:digitalDiplomaId', gc(viewDigitalDiplomaIndex, req => [fromUrlId('DigitalDiploma', req.params.digitalDiplomaId)]));
+
+router.get('/learn-:locale/projects', gc(viewProjects, req => []));
+router.get('/learn-:locale/projects/:digitalDiplomaId', gc(viewProjectIndex, req => [fromUrlId('DigitalDiploma', req.params.digitalDiplomaId)]));
 
 router.get('/learn-:locale/instructors', gc(viewInstructors, req => []));
 router.get('/learn-:locale/instructors/:instructorId', gc(viewInstructor, req => [fromUrlId('User', req.params.instructorId)]));

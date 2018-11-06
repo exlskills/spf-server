@@ -41,39 +41,57 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <!-- Title -->
-                    <h4 class="card-header-title">
-                        Digital Diploma Overview
-                    </h4>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <!-- Title -->
+                            <h4 class="col card-header-title">
+                                {{#if data.digitalDiploma.is_project}}
+                                    Guided Project Overview
+                                {{else}}
+                                    Digital Diploma Overview
+                                {{/if}}
+                            </h4>
+                        </div>
+                        <div class="col-auto">
+                            <a href="#dd-plans" class="btn btn-sm btn-primary"><span class="fe fe-user-check mr-1"></span>Enroll Today!</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <div class="user-logos-container">
-                        <h2>Engineers From These Top Companies and Universities Trust EXLskills</h2>
-                        <h3>1M+&nbsp;Professionals | 100+&nbsp;Institutions</h3>
-                        <img id="user-logos-desktop" src="https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/exlskills-user-logos-desktop.png">
-                        <img id="user-logos-mobile" src="https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/exlskills-user-logos-mobile.png">
-                        <br />
-                    </div>
                     {{{markdown data.digitalDiploma.description}}}
                 </div>
             </div>
 
-            {{#each data.digitalDiploma.plans}}
-                <div class="card">
-                    <div class="card-header">
-                        <!-- Title -->
-                        <h4 class="card-header-title">
-                            {{title}}
-                        </h4>
+            <div id="dd-plans">
+                {{#each data.digitalDiploma.plans}}
+                    <div class="card">
+                        <div class="card-header">
+                            <!-- Title -->
+                            <h4 class="card-header-title">
+                                {{title}}
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            {{{markdown headline}}}
+                            <a href="#!modalCheckout={{{encodeURI checkoutItemJSON}}}" class="btn btn-primary">Enroll Now! (Introductory Offer: ${{cost}})</a>
+                            <br>
+                            <small>NOTE: Sales End December 1st, Limited Spots Remain!</small>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        {{{markdown headline}}}
-                        <a href="#!modalCheckout={{{encodeURI checkoutItemJSON}}}" class="btn btn-primary">Buy it Now! (Only ${{cost}})</a>
-                        <br>
-                        <small>NOTE: Sales End December 1st, Less Than 5 Spots Remaining!</small>
+                {{else}}
+                    <div class="card">
+                        <div class="card-header">
+                            <!-- Title -->
+                            <h4 class="card-header-title">
+                                Oops!
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            Oh no, there are no plans currently available! Please check back soon to see if spaces become available!
+                        </div>
                     </div>
-                </div>
-            {{/each}}
+                {{/each}}
+            </div>
 
             <div class="card">
                 <div class="card-header">
@@ -81,7 +99,7 @@
                         <div class="col">
                             <!-- Title -->
                             <h4 class="card-header-title">
-                                More Info
+                                Instructors
                             </h4>
                         </div>
                         <div class="col-auto">
