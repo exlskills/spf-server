@@ -51,7 +51,7 @@
 
     <div class="row-8 col-md-2 d-flex flex-column mb-4">
 
-        <a href="http://localhost:3030/auth/keycloak?redirect=http%3A%2F%2Flocalhost%3A3000%2Flearn-en" class="h3">
+        <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}" class="h3">
           Login
         </a>
 
