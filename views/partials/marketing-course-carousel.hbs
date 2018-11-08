@@ -34,3 +34,22 @@
 
   </div>
 </div>
+
+<script src="http://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.js"></script>
+<script>
+$(document).ready(function(){
+  $(".ui-loader").hide();
+
+  $("#course-carousel").on("swiperight", swiperightHandler);
+  $("#course-carousel").on("swipeleft", swipeleftHandler);
+
+  function swiperightHandler(e) {
+    $(this).carousel('prev');
+  }
+
+  function swipeleftHandler(e) {
+    $(this).carousel('next');
+  }
+
+});
+</script>
