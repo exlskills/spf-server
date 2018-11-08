@@ -5,7 +5,10 @@
     <meta charset="utf-8">
 
     {{!-- Page Meta --}}
-    <title>{{meta.title}}</title>
+    <title>{{meta.fullTitle}}</title>
+    <meta name="description" content="{{meta.description}}">
+
+    {{> social-meta}}
 
     {{!-- Mobile Meta --}}
     <meta name="HandheldFriendly" content="True" />

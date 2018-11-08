@@ -59,6 +59,8 @@ export default {
         liveCourseScheduleMomentParseFmt: 'YYYY-MM-DD[T]HH:mm[:00.000]Z',
         liveCourseScheduleMomentOutFmt: 'YYYY-MM-DD[T]HH:mm[:00.000Z]',
         timekitPublicKey: process.env.WEB_TIMEKIT_PK || "set_me",
+        baseUrl: process.env.WEB_CLIENT_BASE_URL || 'https://exlskills.com',
+        defaultMetaImage: "https://exlskills.com/favicon.png",
         becomeAnInstructorForm: process.env.WEB_BECOME_INSTRUCTOR_FORM || 'https://exlinc.typeform.com/to/ybIw4k'
     }
 }

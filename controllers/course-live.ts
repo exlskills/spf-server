@@ -61,7 +61,8 @@ export async function viewCourseLive(client: GqlApi, user: IUserData, locale: st
         contentTmpl: 'course_live',
         meta: {
             title: c.meta.title,
-            description: c.meta.description
+            description: c.meta.description,
+            image: c.meta.logo_url
         },
         data: {
             course: c,

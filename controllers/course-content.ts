@@ -11,7 +11,8 @@ export async function viewCourseContent(client: GqlApi, user: IUserData, locale:
         contentTmpl: 'course_content',
         meta: {
             title: gqlResp.meta.title,
-            description: gqlResp.meta.description
+            description: gqlResp.meta.description,
+            image: gqlResp.meta.logo_url
         },
         data: {
             course: gqlResp

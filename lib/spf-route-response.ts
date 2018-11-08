@@ -7,9 +7,22 @@ export interface ISPFRouteMeta {
     topbarTitle?: string
     fullTitle?: string
     description?: string
+    image?: string
     amphtml?: string
     amp?: {
         canon_link: string
+    }
+    og?: {
+        title: string
+        description: string
+        url: string
+        image: string
+    }
+    twitter?: {
+        title: string
+        description: string
+        image: string
+        imageAlt: string
     }
     jsonld?: IJSONLD | IJSONLD[]
 }

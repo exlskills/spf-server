@@ -42,6 +42,7 @@ export async function viewDigitalDiplomaIndex(client: GqlApi, user: IUserData, l
         meta: {
             title: digitalDiploma.title,
             description: metaDesc,
+
             jsonld: generateCourse(digitalDiploma.title, metaDesc, PlatformOrganization)
         },
         data: {

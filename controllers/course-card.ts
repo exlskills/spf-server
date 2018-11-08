@@ -129,6 +129,7 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
         meta: {
             title: `${gqlResp.meta.title} | ${gqlResp.card.title}`,
             topbarTitle: `${gqlResp.meta.title}`,
+            image: gqlResp.meta.logo_url,
             amphtml: `/amp${req.path}`
         },
         data: {

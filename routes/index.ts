@@ -58,6 +58,7 @@ registerPartialHBS('course-card-lg-vertical');
 registerPartialHBS('instructor-card-lg-vertical');
 registerPartialHBS('project-card-lg-vertical');
 registerPartialHBS('digital-diploma-card-lg-vertical');
+registerPartialHBS('social-meta');
 
 const router = express.Router();
 
@@ -143,6 +144,23 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
         } else {
             result.user.coins = 0;
         }
+
+        if (!result.meta.image) {
+            result.meta.image = config.templateConstants.defaultMetaImage;
+        }
+        result.meta.og = {
+            title: result.meta.fullTitle,
+            description: result.meta.description,
+            url: config.clientBaseURL + req.path,
+            image: result.meta.image
+        };
+        result.meta.twitter = {
+            title: result.meta.fullTitle,
+            description: result.meta.description,
+            image: result.meta.image,
+            imageAlt: result.meta.title
+        };
+
         console.log(`Req Data Load Duration: ${(new Date()).getTime() - startReqTs}ms`);
         if (result.amp) {
             result.layout = 'amp';

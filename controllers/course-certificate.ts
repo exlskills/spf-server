@@ -64,7 +64,8 @@ export async function viewCourseCertificate(client: GqlApi, user: IUserData, loc
         contentTmpl: 'course_certificate',
         meta: {
             title: gqlResp.meta.title,
-            description: gqlResp.meta.description
+            description: gqlResp.meta.description,
+            image: gqlResp.meta.logo_url
         },
         data: {
             course: gqlResp,
