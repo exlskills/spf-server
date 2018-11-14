@@ -6,7 +6,8 @@
 <script src="/learn-en/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/learn-en/assets/libs/chart.js/dist/Chart.min.js"></script>
 <script src="/learn-en/assets/libs/chart.js/Chart.extension.min.js"></script>
-<script src="/learn-en/assets/libs/highlight/highlight.pack.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/go.min.js"></script>
 <!-- TODO add libs back when required -->
 <!--<script src="/learn-en/assets/libs/flatpickr/dist/flatpickr.min.js"></script>-->
 <!--<script src="/learn-en/assets/libs/jquery-mask-plugin/dist/jquery.mask.min.js"></script>-->
@@ -42,7 +43,9 @@
     });
 
     function setupCodeHLJS() {
-        $(".course-card-body pre code:not([class*='hljs'])").toggleClass("hljs");
+        $(".course-card-body pre code:not([class*='hljs'])").each(function() {
+            hljs.highlightBlock($(this).get(0))
+        });
     }
 
     $(document).on("spfdone", function() {
