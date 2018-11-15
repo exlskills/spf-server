@@ -111,7 +111,7 @@
 </script>
 <script>
     $(function() {
-        var modalIds = ['modalManageCoins', 'modalCheckout'];
+        var modalIds = ['modalManageCoins', 'modalAddCard', 'modalCheckout'];
         modalIds.forEach(function(id) {
             $('#'+id).on('hide.bs.modal', function() {
                 window.location.hash = '';
@@ -120,7 +120,7 @@
         function showModalsWhenHashEq() {
             modalIds.forEach(function(id) {
                 if (window.location.hash.indexOf('#!'+id) > -1) {
-                    if (window.location.hash === '#!modalManageCoins=min_ic') {
+                    if (window.location.hash === '#!modalManageCoins=min_ic' || window.location.hash === "#!modalAddCard=min_ic") {
                         Intercom('hide');
                     }
                     $('#'+id).modal('show');
