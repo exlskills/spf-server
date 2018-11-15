@@ -33,7 +33,7 @@ export async function viewCourseHelp(client: GqlApi, user: IUserData, locale: st
     return {
         contentTmpl: 'course_help',
         meta: {
-            title: gqlResp.meta.title,
+            title: gqlResp.meta.title + ' Help',
             description: `Get live personalized help studying for the ${gqlResp.meta.title} course`,
             image: gqlResp.meta.logo_url
         },

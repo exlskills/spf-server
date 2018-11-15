@@ -11,7 +11,7 @@ export async function viewCourseProgress(client: GqlApi, user: IUserData, locale
     return {
         contentTmpl: 'course_progress',
         meta: {
-            title: gqlResp.meta.title,
+            title: gqlResp.meta.title + ' Progress',
             description: gqlResp.meta.description,
             image: gqlResp.meta.logo_url
         },

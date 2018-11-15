@@ -176,7 +176,7 @@ export async function viewCourseOverview(client: GqlApi, user: IUserData, locale
     return {
         contentTmpl: 'course_overview',
         meta: {
-            title: gqlResp.meta.title,
+            title: gqlResp.meta.title + ' Course',
             description: gqlResp.meta.description,
             image: gqlResp.meta.logo_url,
             jsonld: generateCourse(gqlResp.meta.title, gqlResp.meta.description, PlatformOrganization)

@@ -128,6 +128,7 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
         contentTmpl: 'course_card',
         meta: {
             title: `${gqlResp.meta.title} | ${gqlResp.card.title}`,
+            description: `Learn ${gqlResp.card.title} with EXLskills' Free ${gqlResp.meta.title} Course!`,
             topbarTitle: `${gqlResp.meta.title}`,
             image: gqlResp.meta.logo_url,
             amphtml: `/amp${req.path}`
