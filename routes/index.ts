@@ -58,6 +58,7 @@ registerPartialHBS('course-card-lg-vertical');
 registerPartialHBS('instructor-card-lg-vertical');
 registerPartialHBS('project-card-lg-vertical');
 registerPartialHBS('digital-diploma-card-lg-vertical');
+registerPartialHBS('course-card-banner');
 registerPartialHBS('social-meta');
 
 const router = express.Router();

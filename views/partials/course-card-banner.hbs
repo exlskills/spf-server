@@ -1,0 +1,21 @@
+<style>
+    .cc-alert-banner {
+        border: none;
+        border-radius: 0;
+    }
+
+    @media (min-width:768px) {
+        .cc-alert-banner {
+            padding-left: 36px;
+        }
+    }
+</style>
+{{#if user.is_demo}}
+    <div class="alert alert-warning cc-alert-banner" role="alert">
+        Don't lose your progress! <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">Sign up</a> or <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">login</a> to keep track of your work! 📈 🎓
+    </div>
+{{else}}
+    <div class="alert alert-success cc-alert-banner" role="alert">
+        Ready to take your skills to the next level? Become a pro by working on <a class="spf-link" href="/learn-{{route.locale}}/projects">Guided Projects</a> with a mentor! 👩‍💻 💼
+    </div>
+{{/if}}
