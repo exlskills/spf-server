@@ -43,10 +43,24 @@
     </div>
     <div class="card">
         <div class="card-header">
-            <!-- Title -->
-            <h1 class="card-header-title">
-                {{data.course.card.title}}
-            </h1>
+            <div class="row align-items-center">
+                <div class="col">
+                    <!-- Title -->
+                    <h1 class="card-header-title">
+                        {{data.course.card.title}}
+                    </h1>
+                </div>
+                <div class="col-auto">
+                    <a id="cc-live-chat-help" class="btn btn-sm btn-info" href="#!"> 🙋 Need help? Ask an expert now!</a>
+                    <script>
+                        $(function() {
+                            $('#cc-live-chat-help').click(function() {
+                                Intercom('showNewMessage', '🙋‍ Hi there, can you help with me with the ' + '{{{data.course.meta.title}}}' + ' Course?\n\nI\'m on the ' + '{{{data.course.card.title}}}' + ' part (' + '{{{route.canonicalUrl}}}' + ') and would really appreciate your time helping me!\n\nPlease type your question here and then send your message ⚡')
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
         </div>
         <div class="card-body course-card-body">
             {{{data.course.card.content.content}}}
