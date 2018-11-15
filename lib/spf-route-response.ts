@@ -8,9 +8,6 @@ export interface ISPFRouteMeta {
     description?: string
     image?: string
     amphtml?: string
-    amp?: {
-        canon_link: string
-    }
     og?: {
         title: string
         description: string

@@ -36,9 +36,6 @@ export async function ampViewCourseCard(client: GqlApi, user: IUserData, locale:
             title: `${gqlResp.meta.title} | ${gqlResp.card.title}`,
             topbarTitle: `${gqlResp.meta.title}`,
             image: gqlResp.meta.logo_url,
-            amp: {
-                canon_link: `/learn-${locale}/courses/${req.params.courseId}/${req.params.unitId}/${req.params.sectionId}/${req.params.cardId}`
-            }
         },
         data: {
             course: gqlResp
