@@ -44,13 +44,13 @@
     <div class="card">
         <div class="card-header">
             <div class="row align-items-center">
-                <div class="col">
+                <div class="col" style="margin: 8px 0;">
                     <!-- Title -->
                     <h1 class="card-header-title">
                         {{data.course.card.title}}
                     </h1>
                 </div>
-                <div class="col-auto">
+                <div class="col-auto" style="margin: 8px 0;">
                     <a id="cc-live-chat-help" class="btn btn-sm btn-info" href="#!"> 🙋 Need help? Ask an expert now!</a>
                     <script>
                         $(function() {
@@ -102,7 +102,7 @@
                     }
                 }
             }
-            `
+            `;
             var inputData = {
                 clientMutationId: uuidv4(),
                 course_id: "{{{data.course.meta.id}}}",
