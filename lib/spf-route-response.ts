@@ -1,4 +1,3 @@
-import {IPageMenuList} from "./page-menu";
 import {IUserData} from "./jwt";
 import {IJSONLD} from "./jsonld";
 
@@ -48,5 +47,6 @@ export interface ISPFRouteResponse {
         referer: string
         referrer: string
         url: string
+        canonicalUrl: string
     }
 }

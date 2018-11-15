@@ -3,7 +3,7 @@ import config from '../config'
 import { viewDashboard } from '../controllers/dashboard';
 import { viewCourses } from '../controllers/courses';
 import { Request, Response, NextFunction } from 'express';
-import {fromUrlId} from "../utils/url-ids";
+import {fromUrlId, toUrlId} from "../utils/url-ids";
 import {getGQLToken} from "../lib/anon";
 import GqlApi from "../lib/gql-api";
 import {ISPFRouteResponse} from "../lib/spf-route-response";
@@ -32,6 +32,7 @@ import {viewDigitalDiplomaIndex} from "../controllers/digital-diploma-index";
 import {PlatformOrganization} from "../lib/jsonld";
 import {viewProjectIndex} from "../controllers/project-index";
 import {viewProjects} from "../controllers/projects";
+import {toGlobalId} from "../utils/gql-ids";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -65,6 +66,80 @@ const router = express.Router();
 
 type ParamsFunction = (req: Request, res: Response, next?: NextFunction) => any[]
 type ControllerFunction = (client: GqlApi, user: IUserData, locale: string, ...args: any[]) => Promise<ISPFRouteResponse>
+
+const computeCanonicalUrl = (req: Request, data: any): string => {
+    let parts = [];
+    let matchedPath = req.route.path;
+    // Assume that actual parts match with the matched path
+    if (matchedPath.startsWith("/learn-")) {
+        matchedPath = matchedPath.substr(matchedPath.indexOf('/', 1));
+    } else if (matchedPath.startsWith("/amp/learn-")) {
+        matchedPath = matchedPath.substr(matchedPath.indexOf('/', 2));
+    }
+
+    let matchedParts = matchedPath.split('/');
+    let routeAffinity: "course" | "instructor" | "digital-diploma" | null = null;
+    let partsToFill: {[key: string]: {ind: number, val: string};} = {};
+    for (let ind = 0; ind < matchedParts.length; ind++) {
+        switch (matchedParts[ind]) {
+            case ":courseId":
+                routeAffinity = 'course';
+                partsToFill['courseId'] = {ind, val: req.params.courseId};
+                parts.push("_");
+                break;
+            case ":unitId":
+                partsToFill['unitId'] = {ind, val: req.params.unitId};
+                parts.push("_");
+                break;
+            case ":sectionId":
+                partsToFill['sectionId'] = {ind, val: req.params.sectionId};
+                parts.push("_");
+                break;
+            case ":cardId":
+                partsToFill['cardId'] = {ind, val: req.params.cardId};
+                parts.push("_");
+                break;
+            case ":digitalDiplomaId":
+                routeAffinity = 'digital-diploma';
+                partsToFill['digitalDiplomaId'] = {ind, val: req.params.digitalDiplomaId};
+                parts.push("_");
+                break;
+            case ":instructorId":
+                routeAffinity = 'instructor';
+                partsToFill['instructorId'] = {ind, val: req.params.instructorId};
+                parts.push("_");
+                break;
+            default:
+                parts.push(matchedParts[ind]);
+        }
+    }
+
+    switch (routeAffinity) {
+        case 'course':
+            parts[partsToFill['courseId'].ind] = toUrlId(data.course.meta.title, data.course.meta.id);
+            if (partsToFill['unitId']) {
+                const routeUnit = data.course.units.find(u => u.id == fromUrlId('CourseUnit', partsToFill['unitId'].val));
+                parts[partsToFill['unitId'].ind] = toUrlId(routeUnit.title, routeUnit.id);
+                if (partsToFill['sectionId']) {
+                    const routeSection = routeUnit.sections_list.find(s => s.id == fromUrlId('UnitSection', partsToFill['sectionId'].val));
+                    parts[partsToFill['sectionId'].ind] = toUrlId(routeSection.title, routeSection.id);
+                    if (partsToFill['cardId']) {
+                        const routeCard = routeSection.cards_list.find(c => c.id == fromUrlId('SectionCard', partsToFill['cardId'].val));
+                        parts[partsToFill['cardId'].ind] = toUrlId(routeCard.title, routeCard.id);
+                    }
+                }
+            }
+            break;
+        case 'instructor':
+            parts[partsToFill['instructorId'].ind] = toUrlId(data.instructor.full_name, data.instructor.id);
+            break;
+        case 'digital-diploma':
+            parts[partsToFill['digitalDiplomaId'].ind] = toUrlId(data.digitalDiploma.title, data.digitalDiploma.id);
+            break;
+    }
+    // TODO logically handle locales in URLs, but for now just make sure to always use english
+    return `${config.clientBaseURL}/learn-en${parts.join('/')}`;
+};
 
 /**
  * Handles controller execution and responds to user.
@@ -119,7 +194,8 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             params: req.params,
             referer: req.headers.referer,
             referrer: req.headers.referer,
-            url: config.clientBaseURL + req.path
+            url: config.clientBaseURL + req.path,
+            canonicalUrl: computeCanonicalUrl(req, result.data)
         };
         if (!result.meta.jsonld) {
             result.meta.jsonld = [];
@@ -207,6 +283,10 @@ router.get('/health-check', (req, res) => res.sendStatus(200));
 router.use('/learn-en/assets', express.static(path.join(__dirname, '../static/assets')));
 
 // SPF Routes
+// NOTE: All routes should be made (or become) compatible with the computeCanonicalUrl function for SEO.
+//       That function will automatically compute the canonical URLs using consistent data from controllers
+//       and consistent URL IDs provided in routes. The purpose is to streamline SEO among locale codes, avoiding
+//       duplicate content penalties...
 router.get('/learn-:locale', redirectDashboard);
 router.get('/learn-:locale/dashboard', gc(viewDashboard, req => []));
 router.get('/learn-:locale/courses', gc(viewCourses, req => []));
