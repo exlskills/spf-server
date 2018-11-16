@@ -5,6 +5,8 @@ import {getBadgeURLForTopic} from "../lib/course-badges";
 import {toUrlId} from "../utils/url-ids";
 import {skillLevelToText} from "../lib/skill-levels";
 import {minutesToText} from "../lib/duration";
+import config from '../config'
+import {generateItemList} from "../lib/jsonld";
 
 export async function fetchCourseListForView(client: GqlApi, listType: CourseListType) {
     let gqlEdges = await client.getAllCourses(listType);
@@ -27,7 +29,8 @@ export async function viewCourses(client: GqlApi, user: IUserData, locale: strin
         contentTmpl: 'courses',
         meta: {
             title: 'Courses',
-            description: 'EXLskills Courses'
+            description: 'EXLskills Courses',
+            jsonld: [generateItemList(...courses.map(c => `${config.clientBaseURL}/learn-en/courses/${c.url_id}`))]
         },
         data: {
             courses

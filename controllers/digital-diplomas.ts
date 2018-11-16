@@ -5,6 +5,8 @@ import {getBadgeURLForTopic} from "../lib/course-badges";
 import {toUrlId} from "../utils/url-ids";
 import {skillLevelToText} from "../lib/skill-levels";
 import {minutesToText} from "../lib/duration";
+import {generateItemList} from "../lib/jsonld";
+import config from "../config";
 
 export async function fetchDigitalDiplomaListForView(client: GqlApi) {
     let gqlEdges = await client.getAllDigitalDiplomas();
@@ -27,7 +29,8 @@ export async function viewDigitalDiplomas(client: GqlApi, user: IUserData, local
         contentTmpl: 'digital_diplomas',
         meta: {
             title: 'Digital Diplomas',
-            description: 'EXLskills\' Revolutionary Digital Diplomas help Kickstart Your Career in Tech'
+            description: 'EXLskills\' Revolutionary Digital Diplomas help Kickstart Your Career in Tech',
+            jsonld: [generateItemList(...digitalDiplomas.map(d => `${config.clientBaseURL}/learn-en/projects/${d.url_id}`))]
         },
         data: {
             digitalDiplomas

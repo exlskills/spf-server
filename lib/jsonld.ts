@@ -8,6 +8,7 @@ export type IOrganization = IJSONLD
 export type ICourse = IJSONLD
 export type ILogo = IJSONLD
 export type IBreadcrumbList = IJSONLD
+export type IItemList = IJSONLD
 
 export const toJSONLD = (obj: any) => {
     return JSON.stringify(obj)
@@ -57,4 +58,20 @@ export const generateBreadcrumbList = (...listItems: {name: string, url: string}
     } as any;
     bcList.marshalJSONLD = () => toJSONLD(bcList);
     return bcList;
+};
+
+export const generateItemList = (...listItems: string[]): IItemList => {
+    let iList = {
+        "@context": "http://schema.org",
+        '@type': 'ItemList',
+        "itemListElement": listItems.map((url, idx) => {
+            return {
+                "@type": "ListItem",
+                "position": idx+1,
+                "url": url
+            }
+        })
+    } as any;
+    iList.marshalJSONLD = () => toJSONLD(iList);
+    return iList;
 };
