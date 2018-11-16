@@ -7,6 +7,7 @@ export interface IJSONLD {
 export type IOrganization = IJSONLD
 export type ICourse = IJSONLD
 export type ILogo = IJSONLD
+export type IBreadcrumbList = IJSONLD
 
 export const toJSONLD = (obj: any) => {
     return JSON.stringify(obj)
@@ -31,6 +32,7 @@ export const PlatformOrganization = generateOrganiztion("EXLskills", "The smarte
 
 export const generateCourse = (name: string, description: string, provider: IOrganization): ICourse => {
     let course = {
+        "@context": "http://schema.org",
         '@type': 'Course',
         name,
         description,
@@ -38,4 +40,21 @@ export const generateCourse = (name: string, description: string, provider: IOrg
     } as any;
     course.marshalJSONLD = () => toJSONLD(course);
     return course;
+};
+
+export const generateBreadcrumbList = (...listItems: {name: string, url: string}[]): IBreadcrumbList => {
+    let bcList = {
+        "@context": "http://schema.org",
+        '@type': 'BreadcrumbList',
+        "itemListElement": listItems.map((item, idx) => {
+            return {
+                "@type": "ListItem",
+                "position": idx+1,
+                "name": item.name,
+                "item": item.url
+            }
+        })
+    } as any;
+    bcList.marshalJSONLD = () => toJSONLD(bcList);
+    return bcList;
 };

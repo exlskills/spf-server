@@ -29,10 +29,9 @@ import {viewInstructor, viewInstructors} from "../controllers/instructors";
 import {viewCourseHelp} from "../controllers/course-help";
 import {viewDigitalDiplomas} from "../controllers/digital-diplomas";
 import {viewDigitalDiplomaIndex} from "../controllers/digital-diploma-index";
-import {PlatformOrganization} from "../lib/jsonld";
+import {generateBreadcrumbList, IBreadcrumbList, PlatformOrganization} from "../lib/jsonld";
 import {viewProjectIndex} from "../controllers/project-index";
 import {viewProjects} from "../controllers/projects";
-import {toGlobalId} from "../utils/gql-ids";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -67,8 +66,10 @@ const router = express.Router();
 type ParamsFunction = (req: Request, res: Response, next?: NextFunction) => any[]
 type ControllerFunction = (client: GqlApi, user: IUserData, locale: string, ...args: any[]) => Promise<ISPFRouteResponse>
 
-const computeCanonicalUrl = (req: Request, data: any): string => {
+const computeCanonicalUrlAndBreadcrumbs = (req: Request, data: any): {canonicalUrl: string, breadcrumbs: IBreadcrumbList} => {
     let parts = [];
+    let breadcrumbs: {name: string, url: string}[] = [];
+    const breadcrumbUrlBase = `${config.clientBaseURL}/learn-en`;
     let matchedPath = req.route.path;
     // Assume that actual parts match with the matched path
     if (matchedPath.startsWith("/learn-")) {
@@ -81,6 +82,27 @@ const computeCanonicalUrl = (req: Request, data: any): string => {
     let routeAffinity: "course" | "instructor" | "digital-diploma" | null = null;
     let partsToFill: {[key: string]: {ind: number, val: string};} = {};
     for (let ind = 0; ind < matchedParts.length; ind++) {
+        if (ind === 1) {
+            // Find the base of the breadcrumb path
+            // Note in-lined into for-loop to simplify scenario where matchedparts is empty or length === 1
+            switch (matchedParts[ind]) {
+                case "dashboard":
+                    breadcrumbs.push({name: "Dashboard", url: `${breadcrumbUrlBase}/dashboard`});
+                    break;
+                case "courses":
+                    breadcrumbs.push({name: "Courses", url: `${breadcrumbUrlBase}/courses`});
+                    break;
+                case "projects":
+                    breadcrumbs.push({name: "Projects", url: `${breadcrumbUrlBase}/projects`});
+                    break;
+                case "instructors":
+                    breadcrumbs.push({name: "Instructors", url: `${breadcrumbUrlBase}/instructors`});
+                    break;
+                case "digital-diplomas":
+                    breadcrumbs.push({name: "Digital Diplomas", url: `${breadcrumbUrlBase}/digital-diplomas`});
+                    break;
+            }
+        }
         switch (matchedParts[ind]) {
             case ":courseId":
                 routeAffinity = 'course';
@@ -116,29 +138,62 @@ const computeCanonicalUrl = (req: Request, data: any): string => {
 
     switch (routeAffinity) {
         case 'course':
-            parts[partsToFill['courseId'].ind] = toUrlId(data.course.meta.title, data.course.meta.id);
+            const cUrlId = toUrlId(data.course.meta.title, data.course.meta.id);
+            parts[partsToFill['courseId'].ind] = cUrlId;
+            breadcrumbs.push({name: data.course.meta.title, url: `${breadcrumbUrlBase}/courses/${cUrlId}`});
             if (partsToFill['unitId']) {
                 const routeUnit = data.course.units.find(u => u.id == fromUrlId('CourseUnit', partsToFill['unitId'].val));
-                parts[partsToFill['unitId'].ind] = toUrlId(routeUnit.title, routeUnit.id);
+                const unitUrlId = toUrlId(routeUnit.title, routeUnit.id);
+                parts[partsToFill['unitId'].ind] = unitUrlId;
                 if (partsToFill['sectionId']) {
                     const routeSection = routeUnit.sections_list.find(s => s.id == fromUrlId('UnitSection', partsToFill['sectionId'].val));
-                    parts[partsToFill['sectionId'].ind] = toUrlId(routeSection.title, routeSection.id);
+                    const sectionUrlId = toUrlId(routeSection.title, routeSection.id);
+                    parts[partsToFill['sectionId'].ind] = sectionUrlId;
                     if (partsToFill['cardId']) {
                         const routeCard = routeSection.cards_list.find(c => c.id == fromUrlId('SectionCard', partsToFill['cardId'].val));
-                        parts[partsToFill['cardId'].ind] = toUrlId(routeCard.title, routeCard.id);
+                        const cardUrlId = toUrlId(routeCard.title, routeCard.id);
+                        parts[partsToFill['cardId'].ind] = cardUrlId;
+                        breadcrumbs.push({name: data.course.meta.title, url: `${breadcrumbUrlBase}/courses/${cUrlId}/${unitUrlId}/${sectionUrlId}/${cardUrlId}`});
                     }
+                }
+            } else if (matchedParts.length > 1) {
+                switch (matchedParts[matchedParts.length-1]) {
+                    case 'certificate':
+                        breadcrumbs.push({name: 'Certificate', url: `${breadcrumbUrlBase}/courses/${cUrlId}/certificate`});
+                        break;
+                    case 'content':
+                        breadcrumbs.push({name: 'Content', url: `${breadcrumbUrlBase}/courses/${cUrlId}/content`});
+                        break;
+                    case 'help':
+                        breadcrumbs.push({name: 'Help', url: `${breadcrumbUrlBase}/courses/${cUrlId}/help`});
+                        break;
+                    case 'live':
+                        breadcrumbs.push({name: 'Live Classes', url: `${breadcrumbUrlBase}/courses/${cUrlId}/live`});
+                        break;
+                    case 'progress':
+                        breadcrumbs.push({name: 'Progress', url: `${breadcrumbUrlBase}/courses/${cUrlId}/progress`});
+                        break;
                 }
             }
             break;
         case 'instructor':
             parts[partsToFill['instructorId'].ind] = toUrlId(data.instructor.full_name, data.instructor.id);
+            breadcrumbs.push({name: data.course.meta.title, url: `${breadcrumbUrlBase}/instructors/${cUrlId}`});
             break;
         case 'digital-diploma':
             parts[partsToFill['digitalDiplomaId'].ind] = toUrlId(data.digitalDiploma.title, data.digitalDiploma.id);
+            if (matchedParts[1] === 'digital-diplomas') {
+                breadcrumbs.push({name: data.digitalDiploma.title, url: `${breadcrumbUrlBase}/digital-diplomas/${cUrlId}`});
+            } else if (matchedParts[1] === 'projects') {
+                breadcrumbs.push({name: data.digitalDiploma.title, url: `${breadcrumbUrlBase}/projects/${cUrlId}`});
+            }
             break;
     }
     // TODO logically handle locales in URLs, but for now just make sure to always use english
-    return `${config.clientBaseURL}/learn-en${parts.join('/')}`;
+    return {
+        canonicalUrl: `${config.clientBaseURL}/learn-en${parts.join('/')}`,
+        breadcrumbs: generateBreadcrumbList(...breadcrumbs),
+    };
 };
 
 /**
@@ -185,6 +240,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
         result.data.intl = {
             "locales": "en-US"
         };
+        const {canonicalUrl, breadcrumbs} = computeCanonicalUrlAndBreadcrumbs(req, result.data);
         result.intercomHash = generateHash(userData.id);
         result.config = config.templateConstants;
         result.route = {
@@ -195,13 +251,14 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             referer: req.headers.referer,
             referrer: req.headers.referer,
             url: config.clientBaseURL + req.path,
-            canonicalUrl: computeCanonicalUrl(req, result.data)
+            canonicalUrl: canonicalUrl
         };
         if (!result.meta.jsonld) {
             result.meta.jsonld = [];
         } else if (!(result.meta.jsonld instanceof Array)) {
             result.meta.jsonld = [result.meta.jsonld]
         }
+        result.meta.jsonld.push(breadcrumbs);
         result.meta.jsonld.push(PlatformOrganization);
         // TODO internationalize full title prefix
         result.meta.fullTitle = `EXLskills - ${result.meta.title}`;
@@ -296,7 +353,6 @@ router.get('/learn-:locale/courses/:courseId/help', gc(viewCourseHelp, req => [f
 router.get('/learn-:locale/courses/:courseId/live', gc(viewCourseLive, req => [fromUrlId('Course', req.params.courseId)]));
 router.get('/learn-:locale/courses/:courseId/progress', gc(viewCourseProgress, req => [fromUrlId('Course', req.params.courseId)]));
 router.get('/learn-:locale/courses/:courseId/certificate', gc(viewCourseCertificate, req => [fromUrlId('Course', req.params.courseId)]));
-router.get('/learn-:locale/courses/:courseId/card', gc(viewCourseCard, req => [fromUrlId('Course', req.params.courseId)]));
 router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId/card/:cardId', gc(redirectOldCardURL, req => [req]));
 router.get('/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId', gc(redirectOldCardURL, req => [req]));
 router.get('/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(viewCourseCard, req => [req, fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));

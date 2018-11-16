@@ -204,7 +204,7 @@
             data: {
                 labels: ['Complete', 'Incomplete'],
                 datasets: [{
-                    data: [{{data.course.proficiency}}, 100-{{data.course.proficiency}}],
+                    data: [{{data.course.proficiency}}, Math.round((100-{{data.course.proficiency}})*100)/100],
                     backgroundColor: [
                         ThemeCharts.colors.primary[700],
                         ThemeCharts.colors.primary[100]
