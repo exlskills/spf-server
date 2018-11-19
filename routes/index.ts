@@ -178,7 +178,7 @@ const computeCanonicalUrlAndBreadcrumbs = (req: Request, data: any): {canonicalU
             break;
         case 'instructor':
             parts[partsToFill['instructorId'].ind] = toUrlId(data.instructor.full_name, data.instructor.id);
-            breadcrumbs.push({name: data.course.meta.title, url: `${breadcrumbUrlBase}/instructors/${cUrlId}`});
+            breadcrumbs.push({name: data.instructor.full_name, url: `${breadcrumbUrlBase}/instructors/${cUrlId}`});
             break;
         case 'digital-diploma':
             parts[partsToFill['digitalDiplomaId'].ind] = toUrlId(data.digitalDiploma.title, data.digitalDiploma.id);
