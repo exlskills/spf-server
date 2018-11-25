@@ -29,7 +29,7 @@ export async function viewCourses(client: GqlApi, user: IUserData, locale: strin
         contentTmpl: 'courses',
         meta: {
             title: 'Courses',
-            description: 'EXLskills Courses',
+            description: 'Learn for Free with EXLskills\' Open Online Courses',
             jsonld: [generateItemList(...courses.map(c => `${config.clientBaseURL}/learn-en/courses/${c.url_id}`))]
         },
         data: {
