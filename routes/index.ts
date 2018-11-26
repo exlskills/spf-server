@@ -32,6 +32,7 @@ import {viewDigitalDiplomaIndex} from "../controllers/digital-diploma-index";
 import {generateBreadcrumbList, IBreadcrumbList, PlatformOrganization} from "../lib/jsonld";
 import {viewProjectIndex} from "../controllers/project-index";
 import {viewProjects} from "../controllers/projects";
+import {mobileViewCourseCard} from "../controllers/mobile-course-card";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -299,6 +300,9 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
         if (result.amp) {
             result.layout = 'amp';
             return res.render(result.contentTmpl, result);
+        } if (result.mobile) {
+            result.layout = 'mobile';
+            return res.render(result.contentTmpl, result);
         } else if (req.query['spf'] === 'navigate') {
             fs.readFile(path.join(config.viewsRoot, config.spfResponse.sidebar), {encoding: 'utf8'}, (err, data) => {
                 if (err) {
@@ -373,6 +377,9 @@ router.get('/learn', redirectDashboard);
 // AMP Routes
 router.get('/amp/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(ampViewCourseCard, req => [req, fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));
 router.get('/amp/learn-:locale/courses/:courseId/units/:unitId/sections/:sectionId/card/:cardId', gc(redirectOldCardURL, req => [req, true]));
+
+// Mobile Web Routes
+router.get('/mobile-v1/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardId', gc(mobileViewCourseCard, req => [req, fromUrlId('Course', req.params.courseId), fromUrlId('CourseUnit', req.params.unitId), fromUrlId('UnitSection', req.params.sectionId), fromUrlId('SectionCard', req.params.cardId)]));
 
 // Production error handlers:
 if (process.env.NODE_ENV === 'production') {

@@ -1,0 +1,83 @@
+<style>
+    .course-card-body pre code {
+        border-radius: 5px;
+        padding: 1.5rem;
+    }
+    .course-card-body iframe {
+        border: none;
+        margin-top: 24px;
+        margin-bottom: 20px;
+        background: #000
+        url(https://s3-us-west-2.amazonaws.com/exlskills-misc-assets/iframe-loading.gif)
+        center center no-repeat;
+    }
+    .course-card-body label {
+        width: 100%;
+    }
+    body {
+        background: white;
+    }
+</style>
+
+<!-- CONTENT -->
+<div style="margin: 14px;">
+    <div>
+        <div class="course-card-body">
+            <article>
+                {{{data.course.card.content.content}}}
+            </article>
+        </div>
+    </div>
+    {{#if data.course.card.question}}
+        <div>
+            <div class="card-header">
+                <!-- Title -->
+                <h4 class="card-header-title">
+                    Application Question
+                </h4>
+            </div>
+            <div class="card-body course-card-body">
+                {{> quiz-question data.course.card.question}}
+            </div>
+        </div>
+    {{/if}}
+</div>
+
+<script>
+    $(function() {
+
+        var setCardInteractionGQL = function(action, onSuccess, onError) {
+            var m = `mutation setCardInteractionMutation(
+                    $input: SetCardInteractionInput!
+                ) {
+                setCardInteraction(input: $input) {
+                    completionObj {
+                        code
+                        msg
+                        processed
+                        modified
+                    }
+                }
+            }
+            `;
+            var inputData = {
+                clientMutationId: uuidv4(),
+                course_id: "{{{data.course.meta.id}}}",
+                unit_id: "{{{data.course.nav.currentUnit.id}}}",
+                section_id: "{{{data.course.nav.currentSection.id}}}",
+                card_id: "{{{data.course.card.id}}}",
+                interaction: action
+            };
+            $.postJSON(gqlEndpoint, {
+                query: m,
+                variables: {
+                    input: inputData
+                }
+            }, onSuccess, onError);
+        };
+
+        setCardInteractionGQL("view", null, function() {
+            console.log("Error posting card interaction")
+        });
+    });
+</script>
