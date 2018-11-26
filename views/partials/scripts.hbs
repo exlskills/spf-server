@@ -1,8 +1,10 @@
 <!-- Libs JS -->
+{{#not mobile}}
 <script src="/learn-en/assets/libs/spfjs/spf.js"></script>
 <script>
     spf.init();
 </script>
+{{/not}}
 <script src="/learn-en/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/learn-en/assets/libs/chart.js/dist/Chart.min.js"></script>
 <script src="/learn-en/assets/libs/chart.js/Chart.extension.min.js"></script>
@@ -259,6 +261,7 @@
 <script>
     var gqlEndpoint = '{{config.gqlEndpoint}}';
 </script>
+{{#not mobile}}
 <script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/sa0gkscf';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
 <script>
     $(function() {
@@ -273,6 +276,7 @@
         });
     });
 </script>
+{{/not}}
 <script>
     var _WSCQ_quiz_currentUserWorkspace = null;
     var _WSCQ_quiz_currentUserWorkspaceId = null;

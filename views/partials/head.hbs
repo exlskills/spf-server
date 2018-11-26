@@ -32,10 +32,12 @@
 <link rel="stylesheet" href="/learn-en/assets/libs/toastr/toastr.min.css"/>
 
 <!-- Important scripts -->
+{{#not mobile}}
 <script type="text/javascript">
     var subscribersSiteId = '{{config.subscribersSiteID}}';
 </script>
 <script type="text/javascript" src="https://cdn.subscribers.com/assets/subscribers.js"></script>
+{{/not}}
 <!-- TODO Clean this up and load jquery later, however, too many page scripts require this while loading... -->
 <script src="/learn-en/assets/libs/jquery/dist/jquery.min.js"></script>
 <!-- TODO make the booking impl async -->
