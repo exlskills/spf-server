@@ -111,6 +111,7 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
                 // Use the last card of the last section of the prev unit
                 gqlResp.nav.prevUnit = gqlResp.units[curUnitIdx-1];
                 gqlResp.nav.prevSection = gqlResp.nav.prevUnit.sections_list[gqlResp.nav.prevUnit.sections_list.length-1];
+                // TODO @svarlamov how does the index [gqlResp.nav.prevSection.cards_list-1] work
                 gqlResp.nav.prevCard = gqlResp.nav.prevSection.cards_list[gqlResp.nav.prevSection.cards_list-1];
             } else {
                 // FIRST CARD OF COURSE

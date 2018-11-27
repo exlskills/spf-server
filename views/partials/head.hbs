@@ -15,6 +15,20 @@
     gtag('js', new Date());
 
     gtag('config', '{{{config.gaTrackingID}}}');
+    // Add aw ID TODO create more flexible config
+    gtag('config', 'AW-809334371');
+    function gtag_report_conversion(url) {
+        var callback = function () {
+            if (typeof(url) != 'undefined') {
+                window.location = url;
+            }
+        };
+        gtag('event', 'conversion', {
+            'send_to': 'AW-809334371/wZeSCKioopABEOPs9YED',
+            'event_callback': callback
+        });
+        return false;
+    }
 </script>
 {{#each meta.jsonld}}
     <script type="application/ld+json">
