@@ -262,7 +262,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
         result.meta.jsonld.push(breadcrumbs);
         result.meta.jsonld.push(PlatformOrganization);
         // TODO internationalize full title prefix
-        result.meta.fullTitle = `EXLskills - ${result.meta.title}`;
+        result.meta.fullTitle = `${result.meta.title} - EXLskills`;
         result.user = userData;
         if (!result.user.is_demo) {
             try {
