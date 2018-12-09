@@ -33,6 +33,7 @@ import {generateBreadcrumbList, IBreadcrumbList, PlatformOrganization} from "../
 import {viewProjectIndex} from "../controllers/project-index";
 import {viewProjects} from "../controllers/projects";
 import {mobileViewCourseCard} from "../controllers/mobile-course-card";
+import {viewMarketingIndex} from "../controllers/marketing-index";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -348,7 +349,7 @@ router.use('/learn-en/assets', express.static(path.join(__dirname, '../static/as
 //       That function will automatically compute the canonical URLs using consistent data from controllers
 //       and consistent URL IDs provided in routes. The purpose is to streamline SEO among locale codes, avoiding
 //       duplicate content penalties...
-router.get('/learn-:locale', redirectDashboard);
+router.get('/learn-:locale', gc(viewMarketingIndex, req => []));
 router.get('/learn-:locale/dashboard', gc(viewDashboard, req => []));
 router.get('/learn-:locale/courses', gc(viewCourses, req => []));
 router.get('/learn-:locale/courses/:courseId', gc(viewCourseOverview, req => [fromUrlId('Course', req.params.courseId)]));

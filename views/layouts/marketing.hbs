@@ -1,0 +1,505 @@
+<!doctype html>
+<html>
+<head>
+    {{> head}}
+
+    <style>
+
+        /* Marketing Topbar partial */
+        #marketing-topbar .navbar-brand-img {
+            height: 100%;
+        }
+
+        #marketing-topbar .hamburger-menu {
+            position: absolute;
+        }
+
+        #marketing-nav-links {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        #marketing-topbar .btn-enter {
+            font-size: 1em;
+            font-weight: bold;
+            color: #FFF;
+            border-color: #FFF;
+        }
+
+        #marketing-topbar .btn-enter:hover {
+            color: grey;
+            border-color: #FFF;
+            background-color: #FFF;
+        }
+
+        #marketing-nav-links .nav-link {
+            color: #F2F2F3 !important;
+        }
+
+        #marketing-nav-links .hamburger-menu-link {
+            color: #000 !important;
+        }
+
+        /* Marketing Index - body */
+        #marketing-index-splash {
+            min-height: calc(100vh - 65.5px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+
+        #marketing-index-splash .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 70%;
+            text-align: left;
+            margin: 0em 0em .2em 0em;
+        }
+
+        #marketing-index-splash .title {
+            font-size: 3.6em;
+            width: 100%;
+            margin: 0em 0em .2em 0em;
+        }
+
+        #marketing-index-splash .subtitle {
+            font-size: 1.5em;
+            margin: 0 0 2em 0;
+            color: white;
+            width: 60%;
+        }
+
+        #marketing-index-splash .black-arrow {
+            color: black;
+        }
+
+
+        #marketing-index-splash .white-title {
+            color: white;
+        }
+
+        #marketing-index-splash .blue-title {
+            color: #129EC1;
+        }
+
+        #marketing-index-splash .btn-wrapper {
+            width: 10vw;
+        }
+
+        #marketing-index-splash .btn-get-started {
+            background-color: #00BDE6;
+            border-color: #00BDE6;
+            font-weight: bold;
+        }
+
+        #marketing-index-splash .no-login {
+            margin-top: 1em;
+            margin-left: .5em;
+            color: lightgrey;
+            width: 150px;
+        }
+
+        /* Top Companies partial */
+        #top-companies {
+            background-color: #EEEEEE;
+        }
+
+        #top-companies .prof-inst-bubble {
+            background-color: #E7E7E7;
+            border-radius: 3em;
+        }
+
+        /* Get Verified partial */
+        #marketing-get-verified {
+            background-color: #00BDE6;
+            justify-content: center;
+        }
+
+        #marketing-get-verified .title {
+            font-weight: bold;
+        }
+
+        /* Marketing Instructor Card partial */
+        #marketing-instructor {
+            background-color: transparent;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Marketing Github partial */
+        #marketing-github {
+            background-color: transparent;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #marketing-github .pink-title {
+            color: #E7107A;
+            font-weight: bold;
+        }
+
+        /* Newsletter partial */
+        #newsletter {
+            background-color: #3F4450;
+            justify-content: center;
+        }
+
+        #newsletter .text-gray {
+            color: #C5C7CB;
+        }
+
+        #newsletter-email {
+            height: 50px !important;
+        }
+
+        div.ui-textinput {
+            width: 100% !important;
+            height: 100% !important;
+            margin-right: 1em;
+        }
+
+        /* Live Courses partial _unused at the moment_ */
+        #live-courses {
+            background-color: #FF5A00;
+        }
+        #live-courses .title-white {
+            color: #FFF;
+        }
+
+        /* Marketing Footer partial */
+        #marketing-footer .copyright {
+            border-top: 1px solid #EEEEEE;
+        }
+
+        #marketing-footer .ico-social {
+            min-width: 14px;
+            min-height: 14px;
+        }
+
+        #marketing-footer .footer-ico-svg {
+            max-width: 27px;
+            max-height: 27px;
+        }
+
+        /* Course Carousel partial */
+        #carousel-wrapper {
+            background-color: #3F4450;
+        }
+
+        #carousel-wrapper .btn-courses {
+            color: #FFF;
+            border-color: #FFF;
+        }
+
+        #carousel-wrapper .btn-courses:hover {
+            color: grey;
+            border-color: #FFF;
+            background-color: #FFF;
+        }
+
+        #course-carousel {
+            touch-action: manipulation;
+        }
+
+        .carousel-item {
+            position: relative;
+            display: none;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            width: 100%;
+            transition: -webkit-transform 0.3s ease;
+            transition: transform 0.3s ease;
+            transition: transform 0.3s ease;
+            -webkit-transform 0.3s ease;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-perspective: 1000px;
+            perspective: 1000px;
+        }
+
+        /* control for course-carousel 3 course card view */
+
+        @media (min-width: 992px) {
+            /* show 3 items */
+            .carousel-inner .active,
+            .carousel-inner .active + .carousel-item,
+            .carousel-inner .active + .carousel-item + .carousel-item  {
+                display: block;
+            }
+
+            .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left),
+            .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item,
+            .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item {
+                transition: none;
+            }
+
+            .carousel-inner .carousel-item-next,
+            .carousel-inner .carousel-item-prev {
+                position: relative;
+                transform: translate3d(0, 0, 0);
+            }
+
+            .carousel-inner .active.carousel-item + .carousel-item + .carousel-item + .carousel-item {
+                position: absolute;
+                top: 0;
+                right: -33.3333%;
+                z-index: -1;
+                display: block;
+                visibility: visible;
+            }
+
+            /* left or forward direction */
+            .active.carousel-item-left + .carousel-item-next.carousel-item-left,
+            .carousel-item-next.carousel-item-left + .carousel-item,
+            .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item,
+            .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item {
+                position: relative;
+                transform: translate3d(-100%, 0, 0);
+                visibility: visible;
+            }
+
+            /* farthest right hidden item must be abso position for animations */
+            .carousel-inner .carousel-item-prev.carousel-item-right {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: -1;
+                display: block;
+                visibility: visible;
+            }
+
+            /* right or prev direction */
+            .active.carousel-item-right + .carousel-item-prev.carousel-item-right,
+            .carousel-item-prev.carousel-item-right + .carousel-item,
+            .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item,
+            .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item {
+                position: relative;
+                transform: translate3d(100%, 0, 0);
+                visibility: visible;
+                display: block;
+                visibility: visible;
+            }
+        }
+
+        /* control for course-carousel 2 course card view */
+
+        @media (min-width: 768px) {
+
+            /* show 2 items */
+            .carousel-inner .active,
+            .carousel-inner .active + .carousel-item  {
+                display: block;
+            }
+
+            .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left),
+            .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item {
+                transition: none;
+            }
+
+            .carousel-inner .carousel-item-next,
+            .carousel-inner .carousel-item-prev {
+                position: relative;
+                transform: translate3d(0, 0, 0);
+            }
+
+            .carousel-inner .active.carousel-item + .carousel-item + .carousel-item + .carousel-item {
+                position: absolute;
+                top: 0;
+                right: -33.3333%;
+                z-index: -1;
+                display: block;
+                visibility: visible;
+            }
+
+            /* left or forward direction */
+            .active.carousel-item-left + .carousel-item-next.carousel-item-left,
+            .carousel-item-next.carousel-item-left + .carousel-item,
+            .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item,
+            .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item {
+                position: relative;
+                transform: translate3d(-100%, 0, 0);
+                visibility: visible;
+            }
+
+            /* farthest right hidden item must be abso position for animations */
+            .carousel-inner .carousel-item-prev.carousel-item-right {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: -1;
+                display: block;
+                visibility: visible;
+            }
+
+            /* right or prev direction */
+            .active.carousel-item-right + .carousel-item-prev.carousel-item-right,
+            .carousel-item-prev.carousel-item-right + .carousel-item,
+            .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item,
+            .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item {
+                position: relative;
+                transform: translate3d(100%, 0, 0);
+                visibility: visible;
+            }
+        }
+
+        @media (min-width: 1025px) {
+
+            #marketing-index-splash .subtitle {
+                width: 50% !important;
+            }
+
+        }
+
+        @media (max-width: 992px) {
+
+            #marketing-index-splash {
+                height: 100vh;
+            }
+
+            #marketing-index-splash .title {
+                font-size: 2.6em;
+            }
+
+            #marketing-index-splash .subtitle {
+                font-size: 1.2em;
+            }
+
+            #top-companies .companies-title {
+                font-size: 1.3em;
+            }
+
+        }
+
+        @media (max-width: 768px) {
+
+            #marketing-index-splash .title {
+                font-size: 3em;
+            }
+
+            #marketing-index-splash .subtitle {
+                font-size: 1.6em;
+                width: 70%
+            }
+
+        }
+
+        @media (max-width: 420px) {
+
+            #top-companies .prof-inst-bubble {
+                font-size: .9em;
+            }
+
+            #marketing-index-splash {
+                display: block;
+                padding-top: 3em;
+            }
+
+            #marketing-index-splash .container {
+                width: 100%;
+                padding-right: 2em;
+                margin-top: 1em;
+            }
+
+            #marketing-index-splash .title {
+                font-size: 2.2em;
+                width: 85%;
+                margin-bottom: .8em;
+            }
+
+            #marketing-index-splash .subtitle {
+                font-size: 1.2em;
+                width: 80%;
+                margin-bottom: 2.4em;
+            }
+
+        }
+
+        @media (max-width: 375px) {
+            #marketing-index-splash {
+                display: block;
+                padding-top: 1.6em;
+            }
+
+            #marketing-index-splash .title {
+                margin-bottom: .6em;
+            }
+
+            #marketing-index-splash .subtitle {
+                font-size: 1em;
+            }
+
+            #marketing-index-splash .btn-get-started {
+                font-size: .9em;
+            }
+        }
+
+        @media (min-height: 736px) {
+            #marketing-index-splash {
+                padding-top: 3em;
+            }
+        }
+
+        @media (min-height: 812px) {
+            #marketing-index-splash {
+                padding-top: 4em;
+            }
+            #marketing-index-splash .title {
+                font-size: 2.6em;
+            }
+            #marketing-index-splash .subtitle {
+                font-size: 1.4em;
+                width: 90%
+            }
+        }
+
+        @media (min-height: 824px) {
+            #marketing-index-splash {
+                display: flex;
+                padding-top: 0;
+            }
+            #marketing-index-splash .title {
+                font-size: 3.6em;
+            }
+            #marketing-index-splash .subtitle {
+                font-size: 2em;
+                width: 90%
+            }
+        }
+
+        @media (min-height: 1025px) {
+
+            #marketing-index-splash .title {
+                font-size: 4.4em;
+            }
+
+            #marketing-index-splash .subtitle {
+                font-size: 2.4em;
+                width: 90%
+            }
+        }
+
+    </style>
+</head>
+<body>
+    {{> modals}}
+    <div class="main-content" style="background-image: url(https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/site-assets/_index/home-top-banner.jpg); background-attachment: fixed; background-position: bottom right; background-size: cover;">
+        {{> marketing-topbar}}
+        <div>
+            {{{body}}}
+        </div>
+    </div>
+    {{> marketing-top-companies}}
+    {{> marketing-cards}}
+    {{> marketing-course-carousel}}
+    {{> marketing-get-verified}}
+    {{> marketing-instructor-card}}
+    {{> marketing-github}}
+    {{> marketing-newsletter}}
+    {{> marketing-footer}}
+    {{> scripts}}
+</body>
+</html>
