@@ -28,12 +28,12 @@ export async function ampViewCourseCard(client: GqlApi, user: IUserData, locale:
         `);
     });
     gqlResp.card['rendered_content'] = $.html();
-    gqlResp.card['amp_title'] = `${course.title} - ${gqlResp.card.title}`;
+    gqlResp.card['amp_title'] = `${gqlResp.card.title} | ${gqlResp.meta.title}`;
     return {
         contentTmpl: 'amp_course_card',
         amp: true,
         meta: {
-            title: `${gqlResp.meta.title} | ${gqlResp.card.title}`,
+            title: `${gqlResp.card.title} | ${gqlResp.meta.title}`,
             topbarTitle: `${gqlResp.meta.title}`,
             image: gqlResp.meta.logo_url,
         },
