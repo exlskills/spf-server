@@ -1,34 +1,47 @@
-<div id="marketing-index-splash">
-    <div class="container">
 
-        <div class="title">
-            <div class="d-xl-flex flex-row">
-                <div class="white-title">
-                    Free guided&nbsp
+<div class="main-content" style="background-image: url(https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/site-assets/_index/home-top-banner.jpg); background-attachment: fixed; background-position: bottom right; background-size: cover;">
+    {{> marketing-topbar}}
+    <div>
+        <div id="marketing-index-splash">
+            <div class="container">
+
+                <div class="title">
+                    <div class="d-xl-flex flex-row">
+                        <div class="white-title">
+                            Free guided&nbsp
+                        </div>
+                        <div class="blue-title">
+                            coding courses
+                        </div>
+                    </div>
+                    <div class="white-title">
+                        to improve your skills
+                    </div>
                 </div>
-                <div class="blue-title">
-                    coding courses
+
+                <div class="subtitle">
+                    Become a certified expert developer with
+                    our tailored experience within your schedule,
+                    and your learning preferences
                 </div>
-            </div>
-            <div class="white-title">
-                to improve your skills
-            </div>
-        </div>
 
-        <div class="subtitle">
-            Become a certified expert developer with
-            our tailored experience within your schedule,
-            and your learning preferences
-        </div>
+                <div class="btn-wrapper">
+                    <a class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5 btn-get-started" href="/learn-{{route.locale}}/dashboard">
+                        Get started for FREE &nbsp <span class="fe fe-chevron-right" style="color: black;"></span>
+                    </a>
+                    <div class="no-login">
+                        *No login required
+                    </div>
+                </div>
 
-        <div class="btn-wrapper">
-            <a class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5 btn-get-started" href="/learn-{{route.locale}}/dashboard">
-                Get started for FREE &nbsp <span class="fe fe-chevron-right" style="color: black;"></span>
-            </a>
-            <div class="no-login">
-                *No login required
-            </div>
-        </div>
-
-    </div> <!-- #marketing-content-splash -->
-</div> <!-- #content -->
+            </div> <!-- #marketing-content-splash -->
+        </div> <!-- #content -->
+    </div>
+</div>
+{{> marketing-top-companies}}
+{{> marketing-cards}}
+{{> marketing-course-carousel}}
+{{> marketing-get-verified}}
+{{> marketing-instructor-card}}
+{{> marketing-github}}
+{{> marketing-newsletter}}
