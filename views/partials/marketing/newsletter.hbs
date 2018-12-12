@@ -14,24 +14,40 @@
         We'll send as much as an email per month with the latest news and updates on free and decentralized education.
       </h3>
 
-      <form>
+      <form id="landing-page-mailing-form">
         <div style="display: none" class="d-sm-flex">
-          <input id="newsletter-email" class="form-control input-lg h-auto mr-2" type="email">
+          <input required id="newsletter-email" class="form-control input-lg h-auto mr-2" type="email">
 
-          <a href="#" class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5" style="background-color: #00BDE6; border-color: #00BDE6;">
+          <button type="submit" class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5" style="background-color: #00BDE6; border-color: #00BDE6;">
             Subscribe
-          </a>
+          </button>
 
         </div>
 
         <div class="d-flex d-sm-none flex-column">
           <input id="newsletter-email" class="form-control h-auto mr-2 mb-3" type="email">
-          <a href="#" class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5" style="background-color: #00BDE6; border-color: #00BDE6;">
+          <button type="submit" class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5" style="background-color: #00BDE6; border-color: #00BDE6;">
             Subscribe
-          </a>
+          </button>
         </div>
 
       </form>
+
+        <script>
+            $("#landing-page-mailing-form").submit(function(e) {
+                e.preventDefault();
+                $.postJSON('{{{config.authAPIBaseURL}}}/mailing-list', {
+                    email: $("#newsletter-email").val(),
+                    campaign: 'landing_page_sub_0'
+                }, function() {
+                    $("#newsletter-email").val("");
+                    toastr.success("Thank you for subscribing to receive news and updates from EXLskills :)", "You're all set!");
+                }, function() {
+                    toastr.error("Please make sure you entered a valid email address", "Oops, something went wrong!");
+                });
+                return false;
+            });
+        </script>
     </div>
 
   </div>
