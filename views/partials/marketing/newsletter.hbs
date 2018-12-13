@@ -39,11 +39,7 @@
             function _lpMlSubFunc(e) {
                 e.preventDefault();
                 var $self = $(this);
-                $.postJSON('{{{config.authAPIBaseURL}}}/mailing-list', {
-                    email: $("#" + $self.attr('id') + " .newsletter-email").val(),
-                    campaign: 'landing_page_sub_0',
-                    formUrl: window.location.href
-                }, function() {
+                subscribeToMailingList($("#" + $self.attr('id') + " .newsletter-email").val(), 'landing_page_sub_0', function() {
                     $("#" + $self.attr('id') + " .newsletter-email").val("");
                     toastr.success("Thank you for subscribing to receive news and updates from EXLskills :)", "You're all set!");
                 }, function() {
