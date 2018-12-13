@@ -14,39 +14,44 @@
         We'll send as much as an email per month with the latest news and updates on free and decentralized education.
       </h3>
 
-      <form id="landing-page-mailing-form">
-        <div style="display: none" class="d-sm-flex">
-          <input required id="newsletter-email" class="form-control input-lg h-auto mr-2" type="email">
 
-          <button type="submit" class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5" style="background-color: #00BDE6; border-color: #00BDE6;">
-            Subscribe
-          </button>
+        <form id="landing-page-mailing-form-mob">
+            <div style="display: none" class="d-sm-flex">
+                <input required class="newsletter-email form-control input-lg h-auto mr-2" type="email">
 
-        </div>
+                <button type="submit" class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5" style="background-color: #00BDE6; border-color: #00BDE6;">
+                    Subscribe
+                </button>
 
+            </div>
+        </form>
+
+      <form id="landing-page-mailing-form-dtop">
         <div class="d-flex d-sm-none flex-column">
-          <input id="newsletter-email" class="form-control h-auto mr-2 mb-3" type="email">
+          <input required class="newsletter-email form-control h-auto mr-2 mb-3" type="email">
           <button type="submit" class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5" style="background-color: #00BDE6; border-color: #00BDE6;">
             Subscribe
           </button>
         </div>
-
       </form>
 
         <script>
-            $("#landing-page-mailing-form").submit(function(e) {
+            function _lpMlSubFunc(e) {
                 e.preventDefault();
+                var $self = $(this);
                 $.postJSON('{{{config.authAPIBaseURL}}}/mailing-list', {
-                    email: $("#newsletter-email").val(),
+                    email: $("#" + $self.id + " .newsletter-email").val(),
                     campaign: 'landing_page_sub_0'
                 }, function() {
-                    $("#newsletter-email").val("");
+                    $("#" + $self.id + " .newsletter-email").val("");
                     toastr.success("Thank you for subscribing to receive news and updates from EXLskills :)", "You're all set!");
                 }, function() {
                     toastr.error("Please make sure you entered a valid email address", "Oops, something went wrong!");
                 });
                 return false;
-            });
+            }
+            $("#landing-page-mailing-form-mob").submit(_lpMlSubFunc);
+            $("#landing-page-mailing-form-dtop").submit(_lpMlSubFunc);
         </script>
     </div>
 

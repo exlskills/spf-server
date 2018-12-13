@@ -11,13 +11,17 @@
 
     <div class="row-8 col-md-2 d-flex flex-column mb-4">
 
-      <a href="/learn-en/courses" class="h3">
+      <a href="/learn-{{route.locale}}/courses" class="h3">
         Open Courses
       </a>
 
-      <a href="/learn-en/digital-diplomas" class="h3">
-        Digital Diplomas
-      </a>
+    <a href="/learn-{{route.locale}}/digital-diplomas" class="h3">
+        Guided Projects
+    </a>
+
+      <!--<a href="/learn-en/digital-diplomas" class="h3">-->
+        <!--Digital Diplomas-->
+      <!--</a>-->
 
       <!-- <a href="#" class="h3">
         Live Instructors
@@ -52,15 +56,19 @@
     <div class="row-8 col-md-2 d-flex flex-column mb-4">
 
         <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}" class="h3">
+          Sign Up
+        </a>
+
+        <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}" class="h3">
           Login
         </a>
 
         <a href="https://exlinc.typeform.com/to/ybIw4k" target="_blank" rel="noopener" class="h3">
-          Become Instructor
+          Become an Instructor
         </a>
 
         <a href="https://github.com/exlskills/exlskills/issues/new?labels=new-course&amp;title=New%20Course%20Suggestion" target="_blank" rel="noopener" class="h3">
-          Suggest Github Content
+          Create a Course
         </a>
 
         <!-- <a href="#" class="h3">
@@ -72,7 +80,7 @@
     <div class="row-8 col-md-3 flex-row d-flex justify-content-center w-100 flex-wrap">
       <div class="col-6 flex-row d-flex justify-content-around p-0">
         <div class="ico-social">
-          <a href="https://www.facebook.com/EXLskills-419928341822987" target="_blank" rel="noopener"><svg role="img" xmlns="http://www.w3.org/2000/svg" class="footer-ico-svg"><path d="M22.676 0H1.324C.593 0 0 .593 0 1.324v21.352C0 23.408.593 24 1.324 24h11.494v-9.294H9.689v-3.621h3.129V8.41c0-3.099 1.894-4.785 4.659-4.785 1.325 0 2.464.097 2.796.141v3.24h-1.921c-1.5 0-1.792.721-1.792 1.771v2.311h3.584l-.465 3.63H16.56V24h6.115c.733 0 1.325-.592 1.325-1.324V1.324C24 .593 23.408 0 22.676 0"></path></svg></a>
+          <a href="https://www.facebook.com/EXLskills" target="_blank" rel="noopener"><svg role="img" xmlns="http://www.w3.org/2000/svg" class="footer-ico-svg"><path d="M22.676 0H1.324C.593 0 0 .593 0 1.324v21.352C0 23.408.593 24 1.324 24h11.494v-9.294H9.689v-3.621h3.129V8.41c0-3.099 1.894-4.785 4.659-4.785 1.325 0 2.464.097 2.796.141v3.24h-1.921c-1.5 0-1.792.721-1.792 1.771v2.311h3.584l-.465 3.63H16.56V24h6.115c.733 0 1.325-.592 1.325-1.324V1.324C24 .593 23.408 0 22.676 0"></path></svg></a>
         </div>
 
         <div class="ico-social">
@@ -103,7 +111,7 @@
 
     <div class="row w-100 copyright text-muted pl-4 pt-4 mt-4 mb-2">
 
-      <span>Copyright © 2018 EXLskills. All Rights Reserved</span>
+      <span>Copyright © 2018 EXL Inc. and/or its affiliates. All Rights Reserved.</span>
 
     </div>
 
