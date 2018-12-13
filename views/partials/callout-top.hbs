@@ -1,0 +1,93 @@
+<style>
+    #callout-top {
+        height: 60px;
+        width: 100%;
+        z-index: 1050;
+        padding: 10px 0px;
+        background-color: inherit;
+        position: fixed;
+        top: 0;
+    }
+    #main-page-wrapper {
+        margin-top: 60px;
+    }
+    #sidebar {
+        margin-top: 60px;
+    }
+    #callout-top .co-inner {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #callout-top .co-inner .co-heading {
+        margin: inherit;
+        margin-right: 20px;
+        font-size: 20px;
+        line-height: 1.8;
+    }
+    #callout-top .co-btn-grp {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    @media (max-width: 820px) {
+        #callout-top {
+            height: 118px;
+        }
+        #sidebar {
+            margin-top: 118px;
+        }
+        #main-page-wrapper {
+            margin-top: 118px;
+        }
+        #callout-top .co-inner {
+            display: block;
+            text-align: center;
+            width: 100%;
+            padding: 0 10px;
+        }
+        #callout-top .co-inner .co-heading {
+            margin-right: 0;
+        }
+        #callout-top .co-btn-grp {
+            display: flex;
+            width: 100%;
+        }
+        #callout-top .co-btn-grp button {
+            white-space: normal;
+            width: 50%;
+            font-size: 18px;
+            height: 54px !important;
+        }
+    }
+
+    @media (max-width: 660px) {
+        #callout-top .co-btn-grp button {
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 420px) {
+        #callout-top .co-btn-grp button {
+            font-size: 12px;
+        }
+    }
+</style>
+<div id="callout-top">
+    <div class="co-inner">
+        <div class="co-heading text-danger">
+            <span class="fe fe-alert-triangle"></span> Do You Want a Tech Job?
+        </div>
+        <div class="co-btn-grp">
+            <button class="btn btn-outline-primary mr-2">
+                YES, I WANT A TECH&nbsp;JOB
+            </button>
+            <button class="btn btn-outline-primary">
+                NO, I ALREADY HAVE A TECH&nbsp;JOB
+            </button>
+        </div>
+    </div>
+</div>

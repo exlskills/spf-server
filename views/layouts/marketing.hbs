@@ -491,7 +491,10 @@
 </head>
 <body>
     {{> modals}}
-    {{{body}}}
+    {{> callout-top}}
+    <div id="main-page-wrapper">
+        {{{body}}}
+    </div>
     {{> marketing/footer}}
     {{> scripts}}
 </body>

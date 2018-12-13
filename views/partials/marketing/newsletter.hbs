@@ -40,10 +40,10 @@
                 e.preventDefault();
                 var $self = $(this);
                 $.postJSON('{{{config.authAPIBaseURL}}}/mailing-list', {
-                    email: $("#" + $self.id + " .newsletter-email").val(),
+                    email: $("#" + $self.attr('id') + " .newsletter-email").val(),
                     campaign: 'landing_page_sub_0'
                 }, function() {
-                    $("#" + $self.id + " .newsletter-email").val("");
+                    $("#" + $self.attr('id') + " .newsletter-email").val("");
                     toastr.success("Thank you for subscribing to receive news and updates from EXLskills :)", "You're all set!");
                 }, function() {
                     toastr.error("Please make sure you entered a valid email address", "Oops, something went wrong!");
