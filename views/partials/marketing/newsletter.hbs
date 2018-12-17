@@ -36,19 +36,21 @@
       </form>
 
         <script>
-            function _lpMlSubFunc(e) {
-                e.preventDefault();
-                var $self = $(this);
-                subscribeToMailingList($("#" + $self.attr('id') + " .newsletter-email").val(), 'landing_page_sub_0', function() {
-                    $("#" + $self.attr('id') + " .newsletter-email").val("");
-                    toastr.success("Thank you for subscribing to receive news and updates from EXLskills :)", "You're all set!");
-                }, function() {
-                    toastr.error("Please make sure you entered a valid email address", "Oops, something went wrong!");
-                });
-                return false;
-            }
-            $("#landing-page-mailing-form-mob").submit(_lpMlSubFunc);
-            $("#landing-page-mailing-form-dtop").submit(_lpMlSubFunc);
+            $(function() {
+                function _lpMlSubFunc(e) {
+                    e.preventDefault();
+                    var $self = $(this);
+                    subscribeToMailingList($("#" + $self.attr('id') + " .newsletter-email").val(), 'landing_page_sub_0', function() {
+                        $("#" + $self.attr('id') + " .newsletter-email").val("");
+                        toastr.success("Thank you for subscribing to receive news and updates from EXLskills :)", "You're all set!");
+                    }, function() {
+                        toastr.error("Please make sure you entered a valid email address", "Oops, something went wrong!");
+                    });
+                    return false;
+                }
+                $("#landing-page-mailing-form-mob").submit(_lpMlSubFunc);
+                $("#landing-page-mailing-form-dtop").submit(_lpMlSubFunc);
+            });
         </script>
     </div>
 
