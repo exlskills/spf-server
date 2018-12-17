@@ -11,11 +11,11 @@
         <!-- NavBar Links wide format -->
           <div style="display: none" id="marketing-nav-links" class="navbar-nav d-md-flex flex-row">
 
-            <div class="nav-item">
-              <a class="nav-link {{#eq contentTmpl "marketing"}}active{{/eq}}" href="/learn-{{route.locale}}">
-                  Home
-              </a>
-            </div>
+              <div class="nav-item">
+                  <a class="nav-link" href="/learn-{{route.locale}}/projects">
+                      Projects
+                  </a>
+              </div>
 
             <div class="nav-item">
               <a class="nav-link" href="/learn-{{route.locale}}/courses">
@@ -23,23 +23,23 @@
               </a>
             </div>
 
-            <div class="nav-item">
-              <a class="nav-link" href="{{config.helpBaseURL}}" target="_blank" rel="noopener">
-                  Help
-              </a>
-            </div>
+              <div class="nav-item">
+                  <a class="nav-link" href="https://github.com/exlskills" target="_blank" rel="noopener">
+                      Contribute
+                  </a>
+              </div>
 
             <div class="nav-item">
-              <a class="nav-link" href="/learn-{{route.locale}}/instructors">
-                  Instructors
+              <a class="nav-link" href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">
+                  Sign In
               </a>
             </div>
 
 
           <!-- Button -->
           <div class="navbar-user">
-            <a href="learn-{{route.locale}}/dashboard" class="btn btn-outline-primary pt-2 pb-2 pl-4 pr-4 btn-enter ml-4">
-              Enter
+            <a href="learn-{{route.locale}}/courses" class="btn btn-outline-primary pt-2 pb-2 pl-4 pr-4 btn-enter ml-4">
+              Learn for FREE
             </a>
           </div>
 
@@ -54,21 +54,21 @@
 
             <div class="hamburger-menu dropdown-menu dropdown-menu-right" style="margin-right: 20px;">
 
-              <a class="nav-link hamburger-menu-link" href="/learn-{{route.locale}}">
-                  Home
+              <a class="nav-link hamburger-menu-link" href="/learn-{{route.locale}}/projects">
+                  Projects
               </a>
 
               <a class="nav-link hamburger-menu-link" href="/learn-{{route.locale}}/courses">
                   Courses
               </a>
 
-              <a class="nav-link hamburger-menu-link" href="{{config.helpBaseURL}}">
-                  Help
-              </a>
+                <a class="nav-link hamburger-menu-link" href="https://github.com/exlskills" target="_blank" rel="noopener">
+                    Contribute
+                </a>
 
-              <a class="nav-link hamburger-menu-link" href="/learn-{{route.locale}}/instructors">
-                  Instructors
-              </a>
+                <a class="nav-link hamburger-menu-link" href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">
+                    Sign In
+                </a>
 
             </div>
         </div>
