@@ -33,6 +33,7 @@ import {generateBreadcrumbList, IBreadcrumbList, PlatformOrganization} from "../
 import {viewProjectIndex} from "../controllers/project-index";
 import {viewProjects} from "../controllers/projects";
 import {mobileViewCourseCard} from "../controllers/mobile-course-card";
+import {viewMarketingIndex} from "../controllers/marketing-index";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -246,7 +247,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
         result.config = config.templateConstants;
         result.route = {
             path: req.path,
-            locale: req.params.locale,
+            locale: req.params.locale || 'en',
             suffix: req.path.substr(req.path.indexOf('/', 1)),
             params: req.params,
             referer: req.headers.referer,
@@ -259,7 +260,9 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
         } else if (!(result.meta.jsonld instanceof Array)) {
             result.meta.jsonld = [result.meta.jsonld]
         }
-        result.meta.jsonld.push(breadcrumbs);
+        if ((breadcrumbs as any).itemListElement && (breadcrumbs as any).itemListElement.length > 0) {
+            result.meta.jsonld.push(breadcrumbs);
+        }
         result.meta.jsonld.push(PlatformOrganization);
         // TODO internationalize full title prefix
         result.meta.fullTitle = `${result.meta.title} - EXLskills`;
@@ -348,6 +351,7 @@ router.use('/learn-en/assets', express.static(path.join(__dirname, '../static/as
 //       That function will automatically compute the canonical URLs using consistent data from controllers
 //       and consistent URL IDs provided in routes. The purpose is to streamline SEO among locale codes, avoiding
 //       duplicate content penalties...
+router.get('/', gc(viewMarketingIndex, req => []));
 router.get('/learn-:locale', redirectDashboard);
 router.get('/learn-:locale/dashboard', gc(viewDashboard, req => []));
 router.get('/learn-:locale/courses', gc(viewCourses, req => []));

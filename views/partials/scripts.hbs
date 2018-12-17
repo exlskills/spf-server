@@ -292,6 +292,15 @@
     });
 </script>
 <script>
+    function subscribeToMailingList(email, campaign, onSuccess, onFailure) {
+        $.postJSON('{{{config.authAPIBaseURL}}}/mailing-list', {
+            email: email,
+            campaign: campaign,
+            formUrl: window.location.href
+        }, onSuccess, onFailure);
+    }
+</script>
+<script>
     console.log(`
     _____            __                  ________  __    __  __                  __        __  __  __
    /     |          /  |                /        |/  |  /  |/  |                /  |      /  |/  |/  |

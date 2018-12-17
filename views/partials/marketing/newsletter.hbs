@@ -1,0 +1,58 @@
+<div class="container-fluid">
+
+  <div id="newsletter" class="row pt-6 pb-6 justify-content-center">
+    <div class="col-10 col-md-1 mb-4">
+      <img src="https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/site-assets/ico-newsletter.svg" alt="..." class="img-fluid">
+    </div>
+
+    <div class="col-10 col-md-6 col-xl-4">
+      <h1 class="text-white">
+        Join our newsletter
+      </h1>
+
+      <h3 class="text-gray mb-4">
+          Receive free news, tips, and offers through the free EXLskills newsletter. Never miss an opportunity to learn again!
+      </h3>
+
+
+        <form id="landing-page-mailing-form-mob">
+            <div style="display: none" class="d-sm-flex">
+                <input required class="newsletter-email form-control input-lg h-auto mr-2" type="email">
+
+                <button type="submit" class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5" style="background-color: #00BDE6; border-color: #00BDE6;">
+                    Subscribe
+                </button>
+
+            </div>
+        </form>
+
+      <form id="landing-page-mailing-form-dtop">
+        <div class="d-flex d-sm-none flex-column">
+          <input required class="newsletter-email form-control h-auto mr-2 mb-3" type="email">
+          <button type="submit" class="btn btn-primary btn-lg pt-3 pb-3 pl-5 pr-5" style="background-color: #00BDE6; border-color: #00BDE6;">
+            Subscribe
+          </button>
+        </div>
+      </form>
+
+        <script>
+            $(function() {
+                function _lpMlSubFunc(e) {
+                    e.preventDefault();
+                    var $self = $(this);
+                    subscribeToMailingList($("#" + $self.attr('id') + " .newsletter-email").val(), 'landing_page_sub_0', function() {
+                        $("#" + $self.attr('id') + " .newsletter-email").val("");
+                        toastr.success("Thank you for subscribing to receive news and updates from EXLskills :)", "You're all set!");
+                    }, function() {
+                        toastr.error("Please make sure you entered a valid email address", "Oops, something went wrong!");
+                    });
+                    return false;
+                }
+                $("#landing-page-mailing-form-mob").submit(_lpMlSubFunc);
+                $("#landing-page-mailing-form-dtop").submit(_lpMlSubFunc);
+            });
+        </script>
+    </div>
+
+  </div>
+</div>
