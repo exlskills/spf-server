@@ -303,6 +303,12 @@
 </script>
 {{> ftue-tour}}
 <script>
+    function htmlDecode(input){
+        var doc = new DOMParser().parseFromString(input, "text/html");
+        return doc.documentElement.textContent;
+    }
+</script>
+<script>
     console.log(`
     _____            __                  ________  __    __  __                  __        __  __  __
    /     |          /  |                /        |/  |  /  |/  |                /  |      /  |/  |/  |
