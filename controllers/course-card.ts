@@ -75,7 +75,7 @@ function cardFullHTMLJavascriptSetup($: CheerioStatic) {
         let self = $(this);
         self.replaceWith(`
             <div  class="js-cp-example">
-                <iframe height="500px" width="100%" src="https://cp-editor.exlskills.com/"></iframe>
+                <iframe height="400px" width="100%" src="https://cp-editor.exlskills.com/"></iframe>
                 <script>
                     window.addEventListener('message', ({ data = {}, source }) => {
                         if (data.type === 'codepan-ready') {
