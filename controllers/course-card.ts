@@ -35,18 +35,8 @@ export function setupQuizQuestionForView(question: IQuestion, nav: any) {
 
 export function renderFullCardContentHTML(content: string) {
     const $ = cheerio.load(mdToHTML.makeHtml(content));
-    let hasPythonCode = false;
-    $('pre code.python').each(function() {
-        hasPythonCode = true;
-        let self = $(this);
-        self.replaceWith(`
-            <div data-datacamp-exercise data-lang="python">
-                <code data-type="sample-code">
-                    ${self.html()}
-                </code>
-            </div>
-        `);
-    });
+    cardFullHTMLJavascriptSetup($);
+    let hasPythonCode = cardFullHTMLPythonSetup($);
     if (!hasPythonCode && $('div[data-datacamp-exercise]').length) {
         hasPythonCode = true;
     }
@@ -60,6 +50,46 @@ export function renderFullCardContentHTML(content: string) {
         `;
     }
     return html;
+}
+
+function cardFullHTMLPythonSetup($: CheerioStatic) {
+    let hasPythonCode = false;
+    $('pre code.python').each(function() {
+        hasPythonCode = true;
+        let self = $(this);
+        self.replaceWith(`
+            <div data-datacamp-exercise data-lang="python">
+                <code data-type="sample-code">
+                    ${self.html()}
+                </code>
+            </div>
+        `);
+    });
+    return hasPythonCode;
+}
+
+function cardFullHTMLJavascriptSetup($: CheerioStatic) {
+    let hasJavascriptCode = false;
+    $('div.js-cp-boilerplate').each(function() {
+        hasJavascriptCode = true;
+        let self = $(this);
+        self.replaceWith(`
+            <div  class="js-cp-example">
+                <iframe height="400px" width="100%" src="https://cp-editor.exlskills.com/"></iframe>
+                <script>
+                    window.addEventListener('message', ({ data = {}, source }) => {
+                        if (data.type === 'codepan-ready') {
+                            source.postMessage({
+                                type: 'codepan-set-boilerplate', 
+                                boilerplate: htmlDecode(${JSON.stringify(self.html())})
+                            }, '*');
+                        }
+                    })
+                </script>
+            </div>
+        `);
+    });
+    return hasJavascriptCode;
 }
 
 export async function viewCourseCard(client: GqlApi, user: IUserData, locale: string, req: Request, courseGID: string, unitGID: string, sectionGID: string, cardGID: string) : Promise<ISPFRouteResponse> {
