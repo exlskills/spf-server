@@ -16,7 +16,7 @@ export default {
     },
     cors: {
         origin: process.env.WEB_CORS_REGEX
-            ? [new RegExp(process.env.AMP_CORS_REGEX)]
+            ? [new RegExp(process.env.WEB_CORS_REGEX)]
             : [/localhost/, /exlskills.com/, /\.exlskills\.com$/]
     },
     jwt: {
