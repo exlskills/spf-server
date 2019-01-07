@@ -34,6 +34,18 @@ import {viewProjectIndex} from "../controllers/project-index";
 import {viewProjects} from "../controllers/projects";
 import {mobileViewCourseCard} from "../controllers/mobile-course-card";
 import {viewMarketingIndex} from "../controllers/marketing-index";
+import {dataIntl} from "../i18n"
+
+/*
+const intlData = {
+    locales : ['en-US'],
+    messages: {
+        dashboard: {
+            label: 'Dashboard01'
+        }
+    }
+};
+*/
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -225,8 +237,16 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
         return res.status(403) && next(new Error('invalid/missing JWT'));
     }
     const initialParams = params ? params(req, res, next) : [req, res, next];
+
+    // TODO dynamic locale
+    var intlData = dataIntl["en"]
+    logger.debug(`req.params.locale ` + req.params.locale);
+
     try {
         const result = await controllerFunction(gqlClient, userData, req.params.locale, ...initialParams);
+
+        result.data.intl = intlData;
+
         if (setUpdatedToken) {
             res.cookie(config.jwt.cookieName, gqlToken, {
                 expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
@@ -238,10 +258,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             res.redirect(result.redirect.permanent ? 301 : 302, result.redirect.url);
             return
         }
-        // TODO dynamic locale
-        result.data.intl = {
-            "locales": "en-US"
-        };
+
         const {canonicalUrl, breadcrumbs} = computeCanonicalUrlAndBreadcrumbs(req, result.data);
         result.intercomHash = generateHash(userData.id);
         result.config = config.templateConstants;
@@ -311,12 +328,18 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
                 if (err) {
                     return res.status(500) && next(err);
                 }
-                const sidebarHTML = handlebars.compile(data)(result);
+
+                const sidebarHTML = handlebars.compile(data)(result, {
+                    data: {intl: intlData}
+                });
+
                 fs.readFile(path.join(config.viewsRoot, result.contentTmpl+'.hbs'), {encoding: 'utf8'}, (err, data) => {
                     if (err) {
                         return res.status(500) && next(err);
                     }
-                    const contentHTML = handlebars.compile(data)(result);
+                    const contentHTML = handlebars.compile(data)(result, {
+                        data: {intl: intlData}
+                    });
                     res.setHeader('Content-Type', 'application/json');
                     res.send(JSON.stringify({
                         title: result.meta.fullTitle,
