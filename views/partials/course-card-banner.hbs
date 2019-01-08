@@ -12,10 +12,10 @@
 </style>
 {{#if user.is_demo}}
     <div class="alert alert-warning cc-alert-banner" role="alert">
-        Don't lose your progress! <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">Sign up</a> for FREE or <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">login</a> to keep track of your work! 📈 🎓
+        {{intlGet "messages.course.dont_lose_progress"}} <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">{{intlGet "messages.marketing.sign_up_label_lc_up"}}</a> {{intlGet "messages.marketing.for_free_or"}} <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">{{intlGet "messages.misc.login"}}</a> {{intlGet "messages.course.to_keep_track"}} 📈 🎓
     </div>
 {{else}}
     <div class="alert alert-success cc-alert-banner" role="alert">
-        Ready to take your skills to the next level? Become a pro by working on <a class="spf-link" href="/learn-{{route.locale}}/projects">Guided Projects</a> with a mentor! 👩‍💻 💼
+        {{intlGet "messages.marketing.ready_to_take_line"}} <a class="spf-link" href="/learn-{{route.locale}}/projects">{{intlGet "messages.guided_projects.label"}}</a> {{intlGet "messages.marketing.with_mentor"}} 👩‍💻 💼
     </div>
 {{/if}}

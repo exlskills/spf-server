@@ -24,7 +24,7 @@
 
                             <!-- Title -->
                             <h4 class="card-header-title">
-                                Complete Checkout
+                                {{intlGet "messages.coins.complete_checkout"}}
                             </h4>
                             <div id="checkout-purchase-headline-wrapper">
                                 <small id="checkout-purchase-headline" class="text-secondary">
@@ -46,7 +46,7 @@
 
                 <div class="card-body">
                     <div class="col text-center">
-                        <h2 style="margin-bottom: 10px;">Be Amazing With EXLskills 🎓</h2>
+                        <h2 style="margin-bottom: 10px;">{{intlGet "messages.marketing.be_amazing"}} 🎓</h2>
                     </div>
                     {{#gt user.coins 0}}
                         <!-- Coins Balance -->
@@ -72,36 +72,36 @@
                         <div class="card bg-light border">
                             <div class="card-body text-center">
                                 <strong>
-                                    <a id="checkout-login-link" href="#">Sign Up or Login to Complete Checkout</a>
+                                    <a id="checkout-login-link" href="#">{{intlGet "messages.coins.signup_login_to_complete_checkout"}}</a>
                                 </strong>
                             </div>
                         </div>
                     {{else}}
                         <form id="checkout-shipping-form" style="display: none;">
-                            <h4>Shipping Information</h4>
+                            <h4>{{intlGet "messages.coins.ship_info_label"}}</h4>
 
-                            <label for="checkout-shipping-form-full-name">Full Name</label>
+                            <label for="checkout-shipping-form-full-name">{{intlGet "messages.coins.full_name_label"}}</label>
                             <input class="form-control" id="checkout-shipping-form-full-name" type="text" required>
 
-                            <label for="checkout-shipping-form-addr-1">Address Line 1</label>
+                            <label for="checkout-shipping-form-addr-1">{{intlGet "messages.coins.addr1_label"}}</label>
                             <input class="form-control" id="checkout-shipping-form-addr-1" type="text" required>
 
-                            <label for="checkout-shipping-form-addr-2">Address Line 2 (Optional)</label>
+                            <label for="checkout-shipping-form-addr-2">{{intlGet "messages.coins.addr2_label"}}</label>
                             <input class="form-control" id="checkout-shipping-form-addr-2" type="text">
 
-                            <label for="checkout-shipping-form-country">Country</label>
+                            <label for="checkout-shipping-form-country">{{intlGet "messages.coins.country_label"}}</label>
                             <select id="checkout-shipping-form-country" class="form-control" data-toggle="select">
                                 <option>United States of America</option>
                                 <option>Canada</option>
                             </select>
 
-                            <label for="checkout-shipping-form-city">City</label>
+                            <label for="checkout-shipping-form-city">{{intlGet "messages.coins.city_label"}}</label>
                             <input class="form-control" id="checkout-shipping-form-city" type="text" required>
 
-                            <label for="checkout-shipping-form-state">State/Province</label>
+                            <label for="checkout-shipping-form-state">{{intlGet "messages.coins.state_label"}}</label>
                             <input class="form-control" id="checkout-shipping-form-state" type="text" required>
 
-                            <label for="checkout-shipping-form-zip-code">Zip/Postal Code</label>
+                            <label for="checkout-shipping-form-zip-code">{{intlGet "messages.coins.zip_label"}}</label>
                             <input class="form-control" id="checkout-shipping-form-zip-code" type="text" minlength="5" required>
                             <br />
                         </form>
@@ -115,7 +115,7 @@
                                 <div class="">
                                     <label for="checkout-card-element">
                                         <span data-toggle="tooltip" data-placement="top" title=""
-                                              data-original-title="Your card will be charged only for purchases you make on EXLskills. You can remove it at any time.">Credit or Debit Card <span
+                                              data-original-title="Your card will be charged only for purchases you make on EXLskills. You can remove it at any time.">{{intlGet "messages.coins.credit_debit_card"}} <span
                                                 class="fe fe-help-circle mr-4"></span></span>
                                     </label>
                                     <div id="checkout-card-element">
@@ -127,7 +127,7 @@
                                 </div>
 
                                 <button type="submit"
-                                        class="btn btn-primary float-right mt-4 w-100 form-btn-submit">Add Card &amp; <span class="checkout-pay-msg"></span>
+                                        class="btn btn-primary float-right mt-4 w-100 form-btn-submit">{{intlGet "messages.coins.add_card"}} &amp; <span class="checkout-pay-msg"></span>
                                 </button>
                             </form>
                         {{/lt}}

@@ -2,11 +2,11 @@
     {{> course-enrollment-mutations}}
     {{#if data.course.isEnrolled}}
         {{#if data.course.nextStep.learn}}
-            <a class="btn spf-link font-weight-bold btn-primary" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nextStep.learn.unit.url_id}}/{{data.course.nextStep.learn.section.url_id}}/{{data.course.nextStep.learn.card.url_id}}">Resume Course <span class="align-middle fe fe-chevrons-right"></span></a>
+            <a class="btn spf-link font-weight-bold btn-primary" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nextStep.learn.unit.url_id}}/{{data.course.nextStep.learn.section.url_id}}/{{data.course.nextStep.learn.card.url_id}}">{{intlGet "messages.course.resume_course"}} <span class="align-middle fe fe-chevrons-right"></span></a>
         {{else}}
-            <a class="btn spf-link font-weight-bold btn-primary" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content">View Progress <span class="align-middle fe fe-chevrons-right"></span></a>
+            <a class="btn spf-link font-weight-bold btn-primary" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content">{{intlGet "messages.course.view_progress"}} <span class="align-middle fe fe-chevrons-right"></span></a>
         {{/if}}
     {{else}}
-        <a class="course-enrollment-start-action-btn btn spf-link font-weight-bold btn-primary" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content">Start Learning for FREE! <span class="align-middle fe fe-chevrons-right"></span></a>
+        <a class="course-enrollment-start-action-btn btn spf-link font-weight-bold btn-primary" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content">{{intlGet "messages.marketing.start_learning_free"}} <span class="align-middle fe fe-chevrons-right"></span></a>
     {{/if}}
 </div>

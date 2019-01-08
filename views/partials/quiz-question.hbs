@@ -39,13 +39,13 @@
     {{/if}}
 </div>
 
-<button id="q-{{{id}}}-submit-btn" class="btn btn-primary" style="min-width: 160px;">Check Answer</button>
+<button id="q-{{{id}}}-submit-btn" class="btn btn-primary" style="min-width: 160px;">{{intlGet "messages.question.check_answer"}}</button>
 {{#if nav}}
-    <a style="min-width: 160px;display: none;" href="/learn-{{nav.locale}}/courses/{{nav.courseUrlId}}/{{nav.nextUnit.url_id}}/{{nav.nextSection.url_id}}/{{nav.nextCard.url_id}}" id="q-{{{id}}}-next-btn" class="spf-link btn btn-success">Next <span class="fe fe-chevron-right"></span></a>
+    <a style="min-width: 160px;display: none;" href="/learn-{{nav.locale}}/courses/{{nav.courseUrlId}}/{{nav.nextUnit.url_id}}/{{nav.nextSection.url_id}}/{{nav.nextCard.url_id}}" id="q-{{{id}}}-next-btn" class="spf-link btn btn-success">{{intlGet "messages.misc.next_label"}} <span class="fe fe-chevron-right"></span></a>
 {{/if}}
-<button style="display: none;" id="q-{{{id}}}-expl-btn" class="btn btn-outline-primary ml-2">Show Explanation</button>
+<button style="display: none;" id="q-{{{id}}}-expl-btn" class="btn btn-outline-primary ml-2">{{intlGet "messages.question.show_expl"}}</button>
 {{#if hint_exists}}
-    <button id="q-{{{id}}}-hint-btn" class="btn btn-outline-primary float-right" data-hint-visible="false">Show Hint</button>
+    <button id="q-{{{id}}}-hint-btn" class="btn btn-outline-primary float-right" data-hint-visible="false">{{intlGet "messages.question.show_hint"}}</button>
 {{/if}}
 
 <div class="mt-2">

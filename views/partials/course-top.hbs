@@ -72,16 +72,16 @@
                             {{data.course.meta.title}}
                         {{/eq}}
                         {{#eq contentTmpl "course_certificate"}}
-                            Verified Certificate
+                            {{intlGet "messages.certificate.verified_cert"}}
                         {{/eq}}
                         {{#eq contentTmpl "course_progress"}}
-                            Progress
+                            {{intlGet "messages.course.progress_label"}}
                         {{/eq}}
                         {{#eq contentTmpl "course_live"}}
-                            Live Class
+                            {{intlGet "messages.class.live_class_label"}}
                         {{/eq}}
                         {{#eq contentTmpl "course_help"}}
-                            Get Help!
+                            {{intlGet "messages.help.get_help_label"}}
                         {{/eq}}
                         {{#eq contentTmpl "course_content"}}
                             {{data.course.meta.title}}

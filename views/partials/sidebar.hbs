@@ -19,7 +19,7 @@
     <!-- User (xs) -->
     <div class="navbar-user d-md-none">
         {{#if user.is_demo}}
-            <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}" class="btn btn-success">Login / Sign Up</a>
+            <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}" class="btn btn-success">{{intlGet "messages.misc.login_label"}} / {{intlGet "messages.marketing.sign_up_label"}}</a>
         {{else}}
             <!-- Dropdown -->
             <div class="dropdown">
@@ -33,10 +33,10 @@
 
                 <!-- Menu -->
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sidebarIcon">
-                    <a href="{{{config.accountsURL}}}" class="dropdown-item">Profile</a>
-                    <!-- TODO <a href="settings.html" class="dropdown-item">Settings</a>-->
+                    <a href="{{{config.accountsURL}}}" class="dropdown-item">{{intlGet "messages.instructors.profile_label"}}</a>
+                    <!-- TODO <a href="settings.html" class="dropdown-item">{{intlGet "messages.config.settings_label"}}</a>-->
                     <hr class="dropdown-divider">
-                    <a href="#!" class="dropdown-item user-logout-btn">Logout</a>
+                    <a href="#!" class="dropdown-item user-logout-btn">{{intlGet "messages.misc.logout_label"}}</a>
                 </div>
 
             </div>

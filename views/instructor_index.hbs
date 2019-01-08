@@ -55,7 +55,7 @@
 
                     <!-- Pretitle -->
                     <h6 class="header-pretitle mt-4">
-                        Instructor
+                        {{intlGet "messages.instructors.label_singular"}}
                     </h6>
 
                     <!-- Title -->
@@ -89,7 +89,7 @@
                     <div class="card-header">
                         <!-- Title -->
                         <h4 class="card-header-title">
-                            About Me
+                            {{intlGet "messages.instructors.about_me"}}
                         </h4>
                     </div>
                     <div class="card-body">
@@ -168,7 +168,7 @@
                         <div class="col">
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Topics
+                                {{intlGet "messages.instructors.topics_label"}}
                             </h5>
                         </div>
                         <div class="col-auto" style="max-width: 100%;">
@@ -190,7 +190,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Rating (5/5)
+                                {{intlGet "messages.instructors.rating_label"}} (5/5)
                             </h5>
 
                         </div>
@@ -207,7 +207,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Verified Lessons
+                                {{intlGet "messages.course.verified_lessons"}}
                             </h5>
 
                         </div>
@@ -226,14 +226,14 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Price
+                                {{intlGet "messages.certificate.price_label"}}
                             </h5>
 
                         </div>
                         <div class="col-auto">
 
                             <time class="small text-muted">
-                                US$40/Hour
+                                US$40/{{intlGet "messages.course.hour_label"}}
                             </time>
 
                         </div>
@@ -247,7 +247,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Joined
+                                {{intlGet "messages.course.joined_label"}}
                             </h5>
 
                         </div>
@@ -269,7 +269,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Location
+                                {{intlGet "messages.class.location_label"}}
                             </h5>
 
                         </div>
@@ -295,11 +295,11 @@
                     <div class="card-header">
                         <!-- Title -->
                         <h4 class="card-header-title">
-                            Updates
+                            {{intlGet "messages.instructors.updates_label"}}
                         </h4>
                     </div>
                     <div class="card-body">
-                        <a class="twitter-timeline" href="https://twitter.com/{{data.instructor.twitter_username}}?ref_src=twsrc%5Etfw">Loading updates ...</a>
+                        <a class="twitter-timeline" href="https://twitter.com/{{data.instructor.twitter_username}}?ref_src=twsrc%5Etfw">{{intlGet "messages.instructors.loading_updates"}} ...</a>
                         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                     </div>
                 </div>
