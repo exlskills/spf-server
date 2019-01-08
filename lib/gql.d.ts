@@ -42,6 +42,7 @@ listActivities: IActivityConnection | null;
 listCards: ISectionCardConnection | null;
 coursePaging: ICourseConnection | null;
 listCourses: ICourseConnection | null;
+listTextMatchingCourseItems: ITextDocCourseItemConnection | null;
 langType: Array<ILang | null> | null;
 listInstructors: IUserConnection | null;
 notificationPaging: INotificationPaging | null;
@@ -170,6 +171,20 @@ before?: string | null;
 last?: number | null;
 }
 
+interface IListTextMatchingCourseItemsOnQueryArguments {
+searchText: string;
+course_id?: string | null;
+unit_id?: string | null;
+section_id?: string | null;
+orderBy?: Array<IOrderBy | null> | null;
+filterValues?: IFilterValues | null;
+resolverArgs?: Array<IQueryResolverArgs | null> | null;
+after?: string | null;
+first?: number | null;
+before?: string | null;
+last?: number | null;
+}
+
 interface IListInstructorsOnQueryArguments {
 orderBy?: Array<IOrderBy | null> | null;
 filterValues?: IFilterValues | null;
@@ -251,7 +266,7 @@ before?: string | null;
 last?: number | null;
 }
 
-type Node = IDigitalDiploma | ICourse | ICourseUnit | IUnitSection | ISectionCard | IVersionedContentRecord | IQuestion | IQuestionData | IQuestionMultipleData | ICourseDeliverySchedule | IScheduledRunSessionInfoType | IScheduledRunType | IScheduledRunSessionType | ISessionInstructorType | IListDef | IUser | IUserSubscription | IAuthStrategy | IUserOrganizationRole | IUserCourseRole | IExam | IExamSession | IActivity | ILang | IUserNotification;
+type Node = IDigitalDiploma | ICourse | ICourseUnit | IUnitSection | ISectionCard | IVersionedContentRecord | IQuestion | IQuestionData | IQuestionMultipleData | ICourseDeliverySchedule | IScheduledRunSessionInfoType | IScheduledRunType | IScheduledRunSessionType | ISessionInstructorType | IListDef | IUser | IUserSubscription | IAuthStrategy | IUserOrganizationRole | IUserCourseRole | IExam | IExamSession | IActivity | ITextDocMatchedCourseItem | ILang | IUserNotification;
 
 interface INode {
 __typename: "Node";
@@ -459,12 +474,14 @@ content_id: string | null;
 tags: Array<string | null> | null;
 question_ids: Array<string | null> | null;
 ema: number | null;
+github_edit_url: string | null;
 content: IVersionedContentRecord | null;
 question: IQuestion | null;
 questions: Array<IQuestion | null> | null;
 currentCourseId: string;
 currentUnitId: string;
 currentSectionId: string;
+updated_at: any | null;
 }
 
 interface IVersionedContentRecord {
@@ -796,6 +813,47 @@ interface ICourseEdge {
 __typename: "CourseEdge";
 node: ICourse | null;
 cursor: string;
+}
+
+interface ITextDocCourseItemConnection {
+__typename: "TextDocCourseItemConnection";
+pageInfo: IPageInfo;
+edges: Array<ITextDocCourseItemEdge | null> | null;
+}
+
+interface ITextDocCourseItemEdge {
+__typename: "TextDocCourseItemEdge";
+node: ITextDocMatchedCourseItem | null;
+cursor: string;
+}
+
+interface ITextDocMatchedCourseItem {
+__typename: "TextDocMatchedCourseItem";
+id: string;
+score: number | null;
+itemType: CourseItem | null;
+title: string | null;
+headline: string | null;
+highlights: ICourseItemHighlight | null;
+course_id: string | null;
+unit_id: string | null;
+section_id: string | null;
+card_id: string | null;
+}
+
+const enum CourseItem {
+course = 'course',
+unit = 'unit',
+section = 'section',
+card = 'card'
+}
+
+interface ICourseItemHighlight {
+__typename: "CourseItemHighlight";
+inTitle: Array<string | null> | null;
+inHeadline: Array<string | null> | null;
+inText: Array<string | null> | null;
+inCode: Array<string | null> | null;
 }
 
 interface ILang {

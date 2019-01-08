@@ -66,6 +66,9 @@
             <article>
                 {{{data.course.card.content.content}}}
             </article>
+            {{#if data.course.card.github_edit_url}}
+                <a class="btn btn-sm btn-secondary float-right" target="_blank" rel="noopener" href="{{{data.course.card.github_edit_url}}}"><span class="fe fe-github"></span> Edit Me on GitHub!</a>
+            {{/if}}
         </div>
     </div>
     {{#if data.course.card.question}}
