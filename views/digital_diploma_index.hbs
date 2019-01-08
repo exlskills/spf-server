@@ -46,14 +46,14 @@
                             <!-- Title -->
                             <h4 class="col card-header-title">
                                 {{#if data.digitalDiploma.is_project}}
-                                    Guided Project Overview
+                                    {{intlGet "messages.guided_projects.overview_label"}}
                                 {{else}}
-                                    Digital Diploma Overview
+                                    {{intlGet "messages.digital_diplomas.overview_label"}}
                                 {{/if}}
                             </h4>
                         </div>
                         <div class="col-auto">
-                            <a href="#dd-plans" class="btn btn-sm btn-primary"><span class="fe fe-user-check mr-1"></span>Enroll Today!</a>
+                            <a href="#dd-plans" class="btn btn-sm btn-primary"><span class="fe fe-user-check mr-1"></span>{{intlGet "messages.marketing.enroll_today"}}</a>
                         </div>
                     </div>
                 </div>
@@ -73,9 +73,9 @@
                         </div>
                         <div class="card-body">
                             {{{markdown headline}}}
-                            <a href="#!modalCheckout={{{encodeURI checkoutItemJSON}}}" class="btn btn-primary">Enroll Now! (Introductory Offer: ${{cost}})</a>
+                            <a href="#!modalCheckout={{{encodeURI checkoutItemJSON}}}" class="btn btn-primary">{{intlGet "messages.marketing.enroll_now"}} ({{intlGet "messages.marketing.intro_offer"}}: ${{cost}})</a>
                             <br>
-                            <small>NOTE: Sales End December 1st, Limited Spots Remain!</small>
+                            <small>{{intlGet "messages.misc.note_caps"}} {{intlGet "messages.marketing.sales-end_label"}} December 1st, {{intlGet "messages.marketing.limited_spots_remain"}}</small>
                         </div>
                     </div>
                 {{else}}
@@ -83,11 +83,11 @@
                         <div class="card-header">
                             <!-- Title -->
                             <h4 class="card-header-title">
-                                Oops!
+                                {{intlGet "messages.misc.oops"}}
                             </h4>
                         </div>
                         <div class="card-body">
-                            Oh no, there are no plans currently available! Please check back soon to see if spaces become available!
+                            {{intlGet "messages.digital_diplomas.no_plans"}} {{intlGet "messages.digital_diplomas.pls_check_back_soon"}}
                         </div>
                     </div>
                 {{/each}}
@@ -99,7 +99,7 @@
                         <div class="col">
                             <!-- Title -->
                             <h4 class="card-header-title">
-                                Instructors
+                                {{intlGet "messages.instructors.label"}}
                             </h4>
                         </div>
                         <div class="col-auto">
@@ -118,7 +118,7 @@
                         <div class="col">
                             <!-- Title -->
                             <h4 class="card-header-title">
-                                Have questions?
+                                {{intlGet "messages.help.have_qs"}}
                             </h4>
                         </div>
                         <div class="col-auto">
@@ -127,7 +127,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    Feel free to reach out to us via <a id="dd-live-chat-help" href="#!">live chat here!</a>
+                    {{intlGet "messages.help.reach_via"}} <a id="dd-live-chat-help" href="#!">{{intlGet "messages.help.live_chat_here"}}</a>
                     <script>
                         $(function() {
                           $('#dd-live-chat-help').click(function() {

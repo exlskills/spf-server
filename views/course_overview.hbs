@@ -62,7 +62,7 @@
         <!-- Title -->
         <div class="col">
             <h1 style="font-size: 1.4em;">
-                {{data.course.meta.title}} Course
+                {{data.course.meta.title}} {{intlGet "messages.course.label"}}
             </h1>
         </div>
         <div class="col-auto">
@@ -83,8 +83,8 @@
         <div class="card-body course-card-body">
             <article>
                 <div class="user-logos-container">
-                    <h2>Engineers From These Top Companies and Universities Trust EXLskills</h2>
-                    <h3>1M+&nbsp;Professionals | 100+&nbsp;Institutions</h3>
+                    <h2>{{intlGet "messages.marketing.engineers_trust"}}</h2>
+                    <h3>{{intlGet "messages.marketing.mil_prof_hundrs_inst"}}</h3>
                     <img id="user-logos-desktop" src="https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/exlskills-user-logos-desktop.png">
                     <img id="user-logos-mobile" src="https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/exlskills-user-logos-mobile.png">
                     <br />
@@ -97,8 +97,8 @@
 
                 {{{markdown data.courseOverviewFaqMD}}}
 
-                <h3>Have more questions?</h3>
-                Feel free to reach out to us via <a id="ci-live-chat-help" href="#!">live chat here!</a>
+                <h3>{{intlGet "messages.help.have_more_qs"}}</h3>
+                {{intlGet "messages.help.reach_via"}} <a id="ci-live-chat-help" href="#!">{{intlGet "messages.help.live_chat_here"}}</a>
             </article>
             <script>
                 $(function() {

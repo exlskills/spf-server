@@ -22,7 +22,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Verified Lessons
+                                {{intlGet "messages.course.verified_lessons"}}
                             </h5>
 
                         </div>
@@ -41,14 +41,14 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Price
+                                {{intlGet "messages.certificate.price_label"}}
                             </h5>
 
                         </div>
                         <div class="col-auto">
 
                             <time class="small text-muted">
-                                US$40/Hour
+                                US$40/{{intlGet "messages.course.hour_label"}}
                             </time>
 
                         </div>
@@ -62,7 +62,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Level
+                                {{intlGet "messages.certificate.level_label"}}
                             </h5>
 
                         </div>
@@ -83,14 +83,14 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Location
+                                {{intlGet "messages.class.location_label"}}
                             </h5>
 
                         </div>
                         <div class="col-auto">
 
                             <small class="text-muted">
-                                Online (Remote Audio/Video)
+                                {{intlGet "messages.class.loc_online_remote_av"}}
                             </small>
 
                         </div>
@@ -104,14 +104,14 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Languages
+                                {{intlGet "messages.languages.label"}}
                             </h5>
 
                         </div>
                         <div class="col-auto">
 
                             <small class="text-muted">
-                                English
+                                {{intlGet "messages.languages.en"}}
                             </small>
 
                         </div>
@@ -126,7 +126,7 @@
                 <div class="card-header">
                     <!-- Title -->
                     <h4 class="card-header-title">
-                        Frequently Asked Questions
+                        {{intlGet "messages.help.faq_label"}}
                     </h4>
                 </div>
                 <div class="card-body">
@@ -140,7 +140,7 @@
                         <div class="col">
                             <!-- Title -->
                             <h4 class="card-header-title">
-                                Have questions?
+                                {{intlGet "messages.help.have_qs"}}
                             </h4>
                         </div>
                         <div class="col-auto">
@@ -149,7 +149,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    Feel free to reach out to us via <a id="ch-live-chat-help" href="#!">live chat here!</a>
+                    {{intlGet "messages.help.reach_via"}} <a id="ch-live-chat-help" href="#!">{{intlGet "messages.help.live_chat_here"}}</a>
                     <script>
                         $(function() {
                             $('#ch-live-chat-help').click(function() {
