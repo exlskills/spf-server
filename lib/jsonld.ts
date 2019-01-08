@@ -48,7 +48,7 @@ export const generateArticle = (headline: string, description: string | undefine
     let article = {
         "@context": "http://schema.org",
         '@type': 'Article',
-        name,
+        headline,
         description,
         datePublished,
         author: authorPublisher,
