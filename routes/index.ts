@@ -1,8 +1,8 @@
 import * as express from 'express';
 import config from '../config'
-import { viewDashboard } from '../controllers/dashboard';
-import { viewCourses } from '../controllers/courses';
-import { Request, Response, NextFunction } from 'express';
+import {viewDashboard} from '../controllers/dashboard';
+import {viewCourses} from '../controllers/courses';
+import {Request, Response, NextFunction} from 'express';
 import {fromUrlId, toUrlId} from "../utils/url-ids";
 import {getGQLToken} from "../lib/anon";
 import GqlApi from "../lib/gql-api";
@@ -80,9 +80,9 @@ const router = express.Router();
 type ParamsFunction = (req: Request, res: Response, next?: NextFunction) => any[]
 type ControllerFunction = (client: GqlApi, user: IUserData, locale: string, ...args: any[]) => Promise<ISPFRouteResponse>
 
-const computeCanonicalUrlAndBreadcrumbs = (req: Request, data: any): {canonicalUrl: string, breadcrumbs: IBreadcrumbList} => {
+const computeUrlsAndBreadcrumbs = (req: Request, data: any): { canonicalUrl: string, altUrls: any, breadcrumbs: IBreadcrumbList } => {
     let parts = [];
-    let breadcrumbs: {name: string, url: string}[] = [];
+    let breadcrumbs: { name: string, url: string }[] = [];
     const breadcrumbUrlBase = `${config.clientBaseURL}/learn-en`;
     let matchedPath = req.route.path;
     // Assume that actual parts match with the matched path
@@ -94,7 +94,7 @@ const computeCanonicalUrlAndBreadcrumbs = (req: Request, data: any): {canonicalU
 
     let matchedParts = matchedPath.split('/');
     let routeAffinity: "course" | "instructor" | "digital-diploma" | null = null;
-    let partsToFill: {[key: string]: {ind: number, val: string};} = {};
+    let partsToFill: { [key: string]: { ind: number, val: string }; } = {};
     for (let ind = 0; ind < matchedParts.length; ind++) {
         if (ind === 1) {
             // Find the base of the breadcrumb path
@@ -167,13 +167,19 @@ const computeCanonicalUrlAndBreadcrumbs = (req: Request, data: any): {canonicalU
                         const routeCard = routeSection.cards_list.find(c => c.id == fromUrlId('SectionCard', partsToFill['cardId'].val));
                         const cardUrlId = toUrlId(routeCard.title, routeCard.id);
                         parts[partsToFill['cardId'].ind] = cardUrlId;
-                        breadcrumbs.push({name: data.course.meta.title, url: `${breadcrumbUrlBase}/courses/${cUrlId}/${unitUrlId}/${sectionUrlId}/${cardUrlId}`});
+                        breadcrumbs.push({
+                            name: data.course.meta.title,
+                            url: `${breadcrumbUrlBase}/courses/${cUrlId}/${unitUrlId}/${sectionUrlId}/${cardUrlId}`
+                        });
                     }
                 }
             } else if (matchedParts.length > 1) {
-                switch (matchedParts[matchedParts.length-1]) {
+                switch (matchedParts[matchedParts.length - 1]) {
                     case 'certificate':
-                        breadcrumbs.push({name: 'Certificate', url: `${breadcrumbUrlBase}/courses/${cUrlId}/certificate`});
+                        breadcrumbs.push({
+                            name: 'Certificate',
+                            url: `${breadcrumbUrlBase}/courses/${cUrlId}/certificate`
+                        });
                         break;
                     case 'content':
                         breadcrumbs.push({name: 'Content', url: `${breadcrumbUrlBase}/courses/${cUrlId}/content`});
@@ -197,15 +203,26 @@ const computeCanonicalUrlAndBreadcrumbs = (req: Request, data: any): {canonicalU
         case 'digital-diploma':
             parts[partsToFill['digitalDiplomaId'].ind] = toUrlId(data.digitalDiploma.title, data.digitalDiploma.id);
             if (matchedParts[1] === 'digital-diplomas') {
-                breadcrumbs.push({name: data.digitalDiploma.title, url: `${breadcrumbUrlBase}/digital-diplomas/${cUrlId}`});
+                breadcrumbs.push({
+                    name: data.digitalDiploma.title,
+                    url: `${breadcrumbUrlBase}/digital-diplomas/${cUrlId}`
+                });
             } else if (matchedParts[1] === 'projects') {
                 breadcrumbs.push({name: data.digitalDiploma.title, url: `${breadcrumbUrlBase}/projects/${cUrlId}`});
             }
             break;
     }
+
     // TODO logically handle locales in URLs, but for now just make sure to always use english
+    // Used to build <link rel="alternate" hreflang=`locale` href=`link`>
+    // per https://support.google.com/webmasters/answer/189077?hl=en
+    const altUrls = {};
+    altUrls['en'] = `${config.clientBaseURL}/learn-en${parts.join('/')}`;
+    // altUrls['fr'] = `${config.clientBaseURL}/learn-fr${parts.join('/')}`;
+
     return {
         canonicalUrl: `${config.clientBaseURL}/learn-en${parts.join('/')}`,
+        altUrls: altUrls,
         breadcrumbs: generateBreadcrumbList(...breadcrumbs),
     };
 };
@@ -259,7 +276,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             return
         }
 
-        const {canonicalUrl, breadcrumbs} = computeCanonicalUrlAndBreadcrumbs(req, result.data);
+        const {canonicalUrl, altUrls, breadcrumbs} = computeUrlsAndBreadcrumbs(req, result.data);
         result.intercomHash = generateHash(userData.id);
         result.config = config.templateConstants;
         result.route = {
@@ -270,8 +287,10 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             referer: req.headers.referer,
             referrer: req.headers.referer,
             url: config.clientBaseURL + req.path,
-            canonicalUrl: canonicalUrl
+            canonicalUrl: canonicalUrl,
+            altUrls: altUrls
         };
+
         if (!result.meta.jsonld) {
             result.meta.jsonld = [];
         } else if (!(result.meta.jsonld instanceof Array)) {
@@ -289,11 +308,11 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
                 let startCoinsReq = (new Date()).getTime();
                 result.user.coins = await getCoinsCount(result.user.id);
                 console.log(`Get Coins Req Duration: ${(new Date()).getTime() - startCoinsReq}ms`);
-            } catch(err){
+            } catch (err) {
                 if (process.env.NODE_ENV === 'production') {
                     throw new Error(err);
                 }
-                logger.debug(`getCoinsCount failed ` +  err + ` setting user coins to zero`);
+                logger.debug(`getCoinsCount failed ` + err + ` setting user coins to zero`);
                 result.user.coins = 0;
             }
         } else {
@@ -320,7 +339,8 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
         if (result.amp) {
             result.layout = 'amp';
             return res.render(result.contentTmpl, result);
-        } if (result.mobile) {
+        }
+        if (result.mobile) {
             result.layout = 'mobile';
             return res.render(result.contentTmpl, result);
         } else if (req.query['spf'] === 'navigate') {
@@ -333,7 +353,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
                     data: {intl: intlData}
                 });
 
-                fs.readFile(path.join(config.viewsRoot, result.contentTmpl+'.hbs'), {encoding: 'utf8'}, (err, data) => {
+                fs.readFile(path.join(config.viewsRoot, result.contentTmpl + '.hbs'), {encoding: 'utf8'}, (err, data) => {
                     if (err) {
                         return res.status(500) && next(err);
                     }
@@ -410,11 +430,11 @@ router.get('/mobile-v1/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardI
 
 // Production error handlers:
 if (process.env.NODE_ENV === 'production') {
-    router.use(function(req, res) {
+    router.use(function (req, res) {
         res.status(404);
         res.render('error', {layout: 'splash'});
     });
-    router.use(function(error, req, res, next) {
+    router.use(function (error, req, res, next) {
         res.status(500);
         res.render('error', {layout: 'splash'});
     });

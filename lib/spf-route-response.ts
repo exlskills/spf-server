@@ -46,5 +46,6 @@ export interface ISPFRouteResponse {
         referrer: string
         url: string
         canonicalUrl: string
+        altUrls: any
     }
 }
