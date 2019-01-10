@@ -54,7 +54,7 @@
                             <div class="mb-3 text-center">
                                 <strong><span class="text-info" data-toggle="tooltip" data-placement="top"
                                                         title=""
-                                                        data-original-title="Coins pay for certificates, live courses, and 1-on-1 training"><span id="you-will-save-with-coins"></span><span class="fe fe-help-circle mr-4"></span></span></strong>
+                                                        data-original-title="{{intlGet "messages.coins.coins_pay_for_line"}}"><span id="you-will-save-with-coins"></span><span class="fe fe-help-circle mr-4"></span></span></strong>
                             </div>
 
                             <!--<div class="card bg-light border">-->
@@ -115,7 +115,7 @@
                                 <div class="">
                                     <label for="checkout-card-element">
                                         <span data-toggle="tooltip" data-placement="top" title=""
-                                              data-original-title="Your card will be charged only for purchases you make on EXLskills. You can remove it at any time.">{{intlGet "messages.coins.credit_debit_card"}} <span
+                                              data-original-title="{{intlGet "messages.coins.your_card_will_be_charged_line"}}">{{intlGet "messages.coins.credit_debit_card"}} <span
                                                 class="fe fe-help-circle mr-4"></span></span>
                                     </label>
                                     <div id="checkout-card-element">
@@ -192,11 +192,11 @@
             if (extraCost < 0) {
                 extraCost = 0;
             }
-            $('#you-will-save-with-coins').text('🎉 You\'ll Save $' + (Math.round(((item.quantity * item.displayUnitCost)-extraCost)*100)/100) + ' with your EXLskills Coins! ');
+            $('#you-will-save-with-coins').text("🎉 {{intlGet "messages.marketing.you_will_save"}} {{intlGet "messages.marketing.money_sign"}}" + (Math.round(((item.quantity * item.displayUnitCost)-extraCost)*100)/100) + " {{intlGet "messages.coins.with_your_coins"}} ");
             if (extraCost === 0) {
-                $('#modalCheckout .checkout-pay-msg').text("Purchase for FREE");
+                $('#modalCheckout .checkout-pay-msg').text("{{intlGet "messages.marketing.purchase_free"}}");
             } else {
-                $('#modalCheckout .checkout-pay-msg').text("Pay $" + extraCost);
+                $('#modalCheckout .checkout-pay-msg').text("{{intlGet "messages.coins.pay_label"}} {{intlGet "messages.marketing.money_sign"}}" + extraCost);
             }
 
             renderShippingInfoForm(item);
@@ -218,7 +218,7 @@
         }
         $.postJSON('{{config.authAPIBaseURL}}/purchase', {item: item}, function (data) {
             refreshJWT(function () {
-                window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: 'Thank you for your purchase! You will receive an email with your order confirmation and all further instructions as necessary.'}));
+                window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: '{{intlGet "messages.certificate.thank_you_for_purch_line"}}'}));
                 window.location.hash = '';
                 window.location.reload();
             });

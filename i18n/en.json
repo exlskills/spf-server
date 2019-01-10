@@ -55,7 +55,11 @@
       "show_how_to_apply": "Show Me How to Apply!",
       "if_accepted_final_terms_line": "If accepted, final terms will be provided in your personal offer of enrollment",
       "earn_more_money": "Earn More Money With EXLskills",
-      "be_amazing": "Be Amazing With EXLskills"
+      "be_amazing": "Be Amazing With EXLskills",
+      "you_will_save": "You'll Save",
+      "money_sign": "$",
+      "purchase_free": "Purchase for FREE",
+      "you_are_all_set": "You're all set!"
     },
     "dashboard": {
       "label": "Dashboard",
@@ -103,7 +107,9 @@
       "no_plans": "Oh no, there are no plans currently available!",
       "pls_check_back_soon": "Please check back soon to see if spaces become available!",
       "apply_early_line": "Apply early for an EXLskills Digital Diploma program to have the potential of being selected for a guaranteed employment program",
-      "conditions_eo_line": "Final conditions of your enrollment offer apply"
+      "conditions_eo_line": "Final conditions of your enrollment offer apply",
+      "check_your_inbox_line": "Check your inbox for an email from EXLskills with information about our Digital Diploma program!",
+      "you_are_on_your_way_e": "You're on your way!"
     },
     "guided_projects": {
       "label": "Guided Projects",
@@ -122,7 +128,13 @@
       "profile_label": "Profile",
       "become_instr": "Become an Instructor",
       "teach_on_caps": "TEACH ON EXLSKILLS",
-      "become_instr_line": "Become an EXLskills instructor and earn money by helping others. Apply now to receive a cash bonus!"
+      "become_instr_line": "Become an EXLskills instructor and earn money by helping others. Apply now to receive a cash bonus!",
+      "email_label": "Email",
+      "hourly_rate_billed_line": "Hourly Rate (Billed in 15-minute intervals)",
+      "book_private_for": "Book a Private Session For",
+      "book_session_with": "Book a Session With",
+      "deposit_session_with": "Deposit for Session with",
+      "deposit_session_for": "Deposit for a Private Session for"
     },
     "coins": {
       "label": "Coins",
@@ -132,6 +144,7 @@
       "pay_method_added": "Payment Method Added",
       "credit_debit_card": "Credit or Debit Card",
       "no_charge_till_purchase": "You won't be charged until you make a purchase",
+      "your_card_will_be_charged_line": "Your card will be charged only for purchases you make on EXLskills. You can remove it at any time.",
       "complete_checkout": "Complete Checkout",
       "signup_login_to_complete_checkout": "Sign Up or Login to Complete Checkout",
       "ship_info_label": "Shipping Information",
@@ -146,7 +159,11 @@
       "purchase_label": "Purchase",
       "signup_login_to_purchase_coins": "Sign Up or Login to Purchase Coins",
       "remove_your_cc_q": "Remove Your Credit Card?",
-      "forget_card": "Forget Card"
+      "forget_card": "Forget Card",
+      "coins_msg": "{coins, plural, =0 {No EXLskills Coins} =1 {# EXLskills Coin} other {# EXLskills Coins}}",
+      "coins_pay_for_line": "Coins pay for certificates, live courses, and 1-on-1 training",
+      "with_your_coins": "with your EXLskills Coins!",
+      "pay_label": "Pay"
     },
     "help": {
       "label": "Help",
@@ -174,7 +191,8 @@
       "completed_line": "You've successfully completed this course! Get your certificate today to show employers your skills!",
       "congrat_label": "Congratulations!",
       "trustworthy_line": "EXLskills trustworthy Verified Certificates show employers you're ready!",
-      "verified_label_caps": "VERIFIED"
+      "verified_label_caps": "VERIFIED",
+      "thank_you_for_purch_line": "Thank you for your purchase! You will receive an email with your order confirmation and all further instructions as necessary."
     },
     "class": {
       "live_class_label": "Live Class",
@@ -187,7 +205,12 @@
       "register_label": "Register",
       "registered_see_email": "You're registered! See Email for Details",
       "join_live_class": "Join a Live Class!",
-      "live_class_headline": "EXLskills' live classes, led by verified professional instructors, help you learn faster and better than ever before!"
+      "live_class_headline": "EXLskills' live classes, led by verified professional instructors, help you learn faster and better than ever before!",
+      "deposit_required_line": "Deposit (Required to secure booking)",
+      "pay_deposit": "Pay Deposit ($5)",
+      "your_booking_awaiting_line": "Your booking is now awaiting deposit $5 and will be released in 5-minutes in the event of non-payment.",
+      "deposit_refunded_after_line": "Deposit (Refunded after session)",
+      "per_hr_payment_due_line": "/hour (Payment due within 7 days of session)"
     },
     "config": {
       "label": "Configuration",
@@ -198,7 +221,12 @@
       "app_question_label": "Application Question",
       "check_answer": "Check Answer",
       "show_expl": "Show Explanation",
-      "show_hint": "Show Hint"
+      "hide_expl": "Hide Explanation",
+      "show_hint": "Show Hint",
+      "awesome_correct_line": "Awesome, you answered this question correctly!",
+      "not_right_line": "That answer's not quite right...",
+      "error_getting_hint": "An error occurred getting the question hint. Please try again in a moment.",
+      "error_submitting_answer": "An error occurred submitting your answer. Please try again in a moment."
     },
     "exam": {
       "label": "Exam",
@@ -223,12 +251,16 @@
     "error": {
       "label_lower_case": "error",
       "not_able_to_find_page": "We're not able to find this page",
-      "pls_check_link": "Please check your link, and if the problem persists, please contact support."
+      "pls_check_link": "Please check your link, and if the problem persists, please contact support.",
+      "error_enrolling": "An error occurred enrolling in this course. Please try again in a few moments.",
+      "oops_something_wrong": "Oops, something went wrong!"
     },
     "news": {
       "join_letter": "Join our newsletter",
       "receive_news_line": "Receive free news, tips, and offers through the free EXLskills newsletter. Never miss an opportunity to learn again!",
-      "subscribe_label": "Subscribe"
+      "subscribe_label": "Subscribe",
+      "thank_you_for_subscr_line": "Thank you for subscribing to receive news and updates from EXLskills :)",
+      "make_sure_valid_email": "Please make sure you entered a valid email address"
     }
   }
 }

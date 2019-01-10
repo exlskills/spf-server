@@ -38,7 +38,7 @@
                         <div class="mb-3">
                             You Have: <strong><span class="text-info" data-toggle="tooltip" data-placement="top"
                                                     title=""
-                                                    data-original-title="Coins pay for certificates, live courses, and 1-on-1 training">{{user.coins}} EXLskills Coin{{#isnt user.coins 1}}s{{/isnt}} <span
+                                                    data-original-title="{{intlGet "messages.coins.coins_pay_for_line"}}">{{formatMessage (intlGet "messages.coins.coins_msg") coins=user.coins}} <span
                                 class="fe fe-help-circle mr-4"></span></span></strong>
                         </div>
 
@@ -100,7 +100,7 @@
                                 <div class="">
                                     <label for="coins-card-element">
                                         <span data-toggle="tooltip" data-placement="top" title=""
-                                              data-original-title="Your card will be charged only for purchases you make on EXLskills. You can remove it at any time.">{{intlGet "messages.coins.credit_debit_card"}} <span
+                                              data-original-title="{{intlGet "messages.coins.your_card_will_be_charged_line"}}">{{intlGet "messages.coins.credit_debit_card"}} <span
                                                 class="fe fe-help-circle mr-4"></span></span>
                                     </label>
                                     <div id="coins-card-element">
@@ -158,11 +158,11 @@
             $('#coins-purchase-amount').on('change', function(event) {
                 var val = $(this).val();
                 if (!val || val === '') {
-                    $('#manage-coins-purchase-btn').text('Purchase ($0)');
+                    $('#manage-coins-purchase-btn').text("{{intlGet "messages.coins.purchase_label"}} ({{intlGet "messages.marketing.money_sign"}}0)");
                     $('#manage-coins-purchase-btn').attr("disabled", "disabled");
                 } else {
                     val = parseInt(val);
-                    $('#manage-coins-purchase-btn').text('Purchase ($'+val+')');
+                    $('#manage-coins-purchase-btn').text("{{intlGet "messages.coins.purchase_label"}} ({{intlGet "messages.marketing.money_sign"}}"+val+")");
                     $('#manage-coins-purchase-btn').attr("disabled", false);
                 }
             });

@@ -42,9 +42,9 @@
                     var $self = $(this);
                     subscribeToMailingList($("#" + $self.attr('id') + " .newsletter-email").val(), 'landing_page_sub_0', function() {
                         $("#" + $self.attr('id') + " .newsletter-email").val("");
-                        toastr.success("Thank you for subscribing to receive news and updates from EXLskills :)", "You're all set!");
+                        toastr.success("{{intlGet "messages.news.thank_you_for_subscr_line"}}", "{{intlGet "messages.marketing.you_are_all_set"}}");
                     }, function() {
-                        toastr.error("Please make sure you entered a valid email address", "Oops, something went wrong!");
+                        toastr.error("{{intlGet "messages.news.make_sure_valid_email"}}", "{{intlGet "messages.error.oops_something_wrong"}}");
                     });
                     return false;
                 }

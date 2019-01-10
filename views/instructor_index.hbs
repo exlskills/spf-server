@@ -105,36 +105,36 @@
                         project_id: '{{{project_id}}}', // Change this!
                         customer_fields: {
                             name: {
-                                title: 'Full Name',
+                                title: "{{intlGet "messages.coins.full_name_label"}}",
                                 prefilled: '{{../user.full_name}}',
                                 readonly: false
                             },
                             email: {
-                                title: 'Email',
+                                title: "{{intlGet "messages.instructors.email_label"}}",
                                 prefilled: '{{../user.email}}',
                                 readonly: false
                             },
                             location: {
-                                title: 'Location',
-                                prefilled: 'Online (Remote Audio/Video)',
+                                title: "{{intlGet "messages.class.location_label"}}",
+                                prefilled: "{{intlGet "messages.class.loc_online_remote_av"}}",
                                 readonly: true
                             },
                             deposit: {
-                                title: 'Deposit (Required to secure booking)',
-                                prefilled: 'US$5 Deposit (Refunded after session)',
+                                title: "{{intlGet "messages.class.deposit_required_line"}}",
+                                prefilled: "US$5 {{intlGet "messages.class.deposit_refunded_after_line"}}",
                                 readonly: true
                             },
                             rate: {
-                                title: 'Hourly Rate (Billed in 15-minute intervals)',
-                                prefilled: 'US$40/hour (Payment due within 7 days of session)',
+                                title: "{{intlGet "messages.instructors.hourly_rate_billed_line"}}",
+                                prefilled: "US$40{{intlGet "messages.class.per_hr_payment_due_line"}}",
                                 readonly: true
                             }
                         },
                         ui: {
-                            display_name: 'Book a Session With {{../data.instructor.full_name}}',
+                            display_name: "{{intlGet "messages.instructors.book_session_with"}} {{../data.instructor.full_name}}",
                             localization: {
-                                submit_button: 'Pay Deposit ($5)',
-                                success_message: 'Your booking is now awaiting deposit $5 and will be released in 5-minutes in the event of non-payment.'
+                                submit_button: "{{intlGet "messages.class.pay_deposit"}}",
+                                success_message: "{{intlGet "messages.class.your_booking_awaiting_line"}}"
                             }
                         },
                         callbacks: {
@@ -149,7 +149,7 @@
                                         booking_id: resp.data.id
                                     },
                                     displayUnitCost: 5,
-                                    displayName: 'Deposit for Session with {{{../data.instructor.full_name}}}'
+                                    displayName: "{{intlGet "messages.instructors.deposit_session_with"}} {{{../data.instructor.full_name}}}"
                                 };
                                 window.location.hash = '#!modalCheckout='+encodeURIComponent(JSON.stringify(bookingCheckoutItem));
                             }

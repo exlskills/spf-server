@@ -132,10 +132,10 @@
                 $("#" + $self.attr('id') + " .co-email-addr").val("");
                 $("#modalCalloutLookingForRaise").modal('hide');
                 window.localStorage.setItem('techJobCalloutTopAction', 'co_get_job_dd_sub_0');
-                window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: 'Check your inbox for an email from EXLskills with information about our Digital Diploma program!', title: 'You\'re on your way!'}));
+                window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: "{{intlGet "messages.digital_diplomas.check_your_inbox_line"}}", title: "{{intlGet "messages.digital_diplomas.you_are_on_your_way_e"}}"}));
                 window.location.reload();
             }, function() {
-                toastr.error("Please make sure you entered a valid email address", "Oops, something went wrong!");
+                toastr.error("{{intlGet "messages.news.make_sure_valid_email"}}", "{{intlGet "messages.error.oops_something_wrong"}}");
             });
             return false;
         });
@@ -151,10 +151,10 @@
                 $("#" + $self.attr('id') + " .co-email-addr").val("");
                 $("#modalCalloutLookingForJob").modal('hide');
                 window.localStorage.setItem('techJobCalloutTopAction', 'co_get_raise_dd_sub_0');
-                window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: 'Check your inbox for an email from EXLskills with information about our Digital Diploma program!', title: 'You\'re on your way!'}));
+                window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: "{{intlGet "messages.digital_diplomas.check_your_inbox_line"}}", title: "{{intlGet "messages.digital_diplomas.you_are_on_your_way_e"}}"}));
                 window.location.reload();
             }, function() {
-                toastr.error("Please make sure you entered a valid email address", "Oops, something went wrong!");
+                toastr.error("{{intlGet "messages.news.make_sure_valid_email"}}", "{{intlGet "messages.error.oops_something_wrong"}}");
             });
             return false;
         });
