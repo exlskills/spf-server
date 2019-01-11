@@ -163,7 +163,7 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
             image: gqlResp.meta.logo_url,
             amphtml: `/amp${req.path}`,
             // NOTE: If we don't have the updated_at date, then don't add this as we won't have all the required fields
-            jsonld: gqlResp.card.updated_at ? generateArticle(`${gqlResp.card.title} | ${gqlResp.meta.title}`, undefined, gqlResp.meta.logo_url, gqlResp.card.updated_at, PlatformOrganization) : undefined
+            jsonld: !!gqlResp.card.updated_at ? generateArticle(`${gqlResp.card.title} | ${gqlResp.meta.title}`, undefined, gqlResp.meta.logo_url, gqlResp.card.updated_at, PlatformOrganization) : undefined
         },
         data: {
             course: gqlResp
