@@ -35,17 +35,8 @@ import {viewProjects} from "../controllers/projects";
 import {mobileViewCourseCard} from "../controllers/mobile-course-card";
 import {viewMarketingIndex} from "../controllers/marketing-index";
 import {dataIntl} from "../i18n"
-
-/*
-const intlData = {
-    locales : ['en-US'],
-    messages: {
-        dashboard: {
-            label: 'Dashboard01'
-        }
-    }
-};
-*/
+import {genAltUrls} from "../i18n/utils";
+import * as url from "url";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -80,7 +71,7 @@ const router = express.Router();
 type ParamsFunction = (req: Request, res: Response, next?: NextFunction) => any[]
 type ControllerFunction = (client: GqlApi, user: IUserData, locale: string, ...args: any[]) => Promise<ISPFRouteResponse>
 
-const computeUrlsAndBreadcrumbs = (req: Request, data: any): { canonicalUrl: string, altUrls: any, breadcrumbs: IBreadcrumbList } => {
+const computeUrlsAndBreadcrumbs = (req: Request, data: any): { canonicalUrl: string, breadcrumbs: IBreadcrumbList } => {
     let parts = [];
     let breadcrumbs: { name: string, url: string }[] = [];
     const breadcrumbUrlBase = `${config.clientBaseURL}/learn-en`;
@@ -214,15 +205,8 @@ const computeUrlsAndBreadcrumbs = (req: Request, data: any): { canonicalUrl: str
     }
 
     // TODO logically handle locales in URLs, but for now just make sure to always use english
-    // Used to build <link rel="alternate" hreflang=`locale` href=`link`>
-    // per https://support.google.com/webmasters/answer/189077?hl=en
-    const altUrls = {};
-    altUrls['en'] = `${config.clientBaseURL}/learn-en${parts.join('/')}`;
-    // altUrls['fr'] = `${config.clientBaseURL}/learn-fr${parts.join('/')}`;
-
     return {
         canonicalUrl: `${config.clientBaseURL}/learn-en${parts.join('/')}`,
-        altUrls: altUrls,
         breadcrumbs: generateBreadcrumbList(...breadcrumbs),
     };
 };
@@ -255,9 +239,8 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
     }
     const initialParams = params ? params(req, res, next) : [req, res, next];
 
-    // TODO dynamic locale
-    var intlData = dataIntl["en"]
-    logger.debug(`req.params.locale ` + req.params.locale);
+    // TODO dynamic locale. Also see config.locales
+    var intlData = dataIntl["en"];
 
     try {
         const result = await controllerFunction(gqlClient, userData, req.params.locale, ...initialParams);
@@ -276,7 +259,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             return
         }
 
-        const {canonicalUrl, altUrls, breadcrumbs} = computeUrlsAndBreadcrumbs(req, result.data);
+        const {canonicalUrl, breadcrumbs} = computeUrlsAndBreadcrumbs(req, result.data);
         result.intercomHash = generateHash(userData.id);
         result.config = config.templateConstants;
         result.route = {
@@ -287,8 +270,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             referer: req.headers.referer,
             referrer: req.headers.referer,
             url: config.clientBaseURL + req.path,
-            canonicalUrl: canonicalUrl,
-            altUrls: altUrls
+            canonicalUrl: canonicalUrl
         };
 
         if (!result.meta.jsonld) {
@@ -300,6 +282,11 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             result.meta.jsonld.push(breadcrumbs);
         }
         result.meta.jsonld.push(PlatformOrganization);
+
+        if (!result.meta.altUrls) {
+            result.meta.altUrls= genAltUrls(req.path);
+        }
+
         // TODO internationalize full title prefix
         result.meta.fullTitle = `${result.meta.title} - EXLskills`;
         result.user = userData;
@@ -354,6 +341,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
                 });
 
                 fs.readFile(path.join(config.viewsRoot, result.contentTmpl + '.hbs'), {encoding: 'utf8'}, (err, data) => {
+                    logger.debug('using template ' + result.contentTmpl);
                     if (err) {
                         return res.status(500) && next(err);
                     }

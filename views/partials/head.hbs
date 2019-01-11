@@ -3,7 +3,7 @@
 <title>{{meta.fullTitle}}</title>
 <meta name="description" content="{{meta.description}}">
 <link rel="canonical" href="{{route.canonicalUrl}}">
-{{#each route.altUrls}}
+{{#each meta.altUrls}}
 <link rel="alternate" hreflang={{@key}} href="{{this}}">
 {{/each}}
 {{#if meta.amphtml}}

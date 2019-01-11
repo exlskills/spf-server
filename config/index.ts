@@ -62,5 +62,7 @@ export default {
         baseUrl: process.env.WEB_CLIENT_BASE_URL || 'https://exlskills.com',
         defaultMetaImage: "https://exlskills.com/favicon.png",
         becomeAnInstructorForm: process.env.WEB_BECOME_INSTRUCTOR_FORM || 'https://exlinc.typeform.com/to/ybIw4k'
-    }
+    },
+    locales: ['en'],
+    rootUrlPrefix: 'learn'
 }

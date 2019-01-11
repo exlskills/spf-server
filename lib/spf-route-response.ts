@@ -3,6 +3,7 @@ import {IJSONLD} from "./jsonld";
 
 export interface ISPFRouteMeta {
     title: string
+    altUrls?: any
     topbarTitle?: string
     fullTitle?: string
     description?: string
@@ -46,6 +47,5 @@ export interface ISPFRouteResponse {
         referrer: string
         url: string
         canonicalUrl: string
-        altUrls: any
     }
 }
