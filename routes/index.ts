@@ -19,7 +19,6 @@ import {viewCourseContent} from "../controllers/course-content";
 import {viewCourseProgress} from "../controllers/course-progress";
 import {viewCourseCertificate} from "../controllers/course-certificate";
 import {redirectOldCardURL, redirectSectionURL, viewCourseCard} from "../controllers/course-card";
-import {generateHash} from "../lib/intercom";
 import {getCoinsCount} from "../lib/botmanager-api";
 import {redirectMissingLocale} from "../controllers/redirect-locale";
 import {redirectDashboard} from "../controllers/redirect-dashboard";
@@ -243,7 +242,6 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             "locales": "en-US"
         };
         const {canonicalUrl, breadcrumbs} = computeCanonicalUrlAndBreadcrumbs(req, result.data);
-        result.intercomHash = generateHash(userData.id);
         result.config = config.templateConstants;
         result.route = {
             path: req.path,

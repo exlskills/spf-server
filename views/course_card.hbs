@@ -51,13 +51,14 @@
                     </h1>
                 </div>
                 <div class="col-auto" style="margin: 8px 0;">
-                    <a id="cc-live-chat-help" class="btn btn-sm btn-info" href="#!"> 🙋 Need help? Ask an expert now!</a>
+                    <a class="drift-open-chat btn btn-sm btn-info" href="#!"> 🙋 Need help? Ask an expert now!</a>
                     <script>
-                        $(function() {
-                            $('#cc-live-chat-help').click(function() {
-                                Intercom('showNewMessage', '🙋‍ Hi there, can you help with me with the ' + '{{{data.course.meta.title}}}' + ' Course?\n\nI\'m on the ' + '{{{data.course.card.title}}}' + ' part (' + '{{{route.canonicalUrl}}}' + ') and would really appreciate your time helping me!\n\nPlease type your question here and then send your message ⚡')
-                            });
-                        });
+                        // TODO Setup template in Drift similar to Intercom
+                        // $(function() {
+                        //     $('#cc-live-chat-help').click(function() {
+                        //         Intercom('showNewMessage', '🙋‍ Hi there, can you help with me with the ' + '{{{data.course.meta.title}}}' + ' Course?\n\nI\'m on the ' + '{{{data.course.card.title}}}' + ' part (' + '{{{route.canonicalUrl}}}' + ') and would really appreciate your time helping me!\n\nPlease type your question here and then send your message ⚡')
+                        //     });
+                        // });
                     </script>
                 </div>
             </div>

@@ -1,7 +1,6 @@
 WEB_PORT=3000
 WEB_AUTH_API_BASE_URL=https://auth-api.exlskills.com
 WEB_GQL_ENDPOINT=https://gql-api.exlskills.com/graph
-WEB_INTERCOM_SECRET=set_me
 WEB_CLIENT_BASE_URL=https://exlskills.com
 WEB_BOT_MANAGER_API_KEY=set_me
 WEB_BOT_MANAGER_API_URL=http://localhost:2999
@@ -12,7 +11,6 @@ WEB_TIMEKIT_SK=set_me
 WEB_TMPL_LOGOUT_URL=https://accounts.exlinc.com/auth/realms/exlinc/protocol/openid-connect/logout?redirect_uri=https%3A%2F%2Fexlskills.com
 WEB_TMPL_STRIPE_PUB_KEY=set_me
 WEB_TMPL_ERASE_DATA_FORM_URL=https://exlinc.typeform.com/to/X0MWrR
-WEB_TMPL_IC_APP_ID=set_me
 WEB_TMPL_ACCOUNTS_URL=https://accounts.exlinc.com/auth/realms/exlinc/account
 WEB_TMPL_HELP_BASE_URL=https://help.exlskills.com
 WEB_TMPL_PRIVACY_POLICY_AND_TERMS_URL=https://exlinc.com/legal
@@ -23,4 +21,5 @@ WEB_TMPL_AUTH_API_BASE_URL=https://auth-api.exlskills.com
 WEB_TMPL_GQL_ENDPOINT=https://gql-api.exlskills.com/graph
 WEB_TMPL_GA_TRACKING_ID=UA-122120459-2
 WEB_TMPL_CODE_QUESTION_EDITOR_URL=https://exlcode.com/repl
+WEB_TMPL_DRIFT_APP_ID=set_me
 WEB_TIMEKIT_PK=set_me
