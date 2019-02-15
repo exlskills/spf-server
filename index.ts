@@ -9,6 +9,7 @@ import * as exphbs from 'express-handlebars';
 import * as cors from 'cors';
 import * as HandlebarsIntl from 'handlebars-intl';
 import * as HandlebarsHelpers from 'handlebars-helpers';
+import * as robots from 'express-robots';
 
 const app = express();
 const server = http.createServer(app);
@@ -23,6 +24,9 @@ HandlebarsHelpers({
     // @ts-ignore
     handlebars: hbs.handlebars
 });
+
+// This is only used if the Load Balancer Path rule allows so - non-production
+app.use(robots(__dirname + '/robots.txt'));
 
 app.use(cookieParser());
 app.use(
