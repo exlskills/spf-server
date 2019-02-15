@@ -9,7 +9,7 @@ import * as exphbs from 'express-handlebars';
 import * as cors from 'cors';
 import * as HandlebarsIntl from 'handlebars-intl';
 import * as HandlebarsHelpers from 'handlebars-helpers';
-import * as robots from 'express-robots';
+import * as robots from 'express-robots-txt';
 
 const app = express();
 const server = http.createServer(app);
