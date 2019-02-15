@@ -77,6 +77,8 @@ export default class GqlApi {
                     headline
                     content_id
                     tags
+                    github_edit_url
+                    updated_at
                     content {
                         id
                         version

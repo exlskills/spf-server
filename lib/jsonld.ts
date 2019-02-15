@@ -44,6 +44,21 @@ export const generateCourse = (name: string, description: string, imageUrl: stri
     return course;
 };
 
+export const generateArticle = (headline: string, description: string | undefined, imageUrl: string, datePublished: string, authorPublisher: IOrganization): ICourse => {
+    let article = {
+        "@context": "http://schema.org",
+        '@type': 'Article',
+        headline,
+        description,
+        datePublished,
+        author: authorPublisher,
+        publisher: authorPublisher,
+        image: imageUrl
+    } as any;
+    article.marshalJSONLD = () => toJSONLD(article);
+    return article;
+};
+
 export const generateBreadcrumbList = (...listItems: {name: string, url: string}[]): IBreadcrumbList => {
     let bcList = {
         "@context": "http://schema.org",

@@ -36,7 +36,6 @@ export interface ISPFRouteResponse {
     mobile?: boolean
     user?: IUserData
     config?: any
-    intercomHash?: string
     layout?: string
     route?: {
         path: string

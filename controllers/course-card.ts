@@ -9,6 +9,7 @@ import config from '../config';
 import {uuidv4} from "../utils/uuid";
 import * as showdown from 'showdown';
 import * as cheerio from 'cheerio';
+import {generateArticle, PlatformOrganization} from "../lib/jsonld";
 
 const mdToHTML = new showdown.Converter();
 mdToHTML.setFlavor('github');
@@ -141,8 +142,7 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
                 // Use the last card of the last section of the prev unit
                 gqlResp.nav.prevUnit = gqlResp.units[curUnitIdx-1];
                 gqlResp.nav.prevSection = gqlResp.nav.prevUnit.sections_list[gqlResp.nav.prevUnit.sections_list.length-1];
-                // TODO @svarlamov how does the index [gqlResp.nav.prevSection.cards_list-1] work
-                gqlResp.nav.prevCard = gqlResp.nav.prevSection.cards_list[gqlResp.nav.prevSection.cards_list-1];
+                gqlResp.nav.prevCard = gqlResp.nav.prevSection.cards_list[gqlResp.nav.prevSection.cards_list.length-1];
             } else {
                 // FIRST CARD OF COURSE
                 gqlResp.nav.prevUnit = null;
@@ -161,7 +161,9 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
             title: `${gqlResp.card.title} | ${gqlResp.meta.title}`,
             topbarTitle: `${gqlResp.meta.title}`,
             image: gqlResp.meta.logo_url,
-            amphtml: `/amp${req.path}`
+            amphtml: `/amp${req.path}`,
+            // NOTE: If we don't have the updated_at date, then don't add this as we won't have all the required fields
+            jsonld: !!gqlResp.card.updated_at ? generateArticle(`${gqlResp.card.title} | ${gqlResp.meta.title}`, undefined, gqlResp.meta.logo_url, gqlResp.card.updated_at, PlatformOrganization) : undefined
         },
         data: {
             course: gqlResp

@@ -98,15 +98,8 @@
                 {{{markdown data.courseOverviewFaqMD}}}
 
                 <h3>{{intlGet "messages.help.have_more_qs"}}</h3>
-                {{intlGet "messages.help.reach_via"}} <a id="ci-live-chat-help" href="#!">{{intlGet "messages.help.live_chat_here"}}</a>
+                {{intlGet "messages.help.reach_via"}} <a class="drift-open-chat" href="#!">{{intlGet "messages.help.live_chat_here"}}</a>
             </article>
-            <script>
-                $(function() {
-                    $('#ci-live-chat-help').click(function() {
-                        Intercom('show');
-                    });
-                });
-            </script>
         </div>
     </div>
     <div class="row align-items-center">
