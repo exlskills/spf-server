@@ -331,6 +331,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             return res.render(result.contentTmpl, result);
         }
     } catch (error) {
+        console.log('Error caught in router: ', error);
         return res.status(500) && next(error.message ? error.message : error);
     }
 };
