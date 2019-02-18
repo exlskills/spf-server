@@ -160,7 +160,7 @@
             "signup_login_to_purchase_coins": "注册或登录购买硬币",
             "remove_your_cc_q": "删除您的信用卡？",
             "forget_card": "忘了卡",
-            "coins_msg": "{coins，复数，= 0 {没有EXLskills硬币} = 1 {＃EXLskills Coin}其他{＃EXLskills Coins}}",
+            "coins_msg": "{coins，plural, =0 {没有EXLskills硬币} =1 {＃EXLskills Coin} other {＃EXLskills Coins}}",
             "coins_pay_for_line": "硬币支付证书，现场课程和一对一培训",
             "with_your_coins": "与您的EXLskills硬币！",
             "pay_label": "工资"

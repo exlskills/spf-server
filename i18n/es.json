@@ -160,7 +160,7 @@
             "signup_login_to_purchase_coins": "Regístrate o Inicia sesión para comprar monedas",
             "remove_your_cc_q": "¿Quitar su tarjeta de crédito?",
             "forget_card": "Olvide la tarjeta",
-            "coins_msg": "{coins, plural, = 0 {No EXLskills Coins} = 1 {# EXLskills Coin} otro {# EXLskills Coins}}",
+            "coins_msg": "{coins, plural, =0 {Sin EXLskills Monedas} =1 {# EXLskills Moneda} other {# EXLskills Monedas}}",
             "coins_pay_for_line": "Las monedas pagan por certificados, cursos en vivo y capacitación 1 a 1.",
             "with_your_coins": "con tus monedas de destrezas!",
             "pay_label": "Paga"

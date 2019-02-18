@@ -8,6 +8,7 @@ import IQuestion = GQL.IQuestion;
 import config from '../config';
 import {uuidv4} from "../utils/uuid";
 import * as showdown from 'showdown';
+import * as url from 'url';
 import * as cheerio from 'cheerio';
 import {generateArticle, PlatformOrganization} from "../lib/jsonld";
 
@@ -35,7 +36,9 @@ export function setupQuizQuestionForView(question: IQuestion, nav: any) {
 }
 
 export function renderFullCardContentHTML(content: string) {
+    // console.log(content);
     const $ = cheerio.load(mdToHTML.makeHtml(content));
+    cardFullHTMLJavaSetup($);
     cardFullHTMLJavascriptSetup($);
     let hasPythonCode = cardFullHTMLPythonSetup($);
     if (!hasPythonCode && $('div[data-datacamp-exercise]').length) {
@@ -51,6 +54,87 @@ export function renderFullCardContentHTML(content: string) {
         `;
     }
     return html;
+}
+
+function recurseWorkspaceFilePath(curFiles: Array<any>, curPath: string, file: any) {
+    if (!file.isDir) {
+        curFiles.push({
+            path: `${curPath}/${file.name}`,
+            contents: file.contents
+        });
+        return curFiles
+    } else if (!file.children || file.children.length < 1) {
+        return curFiles
+    }
+    Object.keys(file.children).forEach((childFileKey) => {
+        recurseWorkspaceFilePath(curFiles, `${curPath}/${file.name}`, file.children[childFileKey])
+    });
+    return curFiles
+};
+
+function cardFullHTMLJavaSetup($: CheerioStatic) {
+    $('iframe').filter((index, element) => {
+        return !!$(element).attr('src').match(/https:\/\/exlcode\.com\/repl.*/gm);
+    }).each((index, element) => {
+        let srcUrl = new url.URL($(element).attr('src'));
+        let wspc = JSON.parse(srcUrl.searchParams.get('workspace'));
+        if (!wspc || !wspc.files) {
+            return
+        }
+        try {
+            let javaFiles = wspc.files.src.children.main.children.java.children.exlcode.children;
+            let fileNames = Object.keys(javaFiles);
+            const contentId = uuidv4();
+            let replacement = $(`<div><div><button id="btn-${contentId}" class="btn btn-sm btn-secondary mb-2"><span class="fe fe-play"></span> Run &amp; Edit in Smart IDE (Beta)</button></div><div id="static-${contentId}"></div><div id="iframe-${contentId}"></div><script>
+$(function() {
+    var beenFlipped = false;
+    var iframeShowing = false;
+    var iframeHTML = '${$(element)}';
+    var flipBtn = $('#btn-${contentId}');
+    var staticWrapper = $('#static-${contentId}');
+    var iframeWrapper = $('#iframe-${contentId}');
+    var flipFunc = function() {
+        if (!beenFlipped) {
+            staticWrapper.hide();
+            iframeWrapper.html(iframeHTML);
+            flipBtn.removeClass('mb-2');
+            beenFlipped = true;
+        } else if (iframeShowing) {
+            staticWrapper.show();
+            iframeWrapper.hide();
+            flipBtn.addClass('mb-2');
+        } else {
+            staticWrapper.hide();
+            iframeWrapper.show();
+            flipBtn.removeClass('mb-2');
+        }
+        iframeShowing = !iframeShowing;
+        localStorage.setItem('exlcode_java_ide_beta_pref_0', iframeShowing ? 'smart_beta' : 'static');
+        if (iframeShowing) {
+            flipBtn.html('<span class="fe fe-wifi-off"></span> View as Plain Text');
+        } else {
+            flipBtn.html('<span class="fe fe-play"></span> Run &amp; Edit in Smart IDE (Beta)');
+        }
+    };
+    flipBtn.click(flipFunc);
+    if (localStorage.getItem('exlcode_java_ide_beta_pref_0') === 'smart_beta') {
+        flipFunc();
+    }
+});
+</script></div>`);
+            let displayFiles = [];
+            fileNames.forEach((key) => {
+                displayFiles.push(...recurseWorkspaceFilePath([], '', javaFiles[key]))
+            });
+            displayFiles.forEach((df) => {
+                replacement.find(`#static-${contentId}`).append(`<div style="font-size: 16px;font-weight: 500;">${df.path.substr(1)}</div><pre><code class="java language-java">${df.contents}</code></pre>`)
+            });
+            $(element).replaceWith(replacement);
+        } catch (err) {
+            // Invalid workspace
+            return
+        }
+    });
 }
 
 function cardFullHTMLPythonSetup($: CheerioStatic) {

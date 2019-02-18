@@ -4,6 +4,7 @@ import {join, extname} from 'path'
 import * as fs from 'fs-extra'
 import logger from '../utils/logger';
 import {dataIntl} from "../i18n"
+import config from '../config'
 
 startRun("../views");
 
@@ -23,23 +24,26 @@ async function startRun(dir) {
 
     const problems = [];
 
-    try {
-        for (let file of allFiles) {
-            const fStat = await fs.stat(file);
-            if (fStat.isDirectory() || extname(file) != '.hbs') {
-                continue;
-            }
+    for (let locale of config.locales) {
+        logger.debug(locale);
+        try {
+            for (let file of allFiles) {
+                const fStat = await fs.stat(file);
+                if (fStat.isDirectory() || extname(file) != '.hbs') {
+                    continue;
+                }
 
-            logger.debug(file);
+                logger.debug(file);
 
-            const fContent = await fs.readFile(file);
-            const fileProb = await validateIntlGet(fContent);
-            if (fileProb.length > 0) {
-                problems.push(fileProb);
+                const fContent = await fs.readFile(file);
+                const fileProb = await validateIntlGet(fContent, locale);
+                if (fileProb.length > 0) {
+                    problems.push(fileProb, locale);
+                }
             }
+        } catch (err) {
+            logger.error("While processing files " + err);
         }
-    } catch (err) {
-        logger.error("While processing files " + err);
     }
 
     if (problems.length > 0) {
@@ -60,12 +64,12 @@ async function rreaddir(dir, allFiles = []) {
     return allFiles
 }
 
-async function validateIntlGet(fContent) {
+async function validateIntlGet(fContent, locale) {
     const fileProb = [];
     const allStartPos = indexes(fContent, '{{intlGet ', 0, false);
     // logger.debug(allStartPos);
     for (let ipos of allStartPos) {
-        let intlData = dataIntl['en'];
+        let intlData = dataIntl[locale];
         //logger.debug(ipos);
         const closingPos = indexes(fContent, '}}', ipos, true);
         const msgPointer = fContent.toString().substring(ipos + 9, closingPos).trim().replace(/['"]+/g, '');

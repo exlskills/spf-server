@@ -238,8 +238,13 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
     }
     const initialParams = params ? params(req, res, next) : [req, res, next];
 
-    // TODO dynamic locale. Also see config.locales
-    var intlData = dataIntl["en"];
+    // At this point, the locale is evaluated from the URL (`-:locale`)
+    req.params.locale = req.params.locale || 'en';
+    if (!config.locales.includes(req.params.locale)){
+         req.params.locale = 'en';
+    }
+    logger.debug(`locale ` + req.params.locale);
+    var intlData = dataIntl[req.params.locale];
 
     try {
         const result = await controllerFunction(gqlClient, userData, req.params.locale, ...initialParams);
@@ -262,7 +267,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
         result.config = config.templateConstants;
         result.route = {
             path: req.path,
-            locale: req.params.locale || 'en',
+            locale: req.params.locale,
             suffix: req.path.substr(req.path.indexOf('/', 1)),
             params: req.params,
             referer: req.headers.referer,
@@ -362,6 +367,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             return res.render(result.contentTmpl, result);
         }
     } catch (error) {
+        console.log('Error caught in router: ', error);
         return res.status(500) && next(error.message ? error.message : error);
     }
 };
@@ -380,6 +386,9 @@ router.use('/learn-en/assets', express.static(path.join(__dirname, '../static/as
 //       That function will automatically compute the canonical URLs using consistent data from controllers
 //       and consistent URL IDs provided in routes. The purpose is to streamline SEO among locale codes, avoiding
 //       duplicate content penalties...
+
+// strings positioned in the slots designated with `:` get loaded into corresponding `req.params.`, e.g., `:locale` => `req.params.locale`
+
 router.get('/', gc(viewMarketingIndex, req => []));
 router.get('/learn-:locale', redirectDashboard);
 router.get('/learn-:locale/dashboard', gc(viewDashboard, req => []));

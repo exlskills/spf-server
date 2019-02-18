@@ -160,7 +160,7 @@
             "signup_login_to_purchase_coins": "Зарегистрируйтесь или войдите, чтобы купить монеты",
             "remove_your_cc_q": "Удалить вашу кредитную карту?",
             "forget_card": "Забыть карту",
-            "coins_msg": "{coins, множественное число, = 0 {Без монет EXLskills} = 1 {# EXLskills Coin} другие {# EXLskills Coins}}",
+            "coins_msg": "{coins, plural, =0 {Нет монет EXLskills} =1 {# EXLskills Монета} other {# EXLskills Монет}}",
             "coins_pay_for_line": "Монеты платят за сертификаты, живые курсы и обучение 1-на-1",
             "with_your_coins": "с вашими монетами EXLskills!",
             "pay_label": "платить"
