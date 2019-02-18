@@ -11,7 +11,8 @@ export function genAltUrls(urlPath: string, locales?: Array<string>): any {
         }
         const urlSuffix = urlPath.substr(urlPath.indexOf('/', 1));
         for (let locale of locales) {
-            altUrls[locale] = `${config.clientBaseURL}/${config.rootUrlPrefix}-${locale}/${urlSuffix}`;
+            altUrls[locale] = `${config.clientBaseURL}/${config.rootUrlPrefix}-${locale}${urlSuffix}`;
+            logger.debug(`locale ` + locale + ` ltUrls ` + altUrls[locale]);
         }
     }
     return altUrls;
