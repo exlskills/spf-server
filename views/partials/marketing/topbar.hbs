@@ -13,25 +13,25 @@
 
               <div class="nav-item">
                   <a class="nav-link" href="/learn-{{route.locale}}/projects">
-                      Projects
+                      {{intlGet "messages.guided_projects.projects_label"}}
                   </a>
               </div>
 
             <div class="nav-item">
               <a class="nav-link" href="/learn-{{route.locale}}/courses">
-                  Courses
+                  {{intlGet "messages.course.label_plural"}}
               </a>
             </div>
 
               <div class="nav-item">
                   <a class="nav-link" href="https://github.com/exlskills" target="_blank" rel="noopener">
-                      Contribute
+                      {{intlGet "messages.marketing.contribute_label"}}
                   </a>
               </div>
 
             <div class="nav-item">
               <a class="nav-link" href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">
-                  Sign In
+                {{intlGet "messages.misc.sign_in_label"}}
               </a>
             </div>
 
@@ -39,7 +39,7 @@
           <!-- Button -->
           <div class="navbar-user">
             <a href="learn-{{route.locale}}/courses" class="btn btn-outline-primary pt-2 pb-2 pl-4 pr-4 btn-enter ml-4">
-              Learn for FREE
+                {{intlGet "messages.marketing.learn_free_caps"}}
             </a>
           </div>
 
@@ -55,19 +55,19 @@
             <div class="hamburger-menu dropdown-menu dropdown-menu-right" style="margin-right: 20px;">
 
               <a class="nav-link hamburger-menu-link" href="/learn-{{route.locale}}/projects">
-                  Projects
+                  {{intlGet "messages.guided_projects.projects_label"}}
               </a>
 
               <a class="nav-link hamburger-menu-link" href="/learn-{{route.locale}}/courses">
-                  Courses
+                  {{intlGet "messages.course.label_plural"}}
               </a>
 
                 <a class="nav-link hamburger-menu-link" href="https://github.com/exlskills" target="_blank" rel="noopener">
-                    Contribute
+                    {{intlGet "messages.marketing.contribute_label"}}
                 </a>
 
                 <a class="nav-link hamburger-menu-link" href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">
-                    Sign In
+                    {{intlGet "messages.misc.sign_in_label"}}
                 </a>
 
             </div>

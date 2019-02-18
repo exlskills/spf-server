@@ -1,8 +1,8 @@
 import * as express from 'express';
 import config from '../config'
-import { viewDashboard } from '../controllers/dashboard';
-import { viewCourses } from '../controllers/courses';
-import { Request, Response, NextFunction } from 'express';
+import {viewDashboard} from '../controllers/dashboard';
+import {viewCourses} from '../controllers/courses';
+import {Request, Response, NextFunction} from 'express';
 import {fromUrlId, toUrlId} from "../utils/url-ids";
 import {getGQLToken} from "../lib/anon";
 import GqlApi from "../lib/gql-api";
@@ -33,6 +33,9 @@ import {viewProjectIndex} from "../controllers/project-index";
 import {viewProjects} from "../controllers/projects";
 import {mobileViewCourseCard} from "../controllers/mobile-course-card";
 import {viewMarketingIndex} from "../controllers/marketing-index";
+import {dataIntl} from "../i18n"
+import {genAltUrls} from "../i18n/utils";
+import * as url from "url";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -67,9 +70,9 @@ const router = express.Router();
 type ParamsFunction = (req: Request, res: Response, next?: NextFunction) => any[]
 type ControllerFunction = (client: GqlApi, user: IUserData, locale: string, ...args: any[]) => Promise<ISPFRouteResponse>
 
-const computeCanonicalUrlAndBreadcrumbs = (req: Request, data: any): {canonicalUrl: string, breadcrumbs: IBreadcrumbList} => {
+const computeUrlsAndBreadcrumbs = (req: Request, data: any): { canonicalUrl: string, breadcrumbs: IBreadcrumbList } => {
     let parts = [];
-    let breadcrumbs: {name: string, url: string}[] = [];
+    let breadcrumbs: { name: string, url: string }[] = [];
     const breadcrumbUrlBase = `${config.clientBaseURL}/learn-en`;
     let matchedPath = req.route.path;
     // Assume that actual parts match with the matched path
@@ -81,7 +84,7 @@ const computeCanonicalUrlAndBreadcrumbs = (req: Request, data: any): {canonicalU
 
     let matchedParts = matchedPath.split('/');
     let routeAffinity: "course" | "instructor" | "digital-diploma" | null = null;
-    let partsToFill: {[key: string]: {ind: number, val: string};} = {};
+    let partsToFill: { [key: string]: { ind: number, val: string }; } = {};
     for (let ind = 0; ind < matchedParts.length; ind++) {
         if (ind === 1) {
             // Find the base of the breadcrumb path
@@ -154,13 +157,19 @@ const computeCanonicalUrlAndBreadcrumbs = (req: Request, data: any): {canonicalU
                         const routeCard = routeSection.cards_list.find(c => c.id == fromUrlId('SectionCard', partsToFill['cardId'].val));
                         const cardUrlId = toUrlId(routeCard.title, routeCard.id);
                         parts[partsToFill['cardId'].ind] = cardUrlId;
-                        breadcrumbs.push({name: data.course.meta.title, url: `${breadcrumbUrlBase}/courses/${cUrlId}/${unitUrlId}/${sectionUrlId}/${cardUrlId}`});
+                        breadcrumbs.push({
+                            name: data.course.meta.title,
+                            url: `${breadcrumbUrlBase}/courses/${cUrlId}/${unitUrlId}/${sectionUrlId}/${cardUrlId}`
+                        });
                     }
                 }
             } else if (matchedParts.length > 1) {
-                switch (matchedParts[matchedParts.length-1]) {
+                switch (matchedParts[matchedParts.length - 1]) {
                     case 'certificate':
-                        breadcrumbs.push({name: 'Certificate', url: `${breadcrumbUrlBase}/courses/${cUrlId}/certificate`});
+                        breadcrumbs.push({
+                            name: 'Certificate',
+                            url: `${breadcrumbUrlBase}/courses/${cUrlId}/certificate`
+                        });
                         break;
                     case 'content':
                         breadcrumbs.push({name: 'Content', url: `${breadcrumbUrlBase}/courses/${cUrlId}/content`});
@@ -184,12 +193,16 @@ const computeCanonicalUrlAndBreadcrumbs = (req: Request, data: any): {canonicalU
         case 'digital-diploma':
             parts[partsToFill['digitalDiplomaId'].ind] = toUrlId(data.digitalDiploma.title, data.digitalDiploma.id);
             if (matchedParts[1] === 'digital-diplomas') {
-                breadcrumbs.push({name: data.digitalDiploma.title, url: `${breadcrumbUrlBase}/digital-diplomas/${cUrlId}`});
+                breadcrumbs.push({
+                    name: data.digitalDiploma.title,
+                    url: `${breadcrumbUrlBase}/digital-diplomas/${cUrlId}`
+                });
             } else if (matchedParts[1] === 'projects') {
                 breadcrumbs.push({name: data.digitalDiploma.title, url: `${breadcrumbUrlBase}/projects/${cUrlId}`});
             }
             break;
     }
+
     // TODO logically handle locales in URLs, but for now just make sure to always use english
     return {
         canonicalUrl: `${config.clientBaseURL}/learn-en${parts.join('/')}`,
@@ -224,8 +237,20 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
         return res.status(403) && next(new Error('invalid/missing JWT'));
     }
     const initialParams = params ? params(req, res, next) : [req, res, next];
+
+    // At this point, the locale is evaluated from the URL (`-:locale`)
+    req.params.locale = req.params.locale || 'en';
+    if (!config.locales.includes(req.params.locale)){
+         req.params.locale = 'en';
+    }
+    logger.debug(`locale ` + req.params.locale);
+    var intlData = dataIntl[req.params.locale];
+
     try {
         const result = await controllerFunction(gqlClient, userData, req.params.locale, ...initialParams);
+
+        result.data.intl = intlData;
+
         if (setUpdatedToken) {
             res.cookie(config.jwt.cookieName, gqlToken, {
                 expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
@@ -237,15 +262,12 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             res.redirect(result.redirect.permanent ? 301 : 302, result.redirect.url);
             return
         }
-        // TODO dynamic locale
-        result.data.intl = {
-            "locales": "en-US"
-        };
-        const {canonicalUrl, breadcrumbs} = computeCanonicalUrlAndBreadcrumbs(req, result.data);
+
+        const {canonicalUrl, breadcrumbs} = computeUrlsAndBreadcrumbs(req, result.data);
         result.config = config.templateConstants;
         result.route = {
             path: req.path,
-            locale: req.params.locale || 'en',
+            locale: req.params.locale,
             suffix: req.path.substr(req.path.indexOf('/', 1)),
             params: req.params,
             referer: req.headers.referer,
@@ -253,6 +275,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             url: config.clientBaseURL + req.path,
             canonicalUrl: canonicalUrl
         };
+
         if (!result.meta.jsonld) {
             result.meta.jsonld = [];
         } else if (!(result.meta.jsonld instanceof Array)) {
@@ -262,6 +285,11 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             result.meta.jsonld.push(breadcrumbs);
         }
         result.meta.jsonld.push(PlatformOrganization);
+
+        if (!result.meta.altUrls) {
+            result.meta.altUrls= genAltUrls(req.path);
+        }
+
         // TODO internationalize full title prefix
         result.meta.fullTitle = `${result.meta.title} - EXLskills`;
         result.user = userData;
@@ -270,11 +298,11 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
                 let startCoinsReq = (new Date()).getTime();
                 result.user.coins = await getCoinsCount(result.user.id);
                 console.log(`Get Coins Req Duration: ${(new Date()).getTime() - startCoinsReq}ms`);
-            } catch(err){
+            } catch (err) {
                 if (process.env.NODE_ENV === 'production') {
                     throw new Error(err);
                 }
-                logger.debug(`getCoinsCount failed ` +  err + ` setting user coins to zero`);
+                logger.debug(`getCoinsCount failed ` + err + ` setting user coins to zero`);
                 result.user.coins = 0;
             }
         } else {
@@ -301,7 +329,8 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
         if (result.amp) {
             result.layout = 'amp';
             return res.render(result.contentTmpl, result);
-        } if (result.mobile) {
+        }
+        if (result.mobile) {
             result.layout = 'mobile';
             return res.render(result.contentTmpl, result);
         } else if (req.query['spf'] === 'navigate') {
@@ -309,12 +338,19 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
                 if (err) {
                     return res.status(500) && next(err);
                 }
-                const sidebarHTML = handlebars.compile(data)(result);
-                fs.readFile(path.join(config.viewsRoot, result.contentTmpl+'.hbs'), {encoding: 'utf8'}, (err, data) => {
+
+                const sidebarHTML = handlebars.compile(data)(result, {
+                    data: {intl: intlData}
+                });
+
+                fs.readFile(path.join(config.viewsRoot, result.contentTmpl + '.hbs'), {encoding: 'utf8'}, (err, data) => {
+                    logger.debug('using template ' + result.contentTmpl);
                     if (err) {
                         return res.status(500) && next(err);
                     }
-                    const contentHTML = handlebars.compile(data)(result);
+                    const contentHTML = handlebars.compile(data)(result, {
+                        data: {intl: intlData}
+                    });
                     res.setHeader('Content-Type', 'application/json');
                     res.send(JSON.stringify({
                         title: result.meta.fullTitle,
@@ -350,6 +386,9 @@ router.use('/learn-en/assets', express.static(path.join(__dirname, '../static/as
 //       That function will automatically compute the canonical URLs using consistent data from controllers
 //       and consistent URL IDs provided in routes. The purpose is to streamline SEO among locale codes, avoiding
 //       duplicate content penalties...
+
+// strings positioned in the slots designated with `:` get loaded into corresponding `req.params.`, e.g., `:locale` => `req.params.locale`
+
 router.get('/', gc(viewMarketingIndex, req => []));
 router.get('/learn-:locale', redirectDashboard);
 router.get('/learn-:locale/dashboard', gc(viewDashboard, req => []));
@@ -386,11 +425,11 @@ router.get('/mobile-v1/learn-:locale/courses/:courseId/:unitId/:sectionId/:cardI
 
 // Production error handlers:
 if (process.env.NODE_ENV === 'production') {
-    router.use(function(req, res) {
+    router.use(function (req, res) {
         res.status(404);
         res.render('error', {layout: 'splash'});
     });
-    router.use(function(error, req, res, next) {
+    router.use(function (error, req, res, next) {
         res.status(500);
         res.render('error', {layout: 'splash'});
     });

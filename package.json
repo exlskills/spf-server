@@ -31,7 +31,9 @@
     "@types/handlebars": "^4.0.39",
     "@types/jsonwebtoken": "^7.2.8",
     "@types/moment-timezone": "^0.5.9",
-    "@types/showdown": "^1.7.5"
+    "@types/showdown": "^1.7.5",
+    "fs-extra": "^7.0.1",
+    "ts-node": "^7.0.1"
   },
   "scripts": {
     "start": "npm run build && npm run start:production",
@@ -39,7 +41,8 @@
     "build": "npm run build:gql && npm run build:ts",
     "build:ts": "tsc",
     "build:gql": "gql2ts -o ./lib/gql.d.ts schema.graphql",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "validate": "ts-node code_check/validate-hbar-intl.ts"
   },
   "repository": {
     "type": "git",

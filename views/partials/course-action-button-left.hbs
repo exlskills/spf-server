@@ -10,17 +10,17 @@
 
                         <!-- Title -->
                         <h2>
-                            Congratulations! 🎓
+                            {{intlGet "messages.certificate.congrat_label"}} 🎓
                         </h2>
 
                         <!-- Content -->
                         <p class="text-muted">
-                            You've successfully completed this course! Get your certificate today to show employers your skills!
+                            {{intlGet "messages.certificate.completed_line"}}
                         </p>
 
                         <!-- Button -->
                         <a href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/certificate" class="spf-link btn btn-primary">
-                            Get Certified
+                            {{intlGet "messages.certificate.get_label"}}
                         </a>
 
                     </div>
@@ -29,7 +29,7 @@
         </div>
     {{else}}
         {{#if data.course.nextStep.learn}}
-            <a style="display: block;" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nextStep.learn.unit.url_id}}/{{data.course.nextStep.learn.section.url_id}}/{{data.course.nextStep.learn.card.url_id}}" class="spf-link btn btn-primary w-100 mb-4 d-md-none">Resume Learning</a>
+            <a style="display: block;" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nextStep.learn.unit.url_id}}/{{data.course.nextStep.learn.section.url_id}}/{{data.course.nextStep.learn.card.url_id}}" class="spf-link btn btn-primary w-100 mb-4 d-md-none">{{intlGet "messages.course.resume_learning"}}</a>
         {{else}}
             {{#if data.course.nextStep.exam}}
                 <!-- TODO take exam -->
@@ -39,5 +39,5 @@
         {{/if}}
     {{/if}}
 {{else}}
-    <button style="display: block;" class="course-enrollment-start-action-btn btn btn-primary w-100 mb-4 d-md-none">Start Learning For FREE!</button>
+    <button style="display: block;" class="course-enrollment-start-action-btn btn btn-primary w-100 mb-4 d-md-none">{{intlGet "messages.marketing.start_learning_free"}}</button>
 {{/if}}

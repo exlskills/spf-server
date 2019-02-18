@@ -42,7 +42,7 @@
                         <div class="col">
                             <!-- Title -->
                             <h4 class="card-header-title">
-                                Have questions?
+                                {{intlGet "messages.help.have_qs"}}
                             </h4>
                         </div>
                         <div class="col-auto">
@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    Feel free to reach out to us via <a class="drift-open-chat" href="#!">live chat here!</a>
+                    {{intlGet "messages.help.reach_via"}} <a class="drift-open-chat" href="#!">{{intlGet "messages.help.live_chat_here"}}</a>
                 </div>
             </div>
 
@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
                                 <div class="col-auto">
-                                    <div class="small ml-3">{{#eq ema 0}}N/A{{else}}{{round ema}}%{{/eq}}</div>
+                                    <div class="small ml-3">{{#eq ema 0}}{{intlGet "messages.misc.na"}}{{else}}{{round ema}}%{{/eq}}</div>
                                 </div>
                             </div> <!-- / .row -->
                         </div>
@@ -121,7 +121,7 @@
 
                                         <!-- Button -->
                                         <a href="/learn-{{../../route.locale}}/courses/{{../../data.course.meta.url_id}}/{{../url_id}}/{{url_id}}/{{first_card_url_id}}" class="spf-link btn btn-sm btn-outline-primary d-none d-md-inline-block">
-                                            Learn
+                                            {{intlGet "messages.course.learn_label"}}
                                         </a>
 
                                     </div>
@@ -140,7 +140,7 @@
                 <div class="card-header">
                     <!-- Title -->
                     <h4 class="card-header-title">
-                        Progress
+                        {{intlGet "messages.course.progress_label"}}
                     </h4>
                 </div>
                 <div class="card-body pt-0 pb-0">

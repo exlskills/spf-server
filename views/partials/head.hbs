@@ -3,6 +3,9 @@
 <title>{{meta.fullTitle}}</title>
 <meta name="description" content="{{meta.description}}">
 <link rel="canonical" href="{{route.canonicalUrl}}">
+{{#each meta.altUrls}}
+<link rel="alternate" hreflang={{@key}} href="{{this}}">
+{{/each}}
 {{#if meta.amphtml}}
 <link rel="amphtml" href="{{meta.amphtml}}">
 {{/if}}

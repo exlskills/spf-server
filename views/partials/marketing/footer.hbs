@@ -4,7 +4,7 @@
       <img src="https://exlskills.com/content/images/2018/09/exlskills-logo-pack-vector-01.png" alt="..." class="img-fluid mb-4 h-auto" style="width: 200px">
 
       <h3 class="text-muted">
-          Learn high-paying tech skills for free with EXLskills!
+          {{intlGet "messages.marketing.learn_high_paying_line"}}
       </h3>
 
     </div>
@@ -12,23 +12,23 @@
     <div class="row-8 col-md-2 d-flex flex-column mb-4">
 
       <a href="/learn-{{route.locale}}/courses" class="h3">
-        Open Courses
+          {{intlGet "messages.course.open_courses_label"}}
       </a>
 
     <a href="/learn-{{route.locale}}/projects" class="h3">
-        Guided Projects
+        {{intlGet "messages.guided_projects.label"}}
     </a>
 
       <!--<a href="/learn-en/digital-diplomas" class="h3">-->
-        <!--Digital Diplomas-->
+        <!--{{intlGet "messages.digital_diplomas.label"}}-->
       <!--</a>-->
 
       <!-- <a href="#" class="h3">
-        Live Instructors
+        {{intlGet "messages.instructors.live_label"}}
       </a>
 
       <a href="#" class="h3">
-        Certificate
+        {{intlGet "messages.certificate.label"}}
       </a> -->
 
     </div>
@@ -36,19 +36,19 @@
     <div class="row-8 col-md-2 d-flex flex-column mb-4">
 
       <!-- <a href="#" class="h3">
-        About
+        {{intlGet "messages.marketing.about_label"}}
       </a> -->
 
       <a href="https://help.exlskills.com" target="_blank" rel="noopener" class="h3">
-        Help
+          {{intlGet "messages.help.label"}}
       </a>
 
       <!-- <a href="#" class="h3">
-        Contact
+        {{intlGet "messages.help.contact_label"}}
       </a>
 
       <a href="#" class="h3">
-        Legal
+        {{intlGet "messages.marketing.legal_label"}}
       </a> -->
 
     </div>
@@ -56,23 +56,23 @@
     <div class="row-8 col-md-2 d-flex flex-column mb-4">
 
         <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}" class="h3">
-          Sign Up
+          {{intlGet "messages.marketing.sign_up_label"}}
         </a>
 
         <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}" class="h3">
-          Login
+           {{intlGet "messages.misc.login_label"}}
         </a>
 
         <a href="https://exlinc.typeform.com/to/ybIw4k" target="_blank" rel="noopener" class="h3">
-          Become an Instructor
+          {{intlGet "messages.instructors.become_instr"}}
         </a>
 
         <a href="https://github.com/exlskills/exlskills/issues/new?labels=new-course&amp;title=New%20Course%20Suggestion" target="_blank" rel="noopener" class="h3">
-          Create a Course
+            {{intlGet "messages.course.create_course"}}
         </a>
 
         <!-- <a href="#" class="h3">
-          Articles and Resources
+          {{intlGet "messages.marketing.articles_resources"}}
         </a> -->
 
     </div>
@@ -111,7 +111,7 @@
 
     <div class="row w-100 copyright text-muted pl-4 pt-4 mt-4 mb-2">
 
-      <span>Copyright © 2018 EXL Inc. and/or its affiliates. All Rights Reserved.</span>
+      <span>{{intlGet "messages.marketing.copyright"}}</span>
 
     </div>
 

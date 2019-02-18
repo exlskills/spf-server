@@ -31,7 +31,7 @@
                 // Navigate to next page
                 spf.navigate('/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nextStep.learn.unit.url_id}}/{{data.course.nextStep.learn.section.url_id}}/{{data.course.nextStep.learn.card.url_id}}');
             }, function() {
-                window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'error', message: 'An error occurred enrolling in this course. Please try again in a few moments.'}));
+                window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'error', message: "{{intlGet "messages.error.error_enrolling"}}"}));
                 window.location.reload();
             });
         });

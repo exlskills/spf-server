@@ -8,6 +8,9 @@
     <title>{{meta.fullTitle}}</title>
     <meta name="description" content="{{meta.description}}">
     <link rel="canonical" href="{{route.canonicalUrl}}">
+    {{#each meta.altUrls}}
+        <link rel="alternate" hreflang={{@key}} href="{{this}}">
+    {{/each}}
 
     {{> social-meta}}
 
@@ -39,7 +42,7 @@
 <header class="main-header">
     <nav class="blog-title">
         <a href="https://exlskills.com/learn">EXLskills</a>
-        <a class="view-full-version" href="{{meta.amp.canon_link}}">View Full Version</a>
+        <a class="view-full-version" href="{{meta.amp.canon_link}}">{{intlGet "messages.layouts.view_full_version"}}</a>
     </nav>
 </header>
 
@@ -50,7 +53,7 @@
 </main>
 <footer class="site-footer clearfix">
     <section class="copyright"><a href="https://exlskills.com">EXLskills</a> &copy;</section>
-    <section class="poweredby">Proudly published with <a href="https://exlskills.com">EXLskills</a></section>
+    <section class="poweredby">{{intlGet "messages.marketing.poweredby"}} <a href="https://exlskills.com">EXLskills</a></section>
 </footer>
 </body>
 </html>

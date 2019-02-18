@@ -34,25 +34,25 @@
                         <thead>
                         <tr>
                             <th>
-                                Unit
+                                {{intlGet "messages.course.unit_label"}}
                             </th>
                             <th>
-                                Attempts
+                                {{intlGet "messages.course.attempts_label"}}
                             </th>
                             <th>
-                                Attempts Remaining Today
+                                {{intlGet "messages.course.attempts_rem_today"}}
                             </th>
                             <th>
-                                Last Attempt
+                                {{intlGet "messages.course.last_attempt"}}
                             </th>
                             <th>
-                                Weight
+                                {{intlGet "messages.course.weight_label"}}
                             </th>
                             <th>
-                                Passed
+                                {{intlGet "messages.course.passed_label"}}
                             </th>
                             <th>
-                                Grade
+                                {{intlGet "messages.course.grade_label"}}
                             </th>
                         </tr>
                         </thead>
@@ -72,7 +72,7 @@
                                     {{#if last_attempted_at}}
                                         {{last_attempted_at}}
                                     {{else}}
-                                        N/A
+                                        {{intlGet "messages.misc.na"}}
                                     {{/if}}
                                 </td>
                                 <td>
@@ -94,7 +94,7 @@
                                         {{#if last_attempted_at}}
                                             0%
                                         {{else}}
-                                            N/A
+                                            {{intlGet "messages.misc.na"}}
                                         {{/if}}
                                     {{else}}
                                         {{toPrecision grade 4}}%

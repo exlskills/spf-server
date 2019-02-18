@@ -17,7 +17,7 @@
 
                             <!-- Title -->
                             <h4 class="card-header-title">
-                                Your EXLskills Coins 💰
+                                {{intlGet "messages.coins.your_coins"}} 💰
                             </h4>
 
                         </div>
@@ -38,7 +38,7 @@
                         <div class="mb-3">
                             You Have: <strong><span class="text-info" data-toggle="tooltip" data-placement="top"
                                                     title=""
-                                                    data-original-title="Coins pay for certificates, live courses, and 1-on-1 training">{{user.coins}} EXLskills Coin{{#isnt user.coins 1}}s{{/isnt}} <span
+                                                    data-original-title="{{intlGet "messages.coins.coins_pay_for_line"}}">{{formatMessage (intlGet "messages.coins.coins_msg") coins=user.coins}} <span
                                 class="fe fe-help-circle mr-4"></span></span></strong>
                         </div>
 
@@ -55,7 +55,7 @@
                                 <div class="col-12 col-md-6 mb-3 coins-purchase-btn-col">
                                     <div class="row">
                                         <div class="col">
-                                            <button disabled type="submit" id="manage-coins-purchase-btn" class="btn btn-success w-100 text-center form-btn-submit">Purchase ($0)</button>
+                                            <button disabled type="submit" id="manage-coins-purchase-btn" class="btn btn-success w-100 text-center form-btn-submit">{{intlGet "messages.coins.purchase_label"}} ($0)</button>
                                         </div>
                                         {{#gt user.sub_level 1000}}
                                             {{#if user.is_demo}}
@@ -77,7 +77,7 @@
                         <div class="card bg-light border">
                             <div class="card-body text-center">
                                 <strong>
-                                    <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}{{encodeURI '#!modalManageCoins=true'}}">Sign Up or Login to Purchase Coins</a>
+                                    <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}{{encodeURI '#!modalManageCoins=true'}}">{{intlGet "messages.coins.signup_login_to_purchase_coins"}}</a>
                                 </strong>
                             </div>
                         </div>
@@ -87,9 +87,9 @@
                                 <form id="forget-card-form">
                                     <div class="form-row">
                                         <div class="col-12 col-md-6 mb-3">
-                                            <label for="forget-card-btn">Remove Your Credit Card?</label>
+                                            <label for="forget-card-btn">{{intlGet "messages.coins.remove_your_cc_q"}}</label>
                                             <button id="forget-card-btn" type="submit"
-                                                    class="btn btn-danger float-right w-100 form-btn-submit">Forget Card
+                                                    class="btn btn-danger float-right w-100 form-btn-submit">{{intlGet "messages.coins.forget_card"}}
                                             </button>
                                         </div>
                                     </div>
@@ -100,7 +100,7 @@
                                 <div class="">
                                     <label for="coins-card-element">
                                         <span data-toggle="tooltip" data-placement="top" title=""
-                                              data-original-title="Your card will be charged only for purchases you make on EXLskills. You can remove it at any time.">Credit or Debit Card <span
+                                              data-original-title="{{intlGet "messages.coins.your_card_will_be_charged_line"}}">{{intlGet "messages.coins.credit_debit_card"}} <span
                                                 class="fe fe-help-circle mr-4"></span></span>
                                     </label>
                                     <div id="coins-card-element">
@@ -112,7 +112,7 @@
                                 </div>
 
                                 <button type="submit"
-                                        class="btn btn-primary float-right mt-4 btn-sm-w-100 form-btn-submit">Add Card
+                                        class="btn btn-primary float-right mt-4 btn-sm-w-100 form-btn-submit">{{intlGet "messages.coins.add_card"}}
                                 </button>
                             </form>
                         {{/gt}}
@@ -158,11 +158,11 @@
             $('#coins-purchase-amount').on('change', function(event) {
                 var val = $(this).val();
                 if (!val || val === '') {
-                    $('#manage-coins-purchase-btn').text('Purchase ($0)');
+                    $('#manage-coins-purchase-btn').text("{{intlGet "messages.coins.purchase_label"}} ({{intlGet "messages.marketing.money_sign"}}0)");
                     $('#manage-coins-purchase-btn').attr("disabled", "disabled");
                 } else {
                     val = parseInt(val);
-                    $('#manage-coins-purchase-btn').text('Purchase ($'+val+')');
+                    $('#manage-coins-purchase-btn').text("{{intlGet "messages.coins.purchase_label"}} ({{intlGet "messages.marketing.money_sign"}}"+val+")");
                     $('#manage-coins-purchase-btn').attr("disabled", false);
                 }
             });

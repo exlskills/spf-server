@@ -28,7 +28,7 @@
                     <div class="card-header">
                         <!-- Title -->
                         <h4 class="card-header-title">
-                            Learn it LIVE With EXLskills!
+                            {{intlGet "messages.course.learn_it_live"}}
                         </h4>
                     </div>
                     <div class="card-body">
@@ -47,21 +47,21 @@
 
                             <!-- Title -->
                             <h1>
-                                Oops! All of our Live Classes are Full!
+                                {{intlGet "messages.course.classes_full"}}
                             </h1>
 
                             <!-- Subtitle -->
                             <p class="text-muted">
-                                Don't worry... In the meantime, you can start learning at your own pace for FREE! 🎓
+                                {{intlGet "messages.course.meantime_start_at_own_pace"}} 🎓
                             </p>
 
                             <p class="text-muted mb-4">
-                                P.S. Remember to check back later as more courses become available :)
+                                {{intlGet "messages.course.remember_to_check_back"}}
                             </p>
 
                             <!-- Button -->
                             <a href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content" class="spf-link btn btn-primary">
-                                View FREE Course!
+                                {{intlGet "messages.course.view_free_course"}}
                             </a>
 
                         </div>
@@ -79,7 +79,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Level
+                                {{intlGet "messages.certificate.level_label"}}
                             </h5>
 
                         </div>
@@ -100,7 +100,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Class Duration
+                                {{intlGet "messages.class.class_duration_label"}}
                             </h5>
 
                         </div>
@@ -122,7 +122,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Hours of Instruction
+                                {{intlGet "messages.class.hrs_of_instr_label"}}
                             </h5>
 
                         </div>
@@ -145,14 +145,14 @@
 
                                 <!-- Title -->
                                 <h5 class="mb-0">
-                                    Location
+                                    {{intlGet "messages.class.location_label"}}
                                 </h5>
 
                             </div>
                             <div class="col-auto">
 
                                 <small class="text-muted">
-                                    Online (Audio/Video)
+                                    {{intlGet "messages.class.loc_online_remote_av"}}
                                 </small>
 
                             </div>
@@ -167,14 +167,14 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Languages
+                                {{intlGet "messages.languages.label"}}
                             </h5>
 
                         </div>
                         <div class="col-auto">
 
                             <small class="text-muted">
-                                English
+                                {{intlGet "messages.languages.en"}}
                             </small>
 
                         </div>
@@ -195,16 +195,16 @@
                                     <h4 class="card-header-title">
                                         <span class="mtz-LL" data-time="{{run_start_date}}"></span>
                                         <span class="text-secondary ml-1" style="font-weight: 100;">
-                                        {{length run_sessions}} SESSIONS
+                                        {{length run_sessions}} {{intlGet "messages.class.sessions_label_caps"}}
                                     </span>
                                     </h4>
                                 </div>
                                 <div class="col-auto">
                                     {{#if seat_purchased}}
-                                        <div class="text-success">You're registered! See Email for Details</div>
+                                        <div class="text-success">{{intlGet "messages.class.registered_see_email"}}</div>
                                     {{else}}
                                         <strong>Price: ${{offered_at_price.amount}}</strong>
-                                        <a href="#!modalCheckout={{{encodeURI purchase_item_json}}}" class="btn btn-sm btn-danger ml-1">Register</a>
+                                        <a href="#!modalCheckout={{{encodeURI purchase_item_json}}}" class="btn btn-sm btn-danger ml-1">{{intlGet "messages.class.register_label"}}</a>
                                     {{/if}}
                                 </div>
                                 <a class="collapse-toggle" href="#live-run-container-{{_id}}" data-toggle="collapse" role="button" aria-expanded="{{#if soonest_run}}true{{else}}false{{/if}}" aria-controls="live-run-container-{{_id}}"></a>
@@ -214,7 +214,7 @@
                             <div class="card-body">
                                 <ul>
                                     {{#each run_sessions}}
-                                        <li>Session {{session_seq}} - <span class="mtz-LLLL" data-time="{{session_start_date}}"></span> <span class="mtz-z"></span> <span class="text-secondary">{{session_duration_hrs}} Hour(s)</span></li>
+                                        <li>{{intlGet "messages.class.session_label"}} {{session_seq}} - <span class="mtz-LLLL" data-time="{{session_start_date}}"></span> <span class="mtz-z"></span> <span class="text-secondary">{{session_duration_hrs}} {{intlGet "messages.course.hours_label_p"}}</span></li>
                                         <span class="text-secondary">{{session_notes}}</span>
                                     {{/each}}
                                 </ul>
@@ -226,7 +226,7 @@
                     <div class="card-header">
                         <!-- Title -->
                         <h4 class="card-header-title">
-                            Instructors
+                            {{intlGet "messages.instructors.label"}}
                         </h4>
                     </div>
                     <div class="card-body">

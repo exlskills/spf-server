@@ -17,7 +17,7 @@
 
                             <!-- Title -->
                             <h4 class="card-header-title">
-                                Add a Payment Method 💰
+                                {{intlGet "messages.coins.add_pay_method"}} 💰
                             </h4>
 
                         </div>
@@ -37,7 +37,7 @@
                         <div class="card bg-light border">
                             <div class="card-body text-center">
                                 <strong>
-                                    <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}{{encodeURI '#!modalAddCard=true'}}">Sign Up or Login to add a Payment Method</a>
+                                    <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}{{encodeURI '#!modalAddCard=true'}}">{{intlGet "messages.coins.signup_login_to_add_pay_method"}}</a>
                                 </strong>
                             </div>
                         </div>
@@ -45,14 +45,14 @@
                         {{#gt user.sub_level 1000}}
                             <div class="text-center">
                                 <div class="col">
-                                    <h2 style="margin-bottom: 10px;">✅ Payment Method Added</h2>
+                                    <h2 style="margin-bottom: 10px;">✅ {{intlGet "messages.coins.pay_method_added"}}</h2>
                                 </div>
                                 <br />
                                 <div class="col">
                                     <img src="/learn-en/assets/img/illustrations/happiness.svg" alt="..." class="img-fluid mb-4" style="max-width: 180px;">
                                 </div>
                                 <div class="text-secondary">
-                                    Click <a class="drift-open-chat" href="#" data-dismiss="modal" aria-label="Close">here</a> to continue 🚀
+                                    {{intlGet "messages.misc.click_label"}} <a class="drift-open-chat" href="#" data-dismiss="modal" aria-label="Close">{{intlGet "messages.misc.here_lower_case"}}</a> {{intlGet "messages.misc.to_continue_lower_case"}} 🚀
                                 </div>
                             </div>
                         {{else}}
@@ -60,7 +60,7 @@
                                 <div class="">
                                     <label for="add-modal-card-element">
                                         <span data-toggle="tooltip" data-placement="top" title=""
-                                              data-original-title="Your card will be charged only for purchases you make on EXLskills. You can remove it at any time.">Credit or Debit Card <span
+                                              data-original-title="Your card will be charged only for purchases you make on EXLskills. You can remove it at any time.">{{intlGet "messages.coins.credit_debit_card"}} <span
                                                 class="fe fe-help-circle mr-4"></span></span>
                                     </label>
                                     <div id="add-modal-card-element">
@@ -70,11 +70,11 @@
                                     <!-- Used to display form errors. -->
                                     <div id="add-modal-card-errors" role="alert" class="text-danger"></div>
                                     <div style="width: 100%; height: 6px;"></div>
-                                    <small class="text-secondary">You won't be charged until you make a purchase</small>
+                                    <small class="text-secondary">{{intlGet "messages.coins.no_charge_till_purchase"}}</small>
                                 </div>
 
                                 <button type="submit"
-                                        class="btn btn-primary float-right mt-4 btn-sm-w-100 form-btn-submit">Add Card
+                                        class="btn btn-primary float-right mt-4 btn-sm-w-100 form-btn-submit">{{intlGet "messages.coins.add_card"}}
                                 </button>
                             </form>
                         {{/gt}}

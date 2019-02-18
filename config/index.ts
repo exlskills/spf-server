@@ -61,5 +61,11 @@ export default {
         baseUrl: process.env.WEB_CLIENT_BASE_URL || 'https://exlskills.com',
         defaultMetaImage: "https://exlskills.com/favicon.png",
         becomeAnInstructorForm: process.env.WEB_BECOME_INSTRUCTOR_FORM || 'https://exlinc.typeform.com/to/ybIw4k'
-    }
+    },
+
+    // Locales must be set up in `i18n/index.ts`
+    // TODO validate the locale is set up or remove it from the config array
+    locales: process.env.ACTIVE_LOCALES ? process.env.ACTIVE_LOCALES.split(',') : ['en'],
+
+    rootUrlPrefix: 'learn'
 }

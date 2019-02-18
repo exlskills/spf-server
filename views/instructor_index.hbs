@@ -55,7 +55,7 @@
 
                     <!-- Pretitle -->
                     <h6 class="header-pretitle mt-4">
-                        Instructor
+                        {{intlGet "messages.instructors.label_singular"}}
                     </h6>
 
                     <!-- Title -->
@@ -89,7 +89,7 @@
                     <div class="card-header">
                         <!-- Title -->
                         <h4 class="card-header-title">
-                            About Me
+                            {{intlGet "messages.instructors.about_me"}}
                         </h4>
                     </div>
                     <div class="card-body">
@@ -105,36 +105,36 @@
                         project_id: '{{{project_id}}}', // Change this!
                         customer_fields: {
                             name: {
-                                title: 'Full Name',
+                                title: "{{intlGet "messages.coins.full_name_label"}}",
                                 prefilled: '{{../user.full_name}}',
                                 readonly: false
                             },
                             email: {
-                                title: 'Email',
+                                title: "{{intlGet "messages.instructors.email_label"}}",
                                 prefilled: '{{../user.email}}',
                                 readonly: false
                             },
                             location: {
-                                title: 'Location',
-                                prefilled: 'Online (Remote Audio/Video)',
+                                title: "{{intlGet "messages.class.location_label"}}",
+                                prefilled: "{{intlGet "messages.class.loc_online_remote_av"}}",
                                 readonly: true
                             },
                             deposit: {
-                                title: 'Deposit (Required to secure booking)',
-                                prefilled: 'US$5 Deposit (Refunded after session)',
+                                title: "{{intlGet "messages.class.deposit_required_line"}}",
+                                prefilled: "US$5 {{intlGet "messages.class.deposit_refunded_after_line"}}",
                                 readonly: true
                             },
                             rate: {
-                                title: 'Hourly Rate (Billed in 15-minute intervals)',
-                                prefilled: 'US$40/hour (Payment due within 7 days of session)',
+                                title: "{{intlGet "messages.instructors.hourly_rate_billed_line"}}",
+                                prefilled: "US$40{{intlGet "messages.class.per_hr_payment_due_line"}}",
                                 readonly: true
                             }
                         },
                         ui: {
-                            display_name: 'Book a Session With {{../data.instructor.full_name}}',
+                            display_name: "{{intlGet "messages.instructors.book_session_with"}} {{../data.instructor.full_name}}",
                             localization: {
-                                submit_button: 'Pay Deposit ($5)',
-                                success_message: 'Your booking is now awaiting deposit $5 and will be released in 5-minutes in the event of non-payment.'
+                                submit_button: "{{intlGet "messages.class.pay_deposit"}}",
+                                success_message: "{{intlGet "messages.class.your_booking_awaiting_line"}}"
                             }
                         },
                         callbacks: {
@@ -149,7 +149,7 @@
                                         booking_id: resp.data.id
                                     },
                                     displayUnitCost: 5,
-                                    displayName: 'Deposit for Session with {{{../data.instructor.full_name}}}'
+                                    displayName: "{{intlGet "messages.instructors.deposit_session_with"}} {{{../data.instructor.full_name}}}"
                                 };
                                 window.location.hash = '#!modalCheckout='+encodeURIComponent(JSON.stringify(bookingCheckoutItem));
                             }
@@ -168,7 +168,7 @@
                         <div class="col">
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Topics
+                                {{intlGet "messages.instructors.topics_label"}}
                             </h5>
                         </div>
                         <div class="col-auto" style="max-width: 100%;">
@@ -190,7 +190,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Rating (5/5)
+                                {{intlGet "messages.instructors.rating_label"}} (5/5)
                             </h5>
 
                         </div>
@@ -207,7 +207,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Verified Lessons
+                                {{intlGet "messages.course.verified_lessons"}}
                             </h5>
 
                         </div>
@@ -226,14 +226,14 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Price
+                                {{intlGet "messages.certificate.price_label"}}
                             </h5>
 
                         </div>
                         <div class="col-auto">
 
                             <time class="small text-muted">
-                                US$40/Hour
+                                US$40/{{intlGet "messages.course.hour_label"}}
                             </time>
 
                         </div>
@@ -247,7 +247,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Joined
+                                {{intlGet "messages.course.joined_label"}}
                             </h5>
 
                         </div>
@@ -269,7 +269,7 @@
 
                             <!-- Title -->
                             <h5 class="mb-0">
-                                Location
+                                {{intlGet "messages.class.location_label"}}
                             </h5>
 
                         </div>
@@ -295,11 +295,11 @@
                     <div class="card-header">
                         <!-- Title -->
                         <h4 class="card-header-title">
-                            Updates
+                            {{intlGet "messages.instructors.updates_label"}}
                         </h4>
                     </div>
                     <div class="card-body">
-                        <a class="twitter-timeline" href="https://twitter.com/{{data.instructor.twitter_username}}?ref_src=twsrc%5Etfw">Loading updates ...</a>
+                        <a class="twitter-timeline" href="https://twitter.com/{{data.instructor.twitter_username}}?ref_src=twsrc%5Etfw">{{intlGet "messages.instructors.loading_updates"}} ...</a>
                         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                     </div>
                 </div>
