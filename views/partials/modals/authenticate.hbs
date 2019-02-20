@@ -103,9 +103,16 @@
             }, onSuccess, onFailure);
         }
         function updateUserProfile(fullName, onSuccess, onFailure) {
-            // TODO actually go and update the user profile
-            // Refresh the JWT after updating the profile
-            $.postJSON('{{{config.authAPIBaseURL}}}/auth/jwt-refresh', {}, onSuccess, onFailure);
+            // TODO non en locales?
+            updateUserProfileGQL('en', {
+                primary_locale: 'en',
+                full_name: fullName
+            }, function() {
+                // Refresh token
+                $.postJSON('{{{config.authAPIBaseURL}}}/auth/jwt-refresh', {}, onSuccess, onFailure);
+            }, function(e) {
+                onFailure(e)
+            });
         }
         function finishAuthAndReload() {
             window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: "{{intlGet "messages.authentication.successfully_authenticated_explanation"}}", title: "{{intlGet "messages.authentication.successfully_authenticated"}}"}));

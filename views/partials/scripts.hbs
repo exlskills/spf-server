@@ -397,6 +397,33 @@
     })
 </script>
 <script>
+    function updateUserProfileGQL(locale, profile, onSuccess, onFailure) {
+        var m = `mutation UpdateUserProfileMutation(
+                    $input: UpdateUserProfileInput!
+                ) {
+                updateUserProfile(input: $input) {
+                    completionObj {
+                        code
+                        msg
+                        processed
+                        modified
+                    }
+                }
+            }
+            `;
+        var inputData = {
+            locale: locale,
+            profile: profile
+        };
+        $.postJSON(gqlEndpoint, {
+            query: m,
+            variables: {
+                input: inputData
+            }
+        }, onSuccess, onFailure);
+    }
+</script>
+<script>
     console.log(`
     _____            __                  ________  __    __  __                  __        __  __  __
    /     |          /  |                /        |/  |  /  |/  |                /  |      /  |/  |/  |
