@@ -382,9 +382,9 @@
     }
 </script>
 <script>
+    var _authModalTelInput = null;
     $(function() {
-        var telInput = document.querySelector("#auth-modal-phone");
-        window.intlTelInput(telInput, {
+        _authModalTelInput = window.intlTelInput(document.querySelector("#auth-modal-phone"), {
             utilsScript: '/learn-en/assets/libs/intl-tel-input/v15.0.0/js/utils.js',
             initialCountry: "auto",
             geoIpLookup: function(success, failure) {
