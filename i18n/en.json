@@ -261,6 +261,16 @@
       "subscribe_label": "Subscribe",
       "thank_you_for_subscr_line": "Thank you for subscribing to receive news and updates from EXLskills :)",
       "make_sure_valid_email": "Please make sure you entered a valid email address"
+    },
+    "authentication": {
+      "auth_modal_title": "Login/Sign Up",
+      "submit_phone_number": "Send Code",
+      "phone_number_placeholder": "Enter your mobile number",
+      "submit_phone_number_note": "You'll receive a one-time code via SMS to login or sign up.",
+      "nav_back": "Back",
+      "resend_code": "Resend Code",
+      "code_placeholder": "Enter the code you receive",
+      "verify_code": "Verify Code"
     }
   }
 }

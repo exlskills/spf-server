@@ -58,7 +58,7 @@
         <!-- User -->
         <div class="navbar-user">
             {{#if user.is_demo}}
-                <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}" class="btn btn-success">{{intlGet "messages.misc.login_label"}} / {{intlGet "messages.marketing.sign_up_label"}}</a>
+                <a href="#!modalAuthenticate" class="btn btn-success">{{intlGet "messages.misc.login_label"}} / {{intlGet "messages.marketing.sign_up_label"}}</a>
             {{else}}
                 <!-- Dropdown -->
                 <div class="dropdown">

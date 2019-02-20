@@ -26,6 +26,7 @@
 <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js"></script>
+<script src="/learn-en/assets/libs/intl-tel-input/v15.0.0/js/intlTelInput.js"></script>
 
 <!-- Theme JS -->
 <script src="/learn-en/assets/js/theme.min.js"></script>
@@ -117,7 +118,7 @@
 </script>
 <script>
     $(function() {
-        var modalIds = ['modalManageCoins', 'modalAddCard', 'modalCheckout'];
+        var modalIds = ['modalManageCoins', 'modalAddCard', 'modalCheckout', 'modalAuthenticate'];
         modalIds.forEach(function(id) {
             $('#'+id).on('hide.bs.modal', function() {
                 window.location.hash = '';
@@ -244,7 +245,7 @@
                 document.querySelector('#theme-mode-toggle').addEventListener('change', function() {
                     toggleThemeMode();
                 });
-            }
+            };
 
             $(document).on("spfdone", function() {
                 updateToggleState();
@@ -379,6 +380,21 @@
         var doc = new DOMParser().parseFromString(input, "text/html");
         return doc.documentElement.textContent;
     }
+</script>
+<script>
+    $(function() {
+        var telInput = document.querySelector("#auth-modal-phone");
+        window.intlTelInput(telInput, {
+            utilsScript: '/learn-en/assets/libs/intl-tel-input/v15.0.0/js/utils.js',
+            initialCountry: "auto",
+            geoIpLookup: function(success, failure) {
+                $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+                    var countryCode = (resp && resp.country) ? resp.country : "in";
+                    success(countryCode);
+                });
+            },
+        });
+    })
 </script>
 <script>
     console.log(`

@@ -1,0 +1,129 @@
+<!-- Modal: Callout looking for a job -->
+<div class="modal fade" id="modalAuthenticate" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-card card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h4 class="card-header-title">
+                                {{intlGet "messages.authentication.auth_modal_title"}}&nbsp;🔒
+                            </h4>
+
+                        </div>
+                        <div class="col-auto">
+
+                            <!-- Close -->
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                        </div>
+                    </div> <!-- / .row -->
+                </div>
+
+                <div class="card-body">
+                    <div>
+                        <!--<div class="col text-center">-->
+                            <!--<h2 style="margin-bottom: 10px;">{{intlGet "messages.authentication.auth_modal_title"}}</h2>-->
+                        <!--</div>-->
+                        <!--<div class="col text-center">-->
+                            <!--<img src="/learn-en/assets/img/illustrations/happiness.svg" alt="..." class="img-fluid mb-4" style="max-width: 180px;">-->
+                        <!--</div>-->
+                        <!--<h3 class="text-center text-secondary">-->
+                            <!--{{intlGet "messages.authentication.auth_modal_title"}}-->
+                        <!--</h3>-->
+                        <form id="enter-phone-form">
+                            <div class="form-row">
+                                <div class="col-12 mb-3">
+                                    <input placeholder="{{intlGet "messages.authentication.phone_number_placeholder"}}" required type="tel" class="form-control" id="auth-modal-phone">
+                                </div>
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col">
+                                            <button id="phone-form-btn-submit" type="submit" class="btn btn-success w-100 text-center">{{intlGet "messages.authentication.submit_phone_number"}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <small class="text-secondary mt-2">
+                                {{intlGet "messages.authentication.submit_phone_number_note"}} <a id="other-logins-link" href="#!modalAuthenticate">Login with email or GitHub instead.</a>
+                            </small>
+                        </form>
+                        <form style="display: none;" id="enter-phone-code-form">
+                            <div class="form-row">
+                                <div class="col-12 mb-3">
+                                    <input class="form-control" placeholder="{{intlGet "messages.authentication.code_placeholder"}}" minlength="5" maxlength="5" type="text" required>
+                                </div>
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col">
+                                            <button id="phone-code-form-btn-submit" type="submit" class="btn btn-success w-100 text-center">{{intlGet "messages.authentication.verify_code"}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-3">
+                                <small class="text-secondary">
+                                    <a id="phone-code-auth-back" href="#!modalAuthenticate">{{intlGet "messages.authentication.nav_back"}}</a> | <a id="phone-code-auth-resend" href="#!modalAuthenticate">{{intlGet "messages.authentication.resend_code"}}</a>
+                                </small>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        $("#enter-phone-form").submit(function(e) {
+            // TODO send phone code (integrate with auth api for this)
+            e.preventDefault();
+            $(".phone-form-btn-submit", this).addClass('is-loading');
+            $(".phone-form-btn-submit", this).attr('disabled', 'disabled');
+            var $self = $(this);
+            subscribeToMailingList($("#" + $self.attr('id') + " .co-email-addr").val(), 'co_get_job_dd_sub_0', function() {
+                $(".phone-form-btn-submit", form).removeClass('is-loading');
+                $(".phone-form-btn-submit", form).attr('disabled', false);
+                window.localStorage.setItem('techJobCalloutTopAction', 'co_get_job_dd_sub_0');
+                window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: "{{intlGet "messages.digital_diplomas.check_your_inbox_line"}}", title: "{{intlGet "messages.digital_diplomas.you_are_on_your_way_e"}}"}));
+                window.location.reload();
+            }, function() {
+                toastr.error("{{intlGet "messages.news.make_sure_valid_email"}}", "{{intlGet "messages.error.oops_something_wrong"}}");
+            });
+            return false;
+        });
+        $('#phone-code-auth-back').click(function() {
+            // TODO show the first screen, hide the current one
+        });
+        $('#phone-code-auth-resend').click(function() {
+            // TODO disable resend link during load, send a new code, show toast sent, re-enable the link
+        });
+        $("#other-logins-link").click(function(e) {
+            window.location.href = '{{config.authAPIBaseURL}}/auth/keycloak?redirect='+encodeURIComponent(window.location.host+window.location.pathname)
+        });
+        $("#enter-phone-code-form").submit(function(e) {
+            e.preventDefault();
+            // TODO verify the code
+            $(".phone-code-form-btn-submit", this).addClass('is-loading');
+            $(".phone-code-form-btn-submit", this).attr('disabled', 'disabled');
+            var $self = $(this);
+            subscribeToMailingList($("#" + $self.attr('id') + " .co-email-addr").val(), 'co_get_job_dd_sub_0', function() {
+                $(".phone-code-form-btn-submit", form).removeClass('is-loading');
+                $(".phone-code-form-btn-submit", form).attr('disabled', false);
+                $("#" + $self.attr('id') + " .co-email-addr").val("");
+                $("#modalAuthenticate").modal('hide');
+                window.localStorage.setItem('techJobCalloutTopAction', 'co_get_job_dd_sub_0');
+                window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: "{{intlGet "messages.digital_diplomas.check_your_inbox_line"}}", title: "{{intlGet "messages.digital_diplomas.you_are_on_your_way_e"}}"}));
+                window.location.reload();
+            }, function() {
+                toastr.error("{{intlGet "messages.news.make_sure_valid_email"}}", "{{intlGet "messages.error.oops_something_wrong"}}");
+            });
+            return false;
+        });
+    });
+</script>
