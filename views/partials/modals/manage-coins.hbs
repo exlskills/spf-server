@@ -77,7 +77,7 @@
                         <div class="card bg-light border">
                             <div class="card-body text-center">
                                 <strong>
-                                    <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}{{encodeURI '#!modalManageCoins=true'}}">{{intlGet "messages.coins.signup_login_to_purchase_coins"}}</a>
+                                    <a onclick="$('#modalManageCoins').modal('hide');" href="#!modalAuthenticate={{encodeURI '#!modalManageCoins=true'}}">{{intlGet "messages.coins.signup_login_to_purchase_coins"}}</a>
                                 </strong>
                             </div>
                         </div>

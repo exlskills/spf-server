@@ -116,7 +116,11 @@
         }
         function finishAuthAndReload() {
             window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: "{{intlGet "messages.authentication.successfully_authenticated_explanation"}}", title: "{{intlGet "messages.authentication.successfully_authenticated"}}"}));
-            window.location.hash = '';
+            if (window.location.hash.substr(20).length > 0) {
+                window.location.href = decodeURIComponent(window.location.hash.substr(20));
+            } else {
+                window.location.hash = '';
+            }
             window.location.reload();
         }
         $enterPhoneForm.submit(function(e) {
