@@ -311,7 +311,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
                 result.user.coins = await getCoinsCount(result.user.id);
                 console.log(`Get Coins Req Duration: ${(new Date()).getTime() - startCoinsReq}ms`);
             } catch (err) {
-                if (process.env.NODE_ENV === 'production') {
+                if (process.env.NODE_ENV === 'production' && config.botManagerAPI.key !== 'set_me') {
                     throw new Error(err);
                 }
                 logger.debug(`getCoinsCount failed ` + err + ` setting user coins to zero`);

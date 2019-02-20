@@ -26,13 +26,14 @@ export default {
         publicKeyBase64: process.env.WEB_JWT_PUB_KEY_B64 || ''
     },
     botManagerAPI: {
+        // NOTE: 'set_me' is hardcoded to bypass BOT MANAGER access error
         key: process.env.WEB_BOT_MANAGER_API_KEY || 'set_me',
         url: process.env.WEB_BOT_MANAGER_API_URL || 'http://localhost:2999'
     },
     cookies: {
         domain: process.env.WEB_COOKIES_DOMAIN || '.exlskills.com'
     },
-    logLevel: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+    logLevel: process.env.LOG_LEVEL ? process.env.LOG_LEVEL : process.env.NODE_ENV === 'production' ? 'info' : 'debug',
     viewsRoot: path.join(__dirname, "../views"),
     spfResponse: {
         topbar: 'partials/topbar.hbs',
