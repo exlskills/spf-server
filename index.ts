@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as http from 'http'
+import * as requestLanguage from 'express-request-language';
 import config from './config';
 import routes from './routes';
 import logger from './utils/logger';
@@ -44,6 +45,9 @@ app.use(
         credentials: true
     })
 );
+
+app.use(requestLanguage({
+    languages: config.locales}));
 
 app.use('/', routes);
 

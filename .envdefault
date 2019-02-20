@@ -23,3 +23,6 @@ WEB_TMPL_GA_TRACKING_ID=UA-122120459-2
 WEB_TMPL_CODE_QUESTION_EDITOR_URL=https://exlcode.com/repl
 WEB_TMPL_DRIFT_APP_ID=set_me
 WEB_TIMEKIT_PK=set_me
+
+# The default locale must be listed first
+# ACTIVE_LOCALES=en,hi,es,ru,zh

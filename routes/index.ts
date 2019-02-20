@@ -35,7 +35,6 @@ import {mobileViewCourseCard} from "../controllers/mobile-course-card";
 import {viewMarketingIndex} from "../controllers/marketing-index";
 import {dataIntl} from "../i18n"
 import {genAltUrls} from "../i18n/utils";
-import * as url from "url";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -217,13 +216,23 @@ const computeUrlsAndBreadcrumbs = (req: Request, data: any): { canonicalUrl: str
  * @param params (req) => [params, ...].
  */
 const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params: ParamsFunction) => async (req: Request, res?: Response, next?: NextFunction) => {
+
+    // Determine User Locale from Accept-Language or URL before getting (or creating) the JWT
+    // This returns one value from Accept-Language that exists in the list defined in config.locales or 1-st config.locales value if no match found
+    let user_language = req.language;
+    logger.debug(`req.language ` + user_language);
+    // Override if locale is explicitly present in the URL's path (`-:locale`) and it is valid
+    if (req.params.locale && config.locales.includes(req.params.locale)){
+        user_language = req.params.locale;
+    }
+
     let startReqTs = (new Date()).getTime();
     let gqlToken = req.cookies['token'];
     let setUpdatedToken = false;
     if (!gqlToken) {
         setUpdatedToken = true;
         let startTknReq = (new Date()).getTime();
-        gqlToken = await getGQLToken();
+        gqlToken = await getGQLToken(user_language);
         console.log(`Get Token Req Duration: ${(new Date()).getTime() - startTknReq}ms`);
     }
     const gqlClient = new GqlApi(gqlToken);
@@ -233,17 +242,20 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
     } catch (err) {
         return res.status(403) && next(err);
     }
-    if (!userData || !userData.id) {
+    if (!userData || !userData.id || !userData.locale) {
         return res.status(403) && next(new Error('invalid/missing JWT'));
     }
     const initialParams = params ? params(req, res, next) : [req, res, next];
 
-    // At this point, the locale is evaluated from the URL (`-:locale`)
-    req.params.locale = req.params.locale || 'en';
-    if (!config.locales.includes(req.params.locale)){
-         req.params.locale = 'en';
+    // Override locale with the value from JWT if the value is valid. Otherwise, set to the earlier evaluated user_language value
+    // NOTE: the locale from userData is not used in this server's process, however, it is ultimately used in the GQL server by virtue of being stored in the JWT
+    if (config.locales.includes(userData.locale)) {
+        req.params.locale = userData.locale;
+    } else {
+        req.params.locale = user_language;
     }
-    logger.debug(`locale ` + req.params.locale);
+    logger.debug(`userData.locale ` + userData.locale + `. Setting req.params.locale to ` + req.params.locale);
+
     var intlData = dataIntl[req.params.locale];
 
     try {
