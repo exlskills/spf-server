@@ -386,6 +386,7 @@
     $(function() {
         _authModalTelInput = window.intlTelInput(document.querySelector("#auth-modal-phone"), {
             utilsScript: '/learn-en/assets/libs/intl-tel-input/v15.0.0/js/utils.js',
+            preferredCountries: ['us', 'in'],
             initialCountry: "auto",
             geoIpLookup: function(success, failure) {
                 $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
