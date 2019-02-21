@@ -29,7 +29,7 @@ export const generateOrganiztion = (name: string, description: string, legalName
     return org;
 };
 
-export const PlatformOrganization = generateOrganiztion("EXLskills", "The smartest way to learn high-paying tech skills!", "EXL Inc.", "https://exlskills.com", "https://s3-us-west-2.amazonaws.com/exlskills-misc-assets/atom512blue.png");
+export const PlatformOrganization = generateOrganiztion("EXLskills", "The smartest way to learn high-paying tech skills!", "EXL Inc.", "https://exlskills.com", "https://cdn-misc-assets.exlskills.com/atom512blue.png");
 
 export const generateCourse = (name: string, description: string, imageUrl: string, provider: IOrganization): ICourse => {
     let course = {

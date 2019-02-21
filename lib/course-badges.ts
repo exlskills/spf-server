@@ -1,4 +1,4 @@
-const badgesBaseURL = "https://s3-us-west-2.amazonaws.com/exlskills-topic-badges/";
+const badgesBaseURL = "https://cdn-topic-badges.exlskills.com/";
 
 const unknownBadgeURL = `${badgesBaseURL}default.svg`;
 
