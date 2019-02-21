@@ -183,7 +183,7 @@
             });
         });
         $("#other-logins-link").click(function(e) {
-            window.location.href = '{{config.authAPIBaseURL}}/auth/keycloak?redirect='+encodeURIComponent(window.location.host+window.location.pathname)
+            window.location.href = '{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}'
         });
         $enterPhoneCodeForm.submit(function(e) {
             e.preventDefault();
