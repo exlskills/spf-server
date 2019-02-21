@@ -283,7 +283,8 @@
       "code_failed_explanation": "Please make sure your code is correct and was sent within the last 5-minutes. Please try again",
       "successfully_authenticated": "Successfully authenticated",
       "successfully_authenticated_explanation": "Start a new course or pick-up where you left off!",
-      "check_profile_data_valid": "Ensure that the information provided is valid"
+      "check_profile_data_valid": "Ensure that the information provided is valid",
+      "skip_profile_update":  "Skip Profile Update"
     }
   }
 }
