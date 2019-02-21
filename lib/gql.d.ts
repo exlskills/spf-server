@@ -1103,7 +1103,7 @@ biography?: string | null;
 headline?: string | null;
 locales?: Array<string | null> | null;
 primary_locale: string;
-avatar_url: string;
+avatar_url?: string | null;
 }
 
 interface IUpdateUserProfilePayload {

@@ -1,0 +1,232 @@
+<!-- Modal: Callout looking for a job -->
+<div class="modal fade" id="modalAuthenticate" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-card card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Title -->
+                            <h4 class="card-header-title">
+                                {{intlGet "messages.authentication.auth_modal_title"}}&nbsp;🔒
+                            </h4>
+
+                        </div>
+                        <div class="col-auto">
+
+                            <!-- Close -->
+                            <button id="modal-authenticate-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                        </div>
+                    </div> <!-- / .row -->
+                </div>
+
+                <div class="card-body">
+                    <div>
+                        <form id="enter-phone-form">
+                            <div class="form-row">
+                                <div class="col-12 mb-3">
+                                    <input placeholder="{{intlGet "messages.authentication.phone_number_placeholder"}}" required type="tel" class="form-control" id="auth-modal-phone">
+                                </div>
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col">
+                                            <button id="phone-form-btn-submit" type="submit" class="btn btn-success w-100 text-center">{{intlGet "messages.authentication.submit_phone_number"}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <small class="text-secondary mt-2">
+                                {{intlGet "messages.authentication.submit_phone_number_note"}} <a id="other-logins-link" href="#!modalAuthenticate">Login with email or GitHub instead.</a>
+                            </small>
+                        </form>
+                        <form style="display: none;" id="enter-phone-code-form">
+                            <div class="form-row">
+                                <div class="col-12 mb-3">
+                                    <input id="phone-code-input" class="form-control" placeholder="{{intlGet "messages.authentication.code_placeholder"}}" minlength="5" maxlength="5" type="text" required>
+                                </div>
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col">
+                                            <button id="phone-code-form-btn-submit" type="submit" class="btn btn-success w-100 text-center">{{intlGet "messages.authentication.verify_code"}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-3">
+                                <small class="text-secondary">
+                                    <a id="phone-code-auth-back" href="#!modalAuthenticate">{{intlGet "messages.authentication.nav_back"}}</a> | <a id="phone-code-auth-resend" href="#!modalAuthenticate">{{intlGet "messages.authentication.resend_code"}}</a>
+                                </small>
+                            </div>
+                        </form>
+                        <form style="display: none;" id="phone-auth-update-profile-form">
+                            <div class="form-row">
+                                <div class="col-12 mb-3">
+                                    <input id="phone-auth-update-name-input" class="form-control" placeholder="{{intlGet "messages.authentication.update_full_name"}}" type="text" required>
+                                </div>
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col">
+                                            <button id="phone-auth-update-profile-form-btn-submit" type="submit" class="btn btn-success w-100 text-center">{{intlGet "messages.authentication.update_profile"}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-3">
+                                <small class="text-secondary">
+                                    <a id="phone-update-profile-skip" href="#">{{intlGet "messages.authentication.skip_profile_update"}}</a>
+                                </small>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        var $enterPhoneForm = $("#enter-phone-form");
+        var $enterPhoneCodeForm = $("#enter-phone-code-form");
+        var $phoneCodeAuthResendLink = $('#phone-code-auth-resend');
+        var $updateProfileForm = $('#phone-auth-update-profile-form');
+        var $closeButton = $('#modal-authenticate-close-button');
+        var $phoneCodeInput = $("#phone-code-input");
+        var $phoneAuthUpdateNameInput = $('#phone-auth-update-name-input');
+        var currentPhoneNumber = null;
+        var currentCountryIso2 = null;
+        $('#modalAuthenticate').on('shown.bs.modal', function (e) {
+            if (currentPhoneNumber) {
+                $phoneCodeInput.focus();
+            }
+        });
+        function requestTextCode(phoneNumber, countryIso2, onSuccess, onFailure) {
+            $.postJSON('{{{config.authAPIBaseURL}}}/auth/phone', {
+                phoneNumber: phoneNumber,
+                countryIso2: countryIso2
+            }, onSuccess, onFailure);
+        }
+        function verifyTextCode(code, onSuccess, onFailure) {
+            $.postJSON('{{{config.authAPIBaseURL}}}/auth/phone/code', {
+                code: code
+            }, onSuccess, onFailure);
+        }
+        function updateUserProfile(fullName, onSuccess, onFailure) {
+            // TODO non en locales?
+            updateUserProfileGQL('en', {
+                primary_locale: 'en',
+                full_name: fullName
+            }, function() {
+                // Refresh token
+                $.postJSON('{{{config.authAPIBaseURL}}}/auth/jwt-refresh', {}, onSuccess, onFailure);
+            }, function(e) {
+                onFailure(e)
+            });
+        }
+        function finishAuthAndReload() {
+            window.localStorage.setItem('toastOnLoad', JSON.stringify({intent: 'success', message: "{{intlGet "messages.authentication.successfully_authenticated_explanation"}}", title: "{{intlGet "messages.authentication.successfully_authenticated"}}"}));
+            if (window.location.hash.substr(20).length > 0) {
+                window.location.href = decodeURIComponent(window.location.hash.substr(20));
+            } else {
+                window.location.hash = '';
+            }
+            window.location.reload();
+        }
+        $enterPhoneForm.submit(function(e) {
+            e.preventDefault();
+            if (!_authModalTelInput.isValidNumber()) {
+                toastr.error("{{intlGet "messages.authentication.invalid_number_explanation"}}", "{{intlGet "messages.authentication.invalid_number"}}");
+                return;
+            }
+            currentPhoneNumber = _authModalTelInput.getNumber();
+            currentCountryIso2 = _authModalTelInput.getSelectedCountryData().iso2;
+            var $subBtn = $("#phone-form-btn-submit");
+            $subBtn.addClass('is-loading');
+            $subBtn.attr('disabled', 'disabled');
+            requestTextCode(currentPhoneNumber, currentCountryIso2, function() {
+                $subBtn.removeClass('is-loading');
+                $subBtn.attr('disabled', false);
+                toastr.success("{{intlGet "messages.authentication.code_sent_explanation"}}", "{{intlGet "messages.authentication.code_sent"}}");
+                $enterPhoneForm.hide();
+                $enterPhoneCodeForm.show();
+                $phoneCodeInput.focus();
+            }, function() {
+                $subBtn.removeClass('is-loading');
+                $subBtn.attr('disabled', false);
+                toastr.error("{{intlGet "messages.authentication.error_sending_code_explanation"}}", "{{intlGet "messages.authentication.error_sending_code"}}");
+            });
+            return false;
+        });
+        $('#phone-code-auth-back').click(function() {
+            currentPhoneNumber = null;
+            currentCountryIso2 = null;
+            $enterPhoneCodeForm.hide();
+            $enterPhoneForm.show();
+        });
+        $phoneCodeAuthResendLink.click(function() {
+            if (!currentPhoneNumber) {
+                return
+            }
+            $phoneCodeAuthResendLink.attr('disabled', true);
+            requestTextCode(currentPhoneNumber, currentCountryIso2, function() {
+                $phoneCodeAuthResendLink.attr('disabled', false);
+                toastr.success("{{intlGet "messages.authentication.code_sent_explanation"}}", "{{intlGet "messages.authentication.code_sent"}}");
+                $enterPhoneForm.hide();
+                $enterPhoneCodeForm.show();
+            }, function() {
+                $phoneCodeAuthResendLink.attr('disabled', false);
+                toastr.error("{{intlGet "messages.authentication.error_sending_code_explanation"}}", "{{intlGet "messages.authentication.error_sending_code"}}");
+            });
+        });
+        $("#other-logins-link").click(function(e) {
+            window.location.href = '{{config.authAPIBaseURL}}/auth/keycloak?redirect='+encodeURIComponent(window.location.host+window.location.pathname)
+        });
+        $enterPhoneCodeForm.submit(function(e) {
+            e.preventDefault();
+            var $subBtn = $("#phone-code-form-btn-submit");
+            $subBtn.addClass('is-loading');
+            $subBtn.attr('disabled', 'disabled');
+            verifyTextCode($phoneCodeInput.val(), function(resp) {
+                $subBtn.removeClass('is-loading');
+                $subBtn.attr('disabled', false);
+                if (resp && resp.promptFullName) {
+                    $enterPhoneCodeForm.hide();
+                    $updateProfileForm.show();
+                    $phoneAuthUpdateNameInput.focus();
+                    $closeButton.hide();
+                } else {
+                    finishAuthAndReload();
+                }
+            }, function() {
+                $subBtn.removeClass('is-loading');
+                $subBtn.attr('disabled', false);
+                toastr.error("{{intlGet "messages.authentication.code_failed_explanation"}}", "{{intlGet "messages.authentication.code_failed"}}");
+            });
+            return false;
+        });
+        $updateProfileForm.submit(function(e) {
+            e.preventDefault();
+            var $subBtn = $("#phone-auth-update-profile-form-btn-submit");
+            $subBtn.addClass('is-loading');
+            $subBtn.attr('disabled', 'disabled');
+            updateUserProfile($phoneAuthUpdateNameInput.val(), function(resp) {
+                $subBtn.removeClass('is-loading');
+                $subBtn.attr('disabled', false);
+                finishAuthAndReload();
+            }, function() {
+                $subBtn.removeClass('is-loading');
+                $subBtn.attr('disabled', false);
+                toastr.error("{{intlGet "messages.authentication.check_profile_data_valid"}}", "{{intlGet "messages.error.oops_something_wrong"}}");
+            });
+            return false;
+        });
+        $("#phone-update-profile-skip").click(function(e) {
+            // Allow continuing without updating profile
+            finishAuthAndReload()
+        });
+    });
+</script>
