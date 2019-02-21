@@ -19,15 +19,15 @@ export async function viewMarketingIndex(client: GqlApi, user: IUserData, locale
             marketing: [
                 { title: "100% Free Courses",
                     subtitle: "All of our courses are completely free and community-maintained!",
-                    image: "https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/site-assets/_index/ico-color-opensource.svg"
+                    image: "https://cdn-mktg.exlskills.com/site-assets/_index/ico-color-opensource.svg"
                 },
                 { title: "Live Help & Feedback",
                     subtitle: "Learn by doing and get on-demand instruction via chat and video!",
-                    image: "https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/site-assets/_index/ico-color-guided.svg"
+                    image: "https://cdn-mktg.exlskills.com/site-assets/_index/ico-color-guided.svg"
                 },
                 { title: "Recognized Certifications",
                     subtitle: "Our unique guided projects and certifications get you noticed by employers!",
-                    image: "https://s3-us-west-2.amazonaws.com/exlskills-mktg-assets/site-assets/_index/ico-color-validated.svg"
+                    image: "https://cdn-mktg.exlskills.com/site-assets/_index/ico-color-validated.svg"
                 },
             ]
         }
