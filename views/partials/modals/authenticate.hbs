@@ -77,7 +77,7 @@
                             </div>
                             <div class="text-center mt-3">
                                 <small class="text-secondary">
-                                    <a id="phone-update-profile-skip" href="#!modalAuthenticate">{{intlGet "messages.authentication.skip_profile_update"}}</a>
+                                    <a id="phone-update-profile-skip" href="#">{{intlGet "messages.authentication.skip_profile_update"}}</a>
                                 </small>
                             </div>
                         </form>
@@ -102,8 +102,6 @@
         $('#modalAuthenticate').on('shown.bs.modal', function (e) {
             if (currentPhoneNumber) {
                 $phoneCodeInput.focus();
-            } else {
-
             }
         });
         function requestTextCode(phoneNumber, countryIso2, onSuccess, onFailure) {
@@ -152,7 +150,7 @@
             requestTextCode(currentPhoneNumber, currentCountryIso2, function() {
                 $subBtn.removeClass('is-loading');
                 $subBtn.attr('disabled', false);
-                toastr.success("{{intlGet "messages.authentication.code_sent"}}", "{{intlGet "messages.authentication.code_sent_explanation"}}");
+                toastr.success("{{intlGet "messages.authentication.code_sent_explanation"}}", "{{intlGet "messages.authentication.code_sent"}}");
                 $enterPhoneForm.hide();
                 $enterPhoneCodeForm.show();
                 $phoneCodeInput.focus();
