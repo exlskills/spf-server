@@ -261,6 +261,30 @@
             "subscribe_label": "Suscribir",
             "thank_you_for_subscr_line": "Gracias por suscribirse para recibir noticias y actualizaciones de EXLskills :)",
             "make_sure_valid_email": "Por favor, asegúrese de haber introducido una dirección de correo electrónico válida"
+        },
+        "authentication": {
+            "auth_modal_title": "Login/Sign Up",
+            "submit_phone_number": "Send Code",
+            "phone_number_placeholder": "Enter your mobile number",
+            "submit_phone_number_note": "You'll receive a one-time code via SMS to login or sign up.",
+            "nav_back": "Back",
+            "resend_code": "Resend Code",
+            "code_placeholder": "Enter the code you receive",
+            "verify_code": "Verify Code",
+            "invalid_number": "Invalid phone number",
+            "invalid_number_explanation": "Please make sure you enter a valid phone number",
+            "code_sent": "Secure code sent",
+            "code_sent_explanation": "You should recieve your code via SMS shortly",
+            "error_sending_code": "Error sending code",
+            "error_sending_code_explanation": "Please ensure you provided a valid phone number. If this issue persists please contact support",
+            "update_full_name": "Enter your name",
+            "update_profile": "Update Profile",
+            "code_failed": "Code invalid",
+            "code_failed_explanation": "Please make sure your code is correct and was sent within the last 5-minutes. Please try again",
+            "successfully_authenticated": "Successfully authenticated",
+            "successfully_authenticated_explanation": "Start a new course or pick-up where you left off!",
+            "check_profile_data_valid": "Ensure that the information provided is valid",
+            "skip_profile_update":  "Skip Profile Update"
         }
     }
 }

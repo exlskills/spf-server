@@ -29,7 +29,7 @@
         </div>
     {{else}}
         {{#if data.course.nextStep.learn}}
-            <a style="display: block;" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nextStep.learn.unit.url_id}}/{{data.course.nextStep.learn.section.url_id}}/{{data.course.nextStep.learn.card.url_id}}" class="spf-link btn btn-primary w-100 mb-4 d-md-none">{{intlGet "messages.course.resume_learning"}}</a>
+            <a style="display: block;margin-bottom: 3.0rem;" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/{{data.course.nextStep.learn.unit.url_id}}/{{data.course.nextStep.learn.section.url_id}}/{{data.course.nextStep.learn.card.url_id}}" class="spf-link btn btn-primary w-100 d-md-none">{{intlGet "messages.course.resume_learning"}}</a>
         {{else}}
             {{#if data.course.nextStep.exam}}
                 <!-- TODO take exam -->

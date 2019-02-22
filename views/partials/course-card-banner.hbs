@@ -12,7 +12,7 @@
 </style>
 {{#if user.is_demo}}
     <div class="alert alert-warning cc-alert-banner" role="alert">
-        {{intlGet "messages.course.dont_lose_progress"}} <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">{{intlGet "messages.marketing.sign_up_label_lc_up"}}</a> {{intlGet "messages.marketing.for_free_or"}} <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">{{intlGet "messages.misc.login_label"}}</a> {{intlGet "messages.course.to_keep_track"}} 📈 🎓
+        {{intlGet "messages.course.dont_lose_progress"}} <a href="#!modalAuthenticate">{{intlGet "messages.marketing.sign_up_label_lc_up"}}</a> {{intlGet "messages.marketing.for_free_or"}} <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}">{{intlGet "messages.misc.login_label"}}</a> {{intlGet "messages.course.to_keep_track"}} 📈 🎓
     </div>
 {{else}}
     <div class="alert alert-success cc-alert-banner" role="alert">

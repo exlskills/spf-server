@@ -1,12 +1,22 @@
-<nav class="navbar navbar-expand-md navbar-light d-none d-md-flex">
-    <div class="container-fluid">
+<nav id="topbar" class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+
+        <!-- Toggler -->
+        <button class="navbar-toggler mr-auto" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
         <!-- Brand -->
-        <div id="topbar-title" class="navbar-brand mr-auto">
-            {{meta.title}}
-        </div>
+        <a class="navbar-brand mr-auto spf-link" href="/learn-{{route.locale}}/dashboard">
+            <img src="/learn-en/assets/img/logo-exlskills.svg" alt="EXLskills" class="navbar-brand-img">
+        </a>
 
         <style>
+            @media (max-width: 991px) {
+                .topbar-coins-manager {
+                    display: none !important;
+                }
+            }
             .topbar-coins-manager {
                 position: relative;
                 display: flex;
@@ -55,34 +65,77 @@
             </div>
         </div>
 
-        <!-- User -->
+
+        <!-- User (xs) -->
         <div class="navbar-user">
             {{#if user.is_demo}}
-                <a href="{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}" class="btn btn-success">{{intlGet "messages.misc.login_label"}} / {{intlGet "messages.marketing.sign_up_label"}}</a>
+                <a href="#!modalAuthenticate" class="btn btn-success">{{intlGet "messages.misc.login_label"}} / {{intlGet "messages.marketing.sign_up_label"}}</a>
             {{else}}
                 <!-- Dropdown -->
                 <div class="dropdown">
 
                     <!-- Toggle -->
-                    <a href="#" class="avatar avatar-sm avatar-online dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{user.avatar_url}}" alt="..." class="avatar-img rounded-circle">
+                    <a href="#!" id="sidebarIcon" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="avatar avatar-sm avatar-online">
+                            <img src="{{user.avatar_url}}" class="avatar-img rounded-circle" alt="...">
+                        </div>
                     </a>
 
                     <!-- Menu -->
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a target="_blank" rel="noopener" href="{{{config.accountsURL}}}" class="dropdown-item">{{intlGet "messages.instructors.profile_label"}}</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sidebarIcon">
+                        <!-- TODO bring back profile once we have one internally (w/o keycloak) -->
+                        <!--<a href="{{{config.accountsURL}}}" class="dropdown-item">{{intlGet "messages.instructors.profile_label"}}</a>-->
                         <!-- TODO <a href="settings.html" class="dropdown-item">{{intlGet "messages.config.settings_label"}}</a>-->
-                        <hr class="dropdown-divider">
+                        <!--<hr class="dropdown-divider">-->
                         <a href="#!" class="dropdown-item user-logout-btn">{{intlGet "messages.misc.logout_label"}}</a>
                     </div>
 
                 </div>
             {{/if}}
+        </div>
+
+        <!-- Collapse -->
+        <div id="navbar" class="collapse navbar-collapse mr-auto order-lg-first">
+
+            <!-- Navigation -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link spf-link {{#eq contentTmpl "dashboard"}}active{{/eq}}" href="/learn-{{route.locale}}/dashboard">
+                        <i class="fe fe-home"></i> {{intlGet "messages.dashboard.label"}}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link spf-link {{#eq contentTmpl "courses"}}active{{/eq}}" href="/learn-{{route.locale}}/courses">
+                        <i class="fe fe-zap"></i> {{intlGet "messages.course.open_courses_label"}}
+                    </a>
+                </li>
+                <!--<li class="nav-item">-->
+                <!--<a class="nav-link spf-link {{#eq contentTmpl "digital_diplomas"}}active{{/eq}}" href="/learn-{{route.locale}}/digital-diplomas">-->
+                <!--<i class="fe fe-star"></i> {{intlGet "messages.digital_diplomas.label"}}-->
+                <!--</a>-->
+                <!--</li>-->
+                <li class="nav-item">
+                    <a class="nav-link spf-link {{#eq contentTmpl "projects"}}active{{/eq}}" href="/learn-{{route.locale}}/projects">
+                        <i class="fe fe-package"></i> {{intlGet "messages.guided_projects.label"}}
+                    </a>
+                </li>
+                <!--<li class="nav-item">-->
+                <!--<a class="nav-link spf-link {{#eq contentTmpl "instructors"}}active{{/eq}}" href="/learn-{{route.locale}}/instructors">-->
+                <!--<i class="fe fe-users"></i> {{intlGet "messages.instructors.live_label"}}-->
+                <!--</a>-->
+                <!--</li>-->
+                <li class="nav-item d-lg-none">
+                    <a onclick="$('#navbar').removeClass('show');" class="nav-link" href="#!modalManageCoins">
+                        <span class="fe fe-box"></span> ${{user.coins}} {{intlGet "messages.coins.label"}}
+                    </a>
+                </li>
+            </ul>
 
         </div>
 
-    </div> <!-- / .container-fluid -->
+    </div> <!-- / .container -->
 </nav>
+
 <script>
     $(function() {
         $('.topbar-coins-manager input').focus(function(e) {
