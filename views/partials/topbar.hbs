@@ -7,7 +7,7 @@
         </button>
 
         <!-- Brand -->
-        <a class="navbar-brand mr-auto spf-link" href="/learn-{{route.locale}}/dashboard">
+        <a class="navbar-brand mr-auto spf-link d-lg-none" href="/learn-{{route.locale}}/dashboard">
             <img src="/learn-en/assets/img/logo-exlskills.svg" alt="EXLskills" class="navbar-brand-img">
         </a>
 
@@ -99,6 +99,9 @@
 
             <!-- Navigation -->
             <ul class="navbar-nav mr-auto">
+                <a style="display: none;width: 160px;" class="navbar-brand m-auto spf-link d-lg-block" href="/learn-{{route.locale}}/dashboard">
+                    <img style="padding-right: 18px;margin-top: -2px;max-height: none;" src="/learn-en/assets/img/logo-exlskills.svg" alt="EXLskills">
+                </a>
                 <li class="nav-item">
                     <a class="nav-link spf-link {{#eq contentTmpl "dashboard"}}active{{/eq}}" href="/learn-{{route.locale}}/dashboard">
                         <i class="fe fe-home"></i> {{intlGet "messages.dashboard.label"}}
