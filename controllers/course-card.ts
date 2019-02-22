@@ -188,6 +188,35 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
     const curSectIdx = gqlResp.nav.currentUnit.sections_list.findIndex(s => s.id === sectionGID);
     gqlResp.nav.currentSection = gqlResp.nav.currentUnit.sections_list[curSectIdx];
     const curCardIdx = gqlResp.nav.currentSection.cards_list.findIndex(c => c.id == cardGID);
+    gqlResp.nav.pages = {
+        all: [] as {title: string, path: string}[],
+        currentIndex: 0
+    };
+    let curPagesIdx = -1;
+    for (let uIdx = 0; uIdx < gqlResp.units.length; uIdx++) {
+        for (let sIdx = 0; sIdx < gqlResp.units[uIdx].sections_list.length; sIdx++) {
+            for (let cIdx = 0; cIdx < gqlResp.units[uIdx].sections_list[sIdx].cards_list.length; cIdx++) {
+                curPagesIdx++;
+                const page = {
+                    title: gqlResp.units[uIdx].sections_list[sIdx].cards_list[cIdx].title,
+                    path: `/learn-${locale}/courses/${gqlResp.meta.url_id}/${gqlResp.units[uIdx].url_id}/${gqlResp.units[uIdx].sections_list[sIdx].url_id}/${gqlResp.units[uIdx].sections_list[sIdx].cards_list[cIdx].url_id}`
+                };
+
+                if (uIdx != curUnitIdx) {
+                    gqlResp.nav.pages.all.push(page);
+                } else {
+                    if (sIdx != curSectIdx) {
+                        gqlResp.nav.pages.all.push(page);
+                    } else {
+                        gqlResp.nav.pages.all.push(page);
+                        if (cIdx == curCardIdx) {
+                            gqlResp.nav.pages.currentIndex = curPagesIdx;
+                        }
+                    }
+                }
+            }
+        }
+    }
     // Setup the card navigation
     gqlResp.nav.nextUnit = gqlResp.nav.currentUnit;
     gqlResp.nav.prevUnit = gqlResp.nav.currentUnit;
@@ -250,7 +279,8 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
             jsonld: !!gqlResp.card.updated_at ? generateArticle(`${gqlResp.card.title} | ${gqlResp.meta.title}`, undefined, gqlResp.meta.logo_url, gqlResp.card.updated_at, PlatformOrganization) : undefined
         },
         data: {
-            course: gqlResp
+            course: gqlResp,
+            infiniteScrollRequest: !!req.query.infiniteScroll
         }
     }
 }

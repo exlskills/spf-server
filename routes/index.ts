@@ -48,6 +48,7 @@ const registerPartialHBS = (name: string) => {
 };
 
 registerPartialHBS('course-top');
+registerPartialHBS('course-card-inner');
 registerPartialHBS('digital-diploma-top');
 registerPartialHBS('quiz-question');
 registerPartialHBS('course-card-pagination');

@@ -1,132 +1,91 @@
-<style>
-    .course-card-body pre code {
-        border-radius: 5px;
-        padding: 1.5rem;
-    }
-    .course-card-body iframe {
-        border: none;
-        margin-top: 24px;
-        margin-bottom: 20px;
-        background: #000
-        url(https://cdn-misc-assets.exlskills.com/iframe-loading.gif)
-        center center no-repeat;
-    }
-    .course-card-body label {
-        width: 100%;
-    }
-    #course-content-card-wrapper .card-bottom-nav {
-        margin: auto;
-        padding-bottom: 8px;
-    }
-    @media (max-width: 768px) {
-        /* Add margin when mobile to avoid conflict with the intercom overlay */
-        #course-content-card-wrapper .card-bottom-nav {
-            padding-bottom: 72px;
+{{#if data.infiniteScrollRequest}}
+    {{> course-card-inner}}
+{{else}}
+    <style>
+        .course-card-body pre code {
+            border-radius: 5px;
+            padding: 1.5rem;
         }
-    }
-</style>
-
-{{>course-card-banner}}
-
-<!-- CONTENT -->
-<div id="course-content-card-wrapper" class="container-fluid">
-    <div class="row align-items-center">
-        <!-- Title -->
-        <div class="col">
-            <h4 class="">
-                {{data.course.nav.currentSection.title}}
-            </h4>
-        </div>
-        <div class="col-auto">
-            {{> course-card-pagination}}
-        </div>
+        .course-card-body iframe {
+            border: none;
+            margin-top: 24px;
+            margin-bottom: 20px;
+            background: #000
+            url(https://cdn-misc-assets.exlskills.com/iframe-loading.gif)
+            center center no-repeat;
+        }
+        .course-card-body label {
+            width: 100%;
+        }
+        #course-content-card-wrapper .card-bottom-nav {
+            margin: auto;
+            padding-bottom: 8px;
+        }
+        @media (max-width: 768px) {
+            /* Add margin when mobile to avoid conflict with the intercom overlay */
+            #course-content-card-wrapper .card-bottom-nav {
+                padding-bottom: 72px;
+            }
+        }
+    </style>
+    <!-- CONTENT -->
+    <div id="course-content-card-wrapper" class="container-fluid">
+        {{> course-card-inner}}
     </div>
-    <div class="card">
-        <div class="card-header">
-            <div class="row align-items-center">
-                <div class="col" style="margin: 8px 0;">
-                    <!-- Title -->
-                    <h1 class="card-header-title">
-                        {{data.course.card.title}}
-                    </h1>
-                </div>
-                <div class="col-auto" style="margin: 8px 0;">
-                    <a class="drift-open-chat btn btn-sm btn-info" href="#!"> 🙋 {{intlGet "messages.help.need_ask"}}</a>
-                    <script>
-                        // TODO Setup template in Drift similar to Intercom
-                        // $(function() {
-                        //     $('#cc-live-chat-help').click(function() {
-                        //         Intercom('showNewMessage', '🙋‍ Hi there, can you help with me with the ' + '{{{data.course.meta.title}}}' + ' Course?\n\nI\'m on the ' + '{{{data.course.card.title}}}' + ' part (' + '{{{route.canonicalUrl}}}' + ') and would really appreciate your time helping me!\n\nPlease type your question here and then send your message ⚡')
-                        //     });
-                        // });
-                    </script>
-                </div>
-            </div>
-        </div>
-        <div class="card-body course-card-body">
-            <article>
-                {{{data.course.card.content.content}}}
-            </article>
-            {{#if data.course.card.github_edit_url}}
-                <a class="btn btn-sm btn-secondary float-right" target="_blank" rel="noopener" href="{{{data.course.card.github_edit_url}}}"><span class="fe fe-github"></span> Edit Me on GitHub!</a>
-            {{/if}}
-        </div>
-    </div>
-    {{#if data.course.card.question}}
-    <div class="card">
-        <div class="card-header">
-            <!-- Title -->
-            <h4 class="card-header-title">
-                {{intlGet "messages.question.app_question_label"}}
-            </h4>
-        </div>
-        <div class="card-body course-card-body">
-            {{> quiz-question data.course.card.question}}
-        </div>
-    </div>
-    {{/if}}
-    <div class="row align-items-center">
-        <div class="col-auto card-bottom-nav">
-            {{> course-card-pagination}}
-        </div>
-    </div>
-</div>
 
-<script>
-    $(function() {
+    <script>
+        $(function() {
+            var $courseContentWrapper = $("#course-content-card-wrapper");
+            function appendTemplate(jsonre, pageNumber) {
+                //instead of this code you can use a templating plugin like "Mustache"
+                for(var i =0; i<jsonre.length; i++){
+                    $courseContentWrapper.append("<div class='item'><h2>"+jsonre[i].name+"</h2><p>"+jsonre[i].body+"</p></div>");
+                }
 
-        var setCardInteractionGQL = function(action, onSuccess, onError) {
-            var m = `mutation setCardInteractionMutation(
-                    $input: SetCardInteractionInput!
-                ) {
-                setCardInteraction(input: $input) {
-                    completionObj {
-                        code
-                        msg
-                        processed
-                        modified
+                if (jsonre.length) {
+                    $courseContentWrapper.attr("data-page", parseInt(pageNumber)+1);
+                    $(window).on("scroll", initScroll);
+
+                    //scroll event will not trigger if window size is greater than or equal to document size
+                    var dh = $(document).height() , wh = $(window).height();
+                    if(wh>=dh){
+                        initScroll();
+                    }
+                }  else {
+                    $courseContentWrapper.attr("data-page", "");
+                }
+            }
+
+            function initScroll() {
+                var t = $courseContentWrapper.offset().top;
+                var h = $courseContentWrapper.height();
+                var ws = $(window).scrollTop();
+                var dh = $(document).height();
+                var wh = $(window).height();
+
+                if (dh - (wh + ws) < dh - (h + t)) {
+                    $(window).off('scroll');
+                    var p = $courseContentWrapper.attr("data-page");
+                    if (p) {
+                        $.getJSON("https://jsonplaceholder.typicode.com/comments", { _page: p, _limit:3 }, function (jsonre) {
+                            appendTemplate(jsonre, p);
+                        });
                     }
                 }
             }
-            `;
-            var inputData = {
-                clientMutationId: uuidv4(),
-                course_id: "{{{data.course.meta.id}}}",
-                unit_id: "{{{data.course.nav.currentUnit.id}}}",
-                section_id: "{{{data.course.nav.currentSection.id}}}",
-                card_id: "{{{data.course.card.id}}}",
-                interaction: action
-            };
-            $.postJSON(gqlEndpoint, {
-                query: m,
-                variables: {
-                    input: inputData
-                }
-            }, onSuccess, onError);
-        };
 
-        setCardInteractionGQL("view", null, function() {
-            console.log("Error posting card interaction")
+            $.getJSON("https://jsonplaceholder.typicode.com/comments", { _page: 1, _limit:3 }, function (jsonre) {
+                appendTemplate(jsonre,1);
+            });
+
+            var loadingMorePrevious = false;
+            window.onwheel = function(evt) {
+                if (!loadingMorePrevious && $(window).scrollTop() === 0 && evt.deltaY < -1) {
+                    loadingMorePrevious = true;
+                    console.log("PREPEND CONTENTTTT")
+                }
+            }
         });
-    });
-</script>
+
+    </script>
+{{/if}}
