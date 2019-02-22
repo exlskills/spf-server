@@ -355,24 +355,41 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
                     data: {intl: intlData}
                 });
 
-                fs.readFile(path.join(config.viewsRoot, result.contentTmpl + '.hbs'), {encoding: 'utf8'}, (err, data) => {
-                    logger.debug('using template ' + result.contentTmpl);
+                fs.readFile(path.join(config.viewsRoot, config.spfResponse.topbar), {encoding: 'utf8'}, (err, data) => {
                     if (err) {
                         return res.status(500) && next(err);
                     }
-                    const contentHTML = handlebars.compile(data)(result, {
+
+                    const topbarHTML = handlebars.compile(data)(result, {
                         data: {intl: intlData}
                     });
-                    res.setHeader('Content-Type', 'application/json');
-                    res.send(JSON.stringify({
-                        title: result.meta.fullTitle,
-                        url: req.path,
-                        body: {
-                            sidebar: sidebarHTML,
-                            content: contentHTML,
-                            'topbar-title': result.meta.topbarTitle ? result.meta.topbarTitle : result.meta.title
+
+                    fs.readFile(path.join(config.viewsRoot, result.contentTmpl + '.hbs'), {encoding: 'utf8'}, (err, data) => {
+                        logger.debug('using template ' + result.contentTmpl);
+                        if (err) {
+                            return res.status(500) && next(err);
                         }
-                    }));
+                        const contentHTML = handlebars.compile(data)(result, {
+                            data: {intl: intlData}
+                        });
+                        res.setHeader('Content-Type', 'application/json');
+                        res.send(JSON.stringify({
+                            title: result.meta.fullTitle,
+                            url: req.path,
+                            body: {
+                                sidebar: sidebarHTML,
+                                'topbar-wrapper': topbarHTML,
+                                content: contentHTML,
+                                'topbar-title': result.meta.topbarTitle ? result.meta.topbarTitle : result.meta.title
+                            },
+                            attr: {
+                                'main-page-wrapper': {
+                                    'class': result.data.course ? 'exl-show-sidebar' : 'exl-hide-sidebar'
+                                }
+                            }
+                        }));
+                    });
+
                 });
             });
         } else {

@@ -27,5 +27,43 @@
     .intl-tel-input { width: 100%; }
 </style>
 
+<style>
+    #page-body #topbar-wrapper {
+        height: 65px;
+    }
+    #page-body #topbar {
+        z-index: 9999;
+        position: fixed;
+        width: 100%;
+    }
+    @media (max-width: 768px) {
+        #main-page-wrapper #sidebar {
+            display: none;
+        }
+    }
+    @media (min-width: 768px) {
+        #main-page-wrapper #sidebar {
+            margin-top: 65px;
+        }
+    }
+    #main-page-wrapper.exl-hide-sidebar #sidebar {
+        display: none;
+    }
+    #main-page-wrapper.exl-hide-sidebar .main-content {
+        margin-left: 0 !important;
+    }
+    /*#page-body #topbar {*/
+        /*position: fixed;*/
+        /*width: 100%;*/
+    /*}*/
+    /*@media (min-width: 768px) {*/
+        /*#page-body #topbar {*/
+            /*position: fixed;*/
+            /*width: 100%;*/
+            /*z-index: 90;*/
+        /*}*/
+    /*}*/
+</style>
+
 <link rel="stylesheet" href="/learn-en/assets/libs/intl-tel-input/v15.0.0/css/intlTelInput.css">
 <link rel="stylesheet" href="/learn-en/assets/css/custom.css">
