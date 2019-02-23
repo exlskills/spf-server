@@ -9,6 +9,7 @@ import {indexToLetter} from "../lib/ordered-lists";
 import {fromGlobalId} from "../utils/gql-ids";
 import {generateCourse, PlatformOrganization} from "../lib/jsonld";
 import {prepareCourseCardForView} from "./course-card";
+import {uuidv4} from "../utils/uuid";
 
 export const courseOverviewFaqMDGen = (course: any) => `
 ### Is this course FREE?
@@ -190,6 +191,7 @@ export async function viewCourseOverview(client: GqlApi, user: IUserData, locale
         data: {
             course: gqlResp,
             displayOverview: true,
+            initialLoadUUID: uuidv4(),
             courseOverviewFaqMD: courseOverviewFaqMDGen(gqlResp)
         }
     }

@@ -288,6 +288,7 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
         },
         data: {
             course: gqlResp,
+            initialLoadUUID: uuidv4(),
             displayOverview: false,
             infiniteScrollRequest: !!req.query.infiniteScroll,
             courseOverviewFaqMD: courseOverviewFaqMDGen(gqlResp)
