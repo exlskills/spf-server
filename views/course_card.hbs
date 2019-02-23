@@ -27,32 +27,198 @@
                 padding-bottom: 72px;
             }
         }
+        .user-logos-container {
+            text-align: center;
+            padding: 0 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .user-logos-container h3 {
+            margin-top: 30px;
+        }
+
+        .user-logos-container img {
+            width: 100%;
+        }
+
+        #user-logos-mobile {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width:679px) {
+            #user-logos-desktop {
+                display: none;
+            }
+        }
+
+        @media (min-width:680px) {
+            #user-logos-mobile {
+                display: none;
+            }
+        }
     </style>
     <!-- CONTENT -->
-    <div id="course-content-card-wrapper" class="container-fluid">
-        {{> course-card-inner}}
+    <div class="container-fluid">
+        <div id="course-overview-wrapper" style="{{#not data.displayOverview}}display: none;{{/not}}">
+            <div class="row align-items-center">
+                <!-- Title -->
+                <div class="col">
+                    <h1 style="font-size: 1.4em;">
+                        {{data.course.meta.title}} {{intlGet "messages.course.label"}}
+                    </h1>
+                </div>
+                <div class="col-auto">
+                    <nav aria-label="course-card-pagination">
+                        <ul class="pagination">
+                            {{>course-overview-pagination}}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="card">
+                <!--<div class="card-header">-->
+                <!--&lt;!&ndash; Title &ndash;&gt;-->
+                <!--<h1 class="card-header-title">-->
+                <!--{{data.course.meta.title}} - Overview-->
+                <!--</h1>-->
+                <!--</div>-->
+                <div class="card-body course-card-body">
+                    <article>
+                        <div class="user-logos-container">
+                            <h2>{{intlGet "messages.marketing.engineers_trust"}}</h2>
+                            <h3>{{intlGet "messages.marketing.mil_prof_hundrs_inst"}}</h3>
+                            <img id="user-logos-desktop" src="https://cdn-mktg.exlskills.com/exlskills-user-logos-desktop.png">
+                            <img id="user-logos-mobile" src="https://cdn-mktg.exlskills.com/exlskills-user-logos-mobile.png">
+                            <br />
+                        </div>
+                        <hr />
+                        {{{markdown data.course.meta.description}}}
+
+                        <!-- NOTE: Hiding bookings here until find a solution to make them less intrusive -->
+                        <!--{{> course-booking course=data.course config=config user=user}}-->
+
+                        {{{markdown data.courseOverviewFaqMD}}}
+
+                        <h3>{{intlGet "messages.help.have_more_qs"}}</h3>
+                        {{intlGet "messages.help.reach_via"}} <a class="drift-open-chat" href="#!">{{intlGet "messages.help.live_chat_here"}}</a>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div id="course-content-card-wrapper">
+            {{> course-card-inner}}
+        </div>
     </div>
+
+    {{#if data.displayOverview}}
+
+    {{/if}}
+
+    <script id="course-pages-json" type="application/json">{{{JSONstringify data.course.nav.pages}}}</script>
 
     <script>
         $(function() {
+            var coursePages = JSON.parse($('#course-pages-json').html());
+            var loadedIndices = [coursePages.currentIndex];
+            var startingPageIdx = coursePages.currentIndex;
+            var topPageIdx = coursePages.currentIndex;
+            var bottomPageIdx = coursePages.currentIndex;
+            var currentPageIdx = coursePages.currentIndex;
+            var currentlyLoadingPrepend = false;
+            var currentlyLoadingAppend = false;
+            var courseOverviewPageTitle = "{{data.course.meta.title}}";
             var $courseContentWrapper = $("#course-content-card-wrapper");
-            function appendTemplate(jsonre, pageNumber) {
-                //instead of this code you can use a templating plugin like "Mustache"
-                for(var i =0; i<jsonre.length; i++){
-                    $courseContentWrapper.append("<div class='item'><h2>"+jsonre[i].name+"</h2><p>"+jsonre[i].body+"</p></div>");
+            function processCardNavigation(viaScroll, isPrepend, pageData, cardIndex) {
+                if (isPrepend) {
+                    $courseContentWrapper.prepend(pageData.body.content);
+                } else{
+                    $courseContentWrapper.append(pageData.body.content);
                 }
 
-                if (jsonre.length) {
-                    $courseContentWrapper.attr("data-page", parseInt(pageNumber)+1);
-                    $(window).on("scroll", initScroll);
+                $('#sidebar').html(pageData.body.sidebar);
+                $('#topbar-title').html(pageData.body['topbar-title']);
+                $('#topbar-wrapper').html(pageData.body['topbar-wrapper']);
+                history.pushState({}, pageData.title, pageData.url);
+                if (cardIndex < topPageIdx) {
+                    topPageIdx = cardIndex
+                } else if (cardIndex > bottomPageIdx) {
+                    bottomPageIdx = cardIndex
+                }
+                loadedIndices.push(cardIndex);
 
+                if (bottomPageIdx < coursePages.all.length) {
+                    $(window).on("scroll", initScroll);
                     //scroll event will not trigger if window size is greater than or equal to document size
                     var dh = $(document).height() , wh = $(window).height();
                     if(wh>=dh){
                         initScroll();
                     }
-                }  else {
-                    $courseContentWrapper.attr("data-page", "");
+                }
+
+                if (topPageIdx > -1) {
+                    window.onwheel = onwheelHandler;
+                }
+            }
+
+            function attemptLoadCard(viaScroll, isPrepend) {
+                if (isPrepend) {
+                    if (currentlyLoadingPrepend) {
+                        return;
+                    } else {
+                        currentlyLoadingPrepend = true;
+                    }
+                } else {
+                    if (currentlyLoadingAppend) {
+                        return;
+                    } else {
+                        currentlyLoadingAppend = true;
+                    }
+                }
+
+                var idxToLoad = bottomPageIdx+1;
+                if (isPrepend) {
+                    idxToLoad = topPageIdx-1;
+                }
+
+                console.log('isPrepend ' + isPrepend);
+                console.log('idxToLoad ' + idxToLoad);
+
+                if (idxToLoad > -1 && idxToLoad < coursePages.all.length) {
+                    var alreadyLoaded = false;
+                    for (var i = 0; i < loadedIndices.length; i++) {
+                        if (idxToLoad === loadedIndices[i]) {
+                            alreadyLoaded = true;
+                            break;
+                        }
+                    }
+                    if (!alreadyLoaded) {
+                        $.getJSON(coursePages.all[idxToLoad].path+'?spf=navigate&infiniteScroll=true', null, function (data) {
+                            processCardNavigation(viaScroll, isPrepend, data, idxToLoad);
+                        });
+                    } else {
+                        window.onwheel = onwheelHandler;
+                        $(window).on("scroll", initScroll);
+                    }
+                } else if (idxToLoad === -1) {
+                    console.log("LKJSDFKLJLKSDFJKLSDJFLKJSDKLFJKLSDJFLKJSDKLFJKLSDJFKLDj")
+                    $('#course-overview-wrapper').show();
+                    topPageIdx = idxToLoad;
+                    loadedIndices.push(idxToLoad);
+                } else if (idxToLoad === coursePages.all.length) {
+                    bottomPageIdx = idxToLoad;
+                    loadedIndices.push(idxToLoad);
+                    // TODO show the completion hooray message/card!
+                    if (viaScroll && isPrepend) {
+                        window.onwheel = onwheelHandler;
+                    }
+                }
+
+                if (isPrepend) {
+                    currentlyLoadingPrepend = false;
+                } else {
+                    currentlyLoadingAppend = false;
                 }
             }
 
@@ -65,26 +231,20 @@
 
                 if (dh - (wh + ws) < dh - (h + t)) {
                     $(window).off('scroll');
-                    var p = $courseContentWrapper.attr("data-page");
-                    if (p) {
-                        $.getJSON("https://jsonplaceholder.typicode.com/comments", { _page: p, _limit:3 }, function (jsonre) {
-                            appendTemplate(jsonre, p);
-                        });
-                    }
+                    attemptLoadCard(true, false);
                 }
             }
 
-            $.getJSON("https://jsonplaceholder.typicode.com/comments", { _page: 1, _limit:3 }, function (jsonre) {
-                appendTemplate(jsonre,1);
-            });
-
-            var loadingMorePrevious = false;
-            window.onwheel = function(evt) {
-                if (!loadingMorePrevious && $(window).scrollTop() === 0 && evt.deltaY < -1) {
-                    loadingMorePrevious = true;
-                    console.log("PREPEND CONTENTTTT")
+            function onwheelHandler(evt) {
+                if ($(window).scrollTop() === 0 && evt.deltaY < -1) {
+                    window.onwheel = undefined;
+                    attemptLoadCard(true, true);
                 }
             }
+
+            window.onwheel = onwheelHandler;
+
+            attemptLoadCard(false, false);
         });
 
     </script>
