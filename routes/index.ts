@@ -35,6 +35,7 @@ import {mobileViewCourseCard} from "../controllers/mobile-course-card";
 import {viewMarketingIndex} from "../controllers/marketing-index";
 import {dataIntl} from "../i18n"
 import {genAltUrls} from "../i18n/utils";
+import {getObjectFromCache} from "../utils/custom-cache-handler";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -43,6 +44,7 @@ HandlebarsHelpers({
     handlebars: handlebars
 });
 
+// This runs once - at startup
 const registerPartialHBS = (name: string) => {
     handlebars.registerPartial(name, fs.readFileSync(path.join(__dirname, `../views/partials/${name}.hbs`), {encoding: 'utf-8'}));
 };
@@ -347,6 +349,10 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             result.layout = 'mobile';
             return res.render(result.contentTmpl, result);
         } else if (req.query['spf'] === 'navigate') {
+
+            // WIP
+            const dataHbs = getObjectFromCache('sidebar', path.join(config.viewsRoot, config.spfResponse.sidebar),"");
+
             fs.readFile(path.join(config.viewsRoot, config.spfResponse.sidebar), {encoding: 'utf8'}, (err, data) => {
                 if (err) {
                     return res.status(500) && next(err);
