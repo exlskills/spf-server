@@ -26,3 +26,5 @@ WEB_TIMEKIT_PK=set_me
 
 # The default locale must be listed first
 # ACTIVE_LOCALES=en,hi,es,ru,zh
+
+ACTIVATE_TEST_MODE=false
