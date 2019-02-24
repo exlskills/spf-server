@@ -28,7 +28,7 @@
                     </a>
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
-                            <a class="nav-link spf-link {{#eq contentTmpl "course_index"}}active{{/eq}}" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}">
+                            <a class="nav-link spf-link {{#eq contentTmpl "course_index"}}active{{/eq}} {{#if data.displayOverview}}active{{/if}}" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}">
                                 {{intlGet "messages.course.overview_label"}} <span style="font-size: 12px;" class="ml-2 fe {{#if data.course.isEnrolled}}fe-check text-success{{/if}}"></span>
                             </a>
                         </li>
@@ -37,7 +37,7 @@
                                 <a href="#sb-course-unit-{{url_id}}" class="nav-link" data-toggle="collapse" role="button" aria-expanded="{{#eq url_id ../route.params.unitId}}true{{/eq}}" aria-controls="sb-course-unit-{{url_id}}">
                                     {{title}} <span style="font-size: 12px;" class="ml-2 fe {{#gt ema 80}}fe-check text-success{{else}}{{#gt ema 0}}fe-refresh-ccw text-warning{{/gt}}{{/gt}}"></span>
                                 </a>
-                                <div class="collapse {{#eq url_id ../route.params.unitId}}show{{/eq}}" id="sb-course-unit-{{url_id}}">
+                                <div class="collapse {{#eq url_id ../route.params.unitId}}{{#not data.displayOverview}}show{{/not}}{{/eq}}" id="sb-course-unit-{{url_id}}">
                                     <ul class="nav nav-sm flex-column">
                                         {{#each sections_list}}
                                             <li class="nav-item">
@@ -47,7 +47,7 @@
                                                     </a>
                                                 </h6>
                                                 {{#each cards_list}}
-                                                    <a href="/learn-{{../../../route.locale}}/courses/{{../../../data.course.meta.url_id}}/{{../../url_id}}/{{../url_id}}/{{url_id}} " class="spf-link nav-link {{#eq url_id ../../../route.params.cardId}}active{{/eq}}">
+                                                    <a href="/learn-{{../../../route.locale}}/courses/{{../../../data.course.meta.url_id}}/{{../../url_id}}/{{../url_id}}/{{url_id}} " class="spf-link nav-link {{#eq url_id ../../../route.params.cardId}}{{#not data.displayOverview}}active{{/not}}{{/eq}}">
                                                         <span class="{{#gt ema 80}}text-success{{else}}{{#gt ema 0}}text-warning{{/gt}}{{/gt}}">●</span> <div class="ml-2">{{title}}</div>
                                                     </a>
                                                 {{/each}}

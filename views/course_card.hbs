@@ -122,19 +122,32 @@
         $(function() {
             var coursePages = JSON.parse($('#course-pages-json').html());
             var loadedIndices = [coursePages.currentIndex];
-            var startingPageIdx = coursePages.currentIndex;
-            var topPageIdx = coursePages.currentIndex;
+            var courseOverviewPageTitle = "{{data.course.meta.title}}";
+            var courseOverviewPath = "/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}";
+            var topPageIdx = {{data.displayOverview}} ? -1 : coursePages.currentIndex;
             var bottomPageIdx = coursePages.currentIndex;
-            var visibleCardPath = coursePages.currentPage.path;
-            var lastLoadedCardPath = coursePages.currentPage.path;
+            var visibleCardPath = {{data.displayOverview}} ? courseOverviewPath : coursePages.currentPage.path;
+            var lastLoadedCardPath = {{data.displayOverview}} ? courseOverviewPath : coursePages.currentPage.path;
             var currentlyLoadingPrepend = false;
             var currentlyLoadingAppend = false;
             var watchScrollBottomBound = true;
             var watchPullUpperBound = true;
             var detatchEvents = false;
             var visibleCardCheckInterval = setInterval(visibleCardIntervalCheck, 500);
-            var courseOverviewPageTitle = "{{data.course.meta.title}}";
             var $courseContentWrapper = $("#course-content-card-wrapper");
+
+            // On first load
+            // TODO maybe not... Because if overview is loaded, we actually don't call for the first card until scroll down and enroll in course
+            setCardInteractionGQL({
+                clientMutationId: uuidv4(),
+                course_id: "{{{data.course.meta.id}}}",
+                unit_id: "{{{data.course.nav.currentUnit.id}}}",
+                section_id: "{{{data.course.nav.currentSection.id}}}",
+                card_id: "{{{data.course.card.id}}}",
+                interaction: "view"
+            }, null, function() {
+                console.log("Error posting card interaction")
+            });
 
             function updateAuxElementsSPF(pageData) {
                 $('#sidebar').html(pageData.body.sidebar);
@@ -253,11 +266,18 @@
                 if (watchScrollBottomBound) {
                     lowerScrollBoundReached();
                 }
+                var cardsInView = [];
                 $('.course-card-item:visible').each(function() {
                     if ($(this).isInViewport()) {
-                        visibleCardPath = $(this).attr('data-card-url-path');
+                        cardsInView.push({idx: parseInt($(this).attr('data-card-page-index')), path: $(this).attr('data-card-url-path')});
                     }
                 });
+                $('#course-overview-wrapper:visible').each(function() {
+                    if ($(this).isInViewport()) {
+                        cardsInView.push({idx: parseInt($(this).attr('data-card-page-index')), path: $(this).attr('data-card-url-path')});
+                    }
+                });
+                // TODO figure out which of the cardsInView we want to select
             }
 
             function visibleCardIntervalCheck() {
@@ -299,7 +319,10 @@
             $(window).on("scroll", scrollHandler);
             $(window).on("wheel", onwheelHandler);
 
-            attemptLoadCard(false, false);
+            // NOTE: This is because the overview page automatically loads the overview and the first card of the course, so no need to fetch here...
+            if (topPageIdx > -1) {
+                attemptLoadCard(false, false);
+            }
         });
 
     </script>

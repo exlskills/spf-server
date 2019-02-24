@@ -51,19 +51,4 @@
             </div>
         </div>
     {{/if}}
-
-    <script>
-        $(function() {
-            setCardInteractionGQL({
-                clientMutationId: uuidv4(),
-                course_id: "{{{data.course.meta.id}}}",
-                unit_id: "{{{data.course.nav.currentUnit.id}}}",
-                section_id: "{{{data.course.nav.currentSection.id}}}",
-                card_id: "{{{data.course.card.id}}}",
-                interaction: "view"
-            }, null, function() {
-                console.log("Error posting card interaction")
-            });
-        });
-    </script>
 </div>
