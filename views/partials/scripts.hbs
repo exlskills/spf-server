@@ -64,6 +64,16 @@
     setupCodeHLJS();
 </script>
 <script>
+    $.fn.isInViewport = function() {
+        var elementTop = $(this).offset().top;
+        var elementBottom = elementTop + $(this).outerHeight();
+
+        var viewportTop = $(window).scrollTop();
+        var viewportBottom = viewportTop + $(window).height();
+
+        return elementBottom > viewportTop && elementTop < viewportBottom;
+    };
+
     $.postJSON = function(url, data, success, error) {
         if (typeof data !== 'string') {
             data = JSON.stringify(data);
@@ -252,6 +262,11 @@
                 updateListener();
             });
 
+            $(document).on("infiniscrolldone", function() {
+                updateToggleState();
+                updateListener();
+            });
+
             // Update toggle state
             window.addEventListener('load', function() {
                 updateToggleState();
@@ -316,6 +331,9 @@
         /* http://youmightnotneedjquery.com/#ready */
         function ready(fn) {
             $(document).on("spfdone", function() {
+                fn();
+            });
+            $(document).on("infiniscrolldone", function() {
                 fn();
             });
             if (document.readyState != 'loading') {

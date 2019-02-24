@@ -125,21 +125,36 @@
             var startingPageIdx = coursePages.currentIndex;
             var topPageIdx = coursePages.currentIndex;
             var bottomPageIdx = coursePages.currentIndex;
+            var visibleCardPath = coursePages.currentPage.path;
+            var lastLoadedCardPath = coursePages.currentPage.path;
             var currentlyLoadingPrepend = false;
             var currentlyLoadingAppend = false;
+            var watchScrollBottomBound = true;
+            var watchPullUpperBound = true;
+            var detatchEvents = false;
+            var visibleCardCheckInterval = setInterval(visibleCardIntervalCheck, 500);
             var courseOverviewPageTitle = "{{data.course.meta.title}}";
             var $courseContentWrapper = $("#course-content-card-wrapper");
-            function processCardNavigation(viaScroll, isPrepend, pageData, cardIndex) {
-                if (isPrepend) {
-                    $courseContentWrapper.prepend(pageData.body.content);
-                } else{
-                    $courseContentWrapper.append(pageData.body.content);
-                }
 
+            function updateAuxElementsSPF(pageData) {
                 $('#sidebar').html(pageData.body.sidebar);
                 $('#topbar-title').html(pageData.body['topbar-title']);
                 $('#topbar-wrapper').html(pageData.body['topbar-wrapper']);
+                setupCodeHLJS();
+                lastLoadedCardPath = pageData.url;
                 history.pushState({}, pageData.title, pageData.url);
+            }
+            function processCardNavigation(viaScroll, isPrepend, pageData, cardIndex) {
+                if (isPrepend) {
+                    var prependOldHeight = $(document).height();  //store document height before modifications
+                    var prependOldScroll = $(window).scrollTop(); //remember the scroll position
+                    $courseContentWrapper.prepend(pageData.body.content);
+                    $(document).scrollTop(prependOldScroll + $(document).height() - prependOldHeight); //restore "scroll position"
+                } else{
+                    $courseContentWrapper.append(pageData.body.content);
+                }
+                updateAuxElementsSPF(pageData);
+                window.dispatchEvent(new Event('infiniscrolldone'));
                 if (cardIndex < topPageIdx) {
                     topPageIdx = cardIndex
                 } else if (cardIndex > bottomPageIdx) {
@@ -148,22 +163,24 @@
                 loadedIndices.push(cardIndex);
 
                 if (bottomPageIdx < coursePages.all.length) {
-                    $(window).on("scroll", initScroll);
+                    // $(window).on("scroll", initScroll);
+                    watchScrollBottomBound = true;
                     //scroll event will not trigger if window size is greater than or equal to document size
                     var dh = $(document).height() , wh = $(window).height();
                     if(wh>=dh){
-                        initScroll();
+                        lowerScrollBoundReached();
                     }
                 }
 
                 if (topPageIdx > -1) {
-                    $(window).on("wheel", onwheelHandler);
+                    watchPullUpperBound = true;
                 }
             }
 
             function attemptLoadCard(viaScroll, isPrepend) {
                 if ($("#course-content-card-wrapper[data-initial-load-uuid='{{data.initialLoadUUID}}']").length < 1) {
                     // We've navigated away, and allow the listeners to detach themselves
+                    detatchEvents = true;
                     return;
                 }
                 if (isPrepend) {
@@ -193,13 +210,24 @@
                             break;
                         }
                     }
+                    // Just double-check that it's on already on the page (will at least hide potentially double-call bugs, etc.)
                     if (!alreadyLoaded) {
-                        $.getJSON(coursePages.all[idxToLoad].path+'?spf=navigate&infiniteScroll=true', null, function (data) {
-                            processCardNavigation(viaScroll, isPrepend, data, idxToLoad);
-                        });
+                        var existingEl = $('div[data-card-url-path="' + coursePages.all[idxToLoad].path + '"]');
+                        if (existingEl.length > 0) {
+                            loadedIndices.push(cardIndex);
+                            existingEl.scrollTo();
+                            $('html, body').animate({
+                                scrollTop: parseInt(existingEl.offset().top)
+                            }, 1000);
+                            history.pushState({}, coursePages.all[idxToLoad].title, coursePages.all[idxToLoad].path);
+                        } else {
+                            $.getJSON(coursePages.all[idxToLoad].path+'?spf=navigate&infiniteScroll=true', null, function (data) {
+                                processCardNavigation(viaScroll, isPrepend, data, idxToLoad);
+                            });
+                        }
                     } else {
-                        $(window).on("wheel", onwheelHandler);
-                        $(window).on("scroll", initScroll);
+                        watchPullUpperBound = true;
+                        watchScrollBottomBound = true;
                     }
                 } else if (idxToLoad === -1) {
                     $('#course-overview-wrapper').show();
@@ -210,7 +238,7 @@
                     loadedIndices.push(idxToLoad);
                     // TODO show the completion hooray message/card!
                     if (viaScroll && isPrepend) {
-                        $(window).on("wheel", onwheelHandler);
+                        watchPullUpperBound = true;
                     }
                 }
 
@@ -221,7 +249,31 @@
                 }
             }
 
-            function initScroll() {
+            function scrollHandler() {
+                if (watchScrollBottomBound) {
+                    lowerScrollBoundReached();
+                }
+                $('.course-card-item:visible').each(function() {
+                    if ($(this).isInViewport()) {
+                        visibleCardPath = $(this).attr('data-card-url-path');
+                    }
+                });
+            }
+
+            function visibleCardIntervalCheck() {
+                if (detatchEvents) {
+                    clearInterval(visibleCardCheckInterval);
+                    return;
+                }
+                if (currentlyLoadingAppend || currentlyLoadingPrepend|| lastLoadedCardPath === visibleCardPath) {
+                    return;
+                }
+                $.getJSON(visibleCardPath+'?spf=navigate&infiniteScroll=true', null, function (data) {
+                    updateAuxElementsSPF(data);
+                });
+            }
+
+            function lowerScrollBoundReached() {
                 var t = $courseContentWrapper.offset().top;
                 var h = $courseContentWrapper.height();
                 var ws = $(window).scrollTop();
@@ -229,18 +281,22 @@
                 var wh = $(window).height();
 
                 if (dh - (wh + ws) < dh - (h + t)) {
-                    $(window).off('scroll');
+                    watchScrollBottomBound = false;
                     attemptLoadCard(true, false);
                 }
             }
 
             function onwheelHandler(evt) {
+                if (!watchPullUpperBound) {
+                    return
+                }
                 if ($(window).scrollTop() === 0 && evt.originalEvent.deltaY < -1) {
-                    $(window).off("wheel");
+                    watchPullUpperBound = false;
                     attemptLoadCard(true, true);
                 }
             }
 
+            $(window).on("scroll", scrollHandler);
             $(window).on("wheel", onwheelHandler);
 
             attemptLoadCard(false, false);

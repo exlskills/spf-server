@@ -193,6 +193,7 @@ export async function prepareCourseCardForView(courseWithEnrollmentForView: any,
     const curCardIdx = courseWithEnrollmentForView.nav.currentSection.cards_list.findIndex(c => c.id == cardGID);
     courseWithEnrollmentForView.nav.pages = {
         all: [] as {title: string, path: string}[],
+        currentPage: null,
         currentIndex: 0
     };
     let curPagesIdx = -1;
@@ -214,6 +215,7 @@ export async function prepareCourseCardForView(courseWithEnrollmentForView: any,
                         courseWithEnrollmentForView.nav.pages.all.push(page);
                         if (cIdx == curCardIdx) {
                             courseWithEnrollmentForView.nav.pages.currentIndex = curPagesIdx;
+                            courseWithEnrollmentForView.nav.pages.currentPage = page;
                         }
                     }
                 }
