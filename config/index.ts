@@ -68,5 +68,7 @@ export default {
     // TODO validate the locale is set up or remove it from the config array
     locales: process.env.ACTIVE_LOCALES ? process.env.ACTIVE_LOCALES.split(',') : ['en'],
 
-    rootUrlPrefix: 'learn'
+    rootUrlPrefix: 'learn',
+
+    activateTestMode: process.env.ACTIVATE_TEST_MODE ? process.env.ACTIVATE_TEST_MODE : false
 }
