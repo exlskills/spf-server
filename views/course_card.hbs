@@ -61,6 +61,9 @@
     </style>
     <!-- CONTENT -->
     <div class="container-fluid">
+        <div id="course-cards-top-loading-indicator" style="display: none;padding: 40px 0;" >
+            <div class="is-loading w-100"></div>
+        </div>
         <div id="course-overview-wrapper" style="{{#not data.displayOverview}}display: none;{{/not}}">
             <div class="row align-items-center">
                 <!-- Title -->
@@ -110,11 +113,10 @@
         <div id="course-content-card-wrapper" data-initial-load-uuid="{{data.initialLoadUUID}}">
             {{> course-card-inner}}
         </div>
+        <div id="course-cards-top-loading-indicator" style="padding: 40px 0;" >
+            <div class="is-loading w-100"></div>
+        </div>
     </div>
-
-    {{#if data.displayOverview}}
-
-    {{/if}}
 
     <script id="course-pages-json" type="application/json">{{{JSONstringify data.course.nav.pages}}}</script>
 
@@ -126,6 +128,7 @@
             var courseOverviewPath = "/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}";
             var topPageIdx = {{data.displayOverview}} ? -1 : coursePages.currentIndex;
             var bottomPageIdx = coursePages.currentIndex;
+            var loadedOverview = {{data.displayOverview}};
             var visibleCardPath = {{data.displayOverview}} ? courseOverviewPath : coursePages.currentPage.path;
             var lastVisibleCardPath = visibleCardPath;
             var lastLoadedCardPath = {{data.displayOverview}} ? courseOverviewPath : coursePages.currentPage.path;
@@ -150,15 +153,16 @@
                 console.log("Error posting card interaction")
             });
 
-            function updateAuxElementsSPF(pageData, ignoreSidebar) {
-                if (!ignoreSidebar) {
+            function updateAuxElementsSPF(pageData, ignoreNavItems) {
+                if (!ignoreNavItems) {
                     $('#sidebar').html(pageData.body.sidebar);
+                    $('#topbar-title').html(pageData.body['topbar-title']);
+                    $('#topbar-wrapper').html(pageData.body['topbar-wrapper']);
+                    history.pushState({}, pageData.title, pageData.url);
                 }
-                $('#topbar-title').html(pageData.body['topbar-title']);
-                $('#topbar-wrapper').html(pageData.body['topbar-wrapper']);
+
                 setupCodeHLJS();
                 lastLoadedCardPath = pageData.url;
-                history.pushState({}, pageData.title, pageData.url);
             }
             function processCardNavigation(viaScroll, isPrepend, pageData, cardIndex) {
                 if (isPrepend) {
@@ -230,11 +234,7 @@
                     if (!alreadyLoaded) {
                         var existingEl = $('div[data-card-url-path="' + coursePages.all[idxToLoad].path + '"]');
                         if (existingEl.length > 0) {
-                            loadedIndices.push(cardIndex);
-                            existingEl.scrollTo();
-                            $('html, body').animate({
-                                scrollTop: parseInt(existingEl.offset().top)
-                            }, 1000);
+                            loadedIndices.push(idxToLoad);
                             history.pushState({}, coursePages.all[idxToLoad].title, coursePages.all[idxToLoad].path);
                         } else {
                             $.getJSON(coursePages.all[idxToLoad].path+'?spf=navigate&infiniteScroll=true', null, function (data) {
@@ -248,10 +248,13 @@
                 } else if (idxToLoad === -1) {
                     $('#course-overview-wrapper').show();
                     topPageIdx = idxToLoad;
+                    loadedOverview = true;
+                    $('#course-cards-top-loading-indicator').hide();
                     loadedIndices.push(idxToLoad);
                 } else if (idxToLoad === coursePages.all.length) {
                     bottomPageIdx = idxToLoad;
                     loadedIndices.push(idxToLoad);
+                    $('#course-cards-bottom-loading-indicator').hide();
                     // TODO show the completion hooray message/card!
                     if (viaScroll && isPrepend) {
                         watchPullUpperBound = true;
@@ -266,6 +269,10 @@
             }
 
             function scrollHandler() {
+                if (detatchEvents) {
+                    // Listener would be turned off in next course, but for now in order to not conflict, we will just return instead of turning off and potentially shutting down the new listener by now too
+                    return
+                }
                 if (watchScrollBottomBound) {
                     lowerScrollBoundHandler();
                 }
@@ -327,16 +334,25 @@
             }
 
             function onwheelHandler(evt) {
+                if (detatchEvents) {
+                    // Listener would be turned off in next course, but for now in order to not conflict, we will just return instead of turning off and potentially shutting down the new listener by now too
+                    return
+                }
                 if (!watchPullUpperBound) {
                     return
                 }
                 if ($(window).scrollTop() === 0 && evt.originalEvent.deltaY < -1) {
                     watchPullUpperBound = false;
+                    if (!loadedOverview) {
+                        $('#course-cards-top-loading-indicator').show();
+                    }
                     attemptLoadCard(true, true);
                 }
             }
 
+            $(window).off("scroll");
             $(window).on("scroll", scrollHandler);
+            $(window).off("wheel");
             $(window).on("wheel", onwheelHandler);
 
             // NOTE: This is because the overview page automatically loads the overview and the first card of the course, so no need to fetch here...
