@@ -8,8 +8,10 @@ import {minutesToText} from "../lib/duration";
 import {indexToLetter} from "../lib/ordered-lists";
 import {fromGlobalId} from "../utils/gql-ids";
 import {generateCourse, PlatformOrganization} from "../lib/jsonld";
+import {prepareCourseCardForView} from "./course-card";
+import {uuidv4} from "../utils/uuid";
 
-const courseOverviewFaqMDGen = (course: any) => `
+export const courseOverviewFaqMDGen = (course: any) => `
 ### Is this course FREE?
 
 Yes, this a 100% free course that you can contribute to on GitHub [here](${course.meta.repo_url})!
@@ -172,9 +174,14 @@ export async function fetchDetailedCourseWithEnrollmentForView(client: GqlApi, c
 }
 
 export async function viewCourseOverview(client: GqlApi, user: IUserData, locale: string, courseGID: string) : Promise<ISPFRouteResponse> {
-    let gqlResp = await fetchDetailedCourseWithEnrollmentForView(client, courseGID);
+    let initialCourseGqlResp = await fetchDetailedCourseWithEnrollmentForView(client, courseGID);
+    let unitGID = initialCourseGqlResp.units[0].id;
+    let sectionGID = initialCourseGqlResp.units[0].sections_list[0].id;
+    let cardGID = initialCourseGqlResp.units[0].sections_list[0].cards_list[0].id;
+    console.log(await client.getSectionCard(courseGID, unitGID, sectionGID, cardGID));
+    let gqlResp = await prepareCourseCardForView(initialCourseGqlResp, await client.getSectionCard(courseGID, unitGID, sectionGID, cardGID), locale, courseGID, unitGID, sectionGID, cardGID);
     return {
-        contentTmpl: 'course_overview',
+        contentTmpl: 'course_card',
         meta: {
             title: gqlResp.meta.title + ' Course',
             description: gqlResp.meta.description,
@@ -183,6 +190,8 @@ export async function viewCourseOverview(client: GqlApi, user: IUserData, locale
         },
         data: {
             course: gqlResp,
+            displayOverview: true,
+            initialLoadUUID: uuidv4(),
             courseOverviewFaqMD: courseOverviewFaqMDGen(gqlResp)
         }
     }

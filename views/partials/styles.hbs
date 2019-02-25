@@ -1,5 +1,5 @@
-<link rel="" href="/learn-en/assets/css/theme-dark.min.css" data-toggle="theme" data-theme-mode="dark">
-<link rel="" href="/learn-en/assets/css/theme.min.css" data-toggle="theme" data-theme-mode="light">
+<link rel="" href="{{config.static_assets_url_prefix}}/css/theme-dark.min.css" data-toggle="theme" data-theme-mode="dark">
+<link rel="" href="{{config.static_assets_url_prefix}}/css/theme.min.css" data-toggle="theme" data-theme-mode="light">
 
 <style>
     body { display: none; }
@@ -19,10 +19,10 @@
 </script>
 
 <style>
-    .iti-flag {background-image: url("/learn-en/assets/libs/intl-tel-input/v15.0.0/img/flags.png");}
+    .iti-flag {background-image: url("{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/img/flags.png");}
 
     @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .iti-flag {background-image: url("/learn-en/assets/libs/intl-tel-input/v15.0.0/img/flags@2x.png");}
+    .iti-flag {background-image: url("{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/img/flags@2x.png");}
     }
     .intl-tel-input { width: 100%; }
 </style>
@@ -39,14 +39,9 @@
     #page-body #topbar .container:first-of-type {
         max-width: none;
     }
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
         #main-page-wrapper #sidebar {
             display: none;
-        }
-    }
-    @media (min-width: 768px) {
-        #main-page-wrapper #sidebar {
-            margin-top: 65px;
         }
     }
     @media (min-width: 992px) {
@@ -65,5 +60,5 @@
     }
 </style>
 
-<link rel="stylesheet" href="/learn-en/assets/libs/intl-tel-input/v15.0.0/css/intlTelInput.css">
-<link rel="stylesheet" href="/learn-en/assets/css/custom.css">
+<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/css/intlTelInput.css">
+<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/css/custom.css">

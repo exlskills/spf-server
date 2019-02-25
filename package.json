@@ -13,6 +13,7 @@
     "express-handlebars": "^3.0.0",
     "express-request-language": "^1.1.15",
     "express-robots-txt": "^0.4.0",
+    "fs-extra": "^7.0.1",
     "gql2ts": "^1.10.1",
     "handlebars": "^4.0.12",
     "handlebars-helpers": "^0.10.0",
@@ -33,7 +34,6 @@
     "@types/jsonwebtoken": "^7.2.8",
     "@types/moment-timezone": "^0.5.9",
     "@types/showdown": "^1.7.5",
-    "fs-extra": "^7.0.1",
     "ts-node": "^7.0.1"
   },
   "scripts": {

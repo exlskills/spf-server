@@ -35,6 +35,7 @@ import {mobileViewCourseCard} from "../controllers/mobile-course-card";
 import {viewMarketingIndex} from "../controllers/marketing-index";
 import {dataIntl} from "../i18n"
 import {genAltUrls} from "../i18n/utils";
+import {readFromProductionCacheOrFile} from "../utils/prod-cache-handler";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -43,11 +44,13 @@ HandlebarsHelpers({
     handlebars: handlebars
 });
 
+// This runs once - at startup
 const registerPartialHBS = (name: string) => {
     handlebars.registerPartial(name, fs.readFileSync(path.join(__dirname, `../views/partials/${name}.hbs`), {encoding: 'utf-8'}));
 };
 
 registerPartialHBS('course-top');
+registerPartialHBS('course-card-inner');
 registerPartialHBS('digital-diploma-top');
 registerPartialHBS('quiz-question');
 registerPartialHBS('course-card-pagination');
@@ -222,7 +225,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
     let user_language = req.language;
     logger.debug(`req.language ` + user_language);
     // Override if locale is explicitly present in the URL's path (`-:locale`) and it is valid
-    if (req.params.locale && config.locales.includes(req.params.locale)){
+    if (req.params.locale && config.locales.includes(req.params.locale)) {
         user_language = req.params.locale;
     }
 
@@ -299,7 +302,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
         result.meta.jsonld.push(PlatformOrganization);
 
         if (!result.meta.altUrls) {
-            result.meta.altUrls= genAltUrls(req.path);
+            result.meta.altUrls = genAltUrls(req.path);
         }
 
         // TODO internationalize full title prefix
@@ -346,52 +349,54 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             result.layout = 'mobile';
             return res.render(result.contentTmpl, result);
         } else if (req.query['spf'] === 'navigate') {
-            fs.readFile(path.join(config.viewsRoot, config.spfResponse.sidebar), {encoding: 'utf8'}, (err, data) => {
-                if (err) {
-                    return res.status(500) && next(err);
-                }
 
-                const sidebarHTML = handlebars.compile(data)(result, {
-                    data: {intl: intlData}
-                });
+            let dataHbs;
+            try {
+                dataHbs = await readFromProductionCacheOrFile('spfResponse-sidebar', path.join(config.viewsRoot, config.spfResponse.sidebar));
+            } catch (err) {
+                return res.status(500) && next(err);
+            }
 
-                fs.readFile(path.join(config.viewsRoot, config.spfResponse.topbar), {encoding: 'utf8'}, (err, data) => {
-                    if (err) {
-                        return res.status(500) && next(err);
-                    }
-
-                    const topbarHTML = handlebars.compile(data)(result, {
-                        data: {intl: intlData}
-                    });
-
-                    fs.readFile(path.join(config.viewsRoot, result.contentTmpl + '.hbs'), {encoding: 'utf8'}, (err, data) => {
-                        logger.debug('using template ' + result.contentTmpl);
-                        if (err) {
-                            return res.status(500) && next(err);
-                        }
-                        const contentHTML = handlebars.compile(data)(result, {
-                            data: {intl: intlData}
-                        });
-                        res.setHeader('Content-Type', 'application/json');
-                        res.send(JSON.stringify({
-                            title: result.meta.fullTitle,
-                            url: req.path,
-                            body: {
-                                sidebar: sidebarHTML,
-                                'topbar-wrapper': topbarHTML,
-                                content: contentHTML,
-                                'topbar-title': result.meta.topbarTitle ? result.meta.topbarTitle : result.meta.title
-                            },
-                            attr: {
-                                'main-page-wrapper': {
-                                    'class': result.data.course ? 'exl-show-sidebar' : 'exl-hide-sidebar'
-                                }
-                            }
-                        }));
-                    });
-
-                });
+            const sidebarHTML = handlebars.compile(dataHbs)(result, {
+                data: {intl: intlData}
             });
+
+            try {
+                dataHbs = await readFromProductionCacheOrFile('spfResponse-topbar', path.join(config.viewsRoot, config.spfResponse.topbar));
+            } catch (err) {
+                return res.status(500) && next(err);
+            }
+
+            const topbarHTML = handlebars.compile(dataHbs)(result, {
+                data: {intl: intlData}
+            });
+
+            try {
+                logger.debug('using template ' + result.contentTmpl);
+                dataHbs = await readFromProductionCacheOrFile('result.contentTmpl', path.join(config.viewsRoot, result.contentTmpl + '.hbs'));
+            } catch (err) {
+                return res.status(500) && next(err);
+            }
+
+            const contentHTML = handlebars.compile(dataHbs)(result, {
+                data: {intl: intlData}
+            });
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({
+                title: result.meta.fullTitle,
+                url: req.path,
+                body: {
+                    sidebar: sidebarHTML,
+                    'topbar-wrapper': topbarHTML,
+                    content: contentHTML,
+                    'topbar-title': result.meta.topbarTitle ? result.meta.topbarTitle : result.meta.title
+                },
+                attr: {
+                    'main-page-wrapper': {
+                        'class': result.data.course ? 'exl-show-sidebar' : 'exl-hide-sidebar'
+                    }
+                }
+            }));
         } else {
             return res.render(result.contentTmpl, result);
         }
