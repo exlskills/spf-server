@@ -178,7 +178,6 @@ export async function viewCourseOverview(client: GqlApi, user: IUserData, locale
     let unitGID = initialCourseGqlResp.units[0].id;
     let sectionGID = initialCourseGqlResp.units[0].sections_list[0].id;
     let cardGID = initialCourseGqlResp.units[0].sections_list[0].cards_list[0].id;
-    console.log(await client.getSectionCard(courseGID, unitGID, sectionGID, cardGID));
     let gqlResp = await prepareCourseCardForView(initialCourseGqlResp, await client.getSectionCard(courseGID, unitGID, sectionGID, cardGID), locale, courseGID, unitGID, sectionGID, cardGID);
     return {
         contentTmpl: 'course_card',
@@ -193,6 +192,7 @@ export async function viewCourseOverview(client: GqlApi, user: IUserData, locale
             displayOverview: true,
             isLastCard: false,
             initialLoadUUID: uuidv4(),
+            infiniteScrollRequest: false,
             courseOverviewFaqMD: courseOverviewFaqMDGen(gqlResp)
         }
     }
