@@ -1,35 +1,35 @@
 <!-- Libs JS -->
 {{#not mobile}}
-<script src="/learn-en/assets/libs/spfjs/spf.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/spfjs/spf.js"></script>
 <script>
     spf.init();
 </script>
 {{/not}}
-<script src="/learn-en/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/learn-en/assets/libs/chart.js/dist/Chart.min.js"></script>
-<script src="/learn-en/assets/libs/chart.js/Chart.extension.min.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/chart.js/dist/Chart.min.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/chart.js/Chart.extension.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/go.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/yaml.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/dockerfile.min.js"></script>
 <!-- TODO add libs back when required -->
-<!--<script src="/learn-en/assets/libs/flatpickr/dist/flatpickr.min.js"></script>-->
-<!--<script src="/learn-en/assets/libs/jquery-mask-plugin/dist/jquery.mask.min.js"></script>-->
-<!--<script src="/learn-en/assets/libs/list.js/dist/list.min.js"></script>-->
-<!--<script src="/learn-en/assets/libs/quill/dist/quill.min.js"></script>-->
-<!--<script src="/learn-en/assets/libs/dropzone/dist/min/dropzone.min.js"></script>-->
-<script src="/learn-en/assets/libs/select2/dist/js/select2.min.js"></script>
-<script src="/learn-en/assets/libs/toastr/toastr.min.js"></script>
-<script src="/learn-en/assets/libs/moment/moment.min.js"></script>
-<script src="/learn-en/assets/libs/moment-timezone/moment-timezone-with-data-2012-2022.min.js"></script>
+<!--<script src="{{config.static_assets_url_prefix}}/libs/flatpickr/dist/flatpickr.min.js"></script>-->
+<!--<script src="{{config.static_assets_url_prefix}}/libs/jquery-mask-plugin/dist/jquery.mask.min.js"></script>-->
+<!--<script src="{{config.static_assets_url_prefix}}/libs/list.js/dist/list.min.js"></script>-->
+<!--<script src="{{config.static_assets_url_prefix}}/libs/quill/dist/quill.min.js"></script>-->
+<!--<script src="{{config.static_assets_url_prefix}}/libs/dropzone/dist/min/dropzone.min.js"></script>-->
+<script src="{{config.static_assets_url_prefix}}/libs/select2/dist/js/select2.min.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/toastr/toastr.min.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/moment/moment.min.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/moment-timezone/moment-timezone-with-data-2012-2022.min.js"></script>
 <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js"></script>
-<script src="/learn-en/assets/libs/intl-tel-input/v15.0.0/js/intlTelInput.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/js/intlTelInput.js"></script>
 
 <!-- Theme JS -->
-<script src="/learn-en/assets/js/theme.min.js"></script>
+<script src="{{config.static_assets_url_prefix}}/js/theme.min.js"></script>
 
 <script>
     NProgress.configure({ showSpinner: false });
@@ -403,7 +403,7 @@
     var _authModalTelInput = null;
     $(function() {
         _authModalTelInput = window.intlTelInput(document.querySelector("#auth-modal-phone"), {
-            utilsScript: '/learn-en/assets/libs/intl-tel-input/v15.0.0/js/utils.js',
+            utilsScript: '{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/js/utils.js',
             preferredCountries: ['us', 'in'],
             initialCountry: "auto",
             geoIpLookup: function(success, failure) {

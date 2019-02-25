@@ -46,14 +46,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </script>
 {{/each}}
 <!-- Libs CSS -->
-<link rel="stylesheet" href="/learn-en/assets/fonts/feather/feather.min.css">
-<link rel="stylesheet" href="/learn-en/assets/libs/highlight/styles/vs2015.min.css">
+{{log config.static_assets_url_prefix}}
+<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/fonts/feather/feather.min.css">
+<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/highlight/styles/vs2015.min.css">
 <!-- TODO add libs back when required -->
-<!--<link rel="stylesheet" href="/learn-en/assets/libs/quill/dist/quill.core.css">-->
-<link rel="stylesheet" href="/learn-en/assets/libs/select2/dist/css/select2.min.css">
-<!--<link rel="stylesheet" href="/learn-en/assets/libs/flatpickr/dist/flatpickr.min.css">-->
+<!--<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/quill/dist/quill.core.css">-->
+<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/select2/dist/css/select2.min.css">
+<!--<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/flatpickr/dist/flatpickr.min.css">-->
 <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
-<link rel="stylesheet" href="/learn-en/assets/libs/toastr/toastr.min.css"/>
+<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/toastr/toastr.min.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.min.css"/>
 
 <!-- Important scripts -->
@@ -64,7 +65,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script type="text/javascript" src="https://cdn.subscribers.com/assets/subscribers.js"></script>
 {{/not}}
 <!-- TODO Clean this up and load jquery later, however, too many page scripts require this while loading... -->
-<script src="/learn-en/assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/jquery/dist/jquery.min.js"></script>
 <!-- TODO make the booking impl async -->
 <script src="https://cdn.timekit.io/booking-js/v2/booking.min.js"></script>
 <!-- TODO make stripe impl support async -->
