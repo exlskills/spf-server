@@ -313,25 +313,18 @@
                     }
                 });
 
-                var showOverview = false;
-                var zeroIdxCard = null;
+                var overviewVisible = false;
                 var maxCardVisible = null;
                 for (var i = 0; i < cardsInView.length; i++) {
                     if (cardsInView[i].idx === -1) {
-                        showOverview = true;
-                        break;
-                    }
-                    if (cardsInView[i].idx === 0) {
-                        zeroIdxCard = cardsInView[i];
+                        overviewVisible = true;
                     }
                     if (!maxCardVisible || maxCardVisible.idx < cardsInView[i].idx) {
                         maxCardVisible = cardsInView[i];
                     }
                 }
-                if (showOverview) {
+                if (overviewVisible) {
                     visibleCardPath = courseOverviewPath;
-                } else if (loadedOverview && zeroIdxCard && maxCardVisible.idx < 3) {
-                    visibleCardPath = zeroIdxCard.path;
                 } else if (maxCardVisible) {
                     visibleCardPath = maxCardVisible.path;
                 }
