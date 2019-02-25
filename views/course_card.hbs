@@ -64,20 +64,13 @@
         <div id="course-cards-top-loading-indicator" style="display: none;padding: 40px 0;" >
             <div class="is-loading w-100"></div>
         </div>
-        <div id="course-overview-wrapper" style="{{#not data.displayOverview}}display: none;{{/not}}">
+        <div id="course-overview-wrapper" style="margin-top: 30px;{{#not data.displayOverview}}display: none;{{/not}}">
             <div class="row align-items-center">
                 <!-- Title -->
                 <div class="col">
                     <h1 style="font-size: 1.4em;">
                         {{data.course.meta.title}} {{intlGet "messages.course.label"}}
                     </h1>
-                </div>
-                <div class="col-auto">
-                    <nav aria-label="course-card-pagination">
-                        <ul class="pagination">
-                            {{>course-overview-pagination}}
-                        </ul>
-                    </nav>
                 </div>
             </div>
             <div class="card">
