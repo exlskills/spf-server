@@ -139,19 +139,21 @@
             var detatchEvents = false;
             var visibleCardCheckInterval = setInterval(visibleCardIntervalCheck, 100);
             var $courseContentWrapper = $("#course-content-card-wrapper");
+            var isEnrolled = {{data.course.isEnrolled}};
+            var pendingEnrollment = false;
 
-            // On first load
-            // TODO maybe not... Because if overview is loaded, we actually don't call for the first card until scroll down and enroll in course
-            setCardInteractionGQL({
-                clientMutationId: uuidv4(),
-                course_id: "{{{data.course.meta.id}}}",
-                unit_id: "{{{data.course.nav.currentUnit.id}}}",
-                section_id: "{{{data.course.nav.currentSection.id}}}",
-                card_id: "{{{data.course.card.id}}}",
-                interaction: "view"
-            }, null, function() {
-                console.log("Error posting card interaction")
-            });
+            {{#not data.displayOverview}}
+                setCardInteractionGQL({
+                    clientMutationId: uuidv4(),
+                    course_id: "{{{data.course.meta.id}}}",
+                    unit_id: "{{{data.course.nav.currentUnit.id}}}",
+                    section_id: "{{{data.course.nav.currentSection.id}}}",
+                    card_id: "{{{data.course.card.id}}}",
+                    interaction: "view"
+                }, null, function() {
+                    console.log("Error posting card interaction")
+                });
+            {{/not}}
 
             function updateAuxElementsSPF(pageData, ignoreNavItems) {
                 if (!ignoreNavItems) {
@@ -306,6 +308,20 @@
                 }
             }
 
+            function logViewForVisibleCard() {
+                var $cc = $('.course-card-item[data-card-url-path="' + visibleCardPath + '"]');
+                setCardInteractionGQL({
+                    clientMutationId: uuidv4(),
+                    course_id: $cc.attr('data-course-gid'),
+                    unit_id: $cc.attr('data-unit-gid'),
+                    section_id: $cc.attr('data-section-gid'),
+                    card_id: $cc.attr('data-card-gid'),
+                    interaction: "view"
+                }, null, function() {
+                    console.log("Error posting card interaction")
+                });
+            }
+
             function visibleCardIntervalCheck() {
                 if (detatchEvents) {
                     clearInterval(visibleCardCheckInterval);
@@ -315,9 +331,53 @@
                     return;
                 }
                 lastVisibleCardPath = visibleCardPath;
-                $.getJSON(visibleCardPath+'?spf=navigate&infiniteScroll=true', null, function (data) {
-                    updateAuxElementsSPF(data);
-                });
+                if (!isEnrolled && !pendingEnrollment) {
+                    var inputData = {
+                        clientMutationId: uuidv4(),
+                        course_id: '{{{data.course.meta.id}}}',
+                        cudContent: [
+                            {
+                                field: 'role',
+                                cudAction: 'CREATE',
+                                valueToAssign: 'learner'
+                            },
+                            {
+                                field: 'UserCourseRole',
+                                cudAction: 'CREATE'
+                            }
+                        ],
+                        user_id: '{{{user.gid}}}',
+                    };
+                    pendingEnrollment = true;
+                    $.postJSON('{{config.gqlEndpoint}}', {
+                        query: 'mutation UpdateUserCourseRoleMutation($input: UpdateUserCourseRoleInput!) {updateUserCourseRole(input: $input) {completionObj {code\nmsg\nprocessed\nmodified} clientMutationId}}',
+                        variables: {
+                            input: inputData
+                        }
+                    }, function() {
+                        // Record conversion (enrollment interaction)
+                        gtag_report_conversion();
+                        isEnrolled = true;
+                        pendingEnrollment = false;
+                        $.getJSON(visibleCardPath+'?spf=navigate&infiniteScroll=true', null, function (data) {
+                            updateAuxElementsSPF(data);
+                            logViewForVisibleCard();
+                        });
+                    }, function() {
+                        pendingEnrollment = false;
+                        // Continue loading cards even if enrollment is failing to allow the user to experience the course anyways
+                        $.getJSON(visibleCardPath+'?spf=navigate&infiniteScroll=true', null, function (data) {
+                            updateAuxElementsSPF(data);
+                            logViewForVisibleCard();
+                        });
+                        toastr.error("{{intlGet "messages.error.error_enrolling"}}");
+                    });
+                } else {
+                    $.getJSON(visibleCardPath+'?spf=navigate&infiniteScroll=true', null, function (data) {
+                        updateAuxElementsSPF(data);
+                        logViewForVisibleCard();
+                    });
+                }
             }
 
             function lowerScrollBoundHandler() {
