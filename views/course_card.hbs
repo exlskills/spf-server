@@ -127,13 +127,14 @@
             var topPageIdx = {{data.displayOverview}} ? -1 : coursePages.currentIndex;
             var bottomPageIdx = coursePages.currentIndex;
             var visibleCardPath = {{data.displayOverview}} ? courseOverviewPath : coursePages.currentPage.path;
+            var lastVisibleCardPath = visibleCardPath;
             var lastLoadedCardPath = {{data.displayOverview}} ? courseOverviewPath : coursePages.currentPage.path;
             var currentlyLoadingPrepend = false;
             var currentlyLoadingAppend = false;
             var watchScrollBottomBound = true;
             var watchPullUpperBound = true;
             var detatchEvents = false;
-            var visibleCardCheckInterval = setInterval(visibleCardIntervalCheck, 500);
+            var visibleCardCheckInterval = setInterval(visibleCardIntervalCheck, 100);
             var $courseContentWrapper = $("#course-content-card-wrapper");
 
             // On first load
@@ -149,8 +150,10 @@
                 console.log("Error posting card interaction")
             });
 
-            function updateAuxElementsSPF(pageData) {
-                $('#sidebar').html(pageData.body.sidebar);
+            function updateAuxElementsSPF(pageData, ignoreSidebar) {
+                if (!ignoreSidebar) {
+                    $('#sidebar').html(pageData.body.sidebar);
+                }
                 $('#topbar-title').html(pageData.body['topbar-title']);
                 $('#topbar-wrapper').html(pageData.body['topbar-wrapper']);
                 setupCodeHLJS();
@@ -166,7 +169,7 @@
                 } else{
                     $courseContentWrapper.append(pageData.body.content);
                 }
-                updateAuxElementsSPF(pageData);
+                updateAuxElementsSPF(pageData, true);
                 window.dispatchEvent(new Event('infiniscrolldone'));
                 if (cardIndex < topPageIdx) {
                     topPageIdx = cardIndex
@@ -181,7 +184,7 @@
                     //scroll event will not trigger if window size is greater than or equal to document size
                     var dh = $(document).height() , wh = $(window).height();
                     if(wh>=dh){
-                        lowerScrollBoundReached();
+                        lowerScrollBoundHandler();
                     }
                 }
 
@@ -264,7 +267,7 @@
 
             function scrollHandler() {
                 if (watchScrollBottomBound) {
-                    lowerScrollBoundReached();
+                    lowerScrollBoundHandler();
                 }
                 var cardsInView = [];
                 $('.course-card-item:visible').each(function() {
@@ -273,11 +276,27 @@
                     }
                 });
                 $('#course-overview-wrapper:visible').each(function() {
-                    if ($(this).isInViewport()) {
-                        cardsInView.push({idx: parseInt($(this).attr('data-card-page-index')), path: $(this).attr('data-card-url-path')});
+                    if ($(this).isInViewportEntirely()) {
+                        cardsInView.push({idx: -1, path: courseOverviewPath});
                     }
                 });
-                // TODO figure out which of the cardsInView we want to select
+
+                var showOverview = false;
+                var maxCardVisible = null;
+                for (var i = 0; i < cardsInView.length; i++) {
+                    if (cardsInView[i].idx === -1) {
+                        showOverview = true;
+                        break;
+                    }
+                    if (!maxCardVisible || maxCardVisible.idx < cardsInView[i].idx) {
+                        maxCardVisible = cardsInView[i];
+                    }
+                }
+                if (showOverview) {
+                    visibleCardPath = courseOverviewPath;
+                } else if (maxCardVisible) {
+                    visibleCardPath = maxCardVisible.path;
+                }
             }
 
             function visibleCardIntervalCheck() {
@@ -285,15 +304,16 @@
                     clearInterval(visibleCardCheckInterval);
                     return;
                 }
-                if (currentlyLoadingAppend || currentlyLoadingPrepend|| lastLoadedCardPath === visibleCardPath) {
+                if (currentlyLoadingAppend || currentlyLoadingPrepend|| lastVisibleCardPath === visibleCardPath) {
                     return;
                 }
+                lastVisibleCardPath = visibleCardPath;
                 $.getJSON(visibleCardPath+'?spf=navigate&infiniteScroll=true', null, function (data) {
                     updateAuxElementsSPF(data);
                 });
             }
 
-            function lowerScrollBoundReached() {
+            function lowerScrollBoundHandler() {
                 var t = $courseContentWrapper.offset().top;
                 var h = $courseContentWrapper.height();
                 var ws = $(window).scrollTop();
