@@ -106,7 +106,7 @@
         <div id="course-content-card-wrapper" data-initial-load-uuid="{{data.initialLoadUUID}}">
             {{> course-card-inner}}
         </div>
-        <div id="course-reached-end-wrapper" style="margin-top: 40px;margin-bottom: 100px;{{#if data.isLastCard}}display: none;{{/if}}">
+        <div id="course-reached-end-wrapper" style="margin-top: 40px;margin-bottom: 100px;{{#not data.isLastCard}}display: none;{{/not}}">
             <div class="col-12">
                 <div class="text-center">
 
@@ -162,6 +162,8 @@
             var $courseContentWrapper = $("#course-content-card-wrapper");
             var isEnrolled = {{data.course.isEnrolled}};
             var pendingEnrollment = false;
+            var pStart = {x: 0, y:0};
+            var pStop = {x:0, y:0};
 
             {{#not data.displayOverview}}
                 setCardInteractionGQL({
@@ -312,11 +314,15 @@
                 });
 
                 var showOverview = false;
+                var zeroIdxCard = null;
                 var maxCardVisible = null;
                 for (var i = 0; i < cardsInView.length; i++) {
                     if (cardsInView[i].idx === -1) {
                         showOverview = true;
                         break;
+                    }
+                    if (cardsInView[i].idx === 0) {
+                        zeroIdxCard = cardsInView[i];
                     }
                     if (!maxCardVisible || maxCardVisible.idx < cardsInView[i].idx) {
                         maxCardVisible = cardsInView[i];
@@ -324,12 +330,17 @@
                 }
                 if (showOverview) {
                     visibleCardPath = courseOverviewPath;
+                } else if (loadedOverview && zeroIdxCard && maxCardVisible.idx < 3) {
+                    visibleCardPath = zeroIdxCard.path;
                 } else if (maxCardVisible) {
                     visibleCardPath = maxCardVisible.path;
                 }
             }
 
             function logViewForVisibleCard() {
+                if (visibleCardPath === courseOverviewPath) {
+                    return;
+                }
                 var $cc = $('.course-card-item[data-card-url-path="' + visibleCardPath + '"]');
                 setCardInteractionGQL({
                     clientMutationId: uuidv4(),
@@ -403,7 +414,7 @@
 
             function lowerScrollBoundHandler() {
                 var t = $courseContentWrapper.offset().top;
-                var h = $courseContentWrapper.height();
+                var h = $courseContentWrapper.height() - 600;
                 var ws = $(window).scrollTop();
                 var dh = $(document).height();
                 var wh = $(window).height();
@@ -422,7 +433,7 @@
                 if (!watchPullUpperBound) {
                     return
                 }
-                if ($(window).scrollTop() === 0 && evt.originalEvent.deltaY < -1) {
+                if ($(window).scrollTop() > 200 && evt.originalEvent.deltaY < -1) {
                     watchPullUpperBound = false;
                     if (!loadedOverview) {
                         $('#course-cards-top-loading-indicator').show();
@@ -430,6 +441,63 @@
                     attemptLoadCard(true, true);
                 }
             }
+
+            function swipeStart(e) {
+                if (typeof e['targetTouches'] !== "undefined"){
+                    var touch = e.targetTouches[0];
+                    pStart.x = touch.screenX;
+                    pStart.y = touch.screenY;
+                } else {
+                    pStart.x = e.screenX;
+                    pStart.y = e.screenY;
+                }
+            }
+
+            function swipeEnd(e){
+                if (typeof e['changedTouches'] !== "undefined"){
+                    var touch = e.changedTouches[0];
+                    pStop.x = touch.screenX;
+                    pStop.y = touch.screenY;
+                } else {
+                    pStop.x = e.screenX;
+                    pStop.y = e.screenY;
+                }
+
+                swipeCheck();
+            }
+
+            function swipeCheck(){
+                if (detatchEvents) {
+                    // Listener would be turned off in next course, but for now in order to not conflict, we will just return instead of turning off and potentially shutting down the new listener by now too
+                    return
+                }
+                if (!watchPullUpperBound || $(window).scrollTop() > 200) {
+                    return
+                }
+                var changeY = pStart.y - pStop.y;
+                var changeX = pStart.x - pStop.x;
+                if (isPullDown(changeY, changeX) || $('#course-cards-top-loading-indicator').isInViewport()) {
+                    watchPullUpperBound = false;
+                    if (!loadedOverview) {
+                        $('#course-cards-top-loading-indicator').show();
+                    }
+                    console.log("IS SWIPE UP!!!")
+                    attemptLoadCard(true, true);
+                }
+            }
+
+            function isPullDown(dY, dX) {
+                // methods of checking slope, length, direction of line created by swipe action
+                return dY < 0 && (
+                        (Math.abs(dX) <= 100 && Math.abs(dY) >= 150)
+                        || (Math.abs(dX)/Math.abs(dY) <= 0.3 && dY >= 30)
+                );
+            }
+
+            $(window).off('touchstart');
+            $(window).on('touchstart', function(e){ swipeStart(e.originalEvent); });
+            $(window).off('touchend');
+            $(window).on('touchend', function(e){ swipeEnd(e.originalEvent); });
 
             $(window).off("scroll");
             $(window).on("scroll", scrollHandler);
