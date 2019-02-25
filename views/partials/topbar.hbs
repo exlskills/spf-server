@@ -8,7 +8,7 @@
 
         <!-- Brand -->
         <a class="navbar-brand mr-auto spf-link d-lg-none" href="/learn-{{route.locale}}/dashboard">
-            <img src="/learn-en/assets/img/logo-exlskills.svg" alt="EXLskills" class="navbar-brand-img">
+            <img src="{{config.static_assets_url_prefix}}/img/logo-exlskills.svg" alt="EXLskills" class="navbar-brand-img">
         </a>
 
         <style>
@@ -100,7 +100,7 @@
             <!-- Navigation -->
             <ul class="navbar-nav mr-auto">
                 <a style="display: none;width: 160px;" class="navbar-brand m-auto spf-link d-lg-block" href="/learn-{{route.locale}}/dashboard">
-                    <img style="padding-right: 18px;margin-top: -2px;max-height: none;" src="/learn-en/assets/img/logo-exlskills.svg" alt="EXLskills">
+                    <img style="padding-right: 18px;margin-top: -2px;max-height: none;" src="{{config.static_assets_url_prefix}}/img/logo-exlskills.svg" alt="EXLskills">
                 </a>
                 <li class="nav-item">
                     <a class="nav-link spf-link {{#eq contentTmpl "dashboard"}}active{{/eq}}" href="/learn-{{route.locale}}/dashboard">
