@@ -106,7 +106,35 @@
         <div id="course-content-card-wrapper" data-initial-load-uuid="{{data.initialLoadUUID}}">
             {{> course-card-inner}}
         </div>
-        <div id="course-cards-top-loading-indicator" style="padding: 40px 0;" >
+        <div id="course-reached-end-wrapper" style="margin-top: 40px;margin-bottom: 100px;{{#if data.isLastCard}}display: none;{{/if}}">
+            <div class="col-12">
+                <div class="text-center">
+
+                    <!-- Image -->
+                    <img src="{{config.static_assets_url_prefix}}/img/illustrations/happiness.svg" alt="..." class="img-fluid" style="max-width: 182px;">
+
+                    <br/>
+                    <br/>
+
+                    <!-- Title -->
+                    <h1>
+                        {{intlGet "messages.course.reached_end"}} 🎓🎉
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <p class="text-muted">
+                        {{intlGet "messages.course.great_work"}}
+                    </p>
+
+                    <!-- Button -->
+                    <a href="/learn-{{route.locale}}/courses" class="spf-link btn btn-primary">
+                        {{intlGet "messages.marketing.view_more_courses"}}
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <div id="course-cards-bottom-loading-indicator" style="padding: 40px 0;" >
             <div class="is-loading w-100"></div>
         </div>
     </div>
@@ -250,7 +278,7 @@
                     bottomPageIdx = idxToLoad;
                     loadedIndices.push(idxToLoad);
                     $('#course-cards-bottom-loading-indicator').hide();
-                    // TODO show the completion hooray message/card!
+                    $('#course-reached-end-wrapper').show();
                     if (viaScroll && isPrepend) {
                         watchPullUpperBound = true;
                     }

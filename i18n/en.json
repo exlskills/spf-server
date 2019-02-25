@@ -59,7 +59,8 @@
       "you_will_save": "You'll Save",
       "money_sign": "$",
       "purchase_free": "Purchase for FREE",
-      "you_are_all_set": "You're all set!"
+      "you_are_all_set": "You're all set!",
+      "view_more_courses": "View More Courses"
     },
     "dashboard": {
       "label": "Dashboard",
@@ -99,7 +100,9 @@
       "create_course": "Create a Course",
       "create_course_caps": "CREATE A COURSE",
       "want_to_start_your_own_course": "Want to start your own online course?",
-      "anyone_can_petition_line": "Anyone can petition to create a course on EXLskills and get our help in launching your curriculum via GitHub!"
+      "anyone_can_petition_line": "Anyone can petition to create a course on EXLskills and get our help in launching your curriculum via GitHub!",
+      "reached_end": "You've Reached the End of this Course!",
+      "great_work": "Great work, are you ready to learn more?"
     },
     "digital_diplomas": {
       "label": "Digital Diplomas",

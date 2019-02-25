@@ -59,7 +59,8 @@
             "you_will_save": "तुम बचाओगे",
             "money_sign": "$",
             "purchase_free": "मुफ़्त के लिए खरीद",
-            "you_are_all_set": "तम तैयार हो!"
+            "you_are_all_set": "तम तैयार हो!",
+            "view_more_courses": "View More Courses"
         },
         "dashboard": {
             "label": "डैशबोर्ड",
@@ -99,7 +100,9 @@
             "create_course": "एक कोर्स बनाएं",
             "create_course_caps": "एक रचना बनाएँ",
             "want_to_start_your_own_course": "अपना खुद का ऑनलाइन कोर्स शुरू करना चाहते हैं?",
-            "anyone_can_petition_line": "कोई भी EXLskills पर एक पाठ्यक्रम बनाने और GitHub के माध्यम से अपना पाठ्यक्रम शुरू करने में हमारी मदद पाने के लिए याचिका कर सकता है!"
+            "anyone_can_petition_line": "कोई भी EXLskills पर एक पाठ्यक्रम बनाने और GitHub के माध्यम से अपना पाठ्यक्रम शुरू करने में हमारी मदद पाने के लिए याचिका कर सकता है!",
+            "reached_end": "You've Reached the End of this Course!",
+            "great_work": "Great work, are you ready to learn more?"
         },
         "digital_diplomas": {
             "label": "डिजिटल डिप्लोमा",

@@ -292,6 +292,7 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
             course: gqlResp,
             initialLoadUUID: uuidv4(),
             displayOverview: false,
+            isLastCard: gqlResp.nav.pages.currentIndex === gqlResp.nav.pages.all.length-1,
             infiniteScrollRequest: !!req.query.infiniteScroll,
             courseOverviewFaqMD: courseOverviewFaqMDGen(gqlResp)
         }
