@@ -59,7 +59,8 @@
             "you_will_save": "Вы спасете",
             "money_sign": "$",
             "purchase_free": "Покупка БЕСПЛАТНО",
-            "you_are_all_set": "Вы все готово!"
+            "you_are_all_set": "Вы все готово!",
+            "view_more_courses": "View More Courses"
         },
         "dashboard": {
             "label": "Приборная доска",
@@ -99,7 +100,9 @@
             "create_course": "Создать курс",
             "create_course_caps": "СОЗДАТЬ КУРС",
             "want_to_start_your_own_course": "Хотите начать собственный онлайн-курс?",
-            "anyone_can_petition_line": "Каждый может подать ходатайство о создании курса по EXLskills и получить нашу помощь в запуске вашего учебного плана через GitHub!"
+            "anyone_can_petition_line": "Каждый может подать ходатайство о создании курса по EXLskills и получить нашу помощь в запуске вашего учебного плана через GitHub!",
+            "reached_end": "You've Reached the End of this Course!",
+            "great_work": "Great work, are you ready to learn more?"
         },
         "digital_diplomas": {
             "label": "Цифровые Дипломы",

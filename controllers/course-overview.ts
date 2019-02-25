@@ -191,6 +191,7 @@ export async function viewCourseOverview(client: GqlApi, user: IUserData, locale
         data: {
             course: gqlResp,
             displayOverview: true,
+            isLastCard: false,
             initialLoadUUID: uuidv4(),
             courseOverviewFaqMD: courseOverviewFaqMDGen(gqlResp)
         }

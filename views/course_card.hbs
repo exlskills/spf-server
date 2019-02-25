@@ -61,20 +61,16 @@
     </style>
     <!-- CONTENT -->
     <div class="container-fluid">
-        <div id="course-overview-wrapper" style="{{#not data.displayOverview}}display: none;{{/not}}">
+        <div id="course-cards-top-loading-indicator" style="display: none;padding: 40px 0;" >
+            <div class="is-loading w-100"></div>
+        </div>
+        <div id="course-overview-wrapper" style="margin-top: 30px;{{#not data.displayOverview}}display: none;{{/not}}">
             <div class="row align-items-center">
                 <!-- Title -->
                 <div class="col">
                     <h1 style="font-size: 1.4em;">
                         {{data.course.meta.title}} {{intlGet "messages.course.label"}}
                     </h1>
-                </div>
-                <div class="col-auto">
-                    <nav aria-label="course-card-pagination">
-                        <ul class="pagination">
-                            {{>course-overview-pagination}}
-                        </ul>
-                    </nav>
                 </div>
             </div>
             <div class="card">
@@ -110,11 +106,38 @@
         <div id="course-content-card-wrapper" data-initial-load-uuid="{{data.initialLoadUUID}}">
             {{> course-card-inner}}
         </div>
+        <div id="course-reached-end-wrapper" style="margin-top: 40px;margin-bottom: 100px;{{#if data.isLastCard}}display: none;{{/if}}">
+            <div class="col-12">
+                <div class="text-center">
+
+                    <!-- Image -->
+                    <img src="{{config.static_assets_url_prefix}}/img/illustrations/happiness.svg" alt="..." class="img-fluid" style="max-width: 182px;">
+
+                    <br/>
+                    <br/>
+
+                    <!-- Title -->
+                    <h1>
+                        {{intlGet "messages.course.reached_end"}} 🎓🎉
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <p class="text-muted">
+                        {{intlGet "messages.course.great_work"}}
+                    </p>
+
+                    <!-- Button -->
+                    <a href="/learn-{{route.locale}}/courses" class="spf-link btn btn-primary">
+                        {{intlGet "messages.marketing.view_more_courses"}}
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <div id="course-cards-bottom-loading-indicator" style="padding: 40px 0;" >
+            <div class="is-loading w-100"></div>
+        </div>
     </div>
-
-    {{#if data.displayOverview}}
-
-    {{/if}}
 
     <script id="course-pages-json" type="application/json">{{{JSONstringify data.course.nav.pages}}}</script>
 
@@ -126,6 +149,7 @@
             var courseOverviewPath = "/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}";
             var topPageIdx = {{data.displayOverview}} ? -1 : coursePages.currentIndex;
             var bottomPageIdx = coursePages.currentIndex;
+            var loadedOverview = {{data.displayOverview}};
             var visibleCardPath = {{data.displayOverview}} ? courseOverviewPath : coursePages.currentPage.path;
             var lastVisibleCardPath = visibleCardPath;
             var lastLoadedCardPath = {{data.displayOverview}} ? courseOverviewPath : coursePages.currentPage.path;
@@ -136,29 +160,32 @@
             var detatchEvents = false;
             var visibleCardCheckInterval = setInterval(visibleCardIntervalCheck, 100);
             var $courseContentWrapper = $("#course-content-card-wrapper");
+            var isEnrolled = {{data.course.isEnrolled}};
+            var pendingEnrollment = false;
 
-            // On first load
-            // TODO maybe not... Because if overview is loaded, we actually don't call for the first card until scroll down and enroll in course
-            setCardInteractionGQL({
-                clientMutationId: uuidv4(),
-                course_id: "{{{data.course.meta.id}}}",
-                unit_id: "{{{data.course.nav.currentUnit.id}}}",
-                section_id: "{{{data.course.nav.currentSection.id}}}",
-                card_id: "{{{data.course.card.id}}}",
-                interaction: "view"
-            }, null, function() {
-                console.log("Error posting card interaction")
-            });
+            {{#not data.displayOverview}}
+                setCardInteractionGQL({
+                    clientMutationId: uuidv4(),
+                    course_id: "{{{data.course.meta.id}}}",
+                    unit_id: "{{{data.course.nav.currentUnit.id}}}",
+                    section_id: "{{{data.course.nav.currentSection.id}}}",
+                    card_id: "{{{data.course.card.id}}}",
+                    interaction: "view"
+                }, null, function() {
+                    console.log("Error posting card interaction")
+                });
+            {{/not}}
 
-            function updateAuxElementsSPF(pageData, ignoreSidebar) {
-                if (!ignoreSidebar) {
+            function updateAuxElementsSPF(pageData, ignoreNavItems) {
+                if (!ignoreNavItems) {
                     $('#sidebar').html(pageData.body.sidebar);
+                    $('#topbar-title').html(pageData.body['topbar-title']);
+                    $('#topbar-wrapper').html(pageData.body['topbar-wrapper']);
+                    history.pushState({}, pageData.title, pageData.url);
                 }
-                $('#topbar-title').html(pageData.body['topbar-title']);
-                $('#topbar-wrapper').html(pageData.body['topbar-wrapper']);
+
                 setupCodeHLJS();
                 lastLoadedCardPath = pageData.url;
-                history.pushState({}, pageData.title, pageData.url);
             }
             function processCardNavigation(viaScroll, isPrepend, pageData, cardIndex) {
                 if (isPrepend) {
@@ -230,11 +257,7 @@
                     if (!alreadyLoaded) {
                         var existingEl = $('div[data-card-url-path="' + coursePages.all[idxToLoad].path + '"]');
                         if (existingEl.length > 0) {
-                            loadedIndices.push(cardIndex);
-                            existingEl.scrollTo();
-                            $('html, body').animate({
-                                scrollTop: parseInt(existingEl.offset().top)
-                            }, 1000);
+                            loadedIndices.push(idxToLoad);
                             history.pushState({}, coursePages.all[idxToLoad].title, coursePages.all[idxToLoad].path);
                         } else {
                             $.getJSON(coursePages.all[idxToLoad].path+'?spf=navigate&infiniteScroll=true', null, function (data) {
@@ -248,11 +271,14 @@
                 } else if (idxToLoad === -1) {
                     $('#course-overview-wrapper').show();
                     topPageIdx = idxToLoad;
+                    loadedOverview = true;
+                    $('#course-cards-top-loading-indicator').hide();
                     loadedIndices.push(idxToLoad);
                 } else if (idxToLoad === coursePages.all.length) {
                     bottomPageIdx = idxToLoad;
                     loadedIndices.push(idxToLoad);
-                    // TODO show the completion hooray message/card!
+                    $('#course-cards-bottom-loading-indicator').hide();
+                    $('#course-reached-end-wrapper').show();
                     if (viaScroll && isPrepend) {
                         watchPullUpperBound = true;
                     }
@@ -266,6 +292,10 @@
             }
 
             function scrollHandler() {
+                if (detatchEvents) {
+                    // Listener would be turned off in next course, but for now in order to not conflict, we will just return instead of turning off and potentially shutting down the new listener by now too
+                    return
+                }
                 if (watchScrollBottomBound) {
                     lowerScrollBoundHandler();
                 }
@@ -299,6 +329,20 @@
                 }
             }
 
+            function logViewForVisibleCard() {
+                var $cc = $('.course-card-item[data-card-url-path="' + visibleCardPath + '"]');
+                setCardInteractionGQL({
+                    clientMutationId: uuidv4(),
+                    course_id: $cc.attr('data-course-gid'),
+                    unit_id: $cc.attr('data-unit-gid'),
+                    section_id: $cc.attr('data-section-gid'),
+                    card_id: $cc.attr('data-card-gid'),
+                    interaction: "view"
+                }, null, function() {
+                    console.log("Error posting card interaction")
+                });
+            }
+
             function visibleCardIntervalCheck() {
                 if (detatchEvents) {
                     clearInterval(visibleCardCheckInterval);
@@ -308,9 +352,53 @@
                     return;
                 }
                 lastVisibleCardPath = visibleCardPath;
-                $.getJSON(visibleCardPath+'?spf=navigate&infiniteScroll=true', null, function (data) {
-                    updateAuxElementsSPF(data);
-                });
+                if (!isEnrolled && !pendingEnrollment) {
+                    var inputData = {
+                        clientMutationId: uuidv4(),
+                        course_id: '{{{data.course.meta.id}}}',
+                        cudContent: [
+                            {
+                                field: 'role',
+                                cudAction: 'CREATE',
+                                valueToAssign: 'learner'
+                            },
+                            {
+                                field: 'UserCourseRole',
+                                cudAction: 'CREATE'
+                            }
+                        ],
+                        user_id: '{{{user.gid}}}',
+                    };
+                    pendingEnrollment = true;
+                    $.postJSON('{{config.gqlEndpoint}}', {
+                        query: 'mutation UpdateUserCourseRoleMutation($input: UpdateUserCourseRoleInput!) {updateUserCourseRole(input: $input) {completionObj {code\nmsg\nprocessed\nmodified} clientMutationId}}',
+                        variables: {
+                            input: inputData
+                        }
+                    }, function() {
+                        // Record conversion (enrollment interaction)
+                        gtag_report_conversion();
+                        isEnrolled = true;
+                        pendingEnrollment = false;
+                        $.getJSON(visibleCardPath+'?spf=navigate&infiniteScroll=true', null, function (data) {
+                            updateAuxElementsSPF(data);
+                            logViewForVisibleCard();
+                        });
+                    }, function() {
+                        pendingEnrollment = false;
+                        // Continue loading cards even if enrollment is failing to allow the user to experience the course anyways
+                        $.getJSON(visibleCardPath+'?spf=navigate&infiniteScroll=true', null, function (data) {
+                            updateAuxElementsSPF(data);
+                            logViewForVisibleCard();
+                        });
+                        toastr.error("{{intlGet "messages.error.error_enrolling"}}");
+                    });
+                } else {
+                    $.getJSON(visibleCardPath+'?spf=navigate&infiniteScroll=true', null, function (data) {
+                        updateAuxElementsSPF(data);
+                        logViewForVisibleCard();
+                    });
+                }
             }
 
             function lowerScrollBoundHandler() {
@@ -327,16 +415,25 @@
             }
 
             function onwheelHandler(evt) {
+                if (detatchEvents) {
+                    // Listener would be turned off in next course, but for now in order to not conflict, we will just return instead of turning off and potentially shutting down the new listener by now too
+                    return
+                }
                 if (!watchPullUpperBound) {
                     return
                 }
                 if ($(window).scrollTop() === 0 && evt.originalEvent.deltaY < -1) {
                     watchPullUpperBound = false;
+                    if (!loadedOverview) {
+                        $('#course-cards-top-loading-indicator').show();
+                    }
                     attemptLoadCard(true, true);
                 }
             }
 
+            $(window).off("scroll");
             $(window).on("scroll", scrollHandler);
+            $(window).off("wheel");
             $(window).on("wheel", onwheelHandler);
 
             // NOTE: This is because the overview page automatically loads the overview and the first card of the course, so no need to fetch here...

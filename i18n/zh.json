@@ -59,7 +59,8 @@
             "you_will_save": "你会省钱的",
             "money_sign": "$",
             "purchase_free": "免费购买",
-            "you_are_all_set": "你们都准备好了！"
+            "you_are_all_set": "你们都准备好了！",
+            "view_more_courses": "View More Courses"
         },
         "dashboard": {
             "label": "仪表板",
@@ -99,7 +100,9 @@
             "create_course": "创建课程",
             "create_course_caps": "创造一个课程",
             "want_to_start_your_own_course": "想要开始自己的在线课程？",
-            "anyone_can_petition_line": "任何人都可以请求在EXLskills上创建一个课程，并通过GitHub帮助我们启动您的课程！"
+            "anyone_can_petition_line": "任何人都可以请求在EXLskills上创建一个课程，并通过GitHub帮助我们启动您的课程！",
+            "reached_end": "You've Reached the End of this Course!",
+            "great_work": "Great work, are you ready to learn more?"
         },
         "digital_diplomas": {
             "label": "数字文凭",
