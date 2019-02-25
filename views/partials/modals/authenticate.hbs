@@ -183,7 +183,25 @@
             });
         });
         $("#other-logins-link").click(function(e) {
-            window.location.href = '{{config.authAPIBaseURL}}/auth/keycloak?redirect={{encodeURI route.url}}'
+            var redirectPath = '';
+            if (window.location.hash.substr(20).length > 0) {
+                // have something after #!modalAuthenticate=
+                var secondRedirect = decodeURIComponent(window.location.hash.substr(20));
+                if (secondRedirect.startsWith('/')) {
+                    redirectPath = secondRedirect;
+                } else if (!secondRedirect.startsWith('#')){
+                    redirectPath = window.location.pathname + '/' + secondRedirect;
+                } else {
+                    redirectPath = window.location.pathname + secondRedirect;
+                }
+            } else {
+                redirectPath = window.location.pathname;
+            }
+
+            window.location.href = '{{config.authAPIBaseURL}}/auth/keycloak?redirect=' +
+                    encodeURIComponent(window.location.protocol + '//' +
+                                       window.location.host +
+                                       redirectPath);
         });
         $enterPhoneCodeForm.submit(function(e) {
             e.preventDefault();
