@@ -113,7 +113,7 @@
                 <span class="fe fe-chevron-down"></span>
             </a>
         </div>
-        <div class="progress" style="border-radius: 0;background: none;">
+        <div class="progress" style="border-radius: 0;background: #f4f4f4;">
             <div id="course-mobile-nav-progress-bar" class="progress-bar bg-success" role="progressbar" style="width: {{data.pctCourseLocation}}%;border-radius: 0;" aria-valuenow="{{data.pctCourseLocation}}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
     </div>
@@ -203,6 +203,7 @@
         $(function() {
             var coursePages = JSON.parse($('#course-pages-json').html());
             var loadedIndices = [coursePages.currentIndex];
+            var lastLoadedIndicesLen = loadedIndices.length;
             var courseOverviewPageTitle = "{{data.course.meta.title}}";
             var courseOverviewPath = "/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}";
             var topPageIdx = {{data.displayOverview}} ? -1 : coursePages.currentIndex;
@@ -321,14 +322,17 @@
                         if (existingEl.length > 0) {
                             loadedIndices.push(idxToLoad);
                             history.pushState({}, coursePages.all[idxToLoad].title, coursePages.all[idxToLoad].path);
+                            markInfiniscrollDone(isPrepend)
                         } else {
                             $.getJSON(coursePages.all[idxToLoad].path+'?spf=navigate&infiniteScroll=true', null, function (data) {
                                 processCardNavigation(viaScroll, isPrepend, data, idxToLoad);
+                                markInfiniscrollDone(isPrepend)
                             });
                         }
                     } else {
                         watchPullUpperBound = true;
                         watchScrollBottomBound = true;
+                        markInfiniscrollDone(isPrepend)
                     }
                 } else if (idxToLoad === -1) {
                     $('#course-overview-wrapper').show();
@@ -336,6 +340,7 @@
                     loadedOverview = true;
                     $('#course-cards-top-loading-indicator').hide();
                     loadedIndices.push(idxToLoad);
+                    markInfiniscrollDone(isPrepend)
                 } else if (idxToLoad === coursePages.all.length) {
                     bottomPageIdx = idxToLoad;
                     loadedIndices.push(idxToLoad);
@@ -344,8 +349,14 @@
                     if (viaScroll && isPrepend) {
                         watchPullUpperBound = true;
                     }
+                    markInfiniscrollDone(isPrepend)
+                } else {
+                    markInfiniscrollDone(isPrepend)
                 }
 
+            }
+
+            function markInfiniscrollDone(isPrepend) {
                 document.dispatchEvent(new Event('infiniscrolldone'));
                 if (isPrepend) {
                     currentlyLoadingPrepend = false;
@@ -356,11 +367,14 @@
 
             function manageMobileMenuPos() {
                 var currentScrollPos = window.pageYOffset;
-                if (prevScrollPos > currentScrollPos) {
-                    document.getElementById("course-mobile-nav-wrapper").style.top = "65px";
-                } else if (!currentlyLoadingPrepend && !currentlyLoadingAppend) {
-                    document.getElementById("course-mobile-nav-wrapper").style.top = "10px";
+                if (lastLoadedIndicesLen === loadedIndices.length) {
+                    if (prevScrollPos > currentScrollPos) {
+                        document.getElementById("course-mobile-nav-wrapper").style.top = "65px";
+                    } else if (!currentlyLoadingPrepend && !currentlyLoadingAppend) {
+                        document.getElementById("course-mobile-nav-wrapper").style.top = "10px";
+                    }
                 }
+                lastLoadedIndicesLen = loadedIndices.length;
                 prevScrollPos = currentScrollPos;
             }
 
