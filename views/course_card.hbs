@@ -199,7 +199,6 @@
                     $courseContentWrapper.append(pageData.body.content);
                 }
                 updateAuxElementsSPF(pageData, true);
-                window.dispatchEvent(new Event('infiniscrolldone'));
                 if (cardIndex < topPageIdx) {
                     topPageIdx = cardIndex
                 } else if (cardIndex > bottomPageIdx) {
@@ -286,6 +285,7 @@
                     }
                 }
 
+                document.dispatchEvent(new Event('infiniscrolldone'));
                 if (isPrepend) {
                     currentlyLoadingPrepend = false;
                 } else {

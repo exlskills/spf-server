@@ -337,7 +337,7 @@
          * You can have any additional classes on those elements that you
          * would ilke.
          */
-        var DRIFT_CHAT_SELECTOR = '.drift-open-chat'
+        var DRIFT_CHAT_SELECTOR = '.drift-open-chat';
         /* http://youmightnotneedjquery.com/#ready */
         function ready(fn) {
             $(document).on("spfdone", function() {
@@ -370,7 +370,7 @@
         }
         ready(function() {
             drift.on('ready', function(api) {
-                var handleClick = openSidebar.bind(this, api)
+                var handleClick = openSidebar.bind(this, api);
                 forEachElement(DRIFT_CHAT_SELECTOR, function(el) {
                     el.addEventListener('click', handleClick);
                 });
