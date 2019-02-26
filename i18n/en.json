@@ -288,6 +288,9 @@
       "successfully_authenticated_explanation": "Start a new course or pick-up where you left off!",
       "check_profile_data_valid": "Ensure that the information provided is valid",
       "skip_profile_update":  "Skip Profile Update"
+    },
+    "extended_mobile_nav": {
+      "heading": "Extended Navigation"
     }
   }
 }

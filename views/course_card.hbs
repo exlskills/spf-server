@@ -92,15 +92,26 @@
             transition: top 0.3s;
             height: 55px;
         }
+        #course-mobile-nav-wrapper .container:first-of-type {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
         #course-mobile-nav-heading {
             margin-top: 10px;
             font-size: 20px;
-            margin-left: 18px;
         }
+
     </style>
     <div id="course-mobile-nav-wrapper">
-        <div>
-            <h4 id="course-mobile-nav-heading">{{#if data.displayOverview}}{{data.course.meta.title}}{{else}}{{data.course.card.title}}{{/if}}</h4>
+        <div class="container">
+            <div class="mr-auto">
+                <h4 id="course-mobile-nav-heading">{{#if data.displayOverview}}{{data.course.meta.title}}{{else}}{{data.course.card.title}}{{/if}}</h4>
+            </div>
+            <a id="course-mobile-nav-popover-link" data-toggle="modal" data-target="#modalMobileExtendedSidebarNav" style="cursor:pointer;padding-top: 10px;padding-right: 10px;">
+                <span class="fe fe-chevron-down"></span>
+            </a>
         </div>
         <div class="progress" style="border-radius: 0;background: none;">
             <div id="course-mobile-nav-progress-bar" class="progress-bar bg-success" role="progressbar" style="width: {{data.pctCourseLocation}}%;border-radius: 0;" aria-valuenow="{{data.pctCourseLocation}}" aria-valuemin="0" aria-valuemax="100"></div>
@@ -557,6 +568,10 @@
                         || (Math.abs(dX)/Math.abs(dY) <= 0.3 && dY >= 30)
                 );
             }
+
+            $('#course-mobile-nav-popover-link').click(function (e) {
+// TODO
+            });
 
             $(window).off('touchstart');
             $(window).on('touchstart', function(e){ swipeStart(e.originalEvent); });

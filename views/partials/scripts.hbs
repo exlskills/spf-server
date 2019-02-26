@@ -32,6 +32,7 @@
     $(document).on("spfclick", function() {
         // Show progress bar
         NProgress.start();
+        $('#modalMobileExtendedSidebarNav').modal('hide');
     });
 
     $(document).on("spfrequest", function() {
@@ -54,6 +55,7 @@
         // Finish request and remove progress bar
         NProgress.remove();
         setupCodeHLJS();
+        $('#mobile-sidebar-extension').html($('.exl-sidebar-menu-content'));
     });
 
     setupCodeHLJS();
