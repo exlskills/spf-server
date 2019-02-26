@@ -82,7 +82,7 @@ const computeUrlsAndBreadcrumbs = (req: Request, data: any): { canonicalUrl: str
     if (matchedPath.startsWith("/learn-")) {
         matchedPath = matchedPath.substr(matchedPath.indexOf('/', 1));
     } else if (matchedPath.startsWith("/amp/learn-")) {
-        matchedPath = matchedPath.substr(matchedPath.indexOf('/', 2));
+        matchedPath = matchedPath.substr(matchedPath.indexOf('/', 5));
     }
 
     let matchedParts = matchedPath.split('/');
