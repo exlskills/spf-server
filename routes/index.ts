@@ -373,7 +373,7 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
 
             try {
                 logger.debug('using template ' + result.contentTmpl);
-                dataHbs = await readFromProductionCacheOrFile('result.contentTmpl', path.join(config.viewsRoot, result.contentTmpl + '.hbs'));
+                dataHbs = await readFromProductionCacheOrFile(result.contentTmpl, path.join(config.viewsRoot, result.contentTmpl + '.hbs'));
             } catch (err) {
                 return res.status(500) && next(err);
             }
