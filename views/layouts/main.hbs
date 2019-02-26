@@ -26,6 +26,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </div>
 </div>
+<!-- Include SPF in main template only, as it's not required in others -->
+<script src="/learn-en/assets/libs/spfjs/spf.js"></script>
+<script>
+    spf.init();
+</script>
 {{> scripts}}
 </body>
 </html>
