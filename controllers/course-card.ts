@@ -3,7 +3,11 @@ import {ISPFRouteResponse} from "../lib/spf-route-response";
 import {IUserData} from "../lib/jwt";
 import { Request } from 'express';
 import {toUrlId} from "../utils/url-ids";
-import {fetchDetailedCourseForView, fetchDetailedCourseWithEnrollmentForView} from "./course-overview";
+import {
+    courseOverviewFaqMDGen,
+    fetchDetailedCourseForView,
+    fetchDetailedCourseWithEnrollmentForView
+} from "./course-overview";
 import IQuestion = GQL.IQuestion;
 import config from '../config';
 import {uuidv4} from "../utils/uuid";
@@ -177,68 +181,103 @@ function cardFullHTMLJavascriptSetup($: CheerioStatic) {
     return hasJavascriptCode;
 }
 
-export async function viewCourseCard(client: GqlApi, user: IUserData, locale: string, req: Request, courseGID: string, unitGID: string, sectionGID: string, cardGID: string) : Promise<ISPFRouteResponse> {
-    let gqlResp = await fetchDetailedCourseWithEnrollmentForView(client, courseGID);
-    gqlResp.nav = {
+export async function prepareCourseCardForView(courseWithEnrollmentForView: any, sectionCard: any, locale: string, courseGID: string, unitGID: string, sectionGID: string, cardGID: string) {
+    courseWithEnrollmentForView.nav = {
         locale,
-        courseUrlId: gqlResp.meta.url_id
+        courseUrlId: courseWithEnrollmentForView.meta.url_id
     };
-    const curUnitIdx = gqlResp.units.findIndex(u => u.id === unitGID);
-    gqlResp.nav.currentUnit = gqlResp.units[curUnitIdx];
-    const curSectIdx = gqlResp.nav.currentUnit.sections_list.findIndex(s => s.id === sectionGID);
-    gqlResp.nav.currentSection = gqlResp.nav.currentUnit.sections_list[curSectIdx];
-    const curCardIdx = gqlResp.nav.currentSection.cards_list.findIndex(c => c.id == cardGID);
+    const curUnitIdx = courseWithEnrollmentForView.units.findIndex(u => u.id === unitGID);
+    courseWithEnrollmentForView.nav.currentUnit = courseWithEnrollmentForView.units[curUnitIdx];
+    const curSectIdx = courseWithEnrollmentForView.nav.currentUnit.sections_list.findIndex(s => s.id === sectionGID);
+    courseWithEnrollmentForView.nav.currentSection = courseWithEnrollmentForView.nav.currentUnit.sections_list[curSectIdx];
+    const curCardIdx = courseWithEnrollmentForView.nav.currentSection.cards_list.findIndex(c => c.id == cardGID);
+    courseWithEnrollmentForView.nav.pages = {
+        all: [] as {title: string, path: string}[],
+        currentPage: null,
+        currentIndex: 0
+    };
+    let curPagesIdx = -1;
+    for (let uIdx = 0; uIdx < courseWithEnrollmentForView.units.length; uIdx++) {
+        for (let sIdx = 0; sIdx < courseWithEnrollmentForView.units[uIdx].sections_list.length; sIdx++) {
+            for (let cIdx = 0; cIdx < courseWithEnrollmentForView.units[uIdx].sections_list[sIdx].cards_list.length; cIdx++) {
+                curPagesIdx++;
+                const page = {
+                    title: courseWithEnrollmentForView.units[uIdx].sections_list[sIdx].cards_list[cIdx].title,
+                    path: `/learn-${locale}/courses/${courseWithEnrollmentForView.meta.url_id}/${courseWithEnrollmentForView.units[uIdx].url_id}/${courseWithEnrollmentForView.units[uIdx].sections_list[sIdx].url_id}/${courseWithEnrollmentForView.units[uIdx].sections_list[sIdx].cards_list[cIdx].url_id}`
+                };
+
+                if (uIdx != curUnitIdx) {
+                    courseWithEnrollmentForView.nav.pages.all.push(page);
+                } else {
+                    if (sIdx != curSectIdx) {
+                        courseWithEnrollmentForView.nav.pages.all.push(page);
+                    } else {
+                        courseWithEnrollmentForView.nav.pages.all.push(page);
+                        if (cIdx == curCardIdx) {
+                            courseWithEnrollmentForView.nav.pages.currentIndex = curPagesIdx;
+                            courseWithEnrollmentForView.nav.pages.currentPage = page;
+                        }
+                    }
+                }
+            }
+        }
+    }
     // Setup the card navigation
-    gqlResp.nav.nextUnit = gqlResp.nav.currentUnit;
-    gqlResp.nav.prevUnit = gqlResp.nav.currentUnit;
-    gqlResp.nav.nextSection = gqlResp.nav.currentSection;
-    gqlResp.nav.prevSection = gqlResp.nav.currentSection;
-    if (curCardIdx+1 < gqlResp.nav.currentSection.cards_list.length) {
-        gqlResp.nav.nextCard = gqlResp.nav.currentSection.cards_list[curCardIdx+1];
+    courseWithEnrollmentForView.nav.nextUnit = courseWithEnrollmentForView.nav.currentUnit;
+    courseWithEnrollmentForView.nav.prevUnit = courseWithEnrollmentForView.nav.currentUnit;
+    courseWithEnrollmentForView.nav.nextSection = courseWithEnrollmentForView.nav.currentSection;
+    courseWithEnrollmentForView.nav.prevSection = courseWithEnrollmentForView.nav.currentSection;
+    if (curCardIdx+1 < courseWithEnrollmentForView.nav.currentSection.cards_list.length) {
+        courseWithEnrollmentForView.nav.nextCard = courseWithEnrollmentForView.nav.currentSection.cards_list[curCardIdx+1];
     } else {
-        if (curSectIdx+1 < gqlResp.nav.currentUnit.sections_list.length) {
+        if (curSectIdx+1 < courseWithEnrollmentForView.nav.currentUnit.sections_list.length) {
             // Use the first card of the next section and set next section
-            gqlResp.nav.nextSection = gqlResp.nav.currentUnit.sections_list[curSectIdx+1];
-            gqlResp.nav.nextCard = gqlResp.nav.nextSection.cards_list[0];
+            courseWithEnrollmentForView.nav.nextSection = courseWithEnrollmentForView.nav.currentUnit.sections_list[curSectIdx+1];
+            courseWithEnrollmentForView.nav.nextCard = courseWithEnrollmentForView.nav.nextSection.cards_list[0];
         } else {
-            if (curUnitIdx+1 < gqlResp.units.length) {
+            if (curUnitIdx+1 < courseWithEnrollmentForView.units.length) {
                 // Use the first card of the first section of the next unit
-                gqlResp.nav.nextUnit = gqlResp.units[curUnitIdx+1];
-                gqlResp.nav.nextSection = gqlResp.nav.nextUnit.sections_list[0];
-                gqlResp.nav.nextCard = gqlResp.nav.nextSection.cards_list[0];
+                courseWithEnrollmentForView.nav.nextUnit = courseWithEnrollmentForView.units[curUnitIdx+1];
+                courseWithEnrollmentForView.nav.nextSection = courseWithEnrollmentForView.nav.nextUnit.sections_list[0];
+                courseWithEnrollmentForView.nav.nextCard = courseWithEnrollmentForView.nav.nextSection.cards_list[0];
             } else {
                 // END OF COURSE
-                gqlResp.nav.nextUnit = null;
-                gqlResp.nav.nextSection = null;
-                gqlResp.nav.nextCard = null;
+                courseWithEnrollmentForView.nav.nextUnit = null;
+                courseWithEnrollmentForView.nav.nextSection = null;
+                courseWithEnrollmentForView.nav.nextCard = null;
             }
         }
     }
     if (curCardIdx-1 > -1) {
-        gqlResp.nav.prevCard = gqlResp.nav.currentSection.cards_list[curCardIdx-1];
+        courseWithEnrollmentForView.nav.prevCard = courseWithEnrollmentForView.nav.currentSection.cards_list[curCardIdx-1];
     } else {
         if (curSectIdx-1 > -1) {
             // Use the last card of the prev section and set prev section
-            gqlResp.nav.prevSection = gqlResp.nav.currentUnit.sections_list[curSectIdx-1];
-            gqlResp.nav.prevCard = gqlResp.nav.prevSection.cards_list[gqlResp.nav.prevSection.cards_list.length-1];
+            courseWithEnrollmentForView.nav.prevSection = courseWithEnrollmentForView.nav.currentUnit.sections_list[curSectIdx-1];
+            courseWithEnrollmentForView.nav.prevCard = courseWithEnrollmentForView.nav.prevSection.cards_list[courseWithEnrollmentForView.nav.prevSection.cards_list.length-1];
         } else {
             if (curUnitIdx-1 > -1) {
                 // Use the last card of the last section of the prev unit
-                gqlResp.nav.prevUnit = gqlResp.units[curUnitIdx-1];
-                gqlResp.nav.prevSection = gqlResp.nav.prevUnit.sections_list[gqlResp.nav.prevUnit.sections_list.length-1];
-                gqlResp.nav.prevCard = gqlResp.nav.prevSection.cards_list[gqlResp.nav.prevSection.cards_list.length-1];
+                courseWithEnrollmentForView.nav.prevUnit = courseWithEnrollmentForView.units[curUnitIdx-1];
+                courseWithEnrollmentForView.nav.prevSection = courseWithEnrollmentForView.nav.prevUnit.sections_list[courseWithEnrollmentForView.nav.prevUnit.sections_list.length-1];
+                courseWithEnrollmentForView.nav.prevCard = courseWithEnrollmentForView.nav.prevSection.cards_list[courseWithEnrollmentForView.nav.prevSection.cards_list.length-1];
             } else {
                 // FIRST CARD OF COURSE
-                gqlResp.nav.prevUnit = null;
-                gqlResp.nav.prevSection = null;
-                gqlResp.nav.prevCard = null;
+                courseWithEnrollmentForView.nav.prevUnit = null;
+                courseWithEnrollmentForView.nav.prevSection = null;
+                courseWithEnrollmentForView.nav.prevCard = null;
             }
         }
     }
-    gqlResp.card = await client.getSectionCard(courseGID, unitGID, sectionGID, cardGID);
-    gqlResp.card.content.content = renderFullCardContentHTML(gqlResp.card.content.content);
-    gqlResp.card['url_id'] = toUrlId(gqlResp.card.title, gqlResp.card.id);
-    setupQuizQuestionForView(gqlResp.card.question, gqlResp.nav);
+    courseWithEnrollmentForView.card = sectionCard;
+    courseWithEnrollmentForView.card.content.content = renderFullCardContentHTML(courseWithEnrollmentForView.card.content.content);
+    courseWithEnrollmentForView.card['url_id'] = toUrlId(courseWithEnrollmentForView.card.title, courseWithEnrollmentForView.card.id);
+    setupQuizQuestionForView(courseWithEnrollmentForView.card.question, courseWithEnrollmentForView.nav);
+    return courseWithEnrollmentForView
+}
+
+export async function viewCourseCard(client: GqlApi, user: IUserData, locale: string, req: Request, courseGID: string, unitGID: string, sectionGID: string, cardGID: string) : Promise<ISPFRouteResponse> {
+    let gqlResp = await prepareCourseCardForView(await fetchDetailedCourseWithEnrollmentForView(client, courseGID), await client.getSectionCard(courseGID, unitGID, sectionGID, cardGID), locale, courseGID, unitGID, sectionGID, cardGID);
     return {
         contentTmpl: 'course_card',
         meta: {
@@ -250,7 +289,12 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
             jsonld: !!gqlResp.card.updated_at ? generateArticle(`${gqlResp.card.title} | ${gqlResp.meta.title}`, undefined, gqlResp.meta.logo_url, gqlResp.card.updated_at, PlatformOrganization) : undefined
         },
         data: {
-            course: gqlResp
+            course: gqlResp,
+            initialLoadUUID: uuidv4(),
+            displayOverview: false,
+            isLastCard: gqlResp.nav.pages.currentIndex === gqlResp.nav.pages.all.length-1,
+            infiniteScrollRequest: !!req.query.infiniteScroll,
+            courseOverviewFaqMD: courseOverviewFaqMDGen(gqlResp)
         }
     }
 }

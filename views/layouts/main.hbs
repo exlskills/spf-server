@@ -9,18 +9,21 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 {{> modals}}
-{{> callout-top}}
-<style>
-    .co-show #callout-top {
-        background-color: white;
-    }
-</style>
-<div id="main-page-wrapper">
-    <nav id="sidebar" class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light">
+<!--{{> callout-top}}-->
+<!--<style>-->
+    <!--.co-show #callout-top {-->
+        <!--background-color: white;-->
+    <!--}-->
+<!--</style>-->
+<div id="topbar-wrapper">
+    {{> topbar}}
+</div>
+<!-- if on course, then show sidebar, otherwise no -->
+        <div id="main-page-wrapper" class="{{#if data.course}}exl-show-sidebar{{else}}exl-hide-sidebar{{/if}}">
+    <nav id="sidebar" class="navbar navbar-vertical fixed-left navbar-expand-lg navbar-light">
         {{> sidebar}}
     </nav>
-    <div class="main-content bg-fixed-bottom" style="background-image: url(/learn-en/assets/img/illustrations/sticky.svg);">
-        {{> topbar}}
+    <div class="main-content">
         <div id="content">
             {{{body}}}
         </div>
