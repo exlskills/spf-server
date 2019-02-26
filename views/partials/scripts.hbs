@@ -344,7 +344,6 @@
                 fn();
             });
             $(document).on("infiniscrolldone", function() {
-                console.log('INFINISCROLL DONE')
                 fn();
             });
             if (document.readyState != 'loading') {
@@ -371,7 +370,6 @@
         }
         ready(function() {
             drift.on('ready', function(api) {
-                console.log("Drift returned ready")
                 var handleClick = openSidebar.bind(this, api);
                 forEachElement(DRIFT_CHAT_SELECTOR, function(el) {
                     el.addEventListener('click', handleClick);
