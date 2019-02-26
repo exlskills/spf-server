@@ -1,11 +1,6 @@
 <nav id="topbar" class="navbar navbar-expand-lg navbar-light">
     <div class="container">
 
-        <!-- Toggler -->
-        <button class="navbar-toggler mr-auto" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
         <!-- Brand -->
         <a class="navbar-brand mr-auto spf-link d-lg-none" href="/learn-{{route.locale}}/dashboard">
             <img src="{{config.static_assets_url_prefix}}/img/logo-exlskills.svg" alt="EXLskills" class="navbar-brand-img">
@@ -93,6 +88,11 @@
                 </div>
             {{/if}}
         </div>
+
+        <!-- Toggler -->
+        <button style="margin-left: 10px;" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
         <!-- Collapse -->
         <div id="navbar" class="collapse navbar-collapse mr-auto order-lg-first">
