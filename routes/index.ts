@@ -66,6 +66,7 @@ registerPartialHBS('project-card-lg-vertical');
 registerPartialHBS('digital-diploma-card-lg-vertical');
 registerPartialHBS('course-card-banner');
 registerPartialHBS('social-meta');
+registerPartialHBS('sidebar-menu-content');
 
 const router = express.Router();
 

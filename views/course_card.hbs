@@ -10,6 +10,7 @@
             border: none;
             margin-top: 24px;
             margin-bottom: 20px;
+            max-width: 100% !important;
             background: #000
             url(https://cdn-misc-assets.exlskills.com/iframe-loading.gif)
             center center no-repeat;
@@ -58,17 +59,74 @@
                 display: none;
             }
         }
+
+        @media (min-width: 992px) {
+            #course-mobile-nav-wrapper {
+                display: none;
+            }
+            #course-overview-wrapper {
+                margin-top: 30px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            #course-all-cards-wrapper {
+                margin-top: 55px;
+            }
+            #course-overview-wrapper {
+                margin-top: 70px;
+            }
+            #course-overview-heading {
+                display: none;
+            }
+        }
+
+        #course-mobile-nav-wrapper {
+            position: fixed;
+            top: 65px;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background-color: #f4f4f4;
+            z-index: 995;
+            transition: top 0.3s;
+            height: 55px;
+        }
+        #course-mobile-nav-wrapper .container:first-of-type {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+        #course-mobile-nav-heading {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+
     </style>
+    <div id="course-mobile-nav-wrapper">
+        <div class="container">
+            <div class="mr-auto">
+                <h4 id="course-mobile-nav-heading">{{#if data.displayOverview}}{{data.course.meta.title}}{{else}}{{data.course.card.title}}{{/if}}</h4>
+            </div>
+            <a id="course-mobile-nav-popover-link" data-toggle="modal" data-target="#modalMobileExtendedSidebarNav" style="cursor:pointer;padding-top: 10px;padding-right: 10px;">
+                <span class="fe fe-chevron-down"></span>
+            </a>
+        </div>
+        <div class="progress" style="border-radius: 0;background: #f4f4f4;">
+            <div id="course-mobile-nav-progress-bar" class="progress-bar bg-success" role="progressbar" style="width: {{data.pctCourseLocation}}%;border-radius: 0;" aria-valuenow="{{data.pctCourseLocation}}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
     <!-- CONTENT -->
-    <div class="container-fluid">
+    <div id="course-all-cards-wrapper" class="container-fluid">
         <div id="course-cards-top-loading-indicator" style="display: none;padding: 40px 0;" >
             <div class="is-loading w-100"></div>
         </div>
-        <div id="course-overview-wrapper" style="margin-top: 30px;{{#not data.displayOverview}}display: none;{{/not}}">
+        <div id="course-overview-wrapper" style="{{#not data.displayOverview}}display: none;{{/not}}">
             <div class="row align-items-center">
                 <!-- Title -->
                 <div class="col">
-                    <h1 style="font-size: 1.4em;">
+                    <h1 id="course-overview-heading" style="font-size: 1.4em;">
                         {{data.course.meta.title}} {{intlGet "messages.course.label"}}
                     </h1>
                 </div>
@@ -145,12 +203,14 @@
         $(function() {
             var coursePages = JSON.parse($('#course-pages-json').html());
             var loadedIndices = [coursePages.currentIndex];
+            var lastLoadedIndicesLen = loadedIndices.length;
             var courseOverviewPageTitle = "{{data.course.meta.title}}";
             var courseOverviewPath = "/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}";
             var topPageIdx = {{data.displayOverview}} ? -1 : coursePages.currentIndex;
             var bottomPageIdx = coursePages.currentIndex;
             var loadedOverview = {{data.displayOverview}};
             var visibleCardPath = {{data.displayOverview}} ? courseOverviewPath : coursePages.currentPage.path;
+            var visibleCardIdx = {{data.displayOverview}} ? -1 : coursePages.currentIndex;
             var lastVisibleCardPath = visibleCardPath;
             var lastLoadedCardPath = {{data.displayOverview}} ? courseOverviewPath : coursePages.currentPage.path;
             var currentlyLoadingPrepend = false;
@@ -164,6 +224,7 @@
             var pendingEnrollment = false;
             var pStart = {x: 0, y:0};
             var pStop = {x:0, y:0};
+            var prevScrollPos = window.pageYOffset;
 
             {{#not data.displayOverview}}
                 setCardInteractionGQL({
@@ -181,6 +242,7 @@
             function updateAuxElementsSPF(pageData, ignoreNavItems) {
                 if (!ignoreNavItems) {
                     $('#sidebar').html(pageData.body.sidebar);
+                    $('#course-mobile-nav-heading').html(pageData.url === courseOverviewPath ? courseOverviewPageTitle : $('.course-card-item[data-card-url-path="' + pageData.url + '"]').attr('data-card-title'));
                     $('#topbar-title').html(pageData.body['topbar-title']);
                     $('#topbar-wrapper').html(pageData.body['topbar-wrapper']);
                     history.pushState({}, pageData.title, pageData.url);
@@ -260,14 +322,17 @@
                         if (existingEl.length > 0) {
                             loadedIndices.push(idxToLoad);
                             history.pushState({}, coursePages.all[idxToLoad].title, coursePages.all[idxToLoad].path);
+                            markInfiniscrollDone(isPrepend)
                         } else {
                             $.getJSON(coursePages.all[idxToLoad].path+'?spf=navigate&infiniteScroll=true', null, function (data) {
                                 processCardNavigation(viaScroll, isPrepend, data, idxToLoad);
+                                markInfiniscrollDone(isPrepend)
                             });
                         }
                     } else {
                         watchPullUpperBound = true;
                         watchScrollBottomBound = true;
+                        markInfiniscrollDone(isPrepend)
                     }
                 } else if (idxToLoad === -1) {
                     $('#course-overview-wrapper').show();
@@ -275,6 +340,7 @@
                     loadedOverview = true;
                     $('#course-cards-top-loading-indicator').hide();
                     loadedIndices.push(idxToLoad);
+                    markInfiniscrollDone(isPrepend)
                 } else if (idxToLoad === coursePages.all.length) {
                     bottomPageIdx = idxToLoad;
                     loadedIndices.push(idxToLoad);
@@ -283,14 +349,33 @@
                     if (viaScroll && isPrepend) {
                         watchPullUpperBound = true;
                     }
+                    markInfiniscrollDone(isPrepend)
+                } else {
+                    markInfiniscrollDone(isPrepend)
                 }
 
+            }
+
+            function markInfiniscrollDone(isPrepend) {
                 document.dispatchEvent(new Event('infiniscrolldone'));
                 if (isPrepend) {
                     currentlyLoadingPrepend = false;
                 } else {
                     currentlyLoadingAppend = false;
                 }
+            }
+
+            function manageMobileMenuPos() {
+                var currentScrollPos = window.pageYOffset;
+                if (lastLoadedIndicesLen === loadedIndices.length) {
+                    if (prevScrollPos > currentScrollPos) {
+                        document.getElementById("course-mobile-nav-wrapper").style.top = "65px";
+                    } else if (!currentlyLoadingPrepend && !currentlyLoadingAppend) {
+                        document.getElementById("course-mobile-nav-wrapper").style.top = "10px";
+                    }
+                }
+                lastLoadedIndicesLen = loadedIndices.length;
+                prevScrollPos = currentScrollPos;
             }
 
             function scrollHandler() {
@@ -301,7 +386,9 @@
                 if (watchScrollBottomBound) {
                     lowerScrollBoundHandler();
                 }
+                manageMobileMenuPos();
                 var cardsInView = [];
+                var overviewAtLeastPartial = false;
                 $('.course-card-item:visible').each(function() {
                     if ($(this).isInViewport()) {
                         cardsInView.push({idx: parseInt($(this).attr('data-card-page-index')), path: $(this).attr('data-card-url-path')});
@@ -310,23 +397,30 @@
                 $('#course-overview-wrapper:visible').each(function() {
                     if ($(this).isInViewportEntirely()) {
                         cardsInView.push({idx: -1, path: courseOverviewPath});
+                    } else if ($(this).isInViewport()) {
+                        overviewAtLeastPartial = true;
                     }
                 });
 
-                var overviewVisible = false;
+                var overviewFullVisible = false;
                 var maxCardVisible = null;
                 for (var i = 0; i < cardsInView.length; i++) {
                     if (cardsInView[i].idx === -1) {
-                        overviewVisible = true;
+                        overviewFullVisible = true;
                     }
                     if (!maxCardVisible || maxCardVisible.idx < cardsInView[i].idx) {
                         maxCardVisible = cardsInView[i];
                     }
                 }
-                if (overviewVisible) {
+                if (overviewFullVisible) {
                     visibleCardPath = courseOverviewPath;
+                    visibleCardIdx = -1;
                 } else if (maxCardVisible) {
                     visibleCardPath = maxCardVisible.path;
+                    visibleCardIdx = maxCardVisible.idx;
+                } else if(overviewAtLeastPartial) {
+                    visibleCardPath = courseOverviewPath;
+                    visibleCardIdx = -1;
                 }
             }
 
@@ -356,6 +450,9 @@
                     return;
                 }
                 lastVisibleCardPath = visibleCardPath;
+                var curPct = visibleCardPath === courseOverviewPath ? 1 : ((visibleCardIdx+1)/coursePages.all.length)*100;
+                $('#course-mobile-nav-progress-bar').attr('aria-valuenow', curPct);
+                $('#course-mobile-nav-progress-bar').width(curPct+'%');
                 if (!isEnrolled && !pendingEnrollment) {
                     var inputData = {
                         clientMutationId: uuidv4(),
@@ -474,7 +571,6 @@
                     if (!loadedOverview) {
                         $('#course-cards-top-loading-indicator').show();
                     }
-                    console.log("IS SWIPE UP!!!")
                     attemptLoadCard(true, true);
                 }
             }
@@ -486,6 +582,10 @@
                         || (Math.abs(dX)/Math.abs(dY) <= 0.3 && dY >= 30)
                 );
             }
+
+            $('#course-mobile-nav-popover-link').click(function (e) {
+// TODO
+            });
 
             $(window).off('touchstart');
             $(window).on('touchstart', function(e){ swipeStart(e.originalEvent); });
