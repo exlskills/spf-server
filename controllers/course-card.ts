@@ -292,6 +292,7 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
             course: gqlResp,
             initialLoadUUID: uuidv4(),
             displayOverview: false,
+            pctCourseLocation: ((gqlResp.nav.pages.currentIndex+1) / gqlResp.nav.pages.all.length)*100,
             isLastCard: gqlResp.nav.pages.currentIndex === gqlResp.nav.pages.all.length-1,
             infiniteScrollRequest: !!req.query.infiniteScroll,
             courseOverviewFaqMD: courseOverviewFaqMDGen(gqlResp)
