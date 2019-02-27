@@ -1,22 +1,8 @@
-<link rel="" href="{{config.static_assets_url_prefix}}/css/theme-dark.min.css" data-toggle="theme" data-theme-mode="dark">
-<link rel="" href="{{config.static_assets_url_prefix}}/css/theme.min.css" data-toggle="theme" data-theme-mode="light">
-
-<style>
-    body { display: none; }
-</style>
-
-<script>
-    var themeMode = (localStorage.getItem('themeMode')) ? localStorage.getItem('themeMode') : 'light';
-    var themeFile = document.querySelector('[data-toggle="theme"][data-theme-mode="' + themeMode + '"]');
-
-    // Enable stylesheet
-    themeFile.rel = 'stylesheet';
-
-    // Enable body content
-    themeFile.addEventListener('load', function() {
-        document.body.style.display = 'block';
-    });
-</script>
+{{#eq route.themeMode "dark"}}
+    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/css/theme-dark.min.css" data-toggle="theme" data-theme-mode="dark">
+{{else}}
+    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/css/theme.min.css" data-toggle="theme" data-theme-mode="light">
+{{/eq}}
 
 <style>
     .iti-flag {background-image: url("{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/img/flags.png");}
@@ -25,9 +11,27 @@
     .iti-flag {background-image: url("{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/img/flags@2x.png");}
     }
     .intl-tel-input { width: 100%; }
-</style>
 
-<style>
+    .course-badge {
+        background-color: white;
+    }
+
+    @media (min-width: 768px) {
+        .navbar-vertical.navbar-expand-md .navbar-brand {
+            padding-top: 4px;
+        }
+    }
+
+    #content {
+        min-height: calc(100vh - 65.5px);
+    }
+
+    @media (max-width: 768px) {
+        #content {
+            min-height: calc(100vh - 65px);
+        }
+    }
+
     #page-body #topbar-wrapper {
         height: 65px;
     }
@@ -59,6 +63,3 @@
         margin-left: 0 !important;
     }
 </style>
-
-<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/css/intlTelInput.css">
-<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/css/custom.css">

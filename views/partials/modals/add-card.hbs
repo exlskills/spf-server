@@ -87,81 +87,89 @@
 
 {{#lt user.sub_level 1000}}
     <script>
-        $(function () {
+        $(function() {
+            function setupStripeElements() {
 
-            // Create a Stripe client.
-            var stripe = Stripe('{{config.stripePubKey}}');
+                // Create a Stripe client.
+                var stripe = Stripe('{{config.stripePubKey}}');
 
-            // Create an instance of Elements.
-            var elements = stripe.elements();
+                // Create an instance of Elements.
+                var elements = stripe.elements();
 
-            // Custom styling can be passed to options when creating an Element.
-            // (Note that this demo uses a wider set of styles than the guide below.)
-            var style = {
-                base: {
-                    color: '#32325d',
-                    lineHeight: '18px',
-                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                    fontSmoothing: 'antialiased',
-                    fontSize: '16px',
-                    '::placeholder': {
-                        color: '#aab7c4'
+                // Custom styling can be passed to options when creating an Element.
+                // (Note that this demo uses a wider set of styles than the guide below.)
+                var style = {
+                    base: {
+                        color: '#32325d',
+                        lineHeight: '18px',
+                        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                        fontSmoothing: 'antialiased',
+                        fontSize: '16px',
+                        '::placeholder': {
+                            color: '#aab7c4'
+                        }
+                    },
+                    invalid: {
+                        color: '#fa755a',
+                        iconColor: '#fa755a'
                     }
-                },
-                invalid: {
-                    color: '#fa755a',
-                    iconColor: '#fa755a'
+                };
+
+                // Create an instance of the card Element.
+                var card = elements.create('card', {style: style});
+
+                // Add an instance of the card Element into the `add-modal-card-element` <div>.
+                card.mount('#add-modal-card-element');
+
+                // Handle real-time validation errors from the card Element.
+                card.addEventListener('change', function (event) {
+                    var displayError = document.getElementById('add-modal-card-errors');
+                    if (event.error) {
+                        displayError.textContent = event.error.message;
+                    } else {
+                        displayError.textContent = '';
+                    }
+                });
+
+                function stripeTokenHandler(tkn) {
+                    $.postJSON('{{config.authAPIBaseURL}}/me/credits/enroll', {
+                        stripeToken: {token: tkn}
+                    }, function (data) {
+                        refreshJWT(function () {
+                            window.location.reload();
+                        });
+                    });
                 }
-            };
 
-            // Create an instance of the card Element.
-            var card = elements.create('card', {style: style});
-
-            // Add an instance of the card Element into the `add-modal-card-element` <div>.
-            card.mount('#add-modal-card-element');
-
-            // Handle real-time validation errors from the card Element.
-            card.addEventListener('change', function (event) {
-                var displayError = document.getElementById('add-modal-card-errors');
-                if (event.error) {
-                    displayError.textContent = event.error.message;
-                } else {
-                    displayError.textContent = '';
-                }
-            });
-
-            function stripeTokenHandler(tkn) {
-                $.postJSON('{{config.authAPIBaseURL}}/me/credits/enroll', {
-                    stripeToken: {token: tkn}
-                }, function (data) {
-                    refreshJWT(function () {
-                        window.location.reload();
+                // Handle form submission.
+                $('#add-modal-add-card-form').submit(function (event) {
+                    event.preventDefault();
+                    $(".form-btn-submit", this).addClass('is-loading');
+                    $(".form-btn-submit", this).attr('disabled', 'disabled');
+                    var form = this;
+                    stripe.createToken(card).then(function (result) {
+                        if (result.error) {
+                            $(".form-btn-submit", form).removeClass('is-loading');
+                            $(".form-btn-submit", form).attr('disabled', false);
+                            // Inform the user if there was an error.
+                            var errorElement = document.getElementById('add-modal-card-errors');
+                            errorElement.textContent = result.error.message;
+                        } else {
+                            // Send the token to your server.
+                            stripeTokenHandler(result.token);
+                        }
+                    }, function (reject) {
+                        $(".form-btn-submit", form).removeClass('is-loading');
+                        $(".form-btn-submit", form).attr('disabled', false);
                     });
                 });
             }
-
-            // Handle form submission.
-            $('#add-modal-add-card-form').submit(function (event) {
-                event.preventDefault();
-                $(".form-btn-submit", this).addClass('is-loading');
-                $(".form-btn-submit", this).attr('disabled', 'disabled');
-                var form = this;
-                stripe.createToken(card).then(function (result) {
-                    if (result.error) {
-                        $(".form-btn-submit", form).removeClass('is-loading');
-                        $(".form-btn-submit", form).attr('disabled', false);
-                        // Inform the user if there was an error.
-                        var errorElement = document.getElementById('add-modal-card-errors');
-                        errorElement.textContent = result.error.message;
-                    } else {
-                        // Send the token to your server.
-                        stripeTokenHandler(result.token);
-                    }
-                }, function (reject) {
-                    $(".form-btn-submit", form).removeClass('is-loading');
-                    $(".form-btn-submit", form).attr('disabled', false);
-                });
-            });
+            var stripeAwait = setInterval(function() {
+                if (window.Stripe) {
+                    clearInterval(stripeAwait);
+                    setupStripeElements();
+                }
+            }, 100);
         });
     </script>
 {{/lt}}

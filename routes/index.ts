@@ -289,7 +289,8 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             referer: req.headers.referer,
             referrer: req.headers.referer,
             url: config.clientBaseURL + req.path,
-            canonicalUrl: canonicalUrl
+            canonicalUrl: canonicalUrl,
+            themeMode: req.cookies['themeMode'] ? req.cookies['themeMode'] : 'light'
         };
 
         if (!result.meta.jsonld) {
