@@ -9,11 +9,11 @@
         <!-- Navigation -->
         <ul class="navbar-nav mb-md-3">
             {{#if data.course.meta.instructor_timekit.intervals}}
-                <li class="nav-item">
-                    <a class="text-primary nav-link spf-link {{#eq contentTmpl "course_help"}}active{{/eq}}" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/help">
-                        <i class="fe fe-help-circle"></i> {{intlGet "messages.help.get_help_label"}} ✋
-                    </a>
-                </li>
+                <!--<li class="nav-item">-->
+                    <!--<a class="text-primary nav-link spf-link {{#eq contentTmpl "course_help"}}active{{/eq}}" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/help">-->
+                        <!--<i class="fe fe-help-circle"></i> {{intlGet "messages.help.get_help_label"}} ✋-->
+                    <!--</a>-->
+                <!--</li>-->
             {{/if}}
             <li class="cc-nav-item nav-item">
                 <a class="nav-link spf-link {{#eq contentTmpl "course_content"}}active{{/eq}}" href="/learn-{{route.locale}}/courses/{{data.course.meta.url_id}}/content">
@@ -88,7 +88,7 @@
             <div class="nav-link text-muted">
                 <i class="fe fe-sun"></i> {{intlGet "messages.config.night_mode_label"}}
                 <div class="custom-control custom-checkbox-toggle ml-auto">
-                    <input type="checkbox" class="custom-control-input" id="theme-mode-toggle">
+                    <input onclick="sidebarChangeTheme({{#eq route.themeMode "dark"}}'light'{{else}}'dark'{{/eq}});" type="checkbox" class="custom-control-input" id="theme-mode-toggle" {{#eq route.themeMode "dark"}}checked="true"{{/eq}}>
                     <label class="custom-control-label" for="theme-mode-toggle"></label>
                 </div>
             </div>

@@ -47,29 +47,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 {{/each}}
 <!-- Libs CSS -->
 {{log config.static_assets_url_prefix}}
-<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/fonts/feather/feather.min.css">
-<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/highlight/styles/vs2015.min.css">
-<!-- TODO add libs back when required -->
-<!--<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/quill/dist/quill.core.css">-->
-<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/select2/dist/css/select2.min.css">
-<!--<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/flatpickr/dist/flatpickr.min.css">-->
-<link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
-<link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/toastr/toastr.min.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.min.css"/>
 
-<!-- Important scripts -->
-{{#not mobile}}
-<script type="text/javascript">
-    var subscribersSiteId = '{{config.subscribersSiteID}}';
-</script>
-<script type="text/javascript" src="https://cdn.subscribers.com/assets/subscribers.js"></script>
-{{/not}}
+<!--- NOTE Deferred CSS is added via scripts (from a noscript element) -->
+
 <!-- TODO Clean this up and load jquery later, however, too many page scripts require this while loading... -->
 <script src="{{config.static_assets_url_prefix}}/libs/jquery/dist/jquery.min.js"></script>
-<!-- TODO make the booking impl async -->
-<script src="https://cdn.timekit.io/booking-js/v2/booking.min.js"></script>
-<!-- TODO make stripe impl support async -->
-<script src="https://js.stripe.com/v3/"></script>
+<script async src="https://js.stripe.com/v3/"></script>
 
 <!-- Theme CSS -->
 {{> styles}}

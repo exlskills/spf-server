@@ -98,64 +98,64 @@
                 </div>
             {{/if}}
             {{#each data.instructor.instructor_timekit.intervals}}
-                <div id="bookingjs"></div>
-                <script>
-                    TimekitBooking().init({
-                        app_key: '{{{../config.timekitPublicKey}}}',
-                        project_id: '{{{project_id}}}', // Change this!
-                        customer_fields: {
-                            name: {
-                                title: "{{intlGet "messages.coins.full_name_label"}}",
-                                prefilled: '{{../user.full_name}}',
-                                readonly: false
-                            },
-                            email: {
-                                title: "{{intlGet "messages.instructors.email_label"}}",
-                                prefilled: '{{../user.email}}',
-                                readonly: false
-                            },
-                            location: {
-                                title: "{{intlGet "messages.class.location_label"}}",
-                                prefilled: "{{intlGet "messages.class.loc_online_remote_av"}}",
-                                readonly: true
-                            },
-                            deposit: {
-                                title: "{{intlGet "messages.class.deposit_required_line"}}",
-                                prefilled: "US$5 {{intlGet "messages.class.deposit_refunded_after_line"}}",
-                                readonly: true
-                            },
-                            rate: {
-                                title: "{{intlGet "messages.instructors.hourly_rate_billed_line"}}",
-                                prefilled: "US$40{{intlGet "messages.class.per_hr_payment_due_line"}}",
-                                readonly: true
-                            }
-                        },
-                        ui: {
-                            display_name: "{{intlGet "messages.instructors.book_session_with"}} {{../data.instructor.full_name}}",
-                            localization: {
-                                submit_button: "{{intlGet "messages.class.pay_deposit"}}",
-                                success_message: "{{intlGet "messages.class.your_booking_awaiting_line"}}"
-                            }
-                        },
-                        callbacks: {
-                            createBookingSuccessful: function (resp) {
-                                var bookingCheckoutItem = {
-                                    category: 'instructor_booking_deposit',
-                                    quantity: 1,
-                                    options: {
+                <!--<div id="bookingjs"></div>-->
+                <!--<script>-->
+                    <!--TimekitBooking().init({-->
+                        <!--app_key: '{{{../config.timekitPublicKey}}}',-->
+                        <!--project_id: '{{{project_id}}}', // Change this!-->
+                        <!--customer_fields: {-->
+                            <!--name: {-->
+                                <!--title: "{{intlGet "messages.coins.full_name_label"}}",-->
+                                <!--prefilled: '{{../user.full_name}}',-->
+                                <!--readonly: false-->
+                            <!--},-->
+                            <!--email: {-->
+                                <!--title: "{{intlGet "messages.instructors.email_label"}}",-->
+                                <!--prefilled: '{{../user.email}}',-->
+                                <!--readonly: false-->
+                            <!--},-->
+                            <!--location: {-->
+                                <!--title: "{{intlGet "messages.class.location_label"}}",-->
+                                <!--prefilled: "{{intlGet "messages.class.loc_online_remote_av"}}",-->
+                                <!--readonly: true-->
+                            <!--},-->
+                            <!--deposit: {-->
+                                <!--title: "{{intlGet "messages.class.deposit_required_line"}}",-->
+                                <!--prefilled: "US$5 {{intlGet "messages.class.deposit_refunded_after_line"}}",-->
+                                <!--readonly: true-->
+                            <!--},-->
+                            <!--rate: {-->
+                                <!--title: "{{intlGet "messages.instructors.hourly_rate_billed_line"}}",-->
+                                <!--prefilled: "US$40{{intlGet "messages.class.per_hr_payment_due_line"}}",-->
+                                <!--readonly: true-->
+                            <!--}-->
+                        <!--},-->
+                        <!--ui: {-->
+                            <!--display_name: "{{intlGet "messages.instructors.book_session_with"}} {{../data.instructor.full_name}}",-->
+                            <!--localization: {-->
+                                <!--submit_button: "{{intlGet "messages.class.pay_deposit"}}",-->
+                                <!--success_message: "{{intlGet "messages.class.your_booking_awaiting_line"}}"-->
+                            <!--}-->
+                        <!--},-->
+                        <!--callbacks: {-->
+                            <!--createBookingSuccessful: function (resp) {-->
+                                <!--var bookingCheckoutItem = {-->
+                                    <!--category: 'instructor_booking_deposit',-->
+                                    <!--quantity: 1,-->
+                                    <!--options: {-->
 
-                                    },
-                                    refs: {
-                                        booking_id: resp.data.id
-                                    },
-                                    displayUnitCost: 5,
-                                    displayName: "{{intlGet "messages.instructors.deposit_session_with"}} {{{../data.instructor.full_name}}}"
-                                };
-                                window.location.hash = '#!modalCheckout='+encodeURIComponent(JSON.stringify(bookingCheckoutItem));
-                            }
-                        }
-                    });
-                </script>
+                                    <!--},-->
+                                    <!--refs: {-->
+                                        <!--booking_id: resp.data.id-->
+                                    <!--},-->
+                                    <!--displayUnitCost: 5,-->
+                                    <!--displayName: "{{intlGet "messages.instructors.deposit_session_with"}} {{{../data.instructor.full_name}}}"-->
+                                <!--};-->
+                                <!--window.location.hash = '#!modalCheckout='+encodeURIComponent(JSON.stringify(bookingCheckoutItem));-->
+                            <!--}-->
+                        <!--}-->
+                    <!--});-->
+                <!--</script>-->
             {{/each}}
         </div>
         <div class="col-12 col-xl-4">
