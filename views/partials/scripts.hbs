@@ -1,8 +1,5 @@
 <!-- Libs JS -->
-
 <script src="{{config.static_assets_url_prefix}}/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{{config.static_assets_url_prefix}}/libs/chart.js/dist/Chart.min.js"></script>
-<script src="{{config.static_assets_url_prefix}}/libs/chart.js/Chart.extension.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/go.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
@@ -16,17 +13,19 @@
 <!--<script src="{{config.static_assets_url_prefix}}/libs/dropzone/dist/min/dropzone.min.js"></script>-->
 <script src="{{config.static_assets_url_prefix}}/libs/select2/dist/js/select2.min.js"></script>
 <script src="{{config.static_assets_url_prefix}}/libs/toastr/toastr.min.js"></script>
-<script src="{{config.static_assets_url_prefix}}/libs/moment/moment.min.js"></script>
-<script src="{{config.static_assets_url_prefix}}/libs/moment-timezone/moment-timezone-with-data-2012-2022.min.js"></script>
 <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js"></script>
-<script src="{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/js/intlTelInput.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/chart.js/dist/Chart.min.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/chart.js/Chart.extension.min.js"></script>
 
 <!-- Theme JS -->
+<script>
+    var themeMode = '{{{route.themeMode}}}';
+</script>
 <script src="{{config.static_assets_url_prefix}}/js/theme.min.js"></script>
 
 <script>
+    var gqlEndpoint = '{{config.gqlEndpoint}}';
+
     NProgress.configure({ showSpinner: false });
     NProgress.configure({ trickleSpeed: 75 });
     $(document).on("spfclick", function() {
@@ -59,8 +58,7 @@
     });
 
     setupCodeHLJS();
-</script>
-<script>
+
     $.fn.isInViewport = function() {
         var elementTop = $(this).offset().top;
         var elementBottom = elementTop + $(this).outerHeight();
@@ -105,21 +103,18 @@
             return v.toString(16);
         });
     }
-</script>
-<script>
+
     $.escapeLiteralSel = function(sel) {
         return sel.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1')
     }
-</script>
-<script>
+
     $('.user-logout-btn').click(function(e) {
       e.preventDefault();
       $.postJSON('{{config.authAPIBaseURL}}/me/logout', {}, function(resp) {
         window.location.href = '{{{config.logoutURL}}}';
       });
     })
-</script>
-<script>
+
     function refreshJWT(callback, errorCallback) {
         $.ajax({
             url : '{{config.authAPIBaseURL}}/auth/jwt-refresh?'+(new Date()).getTime(),
@@ -132,8 +127,7 @@
             crossDomain: true
         });
     }
-</script>
-<script>
+
     $(function() {
         var modalIds = ['modalManageCoins', 'modalAddCard', 'modalCheckout', 'modalAuthenticate'];
         modalIds.forEach(function(id) {
@@ -161,8 +155,7 @@
     $(function() {
         $('[data-tooltip="true"]').tooltip();
     });
-</script>
-<script>
+
     $(function() {
         if (!window.localStorage.toastOnLoad || window.localStorage.toastOnLoad === "") {
             return;
@@ -183,8 +176,256 @@
                 break;
         }
         window.localStorage.removeItem('toastOnLoad');
-    })
+    });
+
+    var _WSCQ_quiz_currentUserWorkspace = null;
+    var _WSCQ_quiz_currentUserWorkspaceId = null;
+    window.addEventListener('message', function(evt) {
+        try {
+            var data = JSON.parse(evt.data)
+            if (data && data.event === 'workspace.changed' && data.workspaceId === _WSCQ_quiz_currentUserWorkspaceId) {
+                _WSCQ_quiz_currentUserWorkspace = JSON.stringify(data.payload);
+            }
+        } catch (error) {
+            console.log('invalid iframe msg: ', evt, ',ignoring error: ', error)
+        }
+    });
+
+    function subscribeToMailingList(email, campaign, onSuccess, onFailure) {
+        $.postJSON('{{{config.authAPIBaseURL}}}/mailing-list', {
+            email: email,
+            campaign: campaign,
+            formUrl: window.location.href
+        }, onSuccess, onFailure);
+    }
+
+    function htmlDecode(input){
+        var doc = new DOMParser().parseFromString(input, "text/html");
+        return doc.documentElement.textContent;
+    }
+
+    function updateUserProfileGQL(locale, profile, onSuccess, onFailure) {
+        var m = `mutation UpdateUserProfileMutation(
+                    $input: UpdateUserProfileInput!
+                ) {
+                updateUserProfile(input: $input) {
+                    completionObj {
+                        code
+                        msg
+                        processed
+                        modified
+                    }
+                }
+            }
+            `;
+        var inputData = {
+            locale: locale,
+            profile: profile
+        };
+        $.postJSON(gqlEndpoint, {
+            query: m,
+            variables: {
+                input: inputData
+            }
+        }, onSuccess, onFailure);
+    }
+
+    function setCardInteractionGQL(inputData, onSuccess, onError) {
+        var m = `mutation setCardInteractionMutation(
+                    $input: SetCardInteractionInput!
+                ) {
+                setCardInteraction(input: $input) {
+                    completionObj {
+                        code
+                        msg
+                        processed
+                        modified
+                    }
+                }
+            }
+            `;
+        $.postJSON(gqlEndpoint, {
+            query: m,
+            variables: {
+                input: inputData
+            }
+        }, onSuccess, onError);
+    }
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/moment/moment.min.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/moment-timezone/moment-timezone-with-data-2012-2022.min.js"></script>
+<script src="{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/js/intlTelInput.js"></script>
+<!-- Inline cookies lib -->
+<script>
+    /*!
+ * JavaScript Cookie v2.2.0
+ * https://github.com/js-cookie/js-cookie
+ *
+ * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
+ * Released under the MIT license
+ */
+    ;(function (factory) {
+        var registeredInModuleLoader = false;
+        if (typeof define === 'function' && define.amd) {
+            define(factory);
+            registeredInModuleLoader = true;
+        }
+        if (typeof exports === 'object') {
+            module.exports = factory();
+            registeredInModuleLoader = true;
+        }
+        if (!registeredInModuleLoader) {
+            var OldCookies = window.Cookies;
+            var api = window.Cookies = factory();
+            api.noConflict = function () {
+                window.Cookies = OldCookies;
+                return api;
+            };
+        }
+    }(function () {
+        function extend () {
+            var i = 0;
+            var result = {};
+            for (; i < arguments.length; i++) {
+                var attributes = arguments[ i ];
+                for (var key in attributes) {
+                    result[key] = attributes[key];
+                }
+            }
+            return result;
+        }
+
+        function init (converter) {
+            function api (key, value, attributes) {
+                var result;
+                if (typeof document === 'undefined') {
+                    return;
+                }
+
+                // Write
+
+                if (arguments.length > 1) {
+                    attributes = extend({
+                        path: '/'
+                    }, api.defaults, attributes);
+
+                    if (typeof attributes.expires === 'number') {
+                        var expires = new Date();
+                        expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * 864e+5);
+                        attributes.expires = expires;
+                    }
+
+                    // We're using "expires" because "max-age" is not supported by IE
+                    attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
+
+                    try {
+                        result = JSON.stringify(value);
+                        if (/^[\{\[]/.test(result)) {
+                            value = result;
+                        }
+                    } catch (e) {}
+
+                    if (!converter.write) {
+                        value = encodeURIComponent(String(value))
+                                .replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+                    } else {
+                        value = converter.write(value, key);
+                    }
+
+                    key = encodeURIComponent(String(key));
+                    key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
+                    key = key.replace(/[\(\)]/g, escape);
+
+                    var stringifiedAttributes = '';
+
+                    for (var attributeName in attributes) {
+                        if (!attributes[attributeName]) {
+                            continue;
+                        }
+                        stringifiedAttributes += '; ' + attributeName;
+                        if (attributes[attributeName] === true) {
+                            continue;
+                        }
+                        stringifiedAttributes += '=' + attributes[attributeName];
+                    }
+                    return (document.cookie = key + '=' + value + stringifiedAttributes);
+                }
+
+                // Read
+
+                if (!key) {
+                    result = {};
+                }
+
+                // To prevent the for loop in the first place assign an empty array
+                // in case there are no cookies at all. Also prevents odd result when
+                // calling "get()"
+                var cookies = document.cookie ? document.cookie.split('; ') : [];
+                var rdecode = /(%[0-9A-Z]{2})+/g;
+                var i = 0;
+
+                for (; i < cookies.length; i++) {
+                    var parts = cookies[i].split('=');
+                    var cookie = parts.slice(1).join('=');
+
+                    if (!this.json && cookie.charAt(0) === '"') {
+                        cookie = cookie.slice(1, -1);
+                    }
+
+                    try {
+                        var name = parts[0].replace(rdecode, decodeURIComponent);
+                        cookie = converter.read ?
+                                converter.read(cookie, name) : converter(cookie, name) ||
+                                cookie.replace(rdecode, decodeURIComponent);
+
+                        if (this.json) {
+                            try {
+                                cookie = JSON.parse(cookie);
+                            } catch (e) {}
+                        }
+
+                        if (key === name) {
+                            result = cookie;
+                            break;
+                        }
+
+                        if (!key) {
+                            result[name] = cookie;
+                        }
+                    } catch (e) {}
+                }
+
+                return result;
+            }
+
+            api.set = api;
+            api.get = function (key) {
+                return api.call(api, key);
+            };
+            api.getJSON = function () {
+                return api.apply({
+                    json: true
+                }, [].slice.call(arguments));
+            };
+            api.defaults = {};
+
+            api.remove = function (key, attributes) {
+                api(key, '', extend(attributes, {
+                    expires: -1
+                }));
+            };
+
+            api.withConverter = init;
+
+            return api;
+        }
+
+        return init(function () {});
+    }));
+</script>
+
 <script>
     Chart.pluginService.register({
         beforeDraw: function (chart) {
@@ -227,186 +468,8 @@
             }
         }
     });
-</script>
-<script>
-    function setupThemeModeToggle() {
-        var toggle = document.querySelector('#theme-mode-toggle');
 
-        function updateToggleState() {
-            document.querySelector('#theme-mode-toggle').checked = themeMode === 'dark';
-        }
 
-        function toggleThemeMode() {
-
-            // Update localStorage
-            if (toggle.checked === true) {
-                localStorage.setItem('themeMode', 'dark');
-            } else {
-                localStorage.setItem('themeMode', 'light');
-            }
-
-            $('#theme-mode-toggle').attr('disabled', 'disabled')
-
-            // Reload window
-            location.reload(true);
-        }
-
-        //
-        // Events
-        //
-
-        if (document.querySelector('#theme-mode-toggle')) {
-
-            var updateListener = function() {
-                // Toggle theme mode
-                document.querySelector('#theme-mode-toggle').addEventListener('change', function() {
-                    toggleThemeMode();
-                });
-            };
-
-            $(document).on("spfdone", function() {
-                updateToggleState();
-                updateListener();
-            });
-
-            $(document).on("infiniscrolldone", function() {
-                updateToggleState();
-                updateListener();
-            });
-
-            // Update toggle state
-            window.addEventListener('load', function() {
-                updateToggleState();
-            });
-
-            updateListener();
-        }
-
-    }
-    $(setupThemeModeToggle);
-</script>
-<script>
-    var gqlEndpoint = '{{config.gqlEndpoint}}';
-</script>
-{{#not mobile}}
-<!-- Start of Async Drift Code -->
-<script>
-    "use strict";
-
-    !function() {
-        var t = window.driftt = window.drift = window.driftt || [];
-        if (!t.init) {
-            if (t.invoked) return void (window.console && console.error && console.error("Drift snippet included twice."));
-            t.invoked = !0, t.methods = [ "identify", "config", "track", "reset", "debug", "show", "ping", "page", "hide", "off", "on" ],
-                    t.factory = function(e) {
-                        return function() {
-                            var n = Array.prototype.slice.call(arguments);
-                            return n.unshift(e), t.push(n), t;
-                        };
-                    }, t.methods.forEach(function(e) {
-                t[e] = t.factory(e);
-            }), t.load = function(t) {
-                var e = 3e5, n = Math.ceil(new Date() / e) * e, o = document.createElement("script");
-                o.type = "text/javascript", o.async = !0, o.crossorigin = "anonymous", o.src = "https://js.driftt.com/include/" + n + "/" + t + ".js";
-                var i = document.getElementsByTagName("script")[0];
-                i.parentNode.insertBefore(o, i);
-            };
-        }
-    }();
-    drift.SNIPPET_VERSION = '0.3.1';
-    drift.load('{{{config.driftAppID}}}');
-</script>
-<!-- End of Async Drift Code -->
-<script>
-    drift.identify('{{{user.id}}}', {
-        email: '{{{user.email}}}',
-        full_name: '{{user.full_name}}'
-    })
-</script>
-<script>
-    (function() {
-        /* Add this class to any elements you want to use to open Drift.
-         *
-         * Examples:
-         * - <a class="drift-open-chat">Questions? We're here to help!</a>
-         * - <button class="drift-open-chat">Chat now!</button>
-         *
-         * You can have any additional classes on those elements that you
-         * would ilke.
-         */
-        var DRIFT_CHAT_SELECTOR = '.drift-open-chat';
-        /* http://youmightnotneedjquery.com/#ready */
-        function ready(fn) {
-            $(document).on("spfdone", function() {
-                fn();
-            });
-            $(document).on("infiniscrolldone", function() {
-                fn();
-            });
-            if (document.readyState != 'loading') {
-                fn();
-            } else if (document.addEventListener) {
-                document.addEventListener('DOMContentLoaded', fn);
-            } else {
-                document.attachEvent('onreadystatechange', function() {
-                    if (document.readyState != 'loading')
-                        fn();
-                });
-            }
-        }
-        /* http://youmightnotneedjquery.com/#each */
-        function forEachElement(selector, fn) {
-            var elements = document.querySelectorAll(selector);
-            for (var i = 0; i < elements.length; i++)
-                fn(elements[i], i);
-        }
-        function openSidebar(driftApi, event) {
-            event.preventDefault();
-            driftApi.sidebar.open();
-            return false;
-        }
-        ready(function() {
-            drift.on('ready', function(api) {
-                var handleClick = openSidebar.bind(this, api);
-                forEachElement(DRIFT_CHAT_SELECTOR, function(el) {
-                    el.addEventListener('click', handleClick);
-                });
-            });
-        });
-    })();
-</script>
-{{/not}}
-<script>
-    var _WSCQ_quiz_currentUserWorkspace = null;
-    var _WSCQ_quiz_currentUserWorkspaceId = null;
-    window.addEventListener('message', function(evt) {
-        try {
-            var data = JSON.parse(evt.data)
-            if (data && data.event === 'workspace.changed' && data.workspaceId === _WSCQ_quiz_currentUserWorkspaceId) {
-                _WSCQ_quiz_currentUserWorkspace = JSON.stringify(data.payload);
-            }
-        } catch (error) {
-            console.log('invalid iframe msg: ', evt, ',ignoring error: ', error)
-        }
-    });
-</script>
-<script>
-    function subscribeToMailingList(email, campaign, onSuccess, onFailure) {
-        $.postJSON('{{{config.authAPIBaseURL}}}/mailing-list', {
-            email: email,
-            campaign: campaign,
-            formUrl: window.location.href
-        }, onSuccess, onFailure);
-    }
-</script>
-{{> ftue-tour}}
-<script>
-    function htmlDecode(input){
-        var doc = new DOMParser().parseFromString(input, "text/html");
-        return doc.documentElement.textContent;
-    }
-</script>
-<script>
     var _authModalTelInput = null;
     $(function() {
         _authModalTelInput = window.intlTelInput(document.querySelector("#auth-modal-phone"), {
@@ -420,58 +483,153 @@
                 });
             },
         });
-    })
-</script>
-<script>
-    function updateUserProfileGQL(locale, profile, onSuccess, onFailure) {
-        var m = `mutation UpdateUserProfileMutation(
-                    $input: UpdateUserProfileInput!
-                ) {
-                updateUserProfile(input: $input) {
-                    completionObj {
-                        code
-                        msg
-                        processed
-                        modified
-                    }
-                }
-            }
-            `;
-        var inputData = {
-            locale: locale,
-            profile: profile
-        };
-        $.postJSON(gqlEndpoint, {
-            query: m,
-            variables: {
-                input: inputData
-            }
-        }, onSuccess, onFailure);
+    });
+
+    function setThemeModeCookie(mode) {
+        Cookies.set('themeMode', mode, {path: '/', expires: 1024});
+    }
+
+    $(function() {
+        var themeModeFromLocalStorage = localStorage.getItem('themeMode');
+        if (themeModeFromLocalStorage && themeModeFromLocalStorage !== 'light') {
+            // This is in order to maintain backwards compatibility (requires a reload)
+            setThemeModeCookie(themeModeFromLocalStorage);
+            localStorage.removeItem('themeMode');
+            window.location.reload();
+            return;
+        }
+        if (!Cookies.get('themeMode')) {
+            setThemeModeCookie('light');
+        }
+    });
+
+    function sidebarChangeTheme(mode) {
+        Cookies.remove('themeMode', {path: '/'});
+        setThemeModeCookie(mode);
+        window.location.reload();
     }
 </script>
-<script>
-    function setCardInteractionGQL(inputData, onSuccess, onError) {
-        var m = `mutation setCardInteractionMutation(
-                    $input: SetCardInteractionInput!
-                ) {
-                setCardInteraction(input: $input) {
-                    completionObj {
-                        code
-                        msg
-                        processed
-                        modified
-                    }
+
+<!-- Tour -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js"></script>
+{{> ftue-tour}}
+
+<!-- Subscribe desktop notifications AND chat -->
+{{#not mobile}}
+    <script>
+        "use strict";
+
+        !function() {
+            var t = window.driftt = window.drift = window.driftt || [];
+            if (!t.init) {
+                if (t.invoked) return void (window.console && console.error && console.error("Drift snippet included twice."));
+                t.invoked = !0, t.methods = [ "identify", "config", "track", "reset", "debug", "show", "ping", "page", "hide", "off", "on" ],
+                        t.factory = function(e) {
+                            return function() {
+                                var n = Array.prototype.slice.call(arguments);
+                                return n.unshift(e), t.push(n), t;
+                            };
+                        }, t.methods.forEach(function(e) {
+                    t[e] = t.factory(e);
+                }), t.load = function(t) {
+                    var e = 3e5, n = Math.ceil(new Date() / e) * e, o = document.createElement("script");
+                    o.type = "text/javascript", o.async = !0, o.crossorigin = "anonymous", o.src = "https://js.driftt.com/include/" + n + "/" + t + ".js";
+                    var i = document.getElementsByTagName("script")[0];
+                    i.parentNode.insertBefore(o, i);
+                };
+            }
+        }();
+        drift.SNIPPET_VERSION = '0.3.1';
+        drift.load('{{{config.driftAppID}}}');
+    </script>
+    <script>
+        drift.identify('{{{user.id}}}', {
+            email: '{{{user.email}}}',
+            full_name: '{{user.full_name}}'
+        });
+
+        (function() {
+            /* Add this class to any elements you want to use to open Drift.
+             *
+             * Examples:
+             * - <a class="drift-open-chat">Questions? We're here to help!</a>
+             * - <button class="drift-open-chat">Chat now!</button>
+             *
+             * You can have any additional classes on those elements that you
+             * would ilke.
+             */
+            var DRIFT_CHAT_SELECTOR = '.drift-open-chat';
+            /* http://youmightnotneedjquery.com/#ready */
+            function ready(fn) {
+                $(document).on("spfdone", function() {
+                    fn();
+                });
+                $(document).on("infiniscrolldone", function() {
+                    fn();
+                });
+                if (document.readyState != 'loading') {
+                    fn();
+                } else if (document.addEventListener) {
+                    document.addEventListener('DOMContentLoaded', fn);
+                } else {
+                    document.attachEvent('onreadystatechange', function() {
+                        if (document.readyState != 'loading')
+                            fn();
+                    });
                 }
             }
-            `;
-        $.postJSON(gqlEndpoint, {
-            query: m,
-            variables: {
-                input: inputData
+            /* http://youmightnotneedjquery.com/#each */
+            function forEachElement(selector, fn) {
+                var elements = document.querySelectorAll(selector);
+                for (var i = 0; i < elements.length; i++)
+                    fn(elements[i], i);
             }
-        }, onSuccess, onError);
+            function openSidebar(driftApi, event) {
+                event.preventDefault();
+                driftApi.sidebar.open();
+                return false;
+            }
+            ready(function() {
+                drift.on('ready', function(api) {
+                    var handleClick = openSidebar.bind(this, api);
+                    forEachElement(DRIFT_CHAT_SELECTOR, function(el) {
+                        el.addEventListener('click', handleClick);
+                    });
+                });
+            });
+        })();
+
+        // Subscribers
+        var subscribersSiteId = '{{config.subscribersSiteID}}';
+    </script>
+    <script type="text/javascript" src="https://cdn.subscribers.com/assets/subscribers.js"></script>
+{{/not}}
+
+<!-- Deferred Styles -->
+<noscript id="deferred-styles">
+    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/css/intlTelInput.css">
+    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/fonts/feather/feather.min.css">
+    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/highlight/styles/vs2015.min.css">
+    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
+    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/toastr/toastr.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.min.css"/>
+    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/css/custom.css">
+</noscript>
+<script>
+    var loadDeferredStyles = function() {
+        var addStylesNode = document.getElementById("deferred-styles");
+        var replacement = document.createElement("div");
+        replacement.innerHTML = addStylesNode.textContent;
+        document.body.appendChild(replacement);
+        addStylesNode.parentElement.removeChild(addStylesNode);
     };
+    var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+            window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+    else window.addEventListener('load', loadDeferredStyles);
 </script>
+
 <script>
     console.log(`
     _____            __                  ________  __    __  __                  __        __  __  __
