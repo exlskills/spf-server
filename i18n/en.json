@@ -288,7 +288,8 @@
       "successfully_authenticated": "Successfully authenticated",
       "successfully_authenticated_explanation": "Start a new course or pick-up where you left off!",
       "check_profile_data_valid": "Ensure that the information provided is valid",
-      "skip_profile_update":  "Skip Profile Update"
+      "skip_profile_update":  "Skip Profile Update",
+      "page_requires_login_link": "This page requires login. Click here to login/sign up."
     },
     "extended_mobile_nav": {
       "heading": "Extended Navigation"
@@ -322,6 +323,13 @@
       "update_btn": "Update Profile",
       "error_updating": "An error occurred updating your profile",
       "profile_updated": "Profile successfully updated!"
+    },
+    "settings": {
+      "my_account": "My Account",
+      "settings": "Settings",
+      "profile": "Profile",
+      "billing": "Billing",
+      "billing_callout_link": "Click here to manage your billing preferences and EXLskills coins"
     }
   }
 }

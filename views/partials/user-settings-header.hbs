@@ -6,12 +6,12 @@
 
                 <!-- Pretitle -->
                 <h6 class="header-pretitle">
-                    My Account
+                    {{intlGet "messages.settings.my_account"}}
                 </h6>
 
                 <!-- Title -->
                 <h1 class="header-title">
-                    Settings
+                    {{intlGet "messages.settings.settings"}}
                 </h1>
 
             </div>
@@ -23,12 +23,12 @@
                 <ul class="nav nav-tabs nav-overflow header-tabs">
                     <li class="nav-item">
                         <a href="/learn-{{route.locale}}/settings/profile" class="spf-link nav-link {{#eq data.settingsTab "profile"}}active{{/eq}}">
-                            Profile
+                            {{intlGet "messages.settings.profile"}}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="/learn-{{route.locale}}/settings/billing" class="spf-link nav-link {{#eq data.settingsTab "billing"}}active{{/eq}}">
-                            Billing
+                            {{intlGet "messages.settings.billing"}}
                         </a>
                     </li>
                 </ul>
