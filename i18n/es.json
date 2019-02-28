@@ -292,6 +292,36 @@
         },
         "extended_mobile_nav": {
             "heading": "Extended Navigation"
+        },
+        "profile_update": {
+            "headline_label": "Headline",
+            "headline_label_sub": "Tell us a little about yourself, e.g., Software Engineer at ACME Corp.",
+            "headline_placeholder": "Short sentence about yourself",
+            "username_label": "Username",
+            "username_label_sub": "A short unique handle for your profile (alphanumeric, no spaces)",
+            "username_placeholder": "Only lowercase, without spaces, username",
+            "full_name_label": "Full Name",
+            "full_name_label_sub": "This is the name we'll use to address you in our communications",
+            "full_name_placeholder": "Bill Gates",
+            "email_label": "Email Address",
+            "email_label_sub": "Email update is currently disabled, please contact support if you would like to update your email",
+            "email_placeholder": "Email update is currently disabled",
+            "twitter_label": "Twitter Username",
+            "twitter_label_sub": "Your Twitter handle, e.g., BillGates",
+            "twitter_placeholder": "Your Twitter username",
+            "linkedin_label": "LinkedIn Username",
+            "linkedin_label_sub": "Your LinkedIn handle, e.g., williamhgates",
+            "linkedin_placeholder": "Your LinkedIn username",
+            "visibility_label": "Profile Visibility",
+            "visibility_label_sub": "Choose to make your EXLskills profile overview public (your email and phone number will never be publicly shared)",
+            "visibility_visible": "Visible",
+            "visibility_invisible_default": "Invisible (default)",
+            "phone_label": "Phone Number",
+            "phone_label_sub": "Phone number is currently disabled, please contact support if you would like to update your contact number",
+            "phone_placeholder": "Phone number update is currently disabled",
+            "update_btn": "Update Profile",
+            "error_updating": "An error occurred updating your profile",
+            "profile_updated": "Profile successfully updated!"
         }
     }
 }

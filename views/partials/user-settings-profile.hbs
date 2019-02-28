@@ -9,15 +9,15 @@
 
                 <!-- Label -->
                 <label>
-                    Headline
+                    {{intlGet "messages.profile_update.headline_label"}}
                 </label>
 
                 <small class="form-text text-muted">
-                    Tell us a little about yourself, e.g., Software Engineer at ACME Corp.
+                    {{intlGet "messages.profile_update.headline_label_sub"}}
                 </small>
 
                 <!-- Input -->
-                <input id="user-profile-input-headline" maxlength="120" value="{{data.profile.headline}}" placeholder="Short sentence about yourself" type="text" class="form-control">
+                <input id="user-profile-input-headline" maxlength="120" value="{{data.profile.headline}}" placeholder="{{intlGet "messages.profile_update.headline_placeholder"}}" type="text" class="form-control">
 
             </div>
 
@@ -29,15 +29,15 @@
 
                 <!-- Label -->
                 <label>
-                    Username
+                    {{intlGet "messages.profile_update.username_label"}}
                 </label>
 
                 <small class="form-text text-muted">
-                    A short unique handle for your profile (alphanumeric, no spaces)
+                    {{intlGet "messages.profile_update.username_label_sub"}}
                 </small>
 
                 <!-- Input -->
-                <input id="user-profile-input-username" {{#if data.profile.username}}required{{/if}} minlength="3" maxlength="60" pattern="^[a-zA-Z0-9]+$" value="{{data.profile.username}}" placeholder="Only lowercase, without spaces, username" type="text" class="form-control">
+                <input id="user-profile-input-username" {{#if data.profile.username}}required{{/if}} minlength="3" maxlength="60" pattern="^[a-zA-Z0-9]+$" value="{{data.profile.username}}" placeholder="{{intlGet "messages.profile_update.username_placeholder"}}" type="text" class="form-control">
 
             </div>
 
@@ -49,15 +49,15 @@
 
                 <!-- Label -->
                 <label>
-                    Full name
+                    {{intlGet "messages.profile_update.full_name_label"}}
                 </label>
 
                 <small class="form-text text-muted">
-                    This is the name we'll use to address you in our communications
+                    {{intlGet "messages.profile_update.full_name_label_sub"}}
                 </small>
 
                 <!-- Input -->
-                <input id="user-profile-input-full_name" value="{{data.profile.full_name}}" type="text" class="form-control">
+                <input id="user-profile-input-full_name" value="{{data.profile.full_name}}" placeholder="{{intlGet "messages.profile_update.full_name_placeholder"}}" type="text" class="form-control">
 
             </div>
 
@@ -69,16 +69,16 @@
 
                 <!-- Label -->
                 <label class="mb-1">
-                    Email Address
+                    {{intlGet "messages.profile_update.email_label"}}
                 </label>
 
                 <!-- Form text -->
                 <small class="form-text text-muted">
-                    Email update is currently disabled, please contact support if you would like to update your email
+                    {{intlGet "messages.profile_update.email_label_sub"}}
                 </small>
 
                 <!-- Input -->
-                <input id="user-profile-input-primary_email" style="cursor: not-allowed;" value="{{data.profile.primary_email}}" disabled placeholder="Email update is currently disabled" type="email" class="form-control">
+                <input id="user-profile-input-primary_email" style="cursor: not-allowed;" value="{{data.profile.primary_email}}" disabled placeholder="{{intlGet "messages.profile_update.email_placeholder"}}" type="email" class="form-control">
 
             </div>
 
@@ -90,15 +90,15 @@
 
                 <!-- Label -->
                 <label>
-                    Twitter Username
+                    {{intlGet "messages.profile_update.twitter_label"}}
                 </label>
 
                 <small class="form-text text-muted">
-                    Your Twitter handle, e.g., BillGates
+                    {{intlGet "messages.profile_update.twitter_label_sub"}}
                 </small>
 
                 <!-- Input -->
-                <input id="user-profile-input-twitter_username" value="{{data.profile.twitter_username}}" type="text" class="form-control mb-3" placeholder="Your Twitter username">
+                <input id="user-profile-input-twitter_username" value="{{data.profile.twitter_username}}" type="text" class="form-control mb-3" placeholder="{{intlGet "messages.profile_update.twitter_placeholder"}}">
 
             </div>
 
@@ -110,15 +110,15 @@
 
                 <!-- Label -->
                 <label>
-                    LinkedIn Username
+                    {{intlGet "messages.profile_update.linkedin_label"}}
                 </label>
 
                 <small class="form-text text-muted">
-                    Your LinkedIn handle, e.g., williamhgates
+                    {{intlGet "messages.profile_update.linkedin_label_sub"}}
                 </small>
 
                 <!-- Input -->
-                <input id="user-profile-input-linkedin_username" value="{{data.profile.linkedin_username}}" type="text" class="form-control mb-3" placeholder="Your LinkedIn username">
+                <input id="user-profile-input-linkedin_username" value="{{data.profile.linkedin_username}}" type="text" class="form-control mb-3" placeholder="{{intlGet "messages.profile_update.linkedin_placeholder"}}">
 
             </div>
 
@@ -131,19 +131,19 @@
 
                 <!-- Label -->
                 <label>
-                    Profile Visibility
+                    {{intlGet "messages.profile_update.visibility_label"}}
                 </label>
 
                 <small class="form-text text-muted">
-                    Choose to make your EXLskills profile overview public (your email and phone number will never be publicly shared)
+                    {{intlGet "messages.profile_update.visibility_label_sub"}}
                 </small>
 
                 <div class="btn-group-toggle d-flex mb-4" data-toggle="buttons">
                     <label id="profile-visible-label" class="btn btn-outline-secondary col {{#if data.profile.is_public}}active{{/if}}">
-                        <input type="radio" name="profile-is_public" id="profileVisible" value="true"> <i class="fe fe-eye mr-2"></i> Visible
+                        <input type="radio" name="profile-is_public" id="profileVisible" value="true"> <i class="fe fe-eye mr-2"></i> {{intlGet "messages.profile_update.visibility_visible"}}
                     </label>
                     <label id="profile-invisible-label" class="btn btn-outline-secondary col ml-2 {{#not data.profile.is_public}}active{{/not}}">
-                        <input type="radio" name="profile-is_public" id="profileInvisible" value="false"> <i class="fe fe-eye-off mr-2"></i> Invisible (default)
+                        <input type="radio" name="profile-is_public" id="profileInvisible" value="false"> <i class="fe fe-eye-off mr-2"></i> {{intlGet "messages.profile_update.visibility_invisible_default"}}
                     </label>
                 </div>
             </div>
@@ -156,16 +156,16 @@
 
                 <!-- Label -->
                 <label class="mb-1">
-                    Phone Number
+                    {{intlGet "messages.profile_update.phone_label"}}
                 </label>
 
                 <!-- Form text -->
                 <small class="form-text text-muted">
-                    Phone number is currently disabled, please contact support if you would like to update your contact number
+                    {{intlGet "messages.profile_update.phone_label_sub"}}
                 </small>
 
                 <!-- Input -->
-                <input id="user-profile-input-phone_number" style="cursor: not-allowed;" disabled placeholder="Phone number update is currently disabled" type="text" class="form-control">
+                <input id="user-profile-input-phone_number" style="cursor: not-allowed;" disabled placeholder="{{intlGet "messages.profile_update.phone_placeholder"}}" type="text" class="form-control">
 
             </div>
 
@@ -173,7 +173,7 @@
 
         <div class="col-12">
             <button type="submit" class="btn btn-primary">
-                Update Profile
+                {{intlGet "messages.profile_update.update_btn"}}
             </button>
         </div>
 
