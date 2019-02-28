@@ -1,5 +1,5 @@
 <!-- Form -->
-<form class="mb-6">
+<form id="user-profile-update-form" class="mb-6">
 
     <div class="row">
         <div class="col-12">
@@ -33,11 +33,11 @@
                 </label>
 
                 <small class="form-text text-muted">
-                    A short unique handle for your profile
+                    A short unique handle for your profile (alphanumeric, no spaces)
                 </small>
 
                 <!-- Input -->
-                <input id="user-profile-input-username" maxlength="60" pattern="[A-Za-z0-9]" value="{{data.profile.username}}" placeholder="Only lowercase, without spaces, username" type="text" class="form-control">
+                <input id="user-profile-input-username" {{#if data.profile.username}}required{{/if}} minlength="3" maxlength="60" pattern="^[a-zA-Z0-9]+$" value="{{data.profile.username}}" placeholder="Only lowercase, without spaces, username" type="text" class="form-control">
 
             </div>
 
@@ -69,7 +69,7 @@
 
                 <!-- Label -->
                 <label class="mb-1">
-                    Email address
+                    Email Address
                 </label>
 
                 <!-- Form text -->
@@ -98,7 +98,7 @@
                 </small>
 
                 <!-- Input -->
-                <input id="user-profile-input-twitter" type="text" class="form-control mb-3" placeholder="Your Twitter username">
+                <input id="user-profile-input-twitter_username" value="{{data.profile.twitter_username}}" type="text" class="form-control mb-3" placeholder="Your Twitter username">
 
             </div>
 
@@ -118,7 +118,54 @@
                 </small>
 
                 <!-- Input -->
-                <input id="user-profile-input-linkedin" type="text" class="form-control mb-3" placeholder="Your LinkedIn username">
+                <input id="user-profile-input-linkedin_username" value="{{data.profile.linkedin_username}}" type="text" class="form-control mb-3" placeholder="Your LinkedIn username">
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-md-6">
+
+            <!-- Phone -->
+            <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                    Profile Visibility
+                </label>
+
+                <small class="form-text text-muted">
+                    Choose to make your EXLskills profile overview public (your email and phone number will never be publicly shared)
+                </small>
+
+                <div class="btn-group-toggle d-flex mb-4" data-toggle="buttons">
+                    <label id="profile-visible-label" class="btn btn-outline-secondary col {{#if data.profile.is_public}}active{{/if}}">
+                        <input type="radio" name="profile-is_public" id="profileVisible" value="true"> <i class="fe fe-eye mr-2"></i> Visible
+                    </label>
+                    <label id="profile-invisible-label" class="btn btn-outline-secondary col ml-2 {{#not data.profile.is_public}}active{{/not}}">
+                        <input type="radio" name="profile-is_public" id="profileInvisible" value="false"> <i class="fe fe-eye-off mr-2"></i> Invisible (default)
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-12 col-md-6">
+
+            <!-- Email address -->
+            <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                    Phone Number
+                </label>
+
+                <!-- Form text -->
+                <small class="form-text text-muted">
+                    Phone number is currently disabled, please contact support if you would like to update your contact number
+                </small>
+
+                <!-- Input -->
+                <input id="user-profile-input-phone_number" style="cursor: not-allowed;" disabled placeholder="Phone number update is currently disabled" type="text" class="form-control">
 
             </div>
 
@@ -299,3 +346,42 @@
     <!--</div> &lt;!&ndash; / .row &ndash;&gt;-->
 
 </form>
+
+<script>
+    $(function() {
+        var $updateProfileSubmitBtn = $('#user-profile-update-form button[type="submit"]');
+
+        $('#user-profile-update-form').submit(function (e) {
+            e.preventDefault();
+            $updateProfileSubmitBtn.addClass('is-loading');
+            var fields = ['headline', 'username', 'full_name', 'linkedin_username', 'twitter_username'];
+            var profileObj = {};
+            for (var i = 0; i < fields.length; i++) {
+                var v = $("#user-profile-input-"+fields[i]).val();
+                if (v !== '' && !v) {
+                    continue
+                }
+                if (fields[i] === 'username') {
+                    v = v.toLowerCase();
+                }
+                profileObj[fields[i]] = v;
+            }
+            profileObj.is_public = $('#profile-visible-label').hasClass('active');
+            updateUserProfileGQL('en', profileObj, function(data) {
+                $updateProfileSubmitBtn.removeClass('is-loading');
+                var co = data.data.updateUserProfile.completionObj;
+                if (co.code !== 0 && co.msg.length > 0) {
+                    toastr.error(co.msg, '{{intlGet "messages.profile_update.error_updating"}}');
+                } else {
+                    toastr.success('{{intlGet "messages.profile_update.profile_updated"}}');
+                    // Reload the page form frag
+                    spf.navigate(window.location.href);
+                }
+            }, function(err) {
+                toastr.error('{{intlGet "messages.profile_update.error_updating"}}');
+                $updateProfileSubmitBtn.removeClass('is-loading');
+                console.error(err);
+            });
+        })
+    })
+</script>

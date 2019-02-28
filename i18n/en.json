@@ -292,6 +292,10 @@
     },
     "extended_mobile_nav": {
       "heading": "Extended Navigation"
+    },
+    "profile_update": {
+      "error_updating": "An error occurred updating your profile",
+      "profile_updated": "Profile successfully updated!"
     }
   }
 }

@@ -202,6 +202,7 @@ export default class GqlApi {
           getUserProfile {
             id
             full_name
+            username
             primary_email
             headline
             biography
@@ -211,6 +212,8 @@ export default class GqlApi {
             twitter_username
             linkedin_username
             is_verified
+            is_instructor
+            is_public
           }
         }
         `;
