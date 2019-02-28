@@ -1,0 +1,387 @@
+<!-- Form -->
+<form id="user-profile-update-form" class="mb-6">
+
+    <div class="row">
+        <div class="col-12">
+
+            <!-- First name -->
+            <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                    {{intlGet "messages.profile_update.headline_label"}}
+                </label>
+
+                <small class="form-text text-muted">
+                    {{intlGet "messages.profile_update.headline_label_sub"}}
+                </small>
+
+                <!-- Input -->
+                <input id="user-profile-input-headline" maxlength="120" value="{{data.profile.headline}}" placeholder="{{intlGet "messages.profile_update.headline_placeholder"}}" type="text" class="form-control">
+
+            </div>
+
+        </div>
+        <div class="col-12">
+
+            <!-- First name -->
+            <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                    {{intlGet "messages.profile_update.username_label"}}
+                </label>
+
+                <small class="form-text text-muted">
+                    {{intlGet "messages.profile_update.username_label_sub"}}
+                </small>
+
+                <!-- Input -->
+                <input id="user-profile-input-username" {{#if data.profile.username}}required{{/if}} minlength="3" maxlength="60" pattern="^[a-zA-Z0-9]+$" value="{{data.profile.username}}" placeholder="{{intlGet "messages.profile_update.username_placeholder"}}" type="text" class="form-control">
+
+            </div>
+
+        </div>
+        <div class="col-12 col-md-6">
+
+            <!-- First name -->
+            <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                    {{intlGet "messages.profile_update.full_name_label"}}
+                </label>
+
+                <small class="form-text text-muted">
+                    {{intlGet "messages.profile_update.full_name_label_sub"}}
+                </small>
+
+                <!-- Input -->
+                <input id="user-profile-input-full_name" value="{{data.profile.full_name}}" placeholder="{{intlGet "messages.profile_update.full_name_placeholder"}}" type="text" class="form-control">
+
+            </div>
+
+        </div>
+        <div class="col-12 col-md-6">
+
+            <!-- Email address -->
+            <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                    {{intlGet "messages.profile_update.email_label"}}
+                </label>
+
+                <!-- Form text -->
+                <small class="form-text text-muted">
+                    {{intlGet "messages.profile_update.email_label_sub"}}
+                </small>
+
+                <!-- Input -->
+                <input id="user-profile-input-primary_email" style="cursor: not-allowed;" value="{{data.profile.primary_email}}" disabled placeholder="{{intlGet "messages.profile_update.email_placeholder"}}" type="email" class="form-control">
+
+            </div>
+
+        </div>
+        <div class="col-12 col-md-6">
+
+            <!-- Phone -->
+            <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                    {{intlGet "messages.profile_update.twitter_label"}}
+                </label>
+
+                <small class="form-text text-muted">
+                    {{intlGet "messages.profile_update.twitter_label_sub"}}
+                </small>
+
+                <!-- Input -->
+                <input id="user-profile-input-twitter_username" value="{{data.profile.twitter_username}}" type="text" class="form-control mb-3" placeholder="{{intlGet "messages.profile_update.twitter_placeholder"}}">
+
+            </div>
+
+        </div>
+        <div class="col-12 col-md-6">
+
+            <!-- Phone -->
+            <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                    {{intlGet "messages.profile_update.linkedin_label"}}
+                </label>
+
+                <small class="form-text text-muted">
+                    {{intlGet "messages.profile_update.linkedin_label_sub"}}
+                </small>
+
+                <!-- Input -->
+                <input id="user-profile-input-linkedin_username" value="{{data.profile.linkedin_username}}" type="text" class="form-control mb-3" placeholder="{{intlGet "messages.profile_update.linkedin_placeholder"}}">
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-md-6">
+
+            <!-- Phone -->
+            <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                    {{intlGet "messages.profile_update.visibility_label"}}
+                </label>
+
+                <small class="form-text text-muted">
+                    {{intlGet "messages.profile_update.visibility_label_sub"}}
+                </small>
+
+                <div class="btn-group-toggle d-flex mb-4" data-toggle="buttons">
+                    <label id="profile-visible-label" class="btn btn-outline-secondary col {{#if data.profile.is_public}}active{{/if}}">
+                        <input type="radio" name="profile-is_public" id="profileVisible" value="true"> <i class="fe fe-eye mr-2"></i> {{intlGet "messages.profile_update.visibility_visible"}}
+                    </label>
+                    <label id="profile-invisible-label" class="btn btn-outline-secondary col ml-2 {{#not data.profile.is_public}}active{{/not}}">
+                        <input type="radio" name="profile-is_public" id="profileInvisible" value="false"> <i class="fe fe-eye-off mr-2"></i> {{intlGet "messages.profile_update.visibility_invisible_default"}}
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-12 col-md-6">
+
+            <!-- Email address -->
+            <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                    {{intlGet "messages.profile_update.phone_label"}}
+                </label>
+
+                <!-- Form text -->
+                <small class="form-text text-muted">
+                    {{intlGet "messages.profile_update.phone_label_sub"}}
+                </small>
+
+                <!-- Input -->
+                <input id="user-profile-input-phone_number" style="cursor: not-allowed;" disabled placeholder="{{intlGet "messages.profile_update.phone_placeholder"}}" type="text" class="form-control">
+
+            </div>
+
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">
+                {{intlGet "messages.profile_update.update_btn"}}
+            </button>
+        </div>
+
+    </div> <!-- / .row -->
+
+    <!-- Divider -->
+    <!--<hr class="mt-4 mb-5">-->
+
+    <!--<div class="row">-->
+        <!--<div class="col-12 col-md-6">-->
+
+            <!--&lt;!&ndash; Public profile &ndash;&gt;-->
+            <!--<div class="form-group">-->
+
+                <!--&lt;!&ndash; Label &ndash;&gt;-->
+                <!--<label class="mb-1">-->
+                    <!--Public profile-->
+                <!--</label>-->
+
+                <!--&lt;!&ndash; Form text &ndash;&gt;-->
+                <!--<small class="form-text text-muted">-->
+                    <!--Making your profile public means that anyone on the Dashkit network will be able to find you.-->
+                <!--</small>-->
+
+                <!--<div class="row">-->
+                    <!--<div class="col-auto">-->
+
+                        <!--&lt;!&ndash; Switch &ndash;&gt;-->
+                        <!--<div class="custom-control custom-switch">-->
+                            <!--<input type="checkbox" class="custom-control-input" id="switchOne">-->
+                            <!--<label class="custom-control-label" for="switchOne"></label>-->
+                        <!--</div>-->
+
+                    <!--</div>-->
+                    <!--<div class="col ml-n2">-->
+
+                        <!--&lt;!&ndash; Help text &ndash;&gt;-->
+                        <!--<small class="text-muted">-->
+                            <!--You're currently invisible-->
+                        <!--</small>-->
+
+                    <!--</div>-->
+                <!--</div> &lt;!&ndash; / .row &ndash;&gt;-->
+            <!--</div>-->
+
+        <!--</div>-->
+        <!--<div class="col-12 col-md-6">-->
+
+            <!--&lt;!&ndash; Allow for additional Bookings &ndash;&gt;-->
+            <!--<div class="form-group">-->
+
+                <!--&lt;!&ndash; Label &ndash;&gt;-->
+                <!--<label class="mb-1">-->
+                    <!--Allow for additional Bookings-->
+                <!--</label>-->
+
+                <!--&lt;!&ndash; Form text &ndash;&gt;-->
+                <!--<small class="form-text text-muted">-->
+                    <!--If you are available for hire outside of the current situation, you can encourage others to hire you.-->
+                <!--</small>-->
+
+                <!--<div class="row">-->
+                    <!--<div class="col-auto">-->
+
+                        <!--&lt;!&ndash; Switch &ndash;&gt;-->
+                        <!--<div class="custom-control custom-switch">-->
+                            <!--<input type="checkbox" class="custom-control-input" id="switchTwo">-->
+                            <!--<label class="custom-control-label" for="switchTwo"></label>-->
+                        <!--</div>-->
+
+                    <!--</div>-->
+                    <!--<div class="col ml-n2">-->
+
+                        <!--&lt;!&ndash; Help text &ndash;&gt;-->
+                        <!--<small class="text-muted">-->
+                            <!--You're currently available-->
+                        <!--</small>-->
+
+                    <!--</div>-->
+                <!--</div> &lt;!&ndash; / .row &ndash;&gt;-->
+            <!--</div>-->
+
+        <!--</div>-->
+    <!--</div> &lt;!&ndash; / .row &ndash;&gt;-->
+
+    <!--&lt;!&ndash; Divider &ndash;&gt;-->
+    <!--<hr class="mt-4 mb-5">-->
+
+    <!--<div class="row">-->
+        <!--<div class="col-12 col-md-6 order-md-2">-->
+
+            <!--&lt;!&ndash; Card &ndash;&gt;-->
+            <!--<div class="card bg-light border ml-md-4">-->
+                <!--<div class="card-body">-->
+
+                    <!--<p class="mb-2">-->
+                        <!--Password requirements-->
+                    <!--</p>-->
+
+                    <!--<p class="small text-muted mb-2">-->
+                        <!--To create a new password, you have to meet all of the following requirements:-->
+                    <!--</p>-->
+
+                    <!--<ul class="small text-muted pl-4 mb-0">-->
+                        <!--<li>-->
+                            <!--Minimum 8 character-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--At least one special character-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--At least one number-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--Can’t be the same as a previous password-->
+                        <!--</li>-->
+                    <!--</ul>-->
+
+                <!--</div>-->
+            <!--</div>-->
+
+        <!--</div>-->
+        <!--<div class="col-12 col-md-6">-->
+
+            <!--&lt;!&ndash; Password &ndash;&gt;-->
+            <!--<div class="form-group">-->
+
+                <!--&lt;!&ndash; Label &ndash;&gt;-->
+                <!--<label>-->
+                    <!--Password-->
+                <!--</label>-->
+
+                <!--&lt;!&ndash; Input &ndash;&gt;-->
+                <!--<input type="password" class="form-control">-->
+
+            <!--</div>-->
+
+            <!--&lt;!&ndash; New password &ndash;&gt;-->
+            <!--<div class="form-group">-->
+
+                <!--&lt;!&ndash; Label &ndash;&gt;-->
+                <!--<label>-->
+                    <!--New password-->
+                <!--</label>-->
+
+                <!--&lt;!&ndash; Input &ndash;&gt;-->
+                <!--<input type="password" class="form-control">-->
+
+            <!--</div>-->
+
+            <!--&lt;!&ndash; Confirm new password &ndash;&gt;-->
+            <!--<div class="form-group">-->
+
+                <!--&lt;!&ndash; Label &ndash;&gt;-->
+                <!--<label>-->
+                    <!--Confirm new password-->
+                <!--</label>-->
+
+                <!--&lt;!&ndash; Input &ndash;&gt;-->
+                <!--<input type="password" class="form-control">-->
+
+            <!--</div>-->
+
+            <!--&lt;!&ndash; Submit &ndash;&gt;-->
+            <!--<button type="submit" class="btn btn-primary">-->
+                <!--Update password-->
+            <!--</button>-->
+
+        <!--</div>-->
+    <!--</div> &lt;!&ndash; / .row &ndash;&gt;-->
+
+</form>
+
+<script>
+    $(function() {
+        var $updateProfileSubmitBtn = $('#user-profile-update-form button[type="submit"]');
+
+        $('#user-profile-update-form').submit(function (e) {
+            e.preventDefault();
+            $updateProfileSubmitBtn.addClass('is-loading');
+            var fields = ['headline', 'username', 'full_name', 'linkedin_username', 'twitter_username'];
+            var profileObj = {};
+            for (var i = 0; i < fields.length; i++) {
+                var v = $("#user-profile-input-"+fields[i]).val();
+                if (v !== '' && !v) {
+                    continue
+                }
+                if (fields[i] === 'username') {
+                    v = v.toLowerCase();
+                }
+                profileObj[fields[i]] = v;
+            }
+            profileObj.is_public = $('#profile-visible-label').hasClass('active');
+            updateUserProfileGQL('en', profileObj, function(data) {
+                $updateProfileSubmitBtn.removeClass('is-loading');
+                var co = data.data.updateUserProfile.completionObj;
+                if (co.code !== 0 && co.msg.length > 0) {
+                    toastr.error(co.msg, '{{intlGet "messages.profile_update.error_updating"}}');
+                } else {
+                    toastr.success('{{intlGet "messages.profile_update.profile_updated"}}');
+                    // Reload the page form frag
+                    spf.navigate(window.location.href);
+                }
+            }, function(err) {
+                toastr.error('{{intlGet "messages.profile_update.error_updating"}}');
+                $updateProfileSubmitBtn.removeClass('is-loading');
+                console.error(err);
+            });
+        })
+    })
+</script>

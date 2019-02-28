@@ -26,6 +26,25 @@
 <script>
     var gqlEndpoint = '{{config.gqlEndpoint}}';
 
+    $.postJSON = function(url, data, success, error) {
+        if (typeof data !== 'string') {
+            data = JSON.stringify(data);
+        }
+        $.ajax({
+            url : url,
+            type: "post",
+            data: data,
+            dataType: "json",
+            contentType: "application/json",
+            success: success,
+            error: error,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true
+        });
+    };
+
     NProgress.configure({ showSpinner: false });
     NProgress.configure({ trickleSpeed: 75 });
     $(document).on("spfclick", function() {
@@ -50,14 +69,25 @@
         });
     }
 
+    function setupLogoutBtnHandler() {
+        $('.user-logout-btn').click(function(e) {
+            e.preventDefault();
+            $.postJSON('{{config.authAPIBaseURL}}/me/logout', {}, function(resp) {
+                window.location.href = '{{{config.logoutURL}}}';
+            });
+        });
+    }
+
     $(document).on("spfdone", function() {
         // Finish request and remove progress bar
         NProgress.remove();
         setupCodeHLJS();
+        setupLogoutBtnHandler();
         $('#mobile-sidebar-extension').html($('#sidebar .exl-sidebar-menu-content')[0].outerHTML);
     });
 
     setupCodeHLJS();
+    setupLogoutBtnHandler();
 
     $.fn.isInViewport = function() {
         var elementTop = $(this).offset().top;
@@ -79,24 +109,6 @@
         return elementTop > viewportTop && elementBottom < viewportBottom;
     };
 
-    $.postJSON = function(url, data, success, error) {
-        if (typeof data !== 'string') {
-            data = JSON.stringify(data);
-        }
-        $.ajax({
-            url : url,
-            type: "post",
-            data: data,
-            dataType: "json",
-            contentType: "application/json",
-            success: success,
-            error: error,
-            xhrFields: {
-                withCredentials: true
-            },
-            crossDomain: true
-        });
-    }
     function uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -106,14 +118,7 @@
 
     $.escapeLiteralSel = function(sel) {
         return sel.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1')
-    }
-
-    $('.user-logout-btn').click(function(e) {
-      e.preventDefault();
-      $.postJSON('{{config.authAPIBaseURL}}/me/logout', {}, function(resp) {
-        window.location.href = '{{{config.logoutURL}}}';
-      });
-    })
+    };
 
     function refreshJWT(callback, errorCallback) {
         $.ajax({

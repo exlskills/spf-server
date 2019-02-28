@@ -474,6 +474,7 @@ content_id: string | null;
 tags: Array<string | null> | null;
 question_ids: Array<string | null> | null;
 ema: number | null;
+was_viewed: boolean | null;
 github_edit_url: string | null;
 content: IVersionedContentRecord | null;
 question: IQuestion | null;
@@ -939,6 +940,7 @@ updateUserProfile: IUpdateUserProfilePayload | null;
 updateUserUnitStatus: IUpdateUserUnitStatusPayload | null;
 updateUserCourseRole: IUpdateUserCourseRolePayload | null;
 setCardInteraction: ISetCardInteractionPayload | null;
+generateCourseBadge: IGenerateCourseBadgePayload | null;
 }
 
 interface IReadNotificationOnMutationArguments {
@@ -983,6 +985,10 @@ input: IUpdateUserCourseRoleInput;
 
 interface ISetCardInteractionOnMutationArguments {
 input: ISetCardInteractionInput;
+}
+
+interface IGenerateCourseBadgeOnMutationArguments {
+input: IGenerateCourseBadgeInput;
 }
 
 interface IReadNotificationInput {
@@ -1102,8 +1108,11 @@ primary_email?: string | null;
 biography?: string | null;
 headline?: string | null;
 locales?: Array<string | null> | null;
-primary_locale: string;
+primary_locale?: string | null;
 avatar_url?: string | null;
+is_public?: boolean | null;
+linkedin_username?: string | null;
+twitter_username?: string | null;
 }
 
 interface IUpdateUserProfilePayload {
@@ -1161,6 +1170,19 @@ clientMutationId?: string | null;
 
 interface ISetCardInteractionPayload {
 __typename: "SetCardInteractionPayload";
+completionObj: ICompletionObj | null;
+clientMutationId: string | null;
+}
+
+interface IGenerateCourseBadgeInput {
+course_id: string;
+badge_type?: string | null;
+clientMutationId?: string | null;
+}
+
+interface IGenerateCourseBadgePayload {
+__typename: "GenerateCourseBadgePayload";
+badge_uid: string | null;
 completionObj: ICompletionObj | null;
 clientMutationId: string | null;
 }

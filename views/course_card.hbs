@@ -108,7 +108,7 @@
 
     </style>
     <div id="course-mobile-nav-wrapper">
-        <div class="container">
+        <div class="container" style="max-width: none;">
             <div class="mr-auto">
                 <h4 id="course-mobile-nav-heading">{{#if data.displayOverview}}{{data.course.meta.title}}{{else}}{{data.course.card.title}}{{/if}}</h4>
             </div>
@@ -585,10 +585,6 @@
                         || (Math.abs(dX)/Math.abs(dY) <= 0.3 && dY >= 30)
                 );
             }
-
-            $('#course-mobile-nav-popover-link').click(function (e) {
-// TODO
-            });
 
             $(window).off('touchstart');
             $(window).on('touchstart', function(e){ swipeStart(e.originalEvent); });
