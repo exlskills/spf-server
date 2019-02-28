@@ -249,7 +249,8 @@
       "sign_in_label": "Sign In",
       "click_label": "Click",
       "here_lower_case": "here",
-      "to_continue_lower_case": "to continue"
+      "to_continue_lower_case": "to continue",
+      "billing_label": "Billing"
     },
     "error": {
       "label_lower_case": "error",

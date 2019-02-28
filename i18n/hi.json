@@ -249,7 +249,8 @@
             "sign_in_label": "दाखिल करना",
             "click_label": "क्लिक करें",
             "here_lower_case": "यहाँ",
-            "to_continue_lower_case": "जारी रखने के लिए"
+            "to_continue_lower_case": "जारी रखने के लिए",
+            "billing_label": "Billing"
         },
         "error": {
             "label_lower_case": "त्रुटि",

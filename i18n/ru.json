@@ -249,7 +249,8 @@
             "sign_in_label": "Войти в систему",
             "click_label": "Нажмите",
             "here_lower_case": "Вот",
-            "to_continue_lower_case": "продолжать"
+            "to_continue_lower_case": "продолжать",
+            "billing_label": "Billing"
         },
         "error": {
             "label_lower_case": "ошибка",

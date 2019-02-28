@@ -196,6 +196,28 @@ export default class GqlApi {
         }
     }
 
+    public async getUserProfile(): Promise<IUser> {
+        const q = `
+        {
+          getUserProfile {
+            id
+            full_name
+            primary_email
+            headline
+            biography
+            is_demo
+            is_instructor
+            avatar_url
+            twitter_username
+            linkedin_username
+            is_verified
+          }
+        }
+        `;
+        const resp = await this.request(q);
+        return resp.getUserProfile;
+    }
+
     public async getUserCourseRoles(): Promise<IUserCourseRoleEdge[]> {
         const q = `
         {

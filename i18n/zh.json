@@ -249,7 +249,8 @@
             "sign_in_label": "登入",
             "click_label": "点击",
             "here_lower_case": "这里",
-            "to_continue_lower_case": "接着说"
+            "to_continue_lower_case": "接着说",
+            "billing_label": "Billing"
         },
         "error": {
             "label_lower_case": "错误",
