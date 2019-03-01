@@ -632,7 +632,7 @@
 <script>
     if('serviceWorker' in navigator) {
         navigator.serviceWorker
-                .register("{{config.static_assets_url_prefix}}/js/sw.js")
+                .register("/learn-en/assets/js/sw.js")
                 .then(function() { console.log("Service Worker Registered"); });
     }
 </script>
