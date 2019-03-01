@@ -630,6 +630,14 @@
 </script>
 
 <script>
+    if('serviceWorker' in navigator) {
+        navigator.serviceWorker
+                .register("{{config.static_assets_url_prefix}}/js/sw.js")
+                .then(function() { console.log("Service Worker Registered"); });
+    }
+</script>
+
+<script>
     console.log(`
     _____            __                  ________  __    __  __                  __        __  __  __
    /     |          /  |                /        |/  |  /  |/  |                /  |      /  |/  |/  |

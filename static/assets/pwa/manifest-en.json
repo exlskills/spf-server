@@ -1,0 +1,21 @@
+{
+  "short_name": "EXLskills",
+  "name": "EXLskills",
+  "icons": [
+    {
+      "src": "https://cdn-static-assets.exlskills.com/pwa/icons-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://cdn-static-assets.exlskills.com/pwa/icons-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/learn-en/?source=pwa_0",
+  "background_color": "#007ACE",
+  "display": "standalone",
+  "scope": "/learn-en/",
+  "theme_color": "#007ACE"
+}
