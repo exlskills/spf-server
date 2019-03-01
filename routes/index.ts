@@ -37,6 +37,7 @@ import {dataIntl} from "../i18n"
 import {genAltUrls} from "../i18n/utils";
 import {readFromProductionCacheOrFile} from "../utils/prod-cache-handler";
 import {viewMySettings} from "../controllers/my-settings";
+import * as isBot from "isbot";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -72,6 +73,7 @@ registerPartialHBS('user-settings-header');
 registerPartialHBS('user-settings-login-required');
 registerPartialHBS('user-settings-profile');
 registerPartialHBS('user-settings-billing');
+registerPartialHBS('deferred-styles');
 
 const router = express.Router();
 
@@ -295,8 +297,9 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             referrer: req.headers.referer,
             url: config.clientBaseURL + req.path,
             canonicalUrl: canonicalUrl,
-            themeMode: req.cookies['themeMode'] ? req.cookies['themeMode'] : 'light'
-        };
+            themeMode: req.cookies['themeMode'] ? req.cookies['themeMode'] : 'light',
+            isBot: isBot(req.headers['user-agent'])
+    };
 
         if (!result.meta.jsonld) {
             result.meta.jsonld = [];
