@@ -30,7 +30,8 @@ const topicToBadge: {[key: string]: string} = {
     "ui-design": "ui-design.svg",
     "ux-design": "ux-design.svg",
     "aws": "aws-logo.svg",
-    "aws-cloud": "aws-cloud-ico.svg"
+    "aws-cloud": "aws-cloud-ico.svg",
+    "career": "Career-rocket.svg",
 };
 
 export const getBadgeURLForTopic = (topic: string | null | undefined): string => {
