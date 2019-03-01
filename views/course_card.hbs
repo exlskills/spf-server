@@ -195,11 +195,12 @@
                 </div>
             </div>
         </div>
-        <div id="course-cards-bottom-loading-indicator" style="padding: 40px 0;" >
+        <div id="course-cards-bottom-loading-indicator" style="padding: 40px 0;{{#if route.isBot}}display: none;{{/if}}" >
             <div class="is-loading w-100"></div>
         </div>
     </div>
 
+    {{#not route.isBot}}
     <script id="course-pages-json" type="application/json">{{{JSONstringify data.course.nav.pages}}}</script>
 
     <script>
@@ -604,4 +605,5 @@
         });
 
     </script>
+    {{/not}}
 {{/if}}

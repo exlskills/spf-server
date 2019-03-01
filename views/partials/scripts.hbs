@@ -20,6 +20,7 @@
 <!-- Theme JS -->
 <script>
     var themeMode = '{{{route.themeMode}}}';
+    var uaIsBot = '{{{route.isBot}}}';
 </script>
 <script src="{{config.static_assets_url_prefix}}/js/theme.min.js"></script>
 
@@ -611,29 +612,24 @@
 {{/not}}
 
 <!-- Deferred Styles -->
-<noscript id="deferred-styles">
-    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/css/intlTelInput.css">
-    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/fonts/feather/feather.min.css">
-    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/highlight/styles/vs2015.min.css">
-    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/select2/dist/css/select2.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
-    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/toastr/toastr.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.min.css"/>
-    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/css/custom.css">
-</noscript>
-<script>
-    var loadDeferredStyles = function() {
-        var addStylesNode = document.getElementById("deferred-styles");
-        var replacement = document.createElement("div");
-        replacement.innerHTML = addStylesNode.textContent;
-        document.body.appendChild(replacement);
-        addStylesNode.parentElement.removeChild(addStylesNode);
-    };
-    var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-            window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-    if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
-    else window.addEventListener('load', loadDeferredStyles);
-</script>
+{{#not route.isBot}}
+    <noscript id="deferred-styles">
+        {{> deferred-styles}}
+    </noscript>
+    <script>
+        var loadDeferredStyles = function() {
+            var addStylesNode = document.getElementById("deferred-styles");
+            var replacement = document.createElement("div");
+            replacement.innerHTML = addStylesNode.textContent;
+            document.body.appendChild(replacement);
+            addStylesNode.parentElement.removeChild(addStylesNode);
+        };
+        var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+        if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+        else window.addEventListener('load', loadDeferredStyles);
+    </script>
+{{/not}}
 
 <script>
     console.log(`
