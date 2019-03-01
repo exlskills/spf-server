@@ -1,0 +1,20 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8">
+
+            {{> user-settings-header}}
+
+            {{#if user.is_demo}}
+                {{> user-settings-login-required}}
+            {{else}}
+                {{#eq data.settingsTab "profile"}}
+                    {{> user-settings-profile}}
+                {{/eq}}
+                {{#eq data.settingsTab "billing"}}
+                    {{> user-settings-billing}}
+                {{/eq}}
+            {{/if}}
+
+        </div>
+    </div> <!-- / .row -->
+</div>

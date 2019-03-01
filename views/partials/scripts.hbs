@@ -20,11 +20,31 @@
 <!-- Theme JS -->
 <script>
     var themeMode = '{{{route.themeMode}}}';
+    var uaIsBot = '{{{route.isBot}}}';
 </script>
 <script src="{{config.static_assets_url_prefix}}/js/theme.min.js"></script>
 
 <script>
     var gqlEndpoint = '{{config.gqlEndpoint}}';
+
+    $.postJSON = function(url, data, success, error) {
+        if (typeof data !== 'string') {
+            data = JSON.stringify(data);
+        }
+        $.ajax({
+            url : url,
+            type: "post",
+            data: data,
+            dataType: "json",
+            contentType: "application/json",
+            success: success,
+            error: error,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true
+        });
+    };
 
     NProgress.configure({ showSpinner: false });
     NProgress.configure({ trickleSpeed: 75 });
@@ -50,14 +70,25 @@
         });
     }
 
+    function setupLogoutBtnHandler() {
+        $('.user-logout-btn').click(function(e) {
+            e.preventDefault();
+            $.postJSON('{{config.authAPIBaseURL}}/me/logout', {}, function(resp) {
+                window.location.href = '{{{config.logoutURL}}}';
+            });
+        });
+    }
+
     $(document).on("spfdone", function() {
         // Finish request and remove progress bar
         NProgress.remove();
         setupCodeHLJS();
+        setupLogoutBtnHandler();
         $('#mobile-sidebar-extension').html($('#sidebar .exl-sidebar-menu-content')[0].outerHTML);
     });
 
     setupCodeHLJS();
+    setupLogoutBtnHandler();
 
     $.fn.isInViewport = function() {
         var elementTop = $(this).offset().top;
@@ -79,24 +110,6 @@
         return elementTop > viewportTop && elementBottom < viewportBottom;
     };
 
-    $.postJSON = function(url, data, success, error) {
-        if (typeof data !== 'string') {
-            data = JSON.stringify(data);
-        }
-        $.ajax({
-            url : url,
-            type: "post",
-            data: data,
-            dataType: "json",
-            contentType: "application/json",
-            success: success,
-            error: error,
-            xhrFields: {
-                withCredentials: true
-            },
-            crossDomain: true
-        });
-    }
     function uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -106,14 +119,7 @@
 
     $.escapeLiteralSel = function(sel) {
         return sel.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1')
-    }
-
-    $('.user-logout-btn').click(function(e) {
-      e.preventDefault();
-      $.postJSON('{{config.authAPIBaseURL}}/me/logout', {}, function(resp) {
-        window.location.href = '{{{config.logoutURL}}}';
-      });
-    })
+    };
 
     function refreshJWT(callback, errorCallback) {
         $.ajax({
@@ -607,14 +613,7 @@
 
 <!-- Deferred Styles -->
 <noscript id="deferred-styles">
-    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/intl-tel-input/v15.0.0/css/intlTelInput.css">
-    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/fonts/feather/feather.min.css">
-    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/highlight/styles/vs2015.min.css">
-    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/select2/dist/css/select2.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
-    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/libs/toastr/toastr.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.min.css"/>
-    <link rel="stylesheet" href="{{config.static_assets_url_prefix}}/css/custom.css">
+    {{> deferred-styles}}
 </noscript>
 <script>
     var loadDeferredStyles = function() {

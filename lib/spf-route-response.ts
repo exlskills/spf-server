@@ -47,5 +47,6 @@ export interface ISPFRouteResponse {
         url: string
         canonicalUrl: string
         themeMode: string
+        isBot: boolean
     }
 }

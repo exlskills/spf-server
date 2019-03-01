@@ -78,10 +78,8 @@
 
                     <!-- Menu -->
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sidebarIcon">
-                        <!-- TODO bring back profile once we have one internally (w/o keycloak) -->
-                        <!--<a href="{{{config.accountsURL}}}" class="dropdown-item">{{intlGet "messages.instructors.profile_label"}}</a>-->
-                        <!-- TODO <a href="settings.html" class="dropdown-item">{{intlGet "messages.config.settings_label"}}</a>-->
-                        <!--<hr class="dropdown-divider">-->
+                        <a href="/learn-{{route.locale}}/settings/profile" class="dropdown-item">{{intlGet "messages.instructors.profile_label"}}</a>
+                        <a href="/learn-{{route.locale}}/settings/billing" class="dropdown-item">{{intlGet "messages.misc.billing_label"}}</a>
                         <a href="#!" class="dropdown-item user-logout-btn">{{intlGet "messages.misc.logout_label"}}</a>
                     </div>
 

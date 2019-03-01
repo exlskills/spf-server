@@ -1,5 +1,5 @@
 {
-  "name": "web-next",
+  "name": "spf-server",
   "version": "1.0.0",
   "description": "EXLskills SPFJS Web Front-end",
   "main": "index.js",
@@ -18,6 +18,7 @@
     "handlebars": "^4.0.12",
     "handlebars-helpers": "^0.10.0",
     "handlebars-intl": "^1.1.2",
+    "isbot": "^2.2.1",
     "jsonwebtoken": "^8.3.0",
     "moment-timezone": "^0.5.21",
     "showdown": "^1.8.6",
@@ -47,14 +48,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/exlskills/web-next.git"
+    "url": "git+https://github.com/exlskills/spf-server.git"
   },
   "keywords": [
-    "AMP"
+    "AMP",
+    "EXLskills",
+    "SPF",
+    "SPFJS"
   ],
   "author": "EXL Inc.",
   "bugs": {
-    "url": "https://github.com/exlskills/web-next/issues"
+    "url": "https://github.com/exlskills/spf-server/issues"
   },
-  "homepage": "https://github.com/exlskills/web-next#readme"
+  "homepage": "https://github.com/exlskills/spf-server#readme"
 }

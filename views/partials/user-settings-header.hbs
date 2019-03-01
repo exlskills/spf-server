@@ -1,0 +1,39 @@
+<!-- Header -->
+<div class="header">
+    <div class="header-body">
+        <div class="row align-items-center">
+            <div class="col">
+
+                <!-- Pretitle -->
+                <h6 class="header-pretitle">
+                    {{intlGet "messages.settings.my_account"}}
+                </h6>
+
+                <!-- Title -->
+                <h1 class="header-title">
+                    {{intlGet "messages.settings.settings"}}
+                </h1>
+
+            </div>
+        </div> <!-- / .row -->
+        <div class="row align-items-center">
+            <div class="col">
+
+                <!-- Nav -->
+                <ul class="nav nav-tabs nav-overflow header-tabs">
+                    <li class="nav-item">
+                        <a href="/learn-{{route.locale}}/settings/profile" class="spf-link nav-link {{#eq data.settingsTab "profile"}}active{{/eq}}">
+                            {{intlGet "messages.settings.profile"}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/learn-{{route.locale}}/settings/billing" class="spf-link nav-link {{#eq data.settingsTab "billing"}}active{{/eq}}">
+                            {{intlGet "messages.settings.billing"}}
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>

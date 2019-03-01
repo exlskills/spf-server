@@ -36,6 +36,8 @@ import {viewMarketingIndex} from "../controllers/marketing-index";
 import {dataIntl} from "../i18n"
 import {genAltUrls} from "../i18n/utils";
 import {readFromProductionCacheOrFile} from "../utils/prod-cache-handler";
+import {viewMySettings} from "../controllers/my-settings";
+import * as isBot from "isbot";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -67,6 +69,11 @@ registerPartialHBS('digital-diploma-card-lg-vertical');
 registerPartialHBS('course-card-banner');
 registerPartialHBS('social-meta');
 registerPartialHBS('sidebar-menu-content');
+registerPartialHBS('user-settings-header');
+registerPartialHBS('user-settings-login-required');
+registerPartialHBS('user-settings-profile');
+registerPartialHBS('user-settings-billing');
+registerPartialHBS('deferred-styles');
 
 const router = express.Router();
 
@@ -290,8 +297,9 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
             referrer: req.headers.referer,
             url: config.clientBaseURL + req.path,
             canonicalUrl: canonicalUrl,
-            themeMode: req.cookies['themeMode'] ? req.cookies['themeMode'] : 'light'
-        };
+            themeMode: req.cookies['themeMode'] ? req.cookies['themeMode'] : 'light',
+            isBot: isBot(req.headers['user-agent'])
+    };
 
         if (!result.meta.jsonld) {
             result.meta.jsonld = [];
@@ -448,6 +456,9 @@ router.get('/learn-:locale/projects/:digitalDiplomaId', gc(viewProjectIndex, req
 
 router.get('/learn-:locale/instructors', gc(viewInstructors, req => []));
 router.get('/learn-:locale/instructors/:instructorId', gc(viewInstructor, req => [fromUrlId('User', req.params.instructorId)]));
+
+router.get('/learn-:locale/settings/profile', gc(viewMySettings, req => ['profile']));
+router.get('/learn-:locale/settings/billing', gc(viewMySettings, req => ['billing']));
 
 router.get('/learn/*', redirectMissingLocale);
 router.get('/learn', redirectDashboard);

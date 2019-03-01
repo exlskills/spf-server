@@ -108,7 +108,7 @@
 
     </style>
     <div id="course-mobile-nav-wrapper">
-        <div class="container">
+        <div class="container" style="max-width: none;">
             <div class="mr-auto">
                 <h4 id="course-mobile-nav-heading">{{#if data.displayOverview}}{{data.course.meta.title}}{{else}}{{data.course.card.title}}{{/if}}</h4>
             </div>
@@ -195,11 +195,12 @@
                 </div>
             </div>
         </div>
-        <div id="course-cards-bottom-loading-indicator" style="padding: 40px 0;" >
+        <div id="course-cards-bottom-loading-indicator" style="padding: 40px 0;{{#if route.isBot}}display: none;{{/if}}" >
             <div class="is-loading w-100"></div>
         </div>
     </div>
 
+    {{#not route.isBot}}
     <script id="course-pages-json" type="application/json">{{{JSONstringify data.course.nav.pages}}}</script>
 
     <script>
@@ -586,10 +587,6 @@
                 );
             }
 
-            $('#course-mobile-nav-popover-link').click(function (e) {
-// TODO
-            });
-
             $(window).off('touchstart');
             $(window).on('touchstart', function(e){ swipeStart(e.originalEvent); });
             $(window).off('touchend');
@@ -608,4 +605,5 @@
         });
 
     </script>
+    {{/not}}
 {{/if}}
