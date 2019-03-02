@@ -1,7 +1,8 @@
 import config from "../config";
 
 const sitemapLocationTmpls = [
-    `${config.clientBaseURL}/learn-:locale/courses-sitemap.xml`
+    `${config.clientBaseURL}/learn-:locale/courses-sitemap.xml`,
+    `${config.clientBaseURL}/learn-:locale/tutorials-sitemap.xml`
 ];
 
 export function serveSitemapIndex(req, res) {

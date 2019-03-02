@@ -347,6 +347,12 @@
       "no_courses":"Oops, no courses were found!",
       "no_courses_msg": "EXLskills was unable to locate any courses within your selection",
       "view_all_courses": "View All Courses"
+    },
+    "tutorial": {
+      "label": "Tutorial",
+      "label_plural": "Tutorials",
+      "completed_heading": "Tutorial Complete!",
+      "ready_to_learn_more": "Ready to Learn More?"
     }
   }
 }

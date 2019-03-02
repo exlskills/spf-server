@@ -7,7 +7,7 @@ import {skillLevelToText} from "../lib/skill-levels";
 import {minutesToText} from "../lib/duration";
 import config from '../config'
 import {generateItemList} from "../lib/jsonld";
-import {getLocalizedTopicBySlug, getSlugs} from "../course_topics";
+import {getLocalizedTopicBySlug, getCourseTopicSlugs} from "../course_topics";
 
 export async function fetchCourseListForView(client: GqlApi, listType: CourseListType, topic?: string) {
     let gqlEdges = await client.getAllCourses(listType, topic);
@@ -59,7 +59,7 @@ export async function viewCoursesTopicPage(client: GqlApi, user: IUserData, loca
 export async function serveCoursesSitemap(req, res) {
     const locale = req.params.locale ? req.params.locale : 'en';
     res.setHeader('Content-Type', 'application/xml');
-    let urlElements = getSlugs().map((slug) => `<url>
+    let urlElements = getCourseTopicSlugs().map((slug) => `<url>
       <loc>${config.clientBaseURL}/learn-${locale}/courses/${slug}</loc>
       <changefreq>weekly</changefreq>
    </url>`);

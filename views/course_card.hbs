@@ -2,6 +2,11 @@
     {{> course-card-inner}}
 {{else}}
     <style>
+        {{#eq route.themeMode "light"}}
+        body {
+             background: #FFFFFF;
+         }
+        {{/eq}}
         .course-card-body pre code {
             border-radius: 5px;
             padding: 1.5rem;
@@ -18,6 +23,86 @@
         .course-card-body label {
             width: 100%;
         }
+
+        .course-card-body p, .course-card-body ul, .course-card-body ol, .course-card-body li {
+            --x-height-multiplier: 0.375;
+            --baseline-multiplier: 0.17;
+            letter-spacing: .01rem;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 21px;
+            line-height: 1.58;
+            letter-spacing: -.003em;
+        }
+
+        @media (max-width: 767px) {
+            .course-card-body p, .course-card-body ul, .course-card-body ol, .course-card-body li {
+                font-size: 18px;
+                line-height: 1.58;
+                letter-spacing: -.004em;
+            }
+        }
+
+        .course-card-body h2 {
+            --x-height-multiplier: 0.342;
+            --baseline-multiplier: 0.22;
+            letter-spacing: -.02em;
+            font-weight: 700;
+            font-style: normal;
+            letter-spacing: 0;
+            font-size: 42px;
+            line-height: 1.04;
+            letter-spacing: -.015em;
+        }
+
+        @media (max-width: 767px) {
+            .course-card-body h2 {
+                font-size: 34px;
+                line-height: 1.04;
+                letter-spacing: -.015em;
+            }
+        }
+
+        .course-card-body h3 {
+            --x-height-multiplier: 0.342;
+            --baseline-multiplier: 0.22;
+            letter-spacing: -.02em;
+            font-weight: 700;
+            font-style: normal;
+            letter-spacing: 0;
+            font-size: 34px;
+            line-height: 1.15;
+            letter-spacing: -.015em;
+        }
+
+        @media (max-width: 767px) {
+            .course-card-body h3 {
+                font-size: 30px;
+                line-height: 1.15;
+                letter-spacing: -.015em;
+            }
+        }
+
+        .course-card-body h4 {
+            --x-height-multiplier: 0.342;
+            --baseline-multiplier: 0.22;
+            letter-spacing: -.02em;
+            font-weight: 700;
+            font-style: normal;
+            letter-spacing: 0;
+            font-size: 26px;
+            line-height: 1.22;
+            letter-spacing: -.012em;
+        }
+
+        @media (max-width: 767px) {
+            .course-card-body h4 {
+                font-size: 24px;
+                line-height: 1.22;
+                letter-spacing: -.012em;
+            }
+        }
+
         #course-content-card-wrapper .card-bottom-nav {
             margin: auto;
             padding-bottom: 8px;
@@ -35,7 +120,7 @@
             margin-bottom: 10px;
         }
 
-        .user-logos-container h3 {
+        .user-logos-container h4 {
             margin-top: 30px;
         }
 
@@ -129,7 +214,7 @@
             <div class="row align-items-center">
                 <!-- Title -->
                 <div class="col">
-                    <h1 id="course-overview-heading" style="font-size: 1.4em;">
+                    <h1 id="course-overview-heading" style="font-size: 30px;">
                         {{data.course.meta.title}} {{intlGet "messages.course.label"}}
                     </h1>
                 </div>
@@ -144,8 +229,8 @@
                 <div class="card-body course-card-body">
                     <article>
                         <div class="user-logos-container">
-                            <h2>{{intlGet "messages.marketing.engineers_trust"}}</h2>
-                            <h3>{{intlGet "messages.marketing.mil_prof_hundrs_inst"}}</h3>
+                            <h3>{{intlGet "messages.marketing.engineers_trust"}}</h3>
+                            <h4>{{intlGet "messages.marketing.mil_prof_hundrs_inst"}}</h4>
                             <img id="user-logos-desktop" src="https://cdn-mktg.exlskills.com/exlskills-user-logos-desktop.png">
                             <img id="user-logos-mobile" src="https://cdn-mktg.exlskills.com/exlskills-user-logos-mobile.png">
                             <br />
@@ -159,7 +244,9 @@
                         {{{markdown data.courseOverviewFaqMD}}}
 
                         <h3>{{intlGet "messages.help.have_more_qs"}}</h3>
-                        {{intlGet "messages.help.reach_via"}} <a class="drift-open-chat" href="#!">{{intlGet "messages.help.live_chat_here"}}</a>
+                        <p>
+                            {{intlGet "messages.help.reach_via"}} <a class="drift-open-chat" href="#!">{{intlGet "messages.help.live_chat_here"}}</a>
+                        </p>
                     </article>
                 </div>
             </div>
