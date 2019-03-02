@@ -330,6 +330,15 @@
             "profile": "Profile",
             "billing": "Billing",
             "billing_callout_link": "Click here to manage your billing preferences and EXLskills coins"
+        },
+        "pwa_offline":  {
+            "heading": "You're Offline",
+            "message": "Unable to load EXLskills without an active internet connection",
+            "try_again": "Try Again"
+        },
+        "pwa_boot": {
+            "heading": "Loading EXLskills...",
+            "message": "One moment while EXLskills gets started!"
         }
     }
 }

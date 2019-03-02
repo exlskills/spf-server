@@ -1,0 +1,42 @@
+<!-- CONTENT -->
+<div class="container-fluid">
+    <!-- Footer -->
+    <div class="header-footer">
+        <div class="col-12">
+
+            <!-- Card -->
+            <div class="card card-inactive" style="border: none;">
+                <div class="card-body text-center">
+
+                    <!-- Image -->
+                    <img src="{{config.static_assets_url_prefix}}/img/illustrations/happiness.svg" alt="..." class="img-fluid" style="max-width: 182px;">
+
+                    <br/>
+                    <br/>
+
+                    <!-- Title -->
+                    <h1>
+                        {{intlGet "messages.pwa_boot.heading"}}
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <p class="text-muted">
+                        {{intlGet "messages.pwa_boot.message"}}
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+</div> <!-- / .container-fluid -->
+
+<script>
+    $(function() {
+        spf.navigate("/learn-{{route.locale}}/dashboard");
+    })
+</script>

@@ -1,0 +1,41 @@
+<!-- CONTENT -->
+<div class="container-fluid">
+    <!-- Footer -->
+    <div class="header-footer">
+        <div class="col-12">
+
+            <!-- Card -->
+            <div class="card card-inactive" style="border: none;">
+                <div class="card-body text-center">
+
+                    <!-- Image -->
+                    <img src="{{config.static_assets_url_prefix}}/img/illustrations/meditate.svg" alt="..." class="img-fluid" style="max-width: 182px;">
+
+                    <br/>
+                    <br/>
+
+                    <!-- Title -->
+                    <h1>
+                        {{intlGet "messages.pwa_offline.heading"}}
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <p class="text-muted">
+                        {{intlGet "messages.pwa_offline.message"}}
+                    </p>
+
+                    <!-- Button -->
+                    <a href="/learn-{{route.locale}}/dashboard?source=pwa_0" class="btn btn-primary">
+                        <span class="fe fe-refresh-cw"></span> {{intlGet "messages.pwa_offline.try_again"}}
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+</div> <!-- / .container-fluid -->

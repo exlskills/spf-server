@@ -38,6 +38,7 @@ import {genAltUrls} from "../i18n/utils";
 import {readFromProductionCacheOrFile} from "../utils/prod-cache-handler";
 import {viewMySettings} from "../controllers/my-settings";
 import * as isBot from "isbot";
+import {viewPWAOffline, viewPWABoot} from "../controllers/pwa";
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -459,6 +460,9 @@ router.get('/learn-:locale/instructors/:instructorId', gc(viewInstructor, req =>
 
 router.get('/learn-:locale/settings/profile', gc(viewMySettings, req => ['profile']));
 router.get('/learn-:locale/settings/billing', gc(viewMySettings, req => ['billing']));
+
+router.get('/learn-:locale/pwa-offline', gc(viewPWAOffline, req => []));
+router.get('/learn-:locale/pwa-boot', gc(viewPWABoot, req => []));
 
 router.get('/learn/*', redirectMissingLocale);
 router.get('/learn', redirectDashboard);

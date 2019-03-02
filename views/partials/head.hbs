@@ -58,6 +58,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- TODO Clean this up and load jquery later, however, too many page scripts require this while loading... -->
 <script src="{{config.static_assets_url_prefix}}/libs/jquery/dist/jquery.min.js"></script>
 <script async src="https://js.stripe.com/v3/"></script>
+<script async src="https://cdn.jsdelivr.net/npm/pwacompat@2.0.8/pwacompat.min.js"
+        integrity="sha384-uONtBTCBzHKF84F6XvyC8S0gL8HTkAPeCyBNvfLfsqHh+Kd6s/kaS4BdmNQ5ktp1"
+        crossorigin="anonymous"></script>
 
 <!-- Theme CSS -->
 {{> styles}}
