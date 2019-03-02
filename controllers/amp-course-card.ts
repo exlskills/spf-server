@@ -34,6 +34,7 @@ export async function ampViewCourseCard(client: GqlApi, user: IUserData, locale:
         amp: true,
         meta: {
             title: `${gqlResp.card.title} | ${gqlResp.meta.title}`,
+            description: `Learn ${gqlResp.card.title} as part of the ${gqlResp.meta.title} Course for FREE! 1 million+ learners have already joined EXLskills, start a course today at no cost!`,
             topbarTitle: `${gqlResp.meta.title}`,
             image: gqlResp.meta.logo_url,
             // NOTE: If we don't have the updated_at date, then don't add this as we won't have all the required fields

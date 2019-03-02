@@ -10,7 +10,7 @@ export async function viewMarketingIndex(client: GqlApi, user: IUserData, locale
         layout: 'marketing',
         meta: {
             title: 'Learn high-paying tech skills for free',
-            description: 'The smartest way to learn high-paying tech skills. Join the thousands of professionals who use EXLskills every day! Start Learning for FREE today!'
+            description: '1 million+ learners have already joined EXLskills, the smartest way to learn high-paying tech skills! Start learning Python, Data Science, Machine Learning, Java, JavaScript, AI, and more for FREE today!'
         },
         data: {
             courses: {

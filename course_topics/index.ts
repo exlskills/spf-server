@@ -63,7 +63,6 @@ export function getLocalizedTopicBySlug(slug: string, locale?: string) {
     if (!locale || !ct[locale]) {
         locale = ct.default_locale;
     }
-    console.log(ct);
     return {
         locale,
         primary_topic: ct.primary_topic,

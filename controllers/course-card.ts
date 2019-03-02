@@ -282,6 +282,7 @@ export async function viewCourseCard(client: GqlApi, user: IUserData, locale: st
         contentTmpl: 'course_card',
         meta: {
             title: `${gqlResp.card.title} | ${gqlResp.meta.title}`,
+            description: `Learn ${gqlResp.card.title} as part of the ${gqlResp.meta.title} Course for FREE! 1 million+ learners have already joined EXLskills, start a course today at no cost!`,
             topbarTitle: `${gqlResp.meta.title}`,
             image: gqlResp.meta.logo_url,
             amphtml: `/amp${req.path}`,
