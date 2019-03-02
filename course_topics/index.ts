@@ -25,7 +25,6 @@ function sanitizeTopic(t, filePath) {
 
 function checkLoadedF() {
     if (!loadCompleted) {
-        console.error(new Error('crap'));
         throw 'Unable to get course topic until course topics have been loaded'
     }
 }
