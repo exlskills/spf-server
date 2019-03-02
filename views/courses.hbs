@@ -33,6 +33,22 @@
     <!-- Footer -->
     <div class="header-footer">
         {{#if data.topic}}
+            <!-- Card -->
+            <div class="card bg-light border">
+                <div class="card-body">
+                    <div>
+                        {{{markdown data.topic.info_md}}}
+                    </div>
+                    <div class="">
+                        {{#with data.courses.[0]}}
+                            <!-- Button -->
+                            <a href="/learn-{{../route.locale}}/courses/{{url_id}}" class="spf-link btn btn-primary">
+                                {{intlGet "messages.marketing.start_learning_free"}}
+                            </a>
+                        {{/with}}
+                    </div>
+                </div>
+            </div>
             {{#gt data.courses.length 0}}
                 <div class="row">
                     {{#each data.courses}}
