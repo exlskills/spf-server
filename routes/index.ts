@@ -463,6 +463,7 @@ router.get('/learn-:locale/settings/billing', gc(viewMySettings, req => ['billin
 
 router.get('/learn-:locale/pwa-offline', gc(viewPWAOffline, req => []));
 router.get('/learn-:locale/pwa-boot', gc(viewPWABoot, req => []));
+router.get('/learn-:locale/sw.js', (req, res) => res.sendFile(path.join(__dirname, '../static/assets/js/sw.js')));
 
 router.get('/learn/*', redirectMissingLocale);
 router.get('/learn', redirectDashboard);
