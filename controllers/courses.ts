@@ -7,9 +7,10 @@ import {skillLevelToText} from "../lib/skill-levels";
 import {minutesToText} from "../lib/duration";
 import config from '../config'
 import {generateItemList} from "../lib/jsonld";
+import {getLocalizedTopicBySlug, getSlugs} from "../course_topics";
 
-export async function fetchCourseListForView(client: GqlApi, listType: CourseListType) {
-    let gqlEdges = await client.getAllCourses(listType);
+export async function fetchCourseListForView(client: GqlApi, listType: CourseListType, topic?: string) {
+    let gqlEdges = await client.getAllCourses(listType, topic);
     let courses: any[] = [];
     for (let edge of gqlEdges) {
         let course = edge.node as any;
@@ -36,4 +37,35 @@ export async function viewCourses(client: GqlApi, user: IUserData, locale: strin
             courses
         }
     }
+}
+
+export async function viewCoursesTopicPage(client: GqlApi, user: IUserData, locale: string, slug: string) : Promise<ISPFRouteResponse> {
+    const topic = getLocalizedTopicBySlug(slug, locale);
+    const courses = await fetchCourseListForView(client, 'relevant', topic.primary_topic);
+    return {
+        contentTmpl: 'courses',
+        meta: {
+            title: topic.meta.title,
+            description: topic.meta.description,
+            jsonld: [generateItemList(...courses.map(c => `${config.clientBaseURL}/learn-en/courses/${c.url_id}`))]
+        },
+        data: {
+            topic,
+            courses
+        }
+    }
+}
+
+export async function serveCoursesSitemap(req, res) {
+    const locale = req.params.locale ? req.params.locale : 'en';
+    res.setHeader('Content-Type', 'application/xml');
+    let urlElements = getSlugs().map((slug) => `<url>
+      <loc>${config.clientBaseURL}/learn-${locale}/courses/${slug}</loc>
+      <changefreq>weekly</changefreq>
+   </url>`);
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   ${urlElements.join('\n')}
+</urlset> 
+`)
 }

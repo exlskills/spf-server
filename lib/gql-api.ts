@@ -311,10 +311,10 @@ export default class GqlApi {
         }
     }
 
-    public async getAllCourses(listType: CourseListType): Promise<ICourseEdge[]> {
+    public async getAllCourses(listType: CourseListType, topic?: string): Promise<ICourseEdge[]> {
         const q = `
             {
-                coursePaging(first: 9999, resolverArgs: [{ param: "list", value: "${listType}" }], filterValues: null) {
+                coursePaging(first: 9999, resolverArgs: [${!topic ? "" : `{ param: "primary_topic", value: "${topic}"}`}{ param: "list", value: "${listType}" }], filterValues: null) {
                     edges {
                         node {
                             id

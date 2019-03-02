@@ -339,6 +339,14 @@
         "pwa_boot": {
             "heading": "Loading EXLskills...",
             "message": "One moment while EXLskills gets started!"
+        },
+        "course_list": {
+            "all_courses": "All Courses",
+            "suggested_courses": "Suggested Courses",
+            "more_courses": "More Courses",
+            "no_courses":"Oops, no courses were found!",
+            "no_courses_msg": "EXLskills was unable to locate any courses within your selection",
+            "view_all_courses": "View All Courses"
         }
     }
 }

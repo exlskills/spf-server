@@ -1,16 +1,102 @@
-<style>
-
-</style>
-
-<br/>
 <!-- CONTENT -->
 <div class="container-fluid">
-    <div class="row">
-        {{#each data.courses}}
-            {{>course-card-lg-vertical course=this locale=../route.locale}}
-        {{/each}}
+    <!-- Body -->
+    <div class="header-body">
+        <div class="row align-items-end">
+            <div class="col">
+
+                <!-- Pretitle -->
+                <h6 class="header-pretitle text-secondary">
+                    {{intlGet "messages.course.label_plural"}}
+                </h6>
+
+                <!-- Title -->
+                <h1 class="header-title">
+                    {{#if data.topic}}
+                        {{data.topic.meta.title}}
+                    {{else}}
+                        {{intlGet "messages.course_list.suggested_courses"}}
+                    {{/if}}
+                </h1>
+
+            </div>
+            <div class="col-auto">
+                {{#if data.topic}}
+                    <a class="btn btn-outline-primary spf-link" href="/learn-{{route.locale}}/courses">
+                        <span class="fe fe-more-horizontal"></span> {{intlGet "messages.course_list.more_courses"}}
+                    </a>
+                {{/if}}
+            </div>
+        </div> <!-- / .row -->
+    </div> <!-- / .header-body -->
+
+    <!-- Footer -->
+    <div class="header-footer">
+        {{#if data.topic}}
+            <!-- Card -->
+            <div class="card bg-light border">
+                <div class="card-body">
+                    <div>
+                        {{{markdown data.topic.info_md}}}
+                    </div>
+                    <div class="">
+                        {{#with data.courses.[0]}}
+                            <!-- Button -->
+                            <a href="/learn-{{../route.locale}}/courses/{{url_id}}" class="spf-link btn btn-primary">
+                                {{intlGet "messages.marketing.start_learning_free"}}
+                            </a>
+                        {{/with}}
+                    </div>
+                </div>
+            </div>
+            {{#gt data.courses.length 0}}
+                <div class="row">
+                    {{#each data.courses}}
+                        {{>course-card-lg-vertical course=this locale=../route.locale}}
+                    {{/each}}
+                </div>
+            {{else}}
+                <div class="col-12">
+
+                    <!-- Card -->
+                    <div class="card card-inactive">
+                        <div class="card-body text-center">
+
+                            <!-- Image -->
+                            <img src="{{config.static_assets_url_prefix}}/img/illustrations/scale.svg" alt="..." class="img-fluid" style="max-width: 182px;">
+
+                            <!-- Title -->
+                            <h1>
+                                {{intlGet "messages.course_list.no_courses"}}
+                            </h1>
+
+                            <!-- Subtitle -->
+                            <p class="text-muted">
+                                {{intlGet "messages.course_list.no_courses_msg"}}
+                            </p>
+
+                            <!-- Button -->
+                            <a href="/learn-{{route.locale}}/courses" class="spf-link btn btn-primary">
+                                {{intlGet "messages.course_list.view_all_courses"}}
+                            </a>
+
+                        </div>
+                    </div>
+
+                </div>
+            {{/gt}}
+        {{else}}
+            <div class="row">
+                {{#each data.courses}}
+                    {{>course-card-lg-vertical course=this locale=../route.locale}}
+                {{/each}}
+            </div>
+        {{/if}}
     </div>
+
+
     <br />
     <br />
     <br />
+
 </div> <!-- / .container-fluid -->
