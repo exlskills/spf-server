@@ -1,7 +1,7 @@
 import * as express from 'express';
 import config from '../config'
 import {viewDashboard} from '../controllers/dashboard';
-import {viewCourses, viewCoursesTopicPage} from '../controllers/courses';
+import {serveCoursesSitemap, viewCourses, viewCoursesTopicPage} from '../controllers/courses';
 import {Request, Response, NextFunction} from 'express';
 import {fromUrlId, toUrlId} from "../utils/url-ids";
 import {getGQLToken} from "../lib/anon";
@@ -40,6 +40,7 @@ import {viewMySettings} from "../controllers/my-settings";
 import * as isBot from "isbot";
 import {viewPWAOffline, viewPWABoot} from "../controllers/pwa";
 import {loadTopics, getSlugs} from "../course_topics";
+import {serveSitemapIndex} from "../controllers/sitemap-index";
 
 loadTopics();
 
@@ -442,9 +443,13 @@ router.get('/learn-:locale', redirectDashboard);
 router.get('/learn-:locale/dashboard', gc(viewDashboard, req => []));
 router.get('/learn-:locale/courses', gc(viewCourses, req => []));
 
+// Single sitemap for all locales, so hard-coded for locale-en
+router.get('/learn-en/sitemap-index.xml', serveSitemapIndex);
+
 getSlugs().forEach((slug) => {
     router.get('/learn-:locale/courses/'+slug, gc(viewCoursesTopicPage, req => [slug]));
 });
+router.get('/learn-:locale/courses-sitemap.xml', serveCoursesSitemap);
 
 router.get('/learn-:locale/courses/:courseId', gc(viewCourseOverview, req => [fromUrlId('Course', req.params.courseId)]));
 router.get('/learn-:locale/courses/:courseId/content', gc(viewCourseContent, req => [fromUrlId('Course', req.params.courseId)]));
