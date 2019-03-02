@@ -4,6 +4,7 @@
   "description": "EXLskills SPFJS Web Front-end",
   "main": "index.js",
   "dependencies": {
+    "@types/js-yaml": "^3.12.0",
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
     "cookie-parser": "^1.4.3",
@@ -19,6 +20,7 @@
     "handlebars-helpers": "^0.10.0",
     "handlebars-intl": "^1.1.2",
     "isbot": "^2.2.1",
+    "js-yaml": "^3.12.2",
     "jsonwebtoken": "^8.3.0",
     "moment-timezone": "^0.5.21",
     "showdown": "^1.8.6",
