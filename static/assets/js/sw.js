@@ -1,7 +1,7 @@
 'use strict';
 
 const cacheName = 'exlskills.com-exlskils-1.0.0';
-const startPage = 'https://exlskills.com/learn-en/pwa-boot/?source=pwa_0';
+const startPage = 'https://exlskills.com/learn-en/pwa-boot/';
 const offlinePage = 'https://exlskills.com/learn-en/pwa-offline/';
 const filesToCache = [startPage, offlinePage];
 // const neverCacheUrls = [/\/settings/, /\/courses/, /spf=navigate/];
@@ -40,12 +40,15 @@ self.addEventListener('activate', function (e) {
 // Fetch
 self.addEventListener('fetch', function (e) {
 
+    console.log(e.request.url);
     // Return if the current request url is in the never cache list
     // if (!neverCacheUrls.every(checkNeverCacheList, e.request.url)) {
     if (e.request.url.indexOf('/learn-en/pwa-') < 0) {
         console.log('EXLskills: Current request is excluded from cache.');
         return;
     }
+
+    console.log('Matched PWA request');
 
     // Return if request url protocal isn't http or https
     if (!e.request.url.match(/^(http|https):\/\//i))
