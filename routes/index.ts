@@ -39,10 +39,13 @@ import {readFromProductionCacheOrFile} from "../utils/prod-cache-handler";
 import {viewMySettings} from "../controllers/my-settings";
 import * as isBot from "isbot";
 import {viewPWAOffline, viewPWABoot} from "../controllers/pwa";
-import {loadTopics, getSlugs} from "../course_topics";
+import {loadTopics, getCourseTopicSlugs} from "../course_topics";
 import {serveSitemapIndex} from "../controllers/sitemap-index";
+import {serveTutorialsSitemap, viewTutorialPage} from "../controllers/tutorials";
+import {getTutorialSlugs, loadTutorials} from "../tutorials";
 
 loadTopics();
+loadTutorials();
 
 // @ts-ignore
 HandlebarsIntl.registerWith(handlebars);
@@ -98,7 +101,7 @@ const computeUrlsAndBreadcrumbs = (req: Request, data: any): { canonicalUrl: str
     }
 
     let matchedParts = matchedPath.split('/');
-    let routeAffinity: "course" | "instructor" | "digital-diploma" | null = null;
+    let routeAffinity: "course" | "tutorial" | "instructor" | "digital-diploma" | null = null;
     let partsToFill: { [key: string]: { ind: number, val: string }; } = {};
     for (let ind = 0; ind < matchedParts.length; ind++) {
         if (ind === 1) {
@@ -111,6 +114,9 @@ const computeUrlsAndBreadcrumbs = (req: Request, data: any): { canonicalUrl: str
                 case "courses":
                     breadcrumbs.push({name: "Courses", url: `${breadcrumbUrlBase}/courses`});
                     break;
+                case "tutorials":
+                    breadcrumbs.push({name: "Tutorials", url: `${breadcrumbUrlBase}/tutorials`});
+                    break;
                 case "projects":
                     breadcrumbs.push({name: "Projects", url: `${breadcrumbUrlBase}/projects`});
                     break;
@@ -121,6 +127,9 @@ const computeUrlsAndBreadcrumbs = (req: Request, data: any): { canonicalUrl: str
                     breadcrumbs.push({name: "Digital Diplomas", url: `${breadcrumbUrlBase}/digital-diplomas`});
                     break;
             }
+        }
+        if (ind === 2 && matchedParts[1] === 'courses' && data.topic && matchedParts.length === 3 && matchedParts[2] !== ':courseId') {
+            breadcrumbs.push({name: data.topic.meta.title, url: `${breadcrumbUrlBase}/courses/${data.topic.url_slug}`});
         }
         switch (matchedParts[ind]) {
             case ":courseId":
@@ -138,6 +147,11 @@ const computeUrlsAndBreadcrumbs = (req: Request, data: any): { canonicalUrl: str
                 break;
             case ":cardId":
                 partsToFill['cardId'] = {ind, val: req.params.cardId};
+                parts.push("_");
+                break;
+            case ":tutorialSlug":
+                routeAffinity = 'tutorial';
+                partsToFill['tutorialSlug'] = {ind, val: req.params.tutorialSlug};
                 parts.push("_");
                 break;
             case ":digitalDiplomaId":
@@ -201,19 +215,25 @@ const computeUrlsAndBreadcrumbs = (req: Request, data: any): { canonicalUrl: str
                 }
             }
             break;
+        case 'tutorial':
+            parts[partsToFill['tutorialSlug'].ind] = data.tutorial.url_slug;
+            breadcrumbs.push({name: data.tutorial.title, url: `${breadcrumbUrlBase}/tutorials/${data.tutorial.url_slug}`});
+            break;
         case 'instructor':
-            parts[partsToFill['instructorId'].ind] = toUrlId(data.instructor.full_name, data.instructor.id);
-            breadcrumbs.push({name: data.instructor.full_name, url: `${breadcrumbUrlBase}/instructors/${cUrlId}`});
+            const iUrlId = toUrlId(data.instructor.full_name, data.instructor.id);
+            parts[partsToFill['instructorId'].ind] = iUrlId;
+            breadcrumbs.push({name: data.instructor.full_name, url: `${breadcrumbUrlBase}/instructors/${iUrlId}`});
             break;
         case 'digital-diploma':
-            parts[partsToFill['digitalDiplomaId'].ind] = toUrlId(data.digitalDiploma.title, data.digitalDiploma.id);
+            const ddUrlId = toUrlId(data.digitalDiploma.title, data.digitalDiploma.id);
+            parts[partsToFill['digitalDiplomaId'].ind] = ddUrlId;
             if (matchedParts[1] === 'digital-diplomas') {
                 breadcrumbs.push({
                     name: data.digitalDiploma.title,
-                    url: `${breadcrumbUrlBase}/digital-diplomas/${cUrlId}`
+                    url: `${breadcrumbUrlBase}/digital-diplomas/${ddUrlId}`
                 });
             } else if (matchedParts[1] === 'projects') {
-                breadcrumbs.push({name: data.digitalDiploma.title, url: `${breadcrumbUrlBase}/projects/${cUrlId}`});
+                breadcrumbs.push({name: data.digitalDiploma.title, url: `${breadcrumbUrlBase}/projects/${ddUrlId}`});
             }
             break;
     }
@@ -446,10 +466,16 @@ router.get('/learn-:locale/courses', gc(viewCourses, req => []));
 // Single sitemap for all locales, so hard-coded for locale-en
 router.get('/learn-en/sitemap-index.xml', serveSitemapIndex);
 
-getSlugs().forEach((slug) => {
+getCourseTopicSlugs().forEach((slug) => {
     router.get('/learn-:locale/courses/'+slug, gc(viewCoursesTopicPage, req => [slug]));
 });
 router.get('/learn-:locale/courses-sitemap.xml', serveCoursesSitemap);
+
+getTutorialSlugs().forEach((slug) => {
+    router.get('/learn-:locale/tutorials/:tutorialSlug', gc(viewTutorialPage, req => [req.params.tutorialSlug]));
+});
+
+router.get('/learn-:locale/tutorials-sitemap.xml', serveTutorialsSitemap);
 
 router.get('/learn-:locale/courses/:courseId', gc(viewCourseOverview, req => [fromUrlId('Course', req.params.courseId)]));
 router.get('/learn-:locale/courses/:courseId/content', gc(viewCourseContent, req => [fromUrlId('Course', req.params.courseId)]));

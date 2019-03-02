@@ -72,7 +72,7 @@ export function getLocalizedTopicBySlug(slug: string, locale?: string) {
     }
 }
 
-export function getSlugs() {
+export function getCourseTopicSlugs() {
     checkLoadedF();
     return Object.keys(courseTopicsBySlug)
 }

@@ -1,0 +1,160 @@
+<style>
+    {{#eq route.themeMode "light"}}
+    body {
+        background: #FFFFFF;
+    }
+    {{/eq}}
+    .tutorial-body p, .tutorial-body ul, .tutorial-body ol, .tutorial-body li {
+        --x-height-multiplier: 0.375;
+        --baseline-multiplier: 0.17;
+        letter-spacing: .01rem;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 21px;
+        line-height: 1.58;
+        letter-spacing: -.003em;
+    }
+
+    @media (max-width: 767px) {
+        .tutorial-body p, .tutorial-body ul, .tutorial-body ol, .tutorial-body li {
+            font-size: 18px;
+            line-height: 1.58;
+            letter-spacing: -.004em;
+        }
+    }
+
+    .tutorial-body h2 {
+        --x-height-multiplier: 0.342;
+        --baseline-multiplier: 0.22;
+        letter-spacing: -.02em;
+        font-weight: 700;
+        font-style: normal;
+        letter-spacing: 0;
+        font-size: 42px;
+        line-height: 1.04;
+        letter-spacing: -.015em;
+    }
+
+    @media (max-width: 767px) {
+        .tutorial-body h2 {
+            font-size: 34px;
+            line-height: 1.04;
+            letter-spacing: -.015em;
+        }
+    }
+
+    .tutorial-body h3 {
+        --x-height-multiplier: 0.342;
+        --baseline-multiplier: 0.22;
+        letter-spacing: -.02em;
+        font-weight: 700;
+        font-style: normal;
+        letter-spacing: 0;
+        font-size: 34px;
+        line-height: 1.15;
+        letter-spacing: -.015em;
+    }
+
+    @media (max-width: 767px) {
+        .tutorial-body h3 {
+            font-size: 30px;
+            line-height: 1.15;
+            letter-spacing: -.015em;
+        }
+    }
+
+    .tutorial-body h4 {
+        --x-height-multiplier: 0.342;
+        --baseline-multiplier: 0.22;
+        letter-spacing: -.02em;
+        font-weight: 700;
+        font-style: normal;
+        letter-spacing: 0;
+        font-size: 26px;
+        line-height: 1.22;
+        letter-spacing: -.012em;
+    }
+
+    @media (max-width: 767px) {
+        .tutorial-body h4 {
+            font-size: 24px;
+            line-height: 1.22;
+            letter-spacing: -.012em;
+        }
+    }
+</style>
+
+<!-- CONTENT -->
+<div class="container-fluid" style="max-width: 768px;">
+    <!-- Body -->
+    <div class="header-body">
+        <div class="row align-items-end">
+            <div class="col">
+
+                <!-- Pretitle -->
+                <h6 class="header-pretitle text-secondary">
+                    {{intlGet "messages.tutorial.label_plural"}}
+                </h6>
+
+                <!-- Title -->
+                <h1 class="header-title">
+                    {{data.tutorial.title}}
+                </h1>
+
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-outline-primary spf-link" href="/learn-{{route.locale}}/courses">
+                    <span class="fe fe-more-horizontal"></span> {{intlGet "messages.course.label_plural"}}
+                </a>
+            </div>
+        </div> <!-- / .row -->
+    </div> <!-- / .header-body -->
+
+    <!-- Footer -->
+    <div class="header-footer">
+        <!-- Card -->
+        <div class="card border">
+            <div class="tutorial-body card-body">
+                <article>
+                    {{{markdown data.tutorial.content_md}}}
+                </article>
+            </div>
+        </div>
+        <div class="col-12">
+            <!-- Card -->
+            <div class="card card-inactive">
+                <div class="card-body text-center">
+
+                    <!-- Image -->
+                    <img src="{{config.static_assets_url_prefix}}/img/illustrations/happiness.svg" alt="..." class="img-fluid" style="max-width: 182px;">
+
+                    <br/>
+                    <br/>
+
+                    <!-- Title -->
+                    <h1>
+                        {{intlGet "messages.tutorial.completed_heading"}} 🎉
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <p class="text-muted">
+                        {{intlGet "messages.tutorial.ready_to_learn_more"}}
+                    </p>
+
+                    <!-- Button -->
+                    <a href="/learn-{{route.locale}}/courses" class="spf-link btn btn-primary">
+                        {{intlGet "messages.course_list.more_courses"}}
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <br />
+    <br />
+    <br />
+
+</div> <!-- / .container-fluid -->
