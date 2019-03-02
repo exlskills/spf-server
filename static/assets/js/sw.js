@@ -42,7 +42,7 @@ self.addEventListener('fetch', function (e) {
 
     // Return if the current request url is in the never cache list
     // if (!neverCacheUrls.every(checkNeverCacheList, e.request.url)) {
-    if (filesToCache.indexOf(e.request.url) < 0) {
+    if (e.request.url.indexOf('/learn-en/pwa-') < 0) {
         console.log('EXLskills: Current request is excluded from cache.');
         return;
     }
