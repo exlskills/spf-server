@@ -330,6 +330,21 @@
                 });
             {{/not}}
 
+            function iframeLazyLoad() {
+                $('.course-card-body iframe').each(function() {
+                    var frame = $(this),
+                            vidSource = $(frame).attr('data-src'),
+                            distance = $(frame).offset().top - $(window).scrollTop(),
+                            distTopBot = window.innerHeight - distance,
+                            distBotTop = distance + $(frame).height();
+
+                    if (distTopBot >= 0 && distBotTop >= 0) { // if frame is partly in view
+                        $(frame).attr('src', vidSource);
+                        $(frame).removeAttr('data-src');
+                    }
+                });
+            }
+
             function updateAuxElementsSPF(pageData, ignoreNavItems) {
                 if (!ignoreNavItems) {
                     $('#sidebar').html(pageData.body.sidebar);
@@ -343,13 +358,22 @@
                 lastLoadedCardPath = pageData.url;
             }
             function processCardNavigation(viaScroll, isPrepend, pageData, cardIndex) {
+                $cardContent = $(pageData.body.content);
+                $cardContent.find("iframe").each(function() {
+                    var frame = $(this),
+                            origSource = $(frame).attr('src');
+                    if (origSource) {
+                        $(frame).attr('data-src', origSource);
+                        $(frame).removeAttr('src');
+                    }
+                });
                 if (isPrepend) {
                     var prependOldHeight = $(document).height();  //store document height before modifications
                     var prependOldScroll = $(window).scrollTop(); //remember the scroll position
-                    $courseContentWrapper.prepend(pageData.body.content);
+                    $courseContentWrapper.prepend($cardContent);
                     $(document).scrollTop(prependOldScroll + $(document).height() - prependOldHeight); //restore "scroll position"
                 } else{
-                    $courseContentWrapper.append(pageData.body.content);
+                    $courseContentWrapper.append($cardContent);
                 }
                 updateAuxElementsSPF(pageData, true);
                 if (cardIndex < topPageIdx) {
@@ -478,6 +502,7 @@
                     lowerScrollBoundHandler();
                 }
                 manageMobileMenuPos();
+                iframeLazyLoad();
                 var cardsInView = [];
                 var overviewAtLeastPartial = false;
                 $('.course-card-item:visible').each(function() {
