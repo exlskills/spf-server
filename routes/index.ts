@@ -301,8 +301,9 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
 
         if (setUpdatedToken) {
             res.cookie(config.jwt.cookieName, gqlToken, {
-                expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+                maxAge: 30 * 24 * 60 * 60 * 12 * 1000,
                 httpOnly: true,
+                secure: process.env.NODE_ENV == "production" ? true : undefined,
                 domain: config.cookies.domain
             });
         }
