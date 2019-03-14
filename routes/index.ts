@@ -304,7 +304,8 @@ const gqlBaseControllerHandler = (controllerFunction: ControllerFunction, params
                 maxAge: 30 * 24 * 60 * 60 * 12 * 1000,
                 httpOnly: true,
                 secure: process.env.NODE_ENV == "production" ? true : undefined,
-                domain: config.cookies.domain
+                domain: config.cookies.domain,
+                path: '/'
             });
         }
         if (result.redirect) {
