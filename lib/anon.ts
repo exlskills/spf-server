@@ -1,10 +1,17 @@
 import axios from 'axios'
 import config from '../config'
 
+const cPrefix = 'token=';
+
 export async function getGQLToken(primaryLocale) {
     const resp = await axios.post(config.auth.apiBaseURL + '/anonymous',  {locale: primaryLocale});
-    if (!(resp && resp.data.cookies)) {
-        return Promise.reject('anonymous credentials request failed')
+    let newCookies = resp.headers['set-cookie'].map(c => {
+        return c.split(';')[0]
+    });
+    for (let c of newCookies) {
+        if (c.startsWith(cPrefix)) {
+            return c.substr(cPrefix.length);
+        }
     }
-    return resp.data.cookies.find(item => item.name === 'token').value
+    return Promise.reject('anonymous credentials request failed')
 }
