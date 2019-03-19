@@ -173,7 +173,7 @@
                 btn.hide();
                 $("#q-" + escId + "-next-btn").show();
             {{/if}}
-            elCorrectness.text("{{intlGet "messages.question.awesome_correct_line"}} 🎉");
+            elCorrectness.text("{{{intlGet "messages.question.awesome_correct_line"}}} 🎉");
             elCorrectness.addClass('text-success');
             elCorrectness.removeClass('text-warning');
             elCorrectness.show();
@@ -186,7 +186,7 @@
             btn.removeClass('btn-primary');
             btn.addClass('btn-warning');
             btn.html('Try Again <span class="fe fe-refresh-cw ml-3"><span>');
-            elCorrectness.text("{{intlGet "messages.question.not_right_line"}}");
+            elCorrectness.text("{{{intlGet "messages.question.not_right_line"}}}");
             elCorrectness.addClass('text-warning');
             elCorrectness.removeClass('text-success');
             elCorrectness.show();
@@ -205,7 +205,7 @@
             $("#q-" + escId + "-expl-btn").click(function() {
                 if ($("#q-" + escId + "-expl-collapse").hasClass('show')) {
                     $("#q-" + escId + "-expl-collapse").removeClass('show');
-                    $("#q-" + escId + "-expl-btn").text("{{intlGet "messages.question.show_expl"}}");
+                    $("#q-" + escId + "-expl-btn").text("{{{intlGet "messages.question.show_expl"}}}");
                 } else {
                     if (!hasViewedExpl) {
                         hasViewedExpl = true;
@@ -217,7 +217,7 @@
                     }
                     btn.attr('disabled', 'disabled');
                     $("#q-" + escId + "-expl-collapse").addClass('show');
-                    $("#q-" + escId + "-expl-btn").text("{{intlGet "messages.question.hide_expl"}}");
+                    $("#q-" + escId + "-expl-btn").text("{{{intlGet "messages.question.hide_expl"}}}");
                 }
             });
             $("#q-" + escId + "-expl-btn").show();

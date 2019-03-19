@@ -192,11 +192,11 @@
             if (extraCost < 0) {
                 extraCost = 0;
             }
-            $('#you-will-save-with-coins').text("🎉 {{intlGet "messages.marketing.you_will_save"}} {{intlGet "messages.marketing.money_sign"}}" + (Math.round(((item.quantity * item.displayUnitCost)-extraCost)*100)/100) + " {{intlGet "messages.coins.with_your_coins"}} ");
+            $('#you-will-save-with-coins').text("🎉 {{{intlGet "messages.marketing.you_will_save"}}} {{{intlGet "messages.marketing.money_sign"}}}" + (Math.round(((item.quantity * item.displayUnitCost)-extraCost)*100)/100) + " {{{intlGet "messages.coins.with_your_coins"}}} ");
             if (extraCost === 0) {
-                $('#modalCheckout .checkout-pay-msg').text("{{intlGet "messages.marketing.purchase_free"}}");
+                $('#modalCheckout .checkout-pay-msg').text("{{{intlGet "messages.marketing.purchase_free"}}}");
             } else {
-                $('#modalCheckout .checkout-pay-msg').text("{{intlGet "messages.coins.pay_label"}} {{intlGet "messages.marketing.money_sign"}}" + extraCost);
+                $('#modalCheckout .checkout-pay-msg').text("{{{intlGet "messages.coins.pay_label"}}} {{{intlGet "messages.marketing.money_sign"}}}" + extraCost);
             }
 
             renderShippingInfoForm(item);

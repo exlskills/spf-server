@@ -158,11 +158,11 @@
             $('#coins-purchase-amount').on('change', function(event) {
                 var val = $(this).val();
                 if (!val || val === '') {
-                    $('#manage-coins-purchase-btn').text("{{intlGet "messages.coins.purchase_label"}} ({{intlGet "messages.marketing.money_sign"}}0)");
+                    $('#manage-coins-purchase-btn').text("{{{intlGet "messages.coins.purchase_label"}}} ({{{intlGet "messages.marketing.money_sign"}}}0)");
                     $('#manage-coins-purchase-btn').attr("disabled", "disabled");
                 } else {
                     val = parseInt(val);
-                    $('#manage-coins-purchase-btn').text("{{intlGet "messages.coins.purchase_label"}} ({{intlGet "messages.marketing.money_sign"}}"+val+")");
+                    $('#manage-coins-purchase-btn').text("{{{intlGet "messages.coins.purchase_label"}}} ({{{intlGet "messages.marketing.money_sign"}}}"+val+")");
                     $('#manage-coins-purchase-btn').attr("disabled", false);
                 }
             });
